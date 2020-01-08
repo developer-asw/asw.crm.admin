@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import store from '../store'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 import Login from '../components/Auth/Login.vue'
+import Dashboard from '../components/Dashboard'
+import LeadsList from '../components/Leads/LeadsList'
 
 Vue.use(VueRouter)
 
@@ -10,7 +11,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home,
+    component: Dashboard,
     meta: { Auth: true, title: 'Home' , view: 'baseline'},
   },
   {
@@ -26,6 +27,12 @@ const routes = [
         }
       }
     },
+  {
+    path: '/leads',
+    name: 'leads',
+    component: LeadsList,
+    meta: { Auth: true, title: 'LeadsList' , view: 'baseline'},
+  },
   {
     path: '/about',
     name: 'about',
