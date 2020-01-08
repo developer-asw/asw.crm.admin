@@ -3,6 +3,11 @@
 ## Project setup
 ```
 npm install
+vue create asw-leads-admin
+vue add vuetify
+npm install --save jwt-decode
+npm i vue-resource
+
 ```
 
 ### Compiles and hot-reloads for development
