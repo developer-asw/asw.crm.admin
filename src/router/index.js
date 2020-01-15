@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Login from '../components/Auth/Login.vue'
 import Dashboard from '../components/Dashboard'
 import LeadsList from '../components/Leads/LeadsList'
+import PlantillasList from '../components/Plantillas/PlantillasList'
 
 Vue.use(VueRouter)
 
@@ -32,6 +33,12 @@ const routes = [
     name: 'leads',
     component: LeadsList,
     meta: { Auth: true, title: 'LeadsList' , view: 'baseline'},
+  },
+  {
+    path: '/plantillas',
+    name: 'plantillas',
+    component: PlantillasList,
+    meta: { Auth: true, title: 'PlantillasList' , view: 'baseline'},
   },
   {
     path: '/about',

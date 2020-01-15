@@ -12,20 +12,17 @@
 ## Automatización - Envío a CRM
 
 asw-leads-admin.extandar.com (asw-leads-admin)
-asw-leads.extandar.com (landing) (asw-leads-landing)
+
 asw-leads.extandar.com/api (asw-leads-api)
-asw-leads-seller.extandar.com (asw-leads-seller)
+asw-leads.extandar.com (landing) (asw-leads-landing)
 
 asw.extandar.com
 admin-asw.extandar.com
 teacher-asw.extandar.com
 
-
 Reglas de negocio
 Un mismo lead (identificado por el número de teléfono) no debería poder tener dos citas pendientes
 Es decir que si quiere cambiar su cita debe cancelar la anterior
-
-
 
 TABLAS
 
@@ -53,11 +50,20 @@ leads:{
 	primer_apellido:,
 	segundo_apellido:,
 	ciudad:,
-	estado:, [ACTIVO,INACTIVO]
+	estado:, [ACTIVO,INACTIVO],
+	proceso:nuevo,
 	n_citas_inasistidas,: //SERVIRÁ PARA SABER CUANDO ENVIAR A CALLCENTER
 	eventos:[visita,registro,envio_crm,envio_email,envio_sms,envio_whatsup],
 	observaciones:[]
 }
+
+proceso:
+
+registro_incompleto
+registro_completo
+agendado_primera_vez
+esperando_segunda_cita
+
 
 eventos:[
 	fecha:,
@@ -145,6 +151,7 @@ disponibilidad_historico:[{
 }]
 
 
+///por definir si necesitamos las citas en 
 citas:{
 	lead_id:,
 	sede_id:,
@@ -155,37 +162,54 @@ citas:{
 	observaciones:[]
 }
 
-
+plantillas:{
+	codigo:'',//['confirmacion_primera_cita'
+				|'recordatorio_dia_siguiente'
+				|'recordatorio_una_hora'
+				|'invitacion_segunda_cita'
+				|'invitacion_tercera_cita']
+	canal:'',//['email'|'whatsapp'|'sms'],
+	datos:{
+		[subject],
+		[texto],
+		[html],
+	}
+}
 posibles eventos: 
 leads:agendar|cancelar
 vendedor:
 
 
+Tu cita queda confirmada para el día {{dia}} a las {{hora}} en la sede {{sede}} ubicada en la dirección {{direccion}}. Te esperamos.
 
-1 - 7:15am
-2 - 7:45am
-3 - 8:15am
-4 - 8:45am
-5 - 9:15am
-6 - 9:45am
-7 - 10:15am
-8 - 10:45am
-9 - 11:15am
-10 - 11:45am
-11 - 12:15pm
-12 - 12:45pm
-13 - 1:15pm
-14 - 1:45pm
-15 - 2:15pm
-16 - 2:45pm
-17 - 3:15pm
-18 - 3:45pm
-19 - 4:15pm
-20 - 4:45pm
-21 - 5:15pm
-22 - 5:45pm
-23 - 6:15pm
-24 - 6:45pm
-25 - 7:15pm
-26 - 7:45pm
-27 - 8:15pm
+
+ 7:15am - 7:45am		7:15:00
+ 7:45am - 8:15am		7:45:00
+ 8:15am - 8:45am		8:15:00
+ 8:45am - 9:15am		8:45:00
+ 9:15am - 9:45am		9:15:00
+ 9:45am - 10:15am		9:45:00
+ 10:15am - 10:45am		10:15:00
+ 10:45am - 11:15am		10:45:00
+ 11:15am - 11:45am		11:15:00
+ 11:45am - 12:15pm		11:45:00
+ 12:15pm - 12:45pm		12:15:00
+ 12:45pm - 1:15pm		12:45:00
+ 1:15pm - 1:45pm		13:15:00
+ 1:45pm - 2:15pm		13:45:00
+ 2:15pm - 2:45pm		14:15:00
+ 2:45pm - 3:15pm		14:45:00
+ 3:15pm - 3:45pm		15:15:00
+ 3:45pm - 4:15pm		15:45:00
+ 4:15pm - 4:45pm		16:15:00
+ 4:45pm - 5:15pm		16:45:00
+ 5:15pm - 5:45pm		17:15:00
+ 5:45pm - 6:15pm		17:45:00
+ 6:15pm - 6:45pm		18:15:00
+ 6:45pm - 7:15pm		18:45:00
+ 7:15pm - 7:45pm		19:15:00
+ 7:45pm - 8:15pm		19:45:00
+ 8:15pm - 8:45pm		20:15:00
+
+
+ 

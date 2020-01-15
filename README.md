@@ -2,7 +2,7 @@
 
 ## Project setup
 ```
-npm install
+
 vue create asw-leads-admin
 vue add vuetify
 npm install --save jwt-decode
