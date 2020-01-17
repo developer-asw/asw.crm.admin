@@ -5,7 +5,7 @@
           <span class="headline">{{getTitle}}</span>
         </v-card-title>
         <v-card-text>
-          <v-container>
+          <v-container v-if="plantilla">
             <v-row>
               <v-col cols="12" sm="6">
                 <v-text-field label="Codigo*" v-model="plantilla.codigo" required></v-text-field>
@@ -18,30 +18,35 @@
                   v-model="plantilla.canal"
                 ></v-select>
               </v-col>
-              <v-col cols="12" v-if="plantilla.canal=='email'">
-                <v-text-field  label="Subject" v-model="plantilla.datos.subject"></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-textarea
-                  outlined
-                  label="Texto"
-                  v-model="plantilla.datos.texto"
-                ></v-textarea>
-              </v-col>
-              <v-col cols="12" v-if="plantilla.canal=='email'">
-                <v-textarea
-                  outlined
-                  label="Html"
-                  v-model="plantilla.datos.html"
-                ></v-textarea>
-              </v-col>
+            </v-row>
+            <v-row v-if="plantilla.datos">
+              
+                <v-col cols="12" v-if="plantilla.canal=='email'">
+                  <v-text-field  label="Subject" v-model="plantilla.datos.subject"></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-textarea
+                    outlined
+                    label="Texto"
+                    v-model="plantilla.datos.texto"
+                  ></v-textarea>
+                </v-col>
+                <v-col cols="12" v-if="plantilla.canal=='email'">
+                  <v-textarea
+                    outlined
+                    label="Html"
+                    v-model="plantilla.datos.html"
+                  ></v-textarea>
+                </v-col>
+              
+              
             </v-row>
           </v-container>
           <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="cerrar">Cerrar</v-btn>
+          <v-btn color="blue darken-1" text @click="cancelar">Cancelar</v-btn>
           <v-btn color="blue darken-1" text @click="iniciarGuardar">Guardar</v-btn>
           <v-btn color="blue darken-1" text @click="iniciarEliminar">Eliminar</v-btn>
         </v-card-actions>
@@ -66,6 +71,7 @@
     data () {
       return {
           procesando:false,
+          candidato:{}
       }
     },
     props : {
@@ -73,7 +79,7 @@
     },
     
     mounted () {
-      console.log('mounted')
+        this.reiniciar();
     },
     methods:{
       ...mapActions({
@@ -83,7 +89,19 @@
       }),
       ...mapMutations({
       }),
-      cerrar(){
+      reiniciar(){
+        this.candidato = {
+            codigo:null,
+            canal:null,
+            datos:{
+              subject:null,
+              texto:null,
+              html:null,
+            }
+          }
+      },
+      cancelar(){
+        this.reiniciar();
         this.$emit('cerrar');
       },
       dirigir(value){
@@ -139,9 +157,7 @@
         if(this.plantilla_id){
           return this.detalle(this.plantilla_id)
         }else{
-          return {
-            datos:{}
-          }
+          return this.candidato
         }
       }    
 

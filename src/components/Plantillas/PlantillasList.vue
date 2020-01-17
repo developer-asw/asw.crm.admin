@@ -33,7 +33,7 @@
       :items="lista"
       :loading="loading"
       
-      
+      loading-text="Loading... Please wait"
       class="elevation-1"
   >
     <!--
@@ -111,7 +111,11 @@
       ...mapMutations({
       }),
       actualizar(){
+        this.loading = true;
         this.fetchLista()
+        .finally(()=>{
+          this.loading = false;
+        })
       },
       dirigir(value){
         this.$router.push(value)
@@ -120,7 +124,7 @@
         
       },
       cerrarDialog(){
-        this.newDialog=false;
+        this.newDialog = false;
         this.plantillaSeleccionada = null
       },
       editItem(item){

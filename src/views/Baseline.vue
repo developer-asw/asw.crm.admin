@@ -73,7 +73,7 @@
       dark
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>Leads App</v-toolbar-title>
+      <v-toolbar-title>Automatic Lead Attention</v-toolbar-title>
     </v-app-bar>
 
     <v-content>  
@@ -83,12 +83,24 @@
     <v-footer color="indigo" >
       <span class="white--text">American School Way &copy; 2020</span>
     </v-footer>
+    <v-snackbar
+      v-model="isErrorDialogShowed"
+    >
+      {{ error }}
+      <v-btn
+        color="pink"
+        text
+        @click="hideError"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
 <script>
 
-  import {mapState,mapActions} from 'vuex';
+  import {mapState,mapActions,mapMutations} from 'vuex';
 
   export default {
     data: () => ({
@@ -100,6 +112,10 @@
     methods:{
       ...mapActions({
         logout: 'auth/logout',
+      }),
+      ...mapMutations({
+        hideError: 'hideError',
+        showError: 'showError',
       }),
       dirigir(value){
         this.$router.push(value)
@@ -113,13 +129,31 @@
     computed: {
       ...mapState({
         user: state => state.auth.user,   
+        processing: state => state.processing,
+        error: state => state.error,
+        warning: state => state.warning,
+        reportedVersion: state => state.version,
+        isErrorShowed: state => state.isErrorShowed,
       }),
       getNombres(){
         if(this.user){
           return this.user.data.primer_nombre+' '+this.user.data.primer_apellido
         }
         return ''
-      }
+      },
+      isErrorDialogShowed:{
+        get(){
+          return this.isErrorShowed
+        },
+        set(value){
+          if(value){
+            this.showError()
+          }else{
+            this.hideError()
+          }
+          
+        }
+      },
     }
   }
 </script>

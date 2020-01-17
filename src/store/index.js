@@ -12,7 +12,8 @@ const store = new Vuex.Store({
     processing: false,
     warning: null,
     error: null,
-    version: null
+    version: null,
+    isErrorShowed: false,
   },
   getters:{
 
@@ -44,13 +45,19 @@ const store = new Vuex.Store({
       }else{
         state.error = responseApi;
       }
-      
-      setTimeout(() => {
-        state.error = null
-      },3000)
+      state.isErrorShowed = true
+      //setTimeout(() => {
+      //  state.error = null
+      //},3000)
     },
     setVersion:  (state, response) => {
       state.version = response.version
+    },
+    showError:  (state) => {
+      state.isErrorShowed = true
+    },
+    hideError:  (state) => {
+      state.isErrorShowed = false
     },
   },
   actions: {
