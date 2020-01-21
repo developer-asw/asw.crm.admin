@@ -23,7 +23,7 @@
         <v-icon>add</v-icon>
     </v-btn>
     </v-toolbar-items>
-    <v-dialog v-model="newDialog" persistent max-width="600px">
+    <v-dialog v-model="newDialog" persistent max-width="800px">
       <PlantillasEdit :plantilla_id="plantillaIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar"></PlantillasEdit>
     </v-dialog>
   </v-toolbar>

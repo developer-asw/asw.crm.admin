@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 import auth from '@/modules/auth';
 import leads from '@/modules/leads';
 import plantillas from '@/modules/plantillas';
+import orientadores from '@/modules/orientadores';
+import agenda from '@/modules/agenda';
 
 Vue.use(Vuex)
 
@@ -87,7 +89,9 @@ const store = new Vuex.Store({
   modules: {
     auth,
     leads,
-    plantillas
+    plantillas,
+    orientadores,
+    agenda
   }
 })
 

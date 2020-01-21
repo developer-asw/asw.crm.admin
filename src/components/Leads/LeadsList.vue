@@ -26,53 +26,43 @@
       :headers="headers"
       :items="lista"
       :loading="loading"
-      
-      
+      loading-text="Loading... Please wait"
       class="elevation-1"
   >
-    <!--
-      <template v-slot:items="props">
-        <td>{{ props.item.sede_id }}</td>
-        <td class="text-xs-right" >{{ props.item.fecha }}</td>
-        <td class="text-xs-right">{{ props.item.hora }}</td>
-        <td class="text-xs-right">{{ props.item.salon_nombre }}</td>
-        <td class="text-xs-right">{{ props.item.docente.nombre }}</td>
-        <td class="text-xs-right">{{ props.item.tipos.join(',') }}</td>
-      </template>
-    -->
+    
+    <template v-slot:item.action="{ item }">
+      <v-icon smallclass="mr-2" @click="viewItem(item)">
+        remove_red_eye
+      </v-icon>
+    </template>
     </v-data-table>
-
+    <v-dialog v-model="viewDialog" persistent max-width="800px">
+      <LeadsView :lead_id="leadIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar"></LeadsView>
+    </v-dialog>
   </div>
 </template>
 
 <script>
   import {mapState, mapActions, mapMutations} from 'vuex';
-  //import Vue from 'vue';
+  import LeadsView from '@/components/Leads/LeadsView'
+  
 
   export default {
     name: 'LeadList',
     components: {
-  
+      LeadsView
     },
     data () {
       return {
         headers: [
-          /*
+          
+          { text: 'Fecha', value: 'created_at' },
           { text: 'Nombre', value: 'primer_nombre' },
           { text: 'Apellido', value: 'primer_apellido' },
           { text: 'email', value: 'email' },
           { text: 'Móvil', value: 'movil' },
           { text: 'Ciudad', value: 'ciudad' },
-          { text: 'Fecha', value: 'created_at' },
-*/
-          { text: 'Fecha', value: 'created_at' },
-          { text: 'Nombre', value: 'full_name' },
-          { text: 'email', value: 'email' },
-          { text: 'Móvil', value: 'movil' },
-          { text: 'Sede', value: 'sede' },
-          { text: 'Día', value: 'escoge_el_día_de_tu_cita' },
-          { text: 'Hora', value: 'escoge_la_hora_de_tu_cita' },
-          
+          { text: 'Actions', value: 'action', sortable: false }
         ],
         pagination:{
           descending: false,
@@ -81,11 +71,12 @@
           sortBy: "fecha",
           totalItems: 0
         },
-        
+        viewDialog : false,
         loading: false,
         rowsPerPage : [100],
         search: '',
-        payload: {}
+        payload: {},
+        leadSeleccionado:null
       }
     },
     props : {
@@ -98,12 +89,33 @@
     methods:{
       ...mapActions({
         fetchLista: 'leads/fetchLista',
+        fetchDetalle: 'leads/fetchDetalle',
       }),
       ...mapMutations({
       }),
       actualizar(){
+        this.loading = true;
         this.fetchLista()
-      }
+        .finally(()=>{
+          this.loading = false;
+        })
+      },
+      viewItem(item){
+        this.loading = true;
+        this.fetchDetalle({id:item._id})
+        .then(()=>{
+          this.leadSeleccionado = item
+          this.viewDialog = true  
+        })
+        .finally(()=>{
+          this.loading = false;
+        })
+        
+      },
+      cerrarDialog(){
+        this.viewDialog = false;
+        this.leadSeleccionado = null
+      },
       
     },
     computed: {
@@ -112,7 +124,15 @@
       }),
       getTitle(){
         return 'Leads'
-      }      
+      },
+      leadIdDialog(){
+        if(this.leadSeleccionado){
+          return this.leadSeleccionado._id
+        }else{
+          return null
+        }
+        
+      }       
 
     }
   }

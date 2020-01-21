@@ -37,7 +37,7 @@ const actions = {
 
 const getters = {
   permiso: (state) => (permiso) => {
-    return state.user.permisos.find((element)=>{
+    return state.user.data.permisos.find((element)=>{
       return element == permiso
     })
   },

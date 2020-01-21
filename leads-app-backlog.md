@@ -1,18 +1,19 @@
 # HISTORIAS DE USUARIO
 ## Administrador - Gestión de usuarios, roles y permisos
-## Administrador - Gestión de sedes
+## OK - Administrador - Gestión de sedes
 ## Administrador - Gestión de vendedores
 ## Administrador - Agenda
+## OK - Administrador - Gestión de plantillas
 ## Landing Page - Registro de leads
 ## Vendedor - Citas
 ## Administrador - Gestión de leads
-## Automatización - Confirmación de citas
+## OK - Automatización - Confirmación de citas
 ## Automatización - Recordatorio de cita
 ## Automatización - Solicitud de reagendamiento
 ## Automatización - Envío a CRM
+## OK - Automatización - Respuesta de WA automática
 
 asw-leads-admin.extandar.com (asw-leads-admin)
-
 asw-leads.extandar.com/api (asw-leads-api)
 asw-leads.extandar.com (landing) (asw-leads-landing)
 
@@ -84,7 +85,7 @@ orientador:{
 //collection / en esta tabla va un registo por sede por día
 disponibilidad_actual:[{
 //document
-	sede:1,
+	sede_id:1,
 	dia:08-01-2020
 	franjas:{
 		'07:15:00'{
@@ -210,6 +211,4 @@ Tu cita queda confirmada para el día {{dia}} a las {{hora}} en la sede {{sede}}
  7:15pm - 7:45pm		19:15:00
  7:45pm - 8:15pm		19:45:00
  8:15pm - 8:45pm		20:15:00
-
-
  

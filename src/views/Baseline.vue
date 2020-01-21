@@ -15,7 +15,7 @@
 
         <v-divider></v-divider>
 
-        <v-list-item link @click="dirigir('/')">
+        <v-list-item v-if="isLogged && permiso('AFD4E76')" link @click="dirigir('/')">
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
@@ -24,7 +24,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item link @click="dirigir('/leads')">
+        <v-list-item v-if="isLogged && permiso('EF995E25')" link @click="dirigir('/leads')">
           <v-list-item-action>
             <v-icon>mdi-contact-mail</v-icon>
           </v-list-item-action>
@@ -33,7 +33,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item link @click="dirigir('/plantillas')">
+        <v-list-item v-if="isLogged && permiso('E5B05447')" link @click="dirigir('/plantillas')">
           <v-list-item-action>
             <v-icon>mdi-contact-mail</v-icon>
           </v-list-item-action>
@@ -42,7 +42,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item link @click="dirigir('/orientadores')">
+        <v-list-item v-if="isLogged && permiso('C3372A4B')" link @click="dirigir('/orientadores')">
           <v-list-item-action>
             <v-icon>mdi-contact-mail</v-icon>
           </v-list-item-action>
@@ -51,12 +51,23 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item link @click="dirigir('/agenda')">
+        <v-list-item v-if="isLogged && permiso('E677357D')" link @click="dirigir('/agenda')">
           <v-list-item-action>
             <v-icon>mdi-contact-mail</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Agenda</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list-item v-if="isLogged" link @click.prevent="processLogout()">
+          <v-list-item-action>
+            <v-icon>mdi-contact-mail</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Cerrar</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -100,7 +111,7 @@
 
 <script>
 
-  import {mapState,mapActions,mapMutations} from 'vuex';
+  import {mapState,mapGetters,mapActions,mapMutations} from 'vuex';
 
   export default {
     data: () => ({
@@ -128,12 +139,16 @@
     },
     computed: {
       ...mapState({
+        isLogged: state => state.auth.logged,
         user: state => state.auth.user,   
         processing: state => state.processing,
         error: state => state.error,
         warning: state => state.warning,
         reportedVersion: state => state.version,
         isErrorShowed: state => state.isErrorShowed,
+      }),
+      ...mapGetters({
+        permiso: 'auth/permiso', 
       }),
       getNombres(){
         if(this.user){

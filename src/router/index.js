@@ -5,6 +5,8 @@ import Login from '../components/Auth/Login.vue'
 import Dashboard from '../components/Dashboard'
 import LeadsList from '../components/Leads/LeadsList'
 import PlantillasList from '../components/Plantillas/PlantillasList'
+import OrientadoresList from '../components/Orientadores/OrientadoresList'
+import AgendaActual from '../components/Agenda/AgendaActual'
 
 Vue.use(VueRouter)
 
@@ -39,6 +41,18 @@ const routes = [
     name: 'plantillas',
     component: PlantillasList,
     meta: { Auth: true, title: 'PlantillasList' , view: 'baseline'},
+  },
+  {
+    path: '/orientadores',
+    name: 'orientadores',
+    component: OrientadoresList,
+    meta: { Auth: true, title: 'OrientadoresList' , view: 'baseline'},
+  },
+  {
+    path: '/agenda',
+    name: 'agenda',
+    component: AgendaActual,
+    meta: { Auth: true, title: 'AgendaActual' , view: 'baseline'},
   },
   {
     path: '/about',

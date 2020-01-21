@@ -2,23 +2,17 @@ import Vue from 'vue';
 
 const state = {
   lista: [],
-  total:null,
-  page: 1,
-  perPage: 100,
-  lastPage: 1,
-  detalles: {
-
-  }
+  detalles: {}
 };
 
 const actions = {
   fetchLista:({commit},data) => {
     commit('startProcessing', null, { root: true });
     return new Promise((resolve, reject) => {
-      Vue.http.post('plantilla/lista',data).then(
+      Vue.http.post('orientador/lista',data).then(
         response =>{
           commit('setLista',response.data.resultSet);
-          resolve(response)
+          resolve(response.data)
         }
       ).catch(error=>{
         commit('setError', error, { root: true });
@@ -31,7 +25,7 @@ const actions = {
   fetchDetalle:({commit},data) => {
     commit('startProcessing', null, { root: true });
     return new Promise((resolve, reject) => {
-      Vue.http.post('plantilla/detalle',data).then(
+      Vue.http.post('orientador/detalle',data).then(
         response =>{
           commit('setDetalle',response.data.datos);
           resolve(response.data)
@@ -47,7 +41,7 @@ const actions = {
   crear:({commit},data) => {
     commit('startProcessing', null, { root: true });
     return new Promise((resolve, reject) => {
-      Vue.http.post('plantilla/crear',data).then(
+      Vue.http.post('orientador/crear',data).then(
         response =>{
           resolve(response.data)
         }
@@ -62,7 +56,7 @@ const actions = {
   editar:({commit},data) => {
     commit('startProcessing', null, { root: true });
     return new Promise((resolve, reject) => {
-      Vue.http.post('plantilla/editar',data).then(
+      Vue.http.post('orientador/editar',data).then(
         response =>{
           resolve(response.data)
         }
@@ -77,7 +71,7 @@ const actions = {
   eliminar:({commit},data) => {
     commit('startProcessing', null, { root: true });
     return new Promise((resolve, reject) => {
-      Vue.http.post('plantilla/eliminar',data).then(
+      Vue.http.post('orientador/eliminar',data).then(
         response =>{
           resolve(response.data)
         }
@@ -105,15 +99,11 @@ const getters = {
 };
 
 const mutations = {
-  setLista: (state, resultSet) => {
-    state.lista = resultSet.data;
-    state.total = resultSet.total;
-    state.page = resultSet.page;
-    state.perPage = resultSet.perPage;
-    state.lastPage = resultSet.lastPage;
+  setLista: (state, lista) => {
+    state.lista = lista;
   },
   setDetalle: (state, detalle) => {
-    state.detalles[detalle._id] = detalle
+    state.detalles[detalle.id] = detalle
   },
   restart: (state) => {
     state.lista = []

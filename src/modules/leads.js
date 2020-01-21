@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 const state = {
   lista: [],
+  detalles: {}
 };
 
 const actions = {
@@ -21,16 +22,37 @@ const actions = {
       })
     });
   },
+  fetchDetalle:({commit},data) => {
+    commit('startProcessing', null, { root: true });
+    return new Promise((resolve, reject) => {
+      Vue.http.post('lead/detalle',data).then(
+        response =>{
+          commit('setDetalle',response.data.datos);
+          resolve(response.data)
+        }
+      ).catch(error=>{
+        commit('setError', error, { root: true });
+        reject(error)
+      }).finally(()=>{
+        commit('stopProcessing', null, { root: true });
+      })
+    });
+  },
   
 };
 
 const getters = {
-  
+  getDetalle: (state) => (id) =>{
+    return state.detalles[id]
+  }
 };
 
 const mutations = {
   setLista: (state, lista) => {
     state.lista = lista;
+  },
+  setDetalle: (state, detalle) => {
+    state.detalles[detalle._id] = detalle
   },
   restart: (state) => {
     state.lista = []
