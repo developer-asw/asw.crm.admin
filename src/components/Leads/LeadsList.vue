@@ -61,7 +61,8 @@
           { text: 'Apellido', value: 'primer_apellido' },
           { text: 'email', value: 'email' },
           { text: 'Móvil', value: 'movil' },
-          { text: 'Ciudad', value: 'ciudad' },
+          { text: 'Sede', value: 'sede.nombre' },
+          { text: 'Estado', value: 'estado' },
           { text: 'Actions', value: 'action', sortable: false }
         ],
         pagination:{

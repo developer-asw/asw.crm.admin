@@ -31,7 +31,9 @@
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
-
+  <v-overlay :value="loading">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
   </div>
 </template>
 
@@ -54,7 +56,7 @@
           sortBy: "fecha",
           totalItems: 0
         },
-
+        loading:true
       }
     },
     props : {

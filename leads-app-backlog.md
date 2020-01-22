@@ -212,3 +212,10 @@ Tu cita queda confirmada para el día {{dia}} a las {{hora}} en la sede {{sede}}
  7:45pm - 8:15pm		19:45:00
  8:15pm - 8:45pm		20:15:00
  
+
+
+NO RESTRINGIR CUPOS
+ME DAN ACCESO A WORDPRES
+
+
+

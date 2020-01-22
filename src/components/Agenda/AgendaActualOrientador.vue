@@ -50,13 +50,12 @@
       ...mapMutations({
       }),
 		iniciarConfirmarAsistencia(id){
-
 			this.loading = true;
-			this.confirmarAsistencia({id:id,sede_id:this.sede_id,fecha:this.fecha,franja:this.franja})
-			.finally(()=>{
-				this.loading = false;
-			})
-		}
+        this.confirmarAsistencia({id:id,sede_id:this.sede_id,fecha:this.fecha,franja:this.franja})
+        .finally(()=>{
+          this.loading = false;
+        })
+      }
     },
     computed: {
       ...mapState({
