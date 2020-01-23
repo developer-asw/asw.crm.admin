@@ -4,12 +4,16 @@
       <v-expansion-panel v-for="(item,i) in franjas" :key="i">
         <v-expansion-panel-header>{{item.name}} / {{item.children.length}}</v-expansion-panel-header>
         <v-expansion-panel-content>
-
-          <div v-for="lead in item.children" :key="lead.id" >
-            {{lead.fullname}}
-            <v-btn v-if="lead.estado=='pendiente'" color="blue"  @click="iniciarConfirmarAsistencia(lead.id,item.id)">Confirmar Asistencia</v-btn>    
-          </div>
-      
+          <v-simple-table>
+            <tbody>
+              <tr v-for="lead in item.children" :key="lead.id">
+                <td><span>{{ lead.fullname }}</span></td>
+                <td><span v-if="lead.uid">{{ lead.uid }}</span></td>
+                <td><span v-if="lead.email">{{ lead.email }}</span></td>
+                <td><v-btn v-if="lead.estado=='pendiente'" color="blue"  @click="iniciarConfirmarAsistencia(lead.id,item.id)">Confirmar Asistencia</v-btn></td>
+              </tr>
+            </tbody>
+          </v-simple-table>
 <!--
           <AgendaActualOrientador :orientadores="item.children" :sede_id="sede_id" :fecha="fecha" :franja="item.id"></AgendaActualOrientador>
         -->
@@ -34,6 +38,12 @@
     },
     data () {
       return {
+        headers: [
+          { text: 'Nombre', value: 'fullname' },
+          { text: 'Movil', value: 'uid' },
+          { text: 'Email', value: 'email' },
+          { text: 'Actions', value: 'action' }
+        ],
         loading: false,
       }
     },

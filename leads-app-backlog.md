@@ -214,8 +214,6 @@ Tu cita queda confirmada para el día {{dia}} a las {{hora}} en la sede {{sede}}
  
 
 
-NO RESTRINGIR CUPOS
-ME DAN ACCESO A WORDPRES
-
-
-
+OK - NO RESTRINGIR CUPOS
+LANDING ME DAN ACCESO A WORDPRES
+MENSAJE DE CONFIRMACIÓN AL CONFIRMAR ASISTENCIA
