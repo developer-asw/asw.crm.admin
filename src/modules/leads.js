@@ -2,6 +2,12 @@ import Vue from 'vue';
 
 const state = {
   lista: [],
+  pagination:{
+    total : 0,
+    page : 1,
+    perPage : 100,
+    lastPage : 1,
+  },
   detalles: {}
 };
 
@@ -11,7 +17,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       Vue.http.post('lead/lista',data).then(
         response =>{
-          commit('setLista',response.data.datos.data);
+          commit('setLista',response.data.datos);
           resolve(response.data)
         }
       ).catch(error=>{
@@ -48,8 +54,12 @@ const getters = {
 };
 
 const mutations = {
-  setLista: (state, lista) => {
-    state.lista = lista;
+  setLista: (state, datos) => {
+    state.lista = datos.data;
+    state.pagination.total = datos.total;
+    state.pagination.page = datos.page;
+    state.pagination.perPage = datos.perPage;
+    state.pagination.lastPage = datos.lastPage;
   },
   setDetalle: (state, detalle) => {
     state.detalles[detalle._id] = detalle

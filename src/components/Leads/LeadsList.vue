@@ -10,7 +10,7 @@
       <v-spacer></v-spacer>
 
       <v-toolbar-items >
-        <v-subheader>{{pagination.totalItems}} registros</v-subheader>
+        <v-subheader>{{pagination.total}} registros</v-subheader>
         <!--
       <v-btn v-if="lista.length>0" flat small color="info" dark @click="descargarReporte">
         <v-icon>cloud_download</v-icon>
@@ -56,22 +56,18 @@
       return {
         headers: [
           
-          { text: 'Fecha', value: 'created_at' },
+          { text: 'Ingreso', value: 'created_at' },
           { text: 'Nombre', value: 'primer_nombre' },
           { text: 'Apellido', value: 'primer_apellido' },
           { text: 'email', value: 'email' },
           { text: 'Móvil', value: 'movil' },
-          { text: 'Sede', value: 'sede.nombre' },
+          { text: 'Sede', value: 'ultima_cita.sede.nombre' },
+          { text: 'Fecha', value: 'ultima_cita.fecha_texto' },
+          { text: 'Hora', value: 'ultima_cita.hora_texto' },
           { text: 'Estado', value: 'estado' },
           { text: 'Actions', value: 'action', sortable: false }
         ],
-        pagination:{
-          descending: false,
-          page: 1,
-          rowsPerPage: 100,
-          sortBy: "fecha",
-          totalItems: 0
-        },
+        
         viewDialog : false,
         loading: false,
         rowsPerPage : [100],
@@ -122,6 +118,7 @@
     computed: {
       ...mapState({
         lista: state => state.leads.lista,
+        pagination: state => state.leads.pagination,
       }),
       getTitle(){
         return 'Leads'
