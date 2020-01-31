@@ -48,12 +48,7 @@
           remove_red_eye
         </v-icon>
         -->
-        <v-icon v-if="!item.estado_callcenter || item.estado_callcenter=='llamar'" smallclass="mr-2" @click="iniciarSolicitar(item)">
-          local_phone
-        </v-icon>
-        <v-icon v-else smallclass="mr-2" @click="setInfo('Ya lo llamaron')">
-          phone_locked
-        </v-icon>
+        
       </template>
 
       <template v-slot:item.sede="{ item }">
@@ -77,7 +72,7 @@
 Vue.use(VueClipboard)
 
   export default {
-    name: 'CallcenterList',
+    name: 'CallcenterCoordinatorList',
     components: {
       LeadsView
     },
@@ -85,6 +80,7 @@ Vue.use(VueClipboard)
       return {
         headers: [
           { text: 'Ingreso', value: 'created_at' },
+          { text: 'Primer contacto', value: 'inicia_callcenter' },
           { text: 'Nombre', value: 'full_name' },
           { text: 'Móvil', value: 'movil' },
           { text: 'Email', value: 'email' },
@@ -110,11 +106,10 @@ Vue.use(VueClipboard)
     },
     methods:{
       ...mapActions({
-        fetchLista: 'callcenter/fetchLista',
-        solicitar: 'callcenter/solicitar',
+        fetchLista: 'callcenter_coordinator/fetchLista',
+        
       }),
       ...mapMutations({
-        reemplazar: 'callcenter/replaceListaElement',
         setInfo: 'setInfo',
       }),
       actualizar(){
@@ -124,35 +119,7 @@ Vue.use(VueClipboard)
           this.loading = false;
         })
       },
-      iniciarSolicitar(item){
-        this.loading = true;
-        this.solicitar({id_lead:item._id})
-        .then((result)=>{
-          if(result.result=='ok'){
-            let phoneCopy = result.lead.uid
-            if(phoneCopy.startsWith('57')){
-              phoneCopy = phoneCopy.substring(2)
-            }
-
-            this.$copyText(phoneCopy)
-            .then(()=>{
-              this.setInfo('Autorizado y Copiado')
-            })
-            .catch(error=>{
-              console.log(error)
-              this.setInfo('Autorizado')
-            })
-
-          }
-          if(result.result=='llamando'){
-            this.setInfo('Ya fue asignado')
-          }
-          
-        })
-        .finally(()=>{
-          this.loading = false;
-        })
-      },
+      
       viewItem(item){
         this.loading = true;
         this.fetchDetalle({id:item._id})
@@ -173,11 +140,11 @@ Vue.use(VueClipboard)
     },
     computed: {
       ...mapState({
-        lista: state => state.callcenter.lista,
-        pagination: state => state.callcenter.pagination,
+        lista: state => state.callcenter_coordinator.lista,
+        pagination: state => state.callcenter_coordinator.pagination,
       }),
       getTitle(){
-        return 'Callcenter Agent'
+        return 'Callcenter Coordinator'
       },
       leadIdDialog(){
         if(this.leadSeleccionado){

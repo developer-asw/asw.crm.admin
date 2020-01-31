@@ -60,14 +60,32 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item v-if="isLogged && permiso('A8229B00')" link @click="dirigir('/callcenter')">
-          <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
-          </v-list-item-action>
+        <v-list-group
+          no-action
+          sub-group
+          value="true"
+        >
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>Callcenter</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item v-if="isLogged && permiso('A8229B00')" link @click="dirigir('/callcenter')">
+          
           <v-list-item-content>
-            <v-list-item-title>Callcenter</v-list-item-title>
+            <v-list-item-title>Agente</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <v-list-item v-if="isLogged && permiso('2BF48DCE')" link @click="dirigir('/callcenter_coordinator')">
+
+          <v-list-item-content>
+            <v-list-item-title>Coordinator</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        </v-list-group>
 
         <v-divider></v-divider>
 
@@ -101,7 +119,7 @@
     </v-content>
 
     <v-footer color="indigo" >
-      <span class="white--text">American School Way &copy; 2020 - v.0.1.4</span>
+      <span class="white--text">American School Way &copy; 2020 - v.0.1.5</span>
     </v-footer>
     <v-snackbar
       v-model="isErrorDialogShowed"

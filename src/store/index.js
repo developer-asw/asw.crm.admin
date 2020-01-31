@@ -6,6 +6,7 @@ import plantillas from '@/modules/plantillas';
 import orientadores from '@/modules/orientadores';
 import agenda from '@/modules/agenda';
 import callcenter from '@/modules/callcenter';
+import callcenter_coordinator from '@/modules/callcenter_coordinator';
 
 Vue.use(Vuex)
 
@@ -112,7 +113,8 @@ const store = new Vuex.Store({
     plantillas,
     orientadores,
     agenda,
-    callcenter
+    callcenter,
+    callcenter_coordinator
   }
 })
 

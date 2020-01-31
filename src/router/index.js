@@ -8,6 +8,7 @@ import PlantillasList from '../components/Plantillas/PlantillasList'
 import OrientadoresList from '../components/Orientadores/OrientadoresList'
 import AgendaActual from '../components/Agenda/AgendaActual'
 import CallcenterList from '../components/Callcenter/CallcenterList'
+import CallcenterCoordinatorList from '../components/Callcenter/Coordinator/CallcenterCoordinatorList'
 
 Vue.use(VueRouter)
 
@@ -60,6 +61,12 @@ const routes = [
     name: 'callcenter',
     component: CallcenterList,
     meta: { Auth: true, title: 'CallcenterList' , view: 'baseline'},
+  },
+  {
+    path: '/callcenter_coordinator',
+    name: 'callcenter_coordinator',
+    component: CallcenterCoordinatorList,
+    meta: { Auth: true, title: 'CallcenterCoordinatorList' , view: 'baseline'},
   },
   {
     path: '/about',
