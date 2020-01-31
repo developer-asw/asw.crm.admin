@@ -30,19 +30,25 @@
       class="elevation-1"
   >
     
-    <template v-slot:item.action="{ item }">
-      <!--
-      <v-icon smallclass="mr-2" @click="viewItem(item)">
-        remove_red_eye
-      </v-icon>
-      -->
-      <v-icon v-if="!item.estado_callcenter || item.estado_callcenter=='llamar'" smallclass="mr-2" @click="iniciarSolicitar(item)">
-        local_phone
-      </v-icon>
-      <v-icon v-else smallclass="mr-2" @click="setInfo('Ya lo llamaron')">
-        phone_locked
-      </v-icon>
-    </template>
+      <template v-slot:item.action="{ item }">
+        <!--
+        <v-icon smallclass="mr-2" @click="viewItem(item)">
+          remove_red_eye
+        </v-icon>
+        -->
+        <v-icon v-if="!item.estado_callcenter || item.estado_callcenter=='llamar'" smallclass="mr-2" @click="iniciarSolicitar(item)">
+          local_phone
+        </v-icon>
+        <v-icon v-else smallclass="mr-2" @click="setInfo('Ya lo llamaron')">
+          phone_locked
+        </v-icon>
+      </template>
+
+      <template v-slot:item.sede="{ item }">
+        <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>
+        <span v-else>{{item.sede}}</span>
+      </template>
+
     </v-data-table>
     <v-dialog v-model="viewDialog" persistent max-width="800px">
       <LeadsView :lead_id="leadIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar"></LeadsView>
@@ -70,7 +76,7 @@ Vue.use(VueClipboard)
           { text: 'Nombre', value: 'primer_nombre' },
           { text: 'Apellido', value: 'primer_apellido' },
           { text: 'Móvil', value: 'movil' },
-          { text: 'Sede', value: 'ultima_cita.sede.nombre' },
+          { text: 'Sede', value: 'sede' },
           { text: 'Agente', value: 'agente_callcenter' },
           { text: 'Actions', value: 'action', sortable: false }
         ],
