@@ -7,6 +7,7 @@ import LeadsList from '../components/Leads/LeadsList'
 import PlantillasList from '../components/Plantillas/PlantillasList'
 import OrientadoresList from '../components/Orientadores/OrientadoresList'
 import AgendaActual from '../components/Agenda/AgendaActual'
+import CallcenterList from '../components/Callcenter/CallcenterList'
 
 Vue.use(VueRouter)
 
@@ -55,6 +56,12 @@ const routes = [
     meta: { Auth: true, title: 'AgendaActual' , view: 'baseline'},
   },
   {
+    path: '/callcenter',
+    name: 'callcenter',
+    component: CallcenterList,
+    meta: { Auth: true, title: 'CallcenterList' , view: 'baseline'},
+  },
+  {
     path: '/about',
     name: 'about',
     // route level code-splitting
@@ -65,7 +72,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  //mode: 'history',
   base: process.env.BASE_URL,
   routes
 })

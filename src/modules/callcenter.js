@@ -9,13 +9,14 @@ const state = {
     lastPage : 1,
   },
   detalles: {}
+
 };
 
 const actions = {
   fetchLista:({commit},data) => {
     commit('startProcessing', null, { root: true });
     return new Promise((resolve, reject) => {
-      Vue.http.post('lead/lista',data).then(
+      Vue.http.post('callcenter/lista',data).then(
         response =>{
           commit('setLista',response.data.datos);
           resolve(response.data)
@@ -28,12 +29,12 @@ const actions = {
       })
     });
   },
-  fetchDetalle:({commit},data) => {
+  solicitar:({commit},data) => {
     commit('startProcessing', null, { root: true });
     return new Promise((resolve, reject) => {
-      Vue.http.post('lead/detalle',data).then(
+      Vue.http.post('callcenter/solicitar',data).then(
         response =>{
-          commit('setDetalle',response.data.datos);
+          commit('replaceListaElement',response.data.lead);
           resolve(response.data)
         }
       ).catch(error=>{
@@ -48,9 +49,7 @@ const actions = {
 };
 
 const getters = {
-  getDetalle: (state) => (id) =>{
-    return state.detalles[id]
-  }
+  
 };
 
 const mutations = {
@@ -69,9 +68,6 @@ const mutations = {
       console.log('encontrado en:'+index)
       state.lista.splice(index,1,e)
     }
-  },
-  setDetalle: (state, detalle) => {
-    state.detalles[detalle._id] = detalle
   },
   restart: (state) => {
     state.lista = []

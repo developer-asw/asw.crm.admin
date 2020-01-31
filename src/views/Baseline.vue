@@ -60,6 +60,15 @@
           </v-list-item-content>
         </v-list-item>
 
+        <v-list-item v-if="isLogged && permiso('A8229B00')" link @click="dirigir('/callcenter')">
+          <v-list-item-action>
+            <v-icon>mdi-contact-mail</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Callcenter</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
         <v-divider></v-divider>
 
         <v-list-item v-if="isLogged" link @click.prevent="processLogout()">
@@ -106,6 +115,18 @@
         Close
       </v-btn>
     </v-snackbar>
+     <v-snackbar
+      v-model="isInfoDialogShowed"
+    >
+      {{ info }}
+      <v-btn
+        color="pink"
+        text
+        @click="hideInfo"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -115,7 +136,7 @@
 
   export default {
     data: () => ({
-      drawer: null
+      drawer: null,
     }),
     props: {
       //source: String
@@ -127,6 +148,9 @@
       ...mapMutations({
         hideError: 'hideError',
         showError: 'showError',
+        hideInfo: 'hideInfo',
+        showInfo: 'showInfo',
+        setInfo: 'setInfo',
       }),
       dirigir(value){
         this.$router.push(value)
@@ -143,9 +167,12 @@
         user: state => state.auth.user,   
         processing: state => state.processing,
         error: state => state.error,
-        warning: state => state.warning,
-        reportedVersion: state => state.version,
         isErrorShowed: state => state.isErrorShowed,
+        warning: state => state.warning,
+        info: state => state.info,
+        isInfoShowed: state => state.isInfoShowed,
+        reportedVersion: state => state.version,
+        
       }),
       ...mapGetters({
         permiso: 'auth/permiso', 
@@ -165,6 +192,19 @@
             this.showError()
           }else{
             this.hideError()
+          }
+          
+        }
+      },
+      isInfoDialogShowed:{
+        get(){
+          return this.isInfoShowed
+        },
+        set(value){
+          if(value){
+            this.showInfo()
+          }else{
+            this.hideInfo()
           }
           
         }

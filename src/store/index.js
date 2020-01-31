@@ -5,6 +5,7 @@ import leads from '@/modules/leads';
 import plantillas from '@/modules/plantillas';
 import orientadores from '@/modules/orientadores';
 import agenda from '@/modules/agenda';
+import callcenter from '@/modules/callcenter';
 
 Vue.use(Vuex)
 
@@ -13,9 +14,12 @@ const store = new Vuex.Store({
   state: {
     processing: false,
     warning: null,
+    info: null,
+    isInfoShowed: false,
     error: null,
-    version: null,
     isErrorShowed: false,
+    version: null,
+    
   },
   getters:{
 
@@ -61,6 +65,22 @@ const store = new Vuex.Store({
     hideError:  (state) => {
       state.isErrorShowed = false
     },
+    setInfo (state, value) {
+      state.info = value
+      state.isInfoShowed = true
+      return new Promise((resolve) => {
+        setTimeout(function () {
+          state.isInfoShowed = false
+          resolve()
+        }, 2000)
+      })
+    },
+    showInfo:  (state) => {
+      state.isInfoShowed = true
+    },
+    hideInfo:  (state) => {
+      state.isInfoShowed = false
+    },
   },
   actions: {
     setWarning ({state}, value) {
@@ -91,7 +111,8 @@ const store = new Vuex.Store({
     leads,
     plantillas,
     orientadores,
-    agenda
+    agenda,
+    callcenter
   }
 })
 
