@@ -119,7 +119,7 @@
     </v-content>
 
     <v-footer color="indigo" >
-      <span class="white--text">American School Way &copy; 2020 - v.0.1.5</span>
+      <span class="white--text">American School Way &copy; 2020 - v.0.1.6</span>
     </v-footer>
     <v-snackbar
       v-model="isErrorDialogShowed"

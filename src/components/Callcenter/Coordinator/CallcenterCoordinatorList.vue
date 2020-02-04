@@ -16,9 +16,13 @@
         <v-icon>cloud_download</v-icon>
       </v-btn>
     -->
+      <v-btn small color="info" dark @click="descargarReporte">
+        <v-icon>cloud_download</v-icon>
+      </v-btn>
       <v-btn small color="info" dark @click="actualizar">
         <v-icon>autorenew</v-icon>
       </v-btn>
+      
       </v-toolbar-items>
   </v-toolbar>
 
@@ -119,6 +123,27 @@ Vue.use(VueClipboard)
           this.loading = false;
         })
       },
+
+      prepararPayload(){
+
+      },
+      async descargarReporte(){
+        this.loading = true
+        this.prepararPayload()
+        this.payload.download_tipo = 'csv'
+        
+        let response = await Vue.http.post("callcenter/descargar_cordinador", this.payload).finally(()=>{
+          this.loading = false
+        });
+
+    let blob = new Blob([response.data], {type:response.headers.get('content-type')});
+    let link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'leads.'+this.payload.download_tipo;
+    link.click();
+        
+      },
+
       
       viewItem(item){
         this.loading = true;
