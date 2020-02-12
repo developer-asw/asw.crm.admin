@@ -3,7 +3,7 @@ import Vue from 'vue';
 const state = {
   agenda_actual: [],
   agenda_historico: [],
-  franjas:[]
+  franjas:[],
 };
 
 const actions = {
@@ -43,7 +43,23 @@ const actions = {
     return new Promise((resolve, reject) => {
       Vue.http.post('franjas').then(
         response =>{
-          commit('setFranjas',response.data.resultSet);
+          //commit('setFranjas',response.data.resultSet);
+          resolve(response.data)
+        }
+      ).catch(error=>{
+        commit('setError', error, { root: true });
+        reject(error)
+      }).finally(()=>{
+        commit('stopProcessing', null, { root: true });
+      })
+    });
+  },
+  fetchDisponibilidad:({commit}) => {
+    commit('startProcessing', null, { root: true });
+    return new Promise((resolve, reject) => {
+      Vue.http.post('https://asw-leads.extandar.com/api/agenda/disponibilidad').then(
+        response =>{
+          commit('setDisponibilidad',response.data.resultSet);
           resolve(response.data)
         }
       ).catch(error=>{
@@ -61,6 +77,9 @@ const getters = {
 };
 
 const mutations = {
+  setDisponibilidad:(state,lista) => {
+    state.disponibilidad = lista;
+  },
   setAgendaActual: (state, lista) => {
     state.agenda_actual = lista;
   },

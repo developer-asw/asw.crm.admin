@@ -63,14 +63,14 @@
 
     </v-data-table>
     <v-dialog v-model="viewDialog" persistent max-width="800px">
-      <LeadsView :lead_id="leadIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar"></LeadsView>
+      <AgendaView :lead_id="leadIdDialog" @cerrar="cerrarDialog"></AgendaView>
     </v-dialog>
   </div>
 </template>
 
 <script>
   import {mapState, mapActions, mapMutations} from 'vuex';
-  import LeadsView from '@/components/Leads/LeadsView'
+  import AgendaView from '@/components/Agenda/AgendaView'
   import Vue from 'vue'
   import VueClipboard from 'vue-clipboard2'
  
@@ -79,7 +79,7 @@ Vue.use(VueClipboard)
   export default {
     name: 'CallcenterList',
     components: {
-      LeadsView
+      AgendaView
     },
     data () {
       return {
@@ -129,6 +129,7 @@ Vue.use(VueClipboard)
         this.solicitar({id_lead:item._id})
         .then((result)=>{
           if(result.result=='ok'){
+            this.leadSeleccionado = item
             let phoneCopy = result.lead.uid
             if(phoneCopy.startsWith('57')){
               phoneCopy = phoneCopy.substring(2)
@@ -137,6 +138,8 @@ Vue.use(VueClipboard)
             this.$copyText(phoneCopy)
             .then(()=>{
               this.setInfo('Autorizado y Copiado')
+              this.viewDialog = true 
+              
             })
             .catch(error=>{
               console.log(error)
