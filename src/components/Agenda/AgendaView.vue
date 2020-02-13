@@ -10,8 +10,8 @@
                     <v-col cols="12" md="12">
                         <v-select v-model="estado" :items="estados" label="Estado"></v-select>
 
-                        <v-select v-if="estado == 'Agendamiento'" v-model="nueva_cita.sede_id" :items="sedes"
-                            label="Sede" item-text="text" item-value="id">
+                        <v-select v-if="estado == 'Agendamiento'" v-model="nueva_cita.sede" :items="sedes" label="Sede"
+                            item-text="text" item-value="id">
                         </v-select>
                     </v-col>
                     <v-col cols="12" md="6">
@@ -52,10 +52,10 @@
             estados: ['Agendamiento'],
             estado: null,
             nueva_cita: {
-                sede_id: null,
+                sede: null,
                 fecha: null,
                 hora: null,
-                lead_id: null
+                id: null
             },
             fechas: [],
             sedes: [],
@@ -73,10 +73,20 @@
                 crear: 'leads/crearCita',
             }),
             ...mapMutations({}),
+            reiniciar() {
+                this.nueva_cita: {
+                    sede: null,
+                    fecha: null,
+                    hora: null,
+                    id: null
+                },
+            },
             agendar() {
-                this.nueva_cita.lead_id = this.lead_id;
+                this.procesando = true;
+                this.nueva_cita.id = this.lead_id;
                 this.crear(this.nueva_cita)
                     .finally(() => {
+                        this.reiniciar();
                         this.procesando = false;
                         this.$emit('cerrar');
                         this.$emit('actualizar');

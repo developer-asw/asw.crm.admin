@@ -46,7 +46,6 @@ const actions = {
   },
   crearCita:({commit},data) => {
     commit('startProcessing', null, { root: true });
-    console.log(data);
     return new Promise((resolve, reject) => {
       Vue.http.post('http://127.0.0.1:3343/api/lead/agendar',data).then(
         response =>{
