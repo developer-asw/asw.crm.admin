@@ -74,12 +74,12 @@
             }),
             ...mapMutations({}),
             reiniciar() {
-                this.nueva_cita: {
+                this.nueva_cita = {
                     sede: null,
                     fecha: null,
                     hora: null,
                     id: null
-                },
+                };
             },
             agendar() {
                 this.procesando = true;
