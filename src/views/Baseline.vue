@@ -84,6 +84,12 @@
             <v-list-item-title>Coordinator</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item v-if="isLogged && permiso('2BF48DCE')" link @click="dirigir('/callcenter_admisiones')">
+
+          <v-list-item-content>
+            <v-list-item-title>Admisiones</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
 
         </v-list-group>
 

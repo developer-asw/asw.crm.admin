@@ -136,11 +136,11 @@ Vue.use(VueClipboard)
           this.loading = false
         });
 
-    let blob = new Blob([response.data], {type:response.headers.get('content-type')});
-    let link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = 'leads.'+this.payload.download_tipo;
-    link.click();
+        let blob = new Blob([response.data], {type:response.headers.get('content-type')});
+        let link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'leads.'+this.payload.download_tipo;
+        link.click();
         
       },
 
