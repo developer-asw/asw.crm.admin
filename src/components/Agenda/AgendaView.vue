@@ -36,7 +36,7 @@
 
                 </v-row>
                 <v-row v-if="estado == 'Llamar despues'">
-                    <v-col cols="12" md="12">
+                    <v-col cols="12" md="6">
                         <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date"
                             transition="scale-transition" offset-y min-width="290px">
                             <template v-slot:activator="{ on }">
@@ -46,8 +46,21 @@
                             <v-date-picker v-model="nueva_cita.fecha_proxima_llamada" no-title scrollable>
                                 <v-spacer></v-spacer>
                                 <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-                                <v-btn text color="primary" @click="$refs.menu.save(nueva_cita.fecha_proxima_llamada)">OK</v-btn>
+                                <v-btn text color="primary" @click="$refs.menu.save(nueva_cita.fecha_proxima_llamada)">
+                                    OK</v-btn>
                             </v-date-picker>
+                        </v-menu>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-menu ref="menu" v-model="menu2" :close-on-content-click="false" :nudge-right="40"
+                            :return-value.sync="time" transition="scale-transition" offset-y max-width="290px"
+                            min-width="290px">
+                            <template v-slot:activator="{ on }">
+                                <v-text-field v-model="time" label="Hora proxima llamada" prepend-icon="access_time" readonly
+                                    v-on="on"></v-text-field>
+                            </template>
+                            <v-time-picker v-if="menu2" v-model="nueva_cita.hora_proxima_llamada" full-width @click:minute="$refs.menu.save(nueva_cita.hora_proxima_llamada)">
+                            </v-time-picker>
                         </v-menu>
                     </v-col>
                 </v-row>
@@ -73,7 +86,9 @@
         name: 'AgendaView',
         data: () => ({
             menu: false,
+            menu2: false,
             date: new Date().toISOString().substr(0, 10),
+            time: null,
             estados: ['Agendamiento', 'No contesta', 'Dato errado', 'Llamar despues', 'Sin sede en ciudad'],
             estado: null,
             nueva_cita: {
@@ -82,7 +97,8 @@
                 hora: null,
                 id: null,
                 observación: null,
-                fecha_proxima_llamada:null
+                fecha_proxima_llamada: null,
+                hora_proxima_llamada: null
             },
             fechas: [],
             sedes: [],
