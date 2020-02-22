@@ -57,7 +57,7 @@ const actions = {
   fetchDisponibilidad:({commit}) => {
     commit('startProcessing', null, { root: true });
     return new Promise((resolve, reject) => {
-      Vue.http.post('https://asw-leads.extandar.com/api/agenda/disponibilidad').then(
+      Vue.http.post('agenda/disponibilidad').then(
         response =>{
           commit('setDisponibilidad',response.data.resultSet);
           resolve(response.data)

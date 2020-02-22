@@ -47,7 +47,7 @@ const actions = {
   crearCita:({commit},data) => {
     commit('startProcessing', null, { root: true });
     return new Promise((resolve, reject) => {
-      Vue.http.post('http://127.0.0.1:3343/api/lead/agendar',data).then(
+      Vue.http.post('lead/agendar',data).then(
         response =>{
           resolve(response.data)
         }
@@ -62,7 +62,7 @@ const actions = {
   crearLeads:({commit},data) => {
     commit('startProcessing', null, { root: true });
     return new Promise((resolve, reject) => {
-      Vue.http.post('http://127.0.0.1:3343/api/lead/registrar',data).then(
+      Vue.http.post('lead/registrar',data).then(
         response =>{
           resolve(response.data)
         }
