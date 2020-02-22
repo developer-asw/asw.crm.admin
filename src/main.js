@@ -18,6 +18,10 @@ Vue.http.interceptors.push((request, next) => {
 });
 //.vue resource
 
+//moment
+import VueMoment from 'vue-moment'
+ 
+Vue.use(VueMoment)
 
 new Vue({
   router,

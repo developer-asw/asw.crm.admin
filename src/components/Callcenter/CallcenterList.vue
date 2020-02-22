@@ -30,6 +30,10 @@
       class="elevation-1"
   >
       
+      <template v-slot:item.ultima_llamada.fecha_solicitado="{ item }">
+        <span v-if="item.ultima_llamada">{{presentDate(item.ultima_llamada.fecha_solicitado)}}</span>
+      </template>
+
       <template v-slot:item.full_name="{ item }">
         <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
       </template>
@@ -48,8 +52,11 @@
           remove_red_eye
         </v-icon>
         -->
-        <v-icon v-if="!item.estado_callcenter || item.estado_callcenter=='llamar'" smallclass="mr-2" @click="iniciarSolicitar(item)">
+        <v-icon v-if="puedeSolicitar(item)" smallclass="mr-2" @click="iniciarSolicitar(item)">
           local_phone
+        </v-icon>
+        <v-icon v-else-if="estaAsignado(item)" smallclass="mr-2" @click="iniciarCerrar(item)">
+          warning
         </v-icon>
         <v-icon v-else smallclass="mr-2" @click="setInfo('Ya lo llamaron')">
           phone_locked
@@ -63,33 +70,33 @@
 
     </v-data-table>
     <v-dialog v-model="viewDialog" persistent max-width="800px">
-      <AgendaView :lead_id="leadIdDialog" @cerrar="cerrarDialog"></AgendaView>
+      <CallcenterRegistrarLlamada :lead_id="leadIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar"></CallcenterRegistrarLlamada>
     </v-dialog>
   </div>
 </template>
 
 <script>
   import {mapState, mapActions, mapMutations} from 'vuex';
-  import AgendaView from '@/components/Agenda/AgendaView'
+  import CallcenterRegistrarLlamada from '@/components/Callcenter/CallcenterRegistrarLlamada'
   import Vue from 'vue'
   import VueClipboard from 'vue-clipboard2'
- 
-Vue.use(VueClipboard)
+  
+  Vue.use(VueClipboard)
 
   export default {
     name: 'CallcenterList',
     components: {
-      AgendaView
+      CallcenterRegistrarLlamada
     },
     data () {
       return {
         headers: [
-          { text: 'Ingreso', value: 'created_at' },
+          { text: 'Solicitud', value: 'ultima_llamada.fecha_solicitado' },
           { text: 'Nombre', value: 'full_name' },
           { text: 'Móvil', value: 'movil' },
           { text: 'Email', value: 'email' },
           { text: 'Sede', value: 'sede' },
-          { text: 'Agente', value: 'agente_callcenter' },
+          { text: 'Agente', value: 'ultima_llamada.agente.nombre' },
           { text: 'Actions', value: 'action', sortable: false }
         ],
         
@@ -112,6 +119,7 @@ Vue.use(VueClipboard)
       ...mapActions({
         fetchLista: 'callcenter/fetchLista',
         solicitar: 'callcenter/solicitar',
+        fetchDetalle: 'leads/fetchDetalle',
       }),
       ...mapMutations({
         reemplazar: 'callcenter/replaceListaElement',
@@ -138,7 +146,8 @@ Vue.use(VueClipboard)
             this.$copyText(phoneCopy)
             .then(()=>{
               this.setInfo('Autorizado y Copiado')
-              this.viewDialog = true 
+              this.viewItem(item)
+              
               
             })
             .catch(error=>{
@@ -156,6 +165,11 @@ Vue.use(VueClipboard)
           this.loading = false;
         })
       },
+      iniciarCerrar(item){
+        this.leadSeleccionado = item;
+        this.viewItem(item)
+        
+      },
       viewItem(item){
         this.loading = true;
         this.fetchDetalle({id:item._id})
@@ -172,12 +186,29 @@ Vue.use(VueClipboard)
         this.viewDialog = false;
         this.leadSeleccionado = null
       },
+      presentDate(value){
+        return this.$moment(value).format('DD-MM-YYYY h:mm a')
+      },
+      puedeSolicitar(item){
+        if(item.ultima_llamada && item.ultima_llamada.estado == 'pendiente'){
+          return true
+        }
+        return false
+      },
+      estaAsignado(item){
+        if(item.ultima_llamada && item.ultima_llamada.estado == 'llamando'
+          && item.ultima_llamada.agente && item.ultima_llamada.agente.email == this.user.data.email){
+          return true
+        }
+        return false
+      }
       
     },
     computed: {
       ...mapState({
         lista: state => state.callcenter.lista,
         pagination: state => state.callcenter.pagination,
+        user: state => state.auth.user,   
       }),
       getTitle(){
         return 'Callcenter Agent'
@@ -188,8 +219,7 @@ Vue.use(VueClipboard)
         }else{
           return null
         }
-      }     
-
+      }
     }
   }
 </script>

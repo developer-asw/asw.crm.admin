@@ -41,7 +41,7 @@
             <v-list-item-title>Plantillas</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-
+<!--
         <v-list-item v-if="isLogged && permiso('C3372A4B')" link @click="dirigir('/orientadores')">
           <v-list-item-action>
             <v-icon>mdi-contact-mail</v-icon>
@@ -50,13 +50,23 @@
             <v-list-item-title>Orientadores</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-
+-->
+<!--
         <v-list-item v-if="isLogged && permiso('E677357D')" link @click="dirigir('/agenda')">
           <v-list-item-action>
             <v-icon>mdi-contact-mail</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Agenda</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+-->
+        <v-list-item v-if="isLogged && permiso('2BF48DCE')" link @click="dirigir('/callcenter_admisiones')">
+          <v-list-item-action>
+            <v-icon>mdi-contact-mail</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Admisiones</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -82,12 +92,6 @@
 
           <v-list-item-content>
             <v-list-item-title>Coordinator</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item v-if="isLogged && permiso('2BF48DCE')" link @click="dirigir('/callcenter_admisiones')">
-
-          <v-list-item-content>
-            <v-list-item-title>Admisiones</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -125,7 +129,7 @@
     </v-content>
 
     <v-footer color="indigo" >
-      <span class="white--text">American School Way &copy; 2020 - v.0.1.6</span>
+      <span class="white--text">American School Way &copy; 2020 - v.1.0.0</span>
     </v-footer>
     <v-snackbar
       v-model="isErrorDialogShowed"

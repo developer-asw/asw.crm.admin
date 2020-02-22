@@ -15,7 +15,9 @@
                     </template>
                     <span>Programmatic tooltip</span>
                 </v-tooltip>
-
+                <v-btn small color="info" dark @click="actualizar">
+                    <v-icon>autorenew</v-icon>
+                  </v-btn>
             </v-toolbar-items>
         </v-toolbar>
         <v-data-table :headers="headers" :items="lista" :loading="loading" loading-text="Loading... Please wait"
@@ -70,10 +72,8 @@
         },
         data() {
             return {
-                headers: [{
-                        text: 'Primer contacto',
-                        value: 'inicia_callcenter'
-                    },
+                headers: [
+
                     {
                         text: 'Nombre',
                         value: 'full_name'
@@ -97,10 +97,6 @@
                     {
                         text: 'Hora',
                         value: 'ultima_cita.hora'
-                    },
-                    {
-                        text: 'Agente',
-                        value: 'agente_callcenter'
                     },
                     {
                         text: 'Actions',

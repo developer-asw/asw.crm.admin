@@ -34,6 +34,10 @@
       class="elevation-1"
   >
       
+      <template v-slot:item.fecha_proximo_contacto="{ item }">
+        <span v-if="item.fecha_proximo_contacto">{{presentDate(item.fecha_proximo_contacto)}}</span>
+      </template>
+
       <template v-slot:item.full_name="{ item }">
         <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
       </template>
@@ -83,13 +87,13 @@ Vue.use(VueClipboard)
     data () {
       return {
         headers: [
-          { text: 'Ingreso', value: 'created_at' },
-          { text: 'Primer contacto', value: 'inicia_callcenter' },
+          { text: 'Próximo contacto', value: 'fecha_proximo_contacto' },
+          //{ text: 'Primer contacto', value: 'inicia_callcenter' },
           { text: 'Nombre', value: 'full_name' },
           { text: 'Móvil', value: 'movil' },
           { text: 'Email', value: 'email' },
           { text: 'Sede', value: 'sede' },
-          { text: 'Agente', value: 'agente_callcenter' },
+          { text: 'Agente', value: 'ultima_llamada.agente.nombre' },
           { text: 'Actions', value: 'action', sortable: false }
         ],
         
@@ -160,6 +164,9 @@ Vue.use(VueClipboard)
       cerrarDialog(){
         this.viewDialog = false;
         this.leadSeleccionado = null
+      },
+      presentDate(value){
+        return this.$moment(value).format('DD-MM-YYYY h:mm a')
       },
       
     },

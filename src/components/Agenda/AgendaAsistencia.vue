@@ -7,8 +7,7 @@
             <v-form>
                 <v-row>
                     <v-col cols="12" md="6" sm="12">
-                        <v-select v-model="asistencia.estado" :items="estados" label="Estado cita" item-text="nombre"
-                            item-value="nombre">
+                        <v-select v-model="asistencia.estado" :items="estados" label="Estado cita">
                         </v-select>
                     </v-col>
 
@@ -34,7 +33,10 @@
     export default {
         name: 'AgendaAsistencia',
         data: () => ({
-            estados: ['asistido', 'No asistio'],
+            estados: [
+                { text: 'Asistio', value: 'asistido' },
+                { text: 'No asistio', value: 'ausencia' },
+            ],
             asistencia : {
                 estado: null,
             }
@@ -53,11 +55,7 @@
             },
             confirmarAsistencia() {
                 this.procesando = true;
-                this.asistencia.fecha = this.lead.ultima_cita.fecha;
-                this.asistencia.sede_id = this.lead.ultima_cita.sede.id;
-                this.asistencia.franja = this.lead.ultima_cita.hora;
-                this.asistencia.id = this.lead_id;
-                this.cambiarEstado(this.asistencia)
+                this.cambiarEstado({id:this.lead_id,estado:this.asistencia.estado})
                     .then(result => {
 
                         if (result.data.lead) {
