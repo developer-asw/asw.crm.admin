@@ -39,7 +39,7 @@
       </template>
 
       <template v-slot:item.movil="{ item }">
-        <span @click="$copyText(item.movil);setInfo(item.movil)">{{item.movil}}</span>
+        <span @click="copiarDato(item.movil)">{{item.movil}}</span>
       </template>
 
       <template v-slot:item.email="{ item }">
@@ -70,7 +70,7 @@
 
     </v-data-table>
     <v-dialog v-model="viewDialog" persistent max-width="800px">
-      <CallcenterRegistrarLlamada :lead_id="leadIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar"></CallcenterRegistrarLlamada>
+      <CallcenterRegistrarLlamada :lead_id="leadIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada>
     </v-dialog>
   </div>
 </template>
@@ -93,7 +93,7 @@
         headers: [
           { text: 'Solicitud', value: 'ultima_llamada.fecha_solicitado' },
           { text: 'Nombre', value: 'full_name' },
-          { text: 'Móvil', value: 'movil' },
+          { text: 'Móvil', value: 'uid' },
           { text: 'Email', value: 'email' },
           { text: 'Sede', value: 'sede' },
           { text: 'Agente', value: 'ultima_llamada.agente.nombre' },
@@ -138,23 +138,7 @@
         .then((result)=>{
           if(result.result=='ok'){
             this.leadSeleccionado = item
-            let phoneCopy = result.lead.uid
-            if(phoneCopy.startsWith('57')){
-              phoneCopy = phoneCopy.substring(2)
-            }
-
-            this.$copyText(phoneCopy)
-            .then(()=>{
-              this.setInfo('Autorizado y Copiado')
-              this.viewItem(item)
-              
-              
-            })
-            .catch(error=>{
-              console.log(error)
-              this.setInfo('Autorizado')
-            })
-
+            this.viewItem(item)
           }
           if(result.result=='llamando'){
             this.setInfo('Ya fue asignado')
@@ -172,8 +156,31 @@
       },
       viewItem(item){
         this.loading = true;
+
         this.fetchDetalle({id:item._id})
-        .then(()=>{
+        .then((result)=>{
+
+          if(result.datos && result.datos.uid){
+            let phoneCopy = result.datos.uid
+            if(phoneCopy){
+              if(phoneCopy.startsWith('57')){
+                phoneCopy = phoneCopy.substring(2)
+              }
+
+              if(phoneCopy.length==10){
+                phoneCopy = '9'+phoneCopy
+              }
+
+              this.$copyText(phoneCopy)
+                .then(()=>{
+                  this.setInfo('Autorizado y Copiado')
+                })
+                .catch(error=>{
+                  console.log(error)
+                })
+            }  
+          }
+          
           this.leadSeleccionado = item
           this.viewDialog = true  
         })
@@ -201,6 +208,19 @@
           return true
         }
         return false
+      },
+      copiarDato(value){
+          console.log('copiando en list:')
+
+
+          this.$copyText(value)
+          .then(()=>{
+                this.setInfo('Copiado en list:'+value)
+          })
+          .catch(error=>{
+            console.log(error)
+            this.setInfo(error)
+          })
       }
       
     },

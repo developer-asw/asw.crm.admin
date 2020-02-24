@@ -6,11 +6,10 @@
         <v-card-text>
 			<v-row v-if="lead">
 				<v-col cols="12" md="12">
-				<span @click="$copyText(lead.full_name);setInfo(lead.full_name)">{{lead.full_name}}</span><br>
-				<span @click="$copyText(lead.movil);setInfo(lead.movil)">{{lead.movil}}</span><br>
-				<span @click="$copyText(lead.email);setInfo(lead.email)">{{lead.email}}</span><br>
-				<span v-if="lead.sede_full">{{lead.sede_full.nombre}}</span>
-					
+                    <span>{{lead.full_name}}</span><br>
+                    <span>{{lead.uid}}</span><br>
+                    <span>{{lead.email}}</span><br>
+                    <span v-if="lead.sede_full">{{lead.sede_full.nombre}}</span>
 				</v-col>
 			</v-row>
             <v-form>
@@ -91,15 +90,7 @@
     </v-card>
 </template>
 <script>
-    import {
-        mapState,
-        mapGetters,
-        mapActions,
-        mapMutations
-    } from 'vuex';
-    import Vue from 'vue'
-    import VueClipboard from 'vue-clipboard2'
-    Vue.use(VueClipboard)
+    import {mapState,mapGetters,mapActions,mapMutations} from 'vuex';
 
     export default {
         name: 'CallcenterRegistrarLlamada',
