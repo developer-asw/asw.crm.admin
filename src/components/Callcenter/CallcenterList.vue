@@ -46,6 +46,11 @@
         <span @click="$copyText(item.email);setInfo(item.email)">{{item.email}}</span>
       </template>
 
+      <template v-slot:item.ultimo_origen="{ item }">
+        <span v-if="item.ultimo_origen.origen">{{item.ultimo_origen.origen}}</span>
+        <span v-else-if="item.ultimo_origen.referer">{{item.ultimo_origen.referer}}</span>
+      </template>
+
       <template v-slot:item.action="{ item }">
         <!--
         <v-icon smallclass="mr-2" @click="viewItem(item)">
@@ -97,6 +102,7 @@
           { text: 'Email', value: 'email' },
           { text: 'Sede', value: 'sede' },
           { text: 'Solicitado', value: 'ultima_llamada.solicitante.nombre' },
+          { text: 'Origen', value: 'ultimo_origen' },
           { text: 'Actions', value: 'action', sortable: false }
         ],
         
