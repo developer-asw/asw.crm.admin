@@ -96,7 +96,7 @@
           { text: 'Móvil', value: 'uid' },
           { text: 'Email', value: 'email' },
           { text: 'Sede', value: 'sede' },
-          { text: 'Agente', value: 'ultima_llamada.agente.nombre' },
+          { text: 'Solicitado', value: 'ultima_llamada.solicitante.nombre' },
           { text: 'Actions', value: 'action', sortable: false }
         ],
         
