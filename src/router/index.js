@@ -10,6 +10,8 @@ import AgendaActual from '../components/Agenda/AgendaActual'
 import CallcenterList from '../components/Callcenter/CallcenterList'
 import CallcenterCoordinatorList from '../components/Callcenter/Coordinator/CallcenterCoordinatorList'
 import CallcenterAdmisionesList from '../components/Callcenter/Coordinator/CallcenterAdmisionesList'
+import CRMImportar from '../components/CRM/Importar'
+import CRMConsultar from '../components/CRM/Consultar'
 
 Vue.use(VueRouter)
 
@@ -74,6 +76,18 @@ const routes = [
     name: 'callcenter_admisiones',
     component: CallcenterAdmisionesList,
     meta: { Auth: true, title: 'CallcenterAdmisionesList' , view: 'baseline'},
+  },
+  {
+    path: '/CRM/Importar',
+    name: 'CRMImportar',
+    component: CRMImportar,
+    meta: { Auth: true, title: 'CRM - Importar' , view: 'baseline'},
+  },
+  {
+    path: '/CRM/Consultar',
+    name: 'CRMConsultar',
+    component: CRMConsultar,
+    meta: { Auth: true, title: 'CRM - Consulta' , view: 'baseline'},
   },
   {
     path: '/about',

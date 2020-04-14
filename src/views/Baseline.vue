@@ -7,101 +7,151 @@
 
     <v-list dense>
 
+      <!-- <img src="https://www.americanschoolway.edu.co/wp-content/uploads/2020/02/logo_header_Asw_18a.jpg"/> -->
+      <v-img :aspect-ratio="36/9" src="https://www.americanschoolway.edu.co/wp-content/uploads/2020/02/logo_header_Asw_18a.jpg">
+        <v-row align="end" class="lightbox white--text pa-2 fill-height">
+          <!-- <v-col>
+            <div class="subheading">{{getNombres}}</div>
+            <div class="body-1">heyfromjonathan@gmail.com</div>
+          </v-col> -->
+        </v-row>
+      </v-img>
+
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title>{{getNombres}}</v-list-item-title>
+            <v-list-item-title class="text-right">{{getNombres}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
         <v-divider></v-divider>
 
-        <v-list-item v-if="isLogged && permiso('AFD4E76')" link @click="dirigir('/')">
-          <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Inicio</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+        <v-list-item-group v-model="model">
 
-        <v-list-item v-if="isLogged && permiso('EF995E25')" link @click="dirigir('/leads')">
-          <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Leads</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item v-if="isLogged && permiso('E5B05447')" link @click="dirigir('/plantillas')">
-          <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Plantillas</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-<!--
-        <v-list-item v-if="isLogged && permiso('C3372A4B')" link @click="dirigir('/orientadores')">
-          <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Orientadores</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
--->
-<!--
-        <v-list-item v-if="isLogged && permiso('E677357D')" link @click="dirigir('/agenda')">
-          <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Agenda</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
--->
-        <v-list-item v-if="isLogged && permiso('2BF48DCE')" link @click="dirigir('/callcenter_admisiones')">
-          <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Admisiones</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-group
-          no-action
-          sub-group
-          value="true"
-        >
-          <template v-slot:activator>
+          <v-list-item v-if="isLogged && permiso('AFD4E76')" link @click="dirigir('/')" active-class="border">
+            <v-list-item-action>
+              <v-icon>home</v-icon>
+            </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>Callcenter</v-list-item-title>
+              <v-list-item-title>Inicio</v-list-item-title>
             </v-list-item-content>
-          </template>
+          </v-list-item>
 
-          <v-list-item v-if="isLogged && permiso('A8229B00')" link @click="dirigir('/callcenter')">
+          <v-list-item v-if="isLogged && permiso('EF995E25')" link @click="dirigir('/leads')" active-class="border">
+            <v-list-item-action>
+              <v-icon>contact_mail</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Leads</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item v-if="isLogged && permiso('E5B05447')" link @click="dirigir('/plantillas')" active-class="border">
+            <v-list-item-action>
+              <v-icon>perm_media</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Plantillas</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+  <!--
+          <v-list-item v-if="isLogged && permiso('C3372A4B')" link @click="dirigir('/orientadores')">
+            <v-list-item-action>
+              <v-icon>mdi-contact-mail</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Orientadores</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+  -->
+  <!--
+          <v-list-item v-if="isLogged && permiso('E677357D')" link @click="dirigir('/agenda')">
+            <v-list-item-action>
+              <v-icon>mdi-contact-mail</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Agenda</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+  -->
+          <v-list-item v-if="isLogged && permiso('2BF48DCE')" link @click="dirigir('/callcenter_admisiones')" active-class="border">
+            <v-list-item-action>
+              <v-icon>pan_tool</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Admisiones</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-group
+            no-action
+            sub-group
+            value="true"
+          >
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Callcenter</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item v-if="isLogged && permiso('A8229B00')" link @click="dirigir('/callcenter')" active-class="border">
+            
+              <v-list-item-action>
+                <v-icon>call</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Agente</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+          <v-list-item v-if="isLogged && permiso('2BF48DCE')" link @click="dirigir('/callcenter_coordinator')" active-class="border">
+
+            <v-list-item-action>
+              <v-icon>supervisor_account</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Coordinator</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          </v-list-group>
           
-          <v-list-item-content>
-            <v-list-item-title>Agente</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+          <v-list-group no-action sub-group
+          >
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>CRM</v-list-item-title>
+              </v-list-item-content>
+            </template>
 
-        <v-list-item v-if="isLogged && permiso('2BF48DCE')" link @click="dirigir('/callcenter_coordinator')">
+            <v-list-item v-if="isLogged" link @click="dirigir('/CRM/Importar')" active-class="border">
+            
+              <v-list-item-action>
+                <v-icon>import_export</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Importar</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
 
-          <v-list-item-content>
-            <v-list-item-title>Coordinator</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+          <v-list-item v-if="isLogged" link @click="dirigir('/CRM/Consultar')" active-class="border">
 
-        </v-list-group>
+            <v-list-item-action>
+              <v-icon>filter_list</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Consultar</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          </v-list-group>
+
+        </v-list-item-group>
 
         <v-divider></v-divider>
 
         <v-list-item v-if="isLogged" link @click.prevent="processLogout()">
           <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
+            <v-icon>exit_to_app</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Cerrar</v-list-item-title>
@@ -128,8 +178,12 @@
       <router-view></router-view>
     </v-content>
 
-    <v-footer color="indigo" >
-      <span class="white--text">American School Way &copy; 2020 - v.1.0.5</span>
+    <v-footer color="indigo" class="white--text text-center">
+       <v-card-text>
+         American School Way &copy; 2020 - v.1.0.5
+       </v-card-text>
+
+      <!-- <span class="text-right">American School Way &copy; 2020 - v.1.0.5</span> -->
     </v-footer>
     <v-snackbar
       v-model="isErrorDialogShowed"
@@ -165,6 +219,7 @@
   export default {
     data: () => ({
       drawer: null,
+      model: 1
     }),
     props: {
       //source: String

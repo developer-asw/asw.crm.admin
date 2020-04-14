@@ -1,7 +1,5 @@
 <template>
   <div>
-    
-
     <v-toolbar flat light dense color="blue lighten-5">
     
       <v-toolbar-title>

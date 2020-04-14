@@ -11,11 +11,6 @@
 
       <v-toolbar-items >
         <v-subheader>{{pagination.total}} registros</v-subheader>
-        <!--
-      <v-btn v-if="lista.length>0" flat small color="info" dark @click="descargarReporte">
-        <v-icon>cloud_download</v-icon>
-      </v-btn>
-    -->
       <v-btn small color="info" dark @click="filtroDescargaAbrir()">
         <v-icon>cloud_download</v-icon>
       </v-btn>
@@ -169,7 +164,7 @@
 Vue.use(VueClipboard)
 
   export default {
-    name: 'CallcenterCoordinatorList',
+    name: 'CRMConsultar',
     components: {
       LeadsView
     },
@@ -185,10 +180,6 @@ Vue.use(VueClipboard)
           { text: 'Agente', value: 'ultima_llamada.agente.nombre' },
           { text: 'Actions', value: 'action', sortable: false }
         ],
-        filtro: {
-          FechaInicial: this.formatDate(new Date().toISOString().substr(0, 10)), 
-          FechaFinal: this.formatDate(new Date().toISOString().substr(0, 10))
-        },
         dateFrom:null,
         dateTo:null, 
         menu1: false,
@@ -232,8 +223,10 @@ Vue.use(VueClipboard)
         this.loading = true
         this.prepararPayload()
         this.payload.filters = {
-            FechaInicial: this.parseDate(this.filtro.FechaInicial),
-            FechaFinal: this.parseDate(this.filtro.FechaFinal)
+          created_at: {
+            $gt:this.parseDate(this.filtro.FechaInicial),
+            $lt:this.parseDate(this.filtro.FechaFinal)
+          }
         };
 
         this.payload.download_tipo = 'csv'
@@ -305,14 +298,7 @@ Vue.use(VueClipboard)
       }     
     },
     watch: {
-      dateFrom (val) {
-        console.log(val)
-        this.filtro.FechaInicial = this.formatDate(this.dateFrom)
-      },
-      dateTo (val) {
-        console.log(val)
-        this.filtro.FechaFinal = this.formatDate(this.dateTo)
-      },
+
     },
   }
   

@@ -44,7 +44,6 @@ const mutations = {
     state.pagination.perPage = datos.perPage;
     state.pagination.lastPage = datos.lastPage;
   },
-  
   restart: (state) => {
     state.lista = []
   },

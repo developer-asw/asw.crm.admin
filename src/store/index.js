@@ -9,6 +9,7 @@ import sedes from '@/modules/sedes';
 import callcenter from '@/modules/callcenter';
 import callcenter_coordinator from '@/modules/callcenter_coordinator';
 import callcenter_admisiones from '@/modules/callcenter_admisiones';
+import crm from '@/modules/crm';
 
 Vue.use(Vuex)
 
@@ -118,7 +119,8 @@ const store = new Vuex.Store({
     callcenter,
     callcenter_coordinator,
     callcenter_admisiones,
-    sedes
+    sedes,
+    crm,
   }
 })
 
