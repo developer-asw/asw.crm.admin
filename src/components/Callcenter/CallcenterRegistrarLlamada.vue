@@ -45,38 +45,54 @@
                 <v-row v-if="estado == 'agendar_llamada'">
                     <v-col cols="12" md="6">
 						<v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
-						<!--
-                        <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date"
-                            transition="scale-transition" offset-y min-width="290px">
-                            <template v-slot:activator="{ on }">
-                                <v-text-field v-model="date" label="Fecha proxima llamada" prepend-icon="event"
-                                    v-on="on"></v-text-field>
-                            </template>
-                            <v-date-picker v-model="resolucion.fecha_proxima_llamada" no-title scrollable>
-                                <v-spacer></v-spacer>
-                                <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-                                <v-btn text color="primary" @click="$refs.menu.save(resolucion.fecha_proxima_llamada)">
-                                    OK</v-btn>
-                            </v-date-picker>
-                        </v-menu>
-						-->
                     </v-col>
                     <v-col cols="12" md="6">
 						<v-time-picker v-model="resolucion.hora_proxima_llamada" full-width>
 						</v-time-picker>
-                        <!--
-                        <v-menu ref="menu" v-model="menu2" :close-on-content-click="false" :nudge-right="40"
-                            :return-value.sync="time" transition="scale-transition" offset-y max-width="290px"
-                            min-width="290px">
-                            <template v-slot:activator="{ on }">
-                                <v-text-field v-model="time" label="Hora proxima llamada" prepend-icon="access_time" readonly
-                                    v-on="on"></v-text-field>
-                            </template>
-                            <v-time-picker v-if="menu2" v-model="resolucion.hora_proxima_llamada" full-width @click:minute="$refs.menu.save(resolucion.hora_proxima_llamada)">
-                            </v-time-picker>
-                        </v-menu>
-                    -->
                     </v-col>
+                </v-row>
+
+                <v-row v-if="estado == 'descartado'">
+                    <v-col cols="12" md="12">
+                        <v-select  v-model="resolucion.descartado_motivo" :items="descartado_motivos" label="Motivo para descartalo"
+                            item-text="text" item-value="value"></v-select>
+                        <v-textarea v-if="resolucion.descartado_motivo=='otro'" label="Otro motivo" v-model="resolucion.descartado_motivo_otro"></v-textarea>
+                    </v-col>
+                </v-row>
+
+                <v-row v-if="estado == 'estudiante'">
+                    <v-col cols="12" md="12">
+                        <v-select  v-model="resolucion.estudiante_motivo" :items="estudiante_motivos" label="Motivo de la llamada"
+                            item-text="text" item-value="value"></v-select>
+                        <v-textarea v-if="resolucion.estudiante_motivo=='otro'" label="Otro motivo" v-model="resolucion.estudiante_motivo_otro"></v-textarea>
+                    </v-col>
+                </v-row>
+
+                <v-row v-if="estado == 'abonado'">
+                    <v-col cols="12">
+                        Próxima llamada:
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-time-picker v-model="resolucion.hora_proxima_llamada" full-width>
+                        </v-time-picker>
+                    </v-col>
+
+                    <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
+                </v-row>
+
+                <v-row v-if="estado == 'pago_pendiente'">
+                    <v-col cols="12" md="6">
+                        <v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-time-picker v-model="resolucion.hora_proxima_llamada" full-width>
+                        </v-time-picker>
+                    </v-col>
+
+                    <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
                 </v-row>
 
             </v-form>
@@ -104,6 +120,10 @@
 				{ text: 'Agendar Llamada', value: 'agendar_llamada' },
 				{ text: 'No contesta', value: 'no_contesta' },
 				{ text: 'Dato errado', value: 'errado' },
+                { text: 'Descartado', value: 'descartado' },
+                { text: 'Es estudiante', value: 'estudiante' },
+                { text: 'Abonado', value: 'abonado' },
+                { text: 'Pago pendiente', value: 'pago_pendiente' },
 			],
             estado: null,
             resolucion: {
@@ -114,7 +134,25 @@
                 fecha_proxima_llamada: null,
                 hora_proxima_llamada: null,
                 observacion: null,
+                descartado_motivo: null,
+                descartado_motivo_otro: null,
+                estudiante_motivo: null,
+                estudiante_motivo_otro: null,
             },
+            descartado_motivos: [
+                { text: 'Muy costoso', value: 'Muy costoso' },
+                { text: 'No tiene tiempo', value: 'No tiene tiempo' },
+                { text: 'Metodologia', value: 'Metodologia' },
+                { text: 'Otra institución', value: 'Otra institución' },
+                { text: 'Otro', value: 'otro' },
+            ],
+            estudiante_motivos: [
+                { text: 'Clases virtuales', value: 'Clases virtuales' },
+                { text: 'Tutorias', value: 'Tutorias' },
+                { text: 'Vigencias', value: 'Vigencias' },
+                { text: 'Cancelación', value: 'Cancelación' },
+                { text: 'Otro', value: 'otro' },
+            ],
             fechas: [],
             sedes: [],
         }),
@@ -143,6 +181,10 @@
 					fecha_proxima_llamada: null,
 					hora_proxima_llamada: null,
 					observacion: null,
+                    descartado_motivo: null,
+                    descartado_motivo_otro: null,
+                    estudiante_motivo: null,
+                    estudiante_motivo_otro: null,
                 };
                 this.estado=null;
             },
@@ -231,8 +273,42 @@
 				}else if(this.estado=='no_contesta'){
 					return true
 				}else if(this.estado=='errado'){
-					return true
-				}
+                    if(this.resolucion.observacion){
+                        return true    
+                    }
+				}else if(this.estado=='descartado'){
+                    if(this.resolucion.descartado_motivo){
+                        if(this.resolucion.descartado_motivo=='otro'){
+                            if(this.resolucion.descartado_motivo_otro){
+                                return true
+                            }
+                        }else{
+                            return true
+                        }
+                    }
+                }else if(this.estado=='estudiante'){
+                    if(this.resolucion.estudiante_motivo){
+                        if(this.resolucion.estudiante_motivo=='otro'){
+                            if(this.resolucion.estudiante_motivo_otro){
+                                return true
+                            }
+                        }else{
+                            return true
+                        }
+                    }
+                    
+                }else if(this.estado=='abonado'){
+                    if(this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada && this.resolucion.observacion){
+                        return true
+                    }
+                    
+                }else if(this.estado=='pago_pendiente'){
+                    if(this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada && this.resolucion.observacion){
+                        return true
+                    }
+                    
+                }
+
 				return false;
             }
 
