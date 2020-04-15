@@ -18,8 +18,8 @@ const store = new Vuex.Store({
     processing: false,
     warning: null,
     info: null,
-    isInfoShowed: false,
     error: null,
+    isInfoShowed: false,
     isErrorShowed: false,
     version: null,
     
