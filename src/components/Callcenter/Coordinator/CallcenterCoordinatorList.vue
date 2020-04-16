@@ -69,7 +69,7 @@
       <LeadsView :lead_id="leadIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar"></LeadsView>
     </v-dialog>
     <v-row justify="center">
-      <v-dialog v-model="dialogFilter" persistent max-width="480px">
+      <v-dialog v-model="dialogFilter" persistent max-width="560px">
         <!-- <template v-slot:activator="{ on }">
           <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
         </template> -->
@@ -80,7 +80,15 @@
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="12" lg="6">
+
+                  <v-col cols="2">
+                    <v-checkbox
+                      v-model="filtro.CheckFecha"
+                      :disabled="loading"
+                      prepend-icon="event">
+                    </v-checkbox>
+                  </v-col>
+                <v-col cols="12" lg="5">
                   <v-menu
                     ref="menu1"
                     v-model="menu1"
@@ -94,7 +102,7 @@
                       <v-text-field
                         v-model="filtro.FechaInicial"
                         label="Desde"
-                        prepend-icon="event"
+                        :disabled="!filtro.CheckFecha || loading"
                         @blur="dateFrom = parseDate(filtro.FechaInicial)"
                         v-on="on"
                       ></v-text-field>
@@ -104,7 +112,7 @@
                   <!-- <p>Date in ISO format: <strong>{{ dateFrom }}</strong></p> -->
                 </v-col>
 
-                <v-col cols="12" lg="6">
+                <v-col cols="12" lg="5">
                   <v-menu
                     v-model="menu2"
                     :close-on-content-click="false"
@@ -117,7 +125,7 @@
                       <v-text-field
                         v-model="filtro.FechaFinal"
                         label="Hasta"
-                        prepend-icon="event"
+                        :disabled="!filtro.CheckFecha || loading"
                         @blur="dateTo = parseDate(filtro.FechaFinal)"
                         v-on="on"
                       ></v-text-field>
@@ -126,7 +134,53 @@
                   </v-menu>
                   <!-- <p>Date in ISO format: <strong>{{ dateTo }}</strong></p> -->
                 </v-col>
+                <v-col cols="12" lg="12">
+                </v-col>
               </v-row>
+                <v-row>
+                  <v-col cols="2">
+                    <v-checkbox
+                      v-model="filtro.CheckSede"
+                      :disabled="loading"
+                      prepend-icon="list_alt">
+                    </v-checkbox>
+                  </v-col>
+                  <v-col cols="10">
+                      <v-select v-model="filtro.Sede" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="!filtro.CheckSede || loading">
+                      </v-select>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="2">
+                    <v-checkbox
+                      v-model="filtro.CheckEstado"
+                      :disabled="loading"
+                      prepend-icon="list_alt">
+                    </v-checkbox>
+                  </v-col>
+                  <v-col cols="10">
+                      <v-select v-model="filtro.Estado" :items="estados" label="Estado" item-text="nombre" item-value="id" :disabled="!filtro.CheckEstado || loading">
+                      </v-select>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="2">
+                    <v-checkbox
+                      v-model="filtro.CheckEmail"
+                      :disabled="loading"
+                      prepend-icon="email">
+                    </v-checkbox>
+                  </v-col>
+                  <v-col cols="10">
+                    <v-text-field
+                      v-model="filtro.Email"
+                      label="E-mail"
+                      :disabled="!filtro.CheckEmail || loading"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
               <v-row>
 
 
@@ -150,8 +204,8 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="filtroDescargaCerrar()">Cerrar</v-btn>
-            <v-btn color="blue darken-1" text @click="descargarReporte()">Descargar</v-btn>
+            <v-btn color="blue darken-1" text :disabled="loading" @click="filtroDescargaCerrar()">Cerrar</v-btn>
+            <v-btn color="blue darken-1" text :disabled="loading" @click="descargarReporte()">Descargar</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -187,7 +241,14 @@ Vue.use(VueClipboard)
         ],
         filtro: {
           FechaInicial: this.formatDate(new Date().toISOString().substr(0, 10)), 
-          FechaFinal: this.formatDate(new Date().toISOString().substr(0, 10))
+          FechaFinal: this.formatDate(new Date().toISOString().substr(0, 10)),
+          Email:'',
+          Sede: '',
+          Estado: '',
+          CheckFecha: false,
+          CheckEmail: false,
+          CheckSede: false,
+          CheckEstado: false,
         },
         dateFrom:null,
         dateTo:null, 
@@ -199,6 +260,16 @@ Vue.use(VueClipboard)
         rowsPerPage : [100],
         search: '',
         payload: {},
+        sedes:[],
+        estados:[
+          { "id": "asistio_primera_cita", "nombre": "Asiste a primera cita" }, 
+          { "id": "interesado", "nombre": "Interesado" }, 
+          { "id": "agendado_primera_vez", "nombre": "Agendado por primera vez" }, 
+          { "id": "esperando_segunda_vez", "nombre": "Esperando segunda vez" }, 
+          { "id": "registro_completo", "nombre": "Registro completo" }, 
+          { "id": "errado", "nombre": "Errado" }, 
+          { "id": "registro_incompleto", "nombre": "Registro incompleto" }
+          ],
         leadSeleccionado:null
       }
     },
@@ -208,10 +279,12 @@ Vue.use(VueClipboard)
     
     mounted () {
       this.actualizar()
+      this.traerSedes()
     },
     methods:{
       ...mapActions({
         fetchLista: 'callcenter_coordinator/fetchLista',
+        listarSedes: 'sedes/fetchLista',
         
       }),
       ...mapMutations({
@@ -231,11 +304,9 @@ Vue.use(VueClipboard)
       async descargarReporte(){
         this.loading = true
         this.prepararPayload()
-        this.payload.filters = {
-            FechaInicial: this.parseDate(this.filtro.FechaInicial),
-            FechaFinal: this.parseDate(this.filtro.FechaFinal)
-        };
-
+        this.payload.filters = this.copy(this.filtro);
+        this.payload.filters.FechaInicial = this.parseDate(this.filtro.FechaInicial);
+        this.payload.filters.FechaFinal = this.parseDate(this.filtro.FechaFinal);
         this.payload.download_tipo = 'csv'
         
         let response = await Vue.http.post("callcenter/descargar_cordinador", this.payload).finally(()=>{
@@ -271,7 +342,6 @@ Vue.use(VueClipboard)
         return this.$moment(value).format('DD-MM-YYYY h:mm a')
       },
       filtroDescargaAbrir(){
-        console.log("Aqui")
         this.dialogFilter = true;
       },
       filtroDescargaCerrar(){
@@ -285,8 +355,30 @@ Vue.use(VueClipboard)
       parseDate (date) {
         if (!date) return null
         const [day, month, year] = date.split('/')
+        console.log(date);
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
       },
+      copy(o) {
+          if (o === null) return null;
+
+          var output, v, key;
+          output = Array.isArray(o) ? [] : {};
+          for (key in o) {
+              v = o[key];
+              output[key] = (typeof v === "object") ? this.copy(v) : v;
+          }
+          return output;
+      },
+      traerSedes() {
+          this.listarSedes()
+              .then(result => {
+                  this.sedes = result;
+              })
+              .catch(error => {
+                  console.log(error)
+              }).finally(() => {
+          });
+      }
     },
     computed: {
       ...mapState({
@@ -306,12 +398,10 @@ Vue.use(VueClipboard)
     },
     watch: {
       dateFrom (val) {
-        console.log(val)
-        this.filtro.FechaInicial = this.formatDate(this.dateFrom)
+        this.filtro.FechaInicial = this.formatDate(val)
       },
       dateTo (val) {
-        console.log(val)
-        this.filtro.FechaFinal = this.formatDate(this.dateTo)
+        this.filtro.FechaFinal = this.formatDate(val)
       },
     },
   }

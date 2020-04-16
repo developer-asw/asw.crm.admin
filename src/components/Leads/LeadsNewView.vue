@@ -25,6 +25,13 @@
                         <v-text-field v-model="lead.email" label="Email">
                         </v-text-field>
                     </v-col>
+
+                    
+                    <v-col cols="12" md="6">
+                        <v-select v-model="lead.origen" label="Origen" :items="['Amarilla','Walking','Chat']">
+                        </v-select>
+                    </v-col>
+
                 </v-row>
 
 
