@@ -133,7 +133,7 @@
               </v-list-item-content>
             </v-list-item>
 
-          <v-list-item v-if="isLogged" link @click="dirigir('/CRM/Consultar')" active-class="border">
+          <!-- <v-list-item v-if="isLogged" link @click="dirigir('/CRM/Consultar')" active-class="border">
 
             <v-list-item-action>
               <v-icon>filter_list</v-icon>
@@ -141,7 +141,7 @@
             <v-list-item-content>
               <v-list-item-title>Consultar</v-list-item-title>
             </v-list-item-content>
-          </v-list-item>
+          </v-list-item> -->
 
           </v-list-group>
 

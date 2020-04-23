@@ -28,7 +28,9 @@
 
                     
                     <v-col cols="12" md="6">
-                        <v-select v-model="lead.origen" label="Origen" :items="['Amarilla','Walking','Chat']">
+                        <v-select v-model="lead.origen" label="Origen" :items="['Inbound','Chat','Walkin','Referido','Facebook','Instagram']">
+                            -----
+                            <!-- ['Amarilla','Walking','Chat'] -->
                         </v-select>
                     </v-col>
 
@@ -65,7 +67,7 @@
                 telefono: null,
                 sede: null,
                 email: null,
-
+                origen: null,
             },
             sedes: [],
         }),

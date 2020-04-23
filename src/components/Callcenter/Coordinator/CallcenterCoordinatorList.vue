@@ -134,8 +134,6 @@
                   </v-menu>
                   <!-- <p>Date in ISO format: <strong>{{ dateTo }}</strong></p> -->
                 </v-col>
-                <v-col cols="12" lg="12">
-                </v-col>
               </v-row>
                 <v-row>
                   <v-col cols="2">
@@ -178,6 +176,22 @@
                       v-model="filtro.Email"
                       label="E-mail"
                       :disabled="!filtro.CheckEmail || loading"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="2">
+                    <v-checkbox
+                      v-model="filtro.CheckTelefono"
+                      :disabled="loading"
+                      prepend-icon="phone">
+                    </v-checkbox>
+                  </v-col>
+                  <v-col cols="10">
+                    <v-text-field
+                      v-model="filtro.Telefono"
+                      label="Teléfono"
+                      :disabled="!filtro.CheckTelefono || loading"
                     ></v-text-field>
                   </v-col>
                 </v-row>

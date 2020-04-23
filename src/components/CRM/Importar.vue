@@ -21,6 +21,8 @@
             <!-- multiple outlined-->
             <v-file-input
                 v-model="files"
+                :loading="loading"
+                :disabled="loading"
                 color="deep-purple accent-4"
                 counter
                 label="Archivo"
@@ -121,6 +123,7 @@ Vue.use(VueClipboard)
         this.loading = false;
       },
       cargarArchivo() {
+        this.loading = true;
         this.fileUpload(this.files)
         .finally(()=>{
           this.loading = false;
