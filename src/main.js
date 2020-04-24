@@ -6,6 +6,10 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 
+import JsonExcel from 'vue-json-excel';
+ 
+Vue.component('downloadExcel', JsonExcel)
+
 Vue.config.productionTip = false
 
 //vue resource

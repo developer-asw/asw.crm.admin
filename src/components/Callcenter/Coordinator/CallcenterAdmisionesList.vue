@@ -15,11 +15,26 @@
                     </template>
                     <span>Programmatic tooltip</span>
                 </v-tooltip>
+                <v-btn small color="info" dark>
+                    <download-excel
+                        :data   = "lista">
+                        <!-- Download Data -->
+                        <v-icon smallclass="mr-2">
+                            file_download
+                        </v-icon>
+                    </download-excel>
+                </v-btn>
+
                 <v-btn small color="info" dark @click="actualizar">
                     <v-icon>autorenew</v-icon>
                   </v-btn>
+
+
             </v-toolbar-items>
         </v-toolbar>
+
+        
+
         <v-data-table :headers="headers" :items="lista" :loading="loading" loading-text="Loading... Please wait"
             class="elevation-1">
             <template v-slot:item.full_name="{ item }">

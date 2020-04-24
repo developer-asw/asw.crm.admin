@@ -8,8 +8,18 @@
         <v-spacer></v-spacer>
         <v-toolbar-items >
             <v-subheader>{{pagination.total}} registros</v-subheader>
-        <v-btn small color="info" dark @click="actualizar()">
+        <!-- <v-btn small color="info" dark @click="actualizar()">
             <v-icon>autorenew</v-icon>
+        </v-btn> -->
+        <v-btn small color="info"  :disabled="lista.length === 0"> 
+            <download-excel
+                :disabled="lista.length === 0"
+                :data   = "lista">
+                <!-- Download Data -->
+                <v-icon smallclass="mr-2">
+                    file_download
+                </v-icon>
+            </download-excel>
         </v-btn>
         </v-toolbar-items>
     </v-toolbar>
