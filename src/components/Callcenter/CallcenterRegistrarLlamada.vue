@@ -37,10 +37,11 @@
                 </v-row>
                 <v-row v-if="estado == 'errado'">
                     <v-col cols="12" md="12">
-                        <v-textarea label="Observación" v-model="resolucion.observacion"></v-textarea>
-
+                        <v-select v-model="resolucion.errado_motivo" :items="opcion_errados" label="Opciones"></v-select>
                     </v-col>
-
+                    <v-col cols="12" md="12">
+                        <v-textarea :disabled="resolucion.errado_motivo !== 'Otro'" label="Observación" v-model="resolucion.observacion"></v-textarea>
+                    </v-col>
                 </v-row>
                 <v-row v-if="estado == 'agendar_llamada'">
                     <v-col cols="12" md="6">
@@ -124,7 +125,8 @@
                 { text: 'Es estudiante', value: 'estudiante' },
                 { text: 'Abonado', value: 'abonado' },
                 { text: 'Pago pendiente', value: 'pago_pendiente' },
-			],
+            ],
+            opcion_errados: ['Fuera de servicio' ,'Número equivocado' ,'Niega haber dejado datos' ,'Número no válido' ,'Otro'],
             estado: null,
             resolucion: {
                 sede: null,
@@ -138,6 +140,7 @@
                 descartado_motivo_otro: null,
                 estudiante_motivo: null,
                 estudiante_motivo_otro: null,
+                errado_motivo: null
             },
             descartado_motivos: [
                 { text: 'Muy costoso', value: 'Muy costoso' },
@@ -273,7 +276,10 @@
 				}else if(this.estado=='no_contesta'){
 					return true
 				}else if(this.estado=='errado'){
-                    if(this.resolucion.observacion){
+                    if(this.resolucion.errado_motivo && this.resolucion.errado_motivo.length > 0){
+                        return true    
+                    }
+                    if(this.resolucion.observacion && this.resolucion.errado_motivo === 'Otro'){
                         return true    
                     }
 				}else if(this.estado=='descartado'){

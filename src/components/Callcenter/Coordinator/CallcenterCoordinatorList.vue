@@ -1,245 +1,94 @@
 <template>
-  <div>
-    
-
-    <v-toolbar flat light dense color="blue lighten-5">
-    
-      <v-toolbar-title>
-        {{getTitle}}
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-
-      <v-toolbar-items >
-        <v-subheader>{{pagination.total}} registros</v-subheader>
-        <!--
-      <v-btn v-if="lista.length>0" flat small color="info" dark @click="descargarReporte">
-        <v-icon>cloud_download</v-icon>
-      </v-btn>
-    -->
-      <v-btn small color="info" dark @click="filtroDescargaAbrir()">
-        <v-icon>cloud_download</v-icon>
-      </v-btn>
-      <v-btn small color="info" dark @click="actualizar()">
-        <v-icon>autorenew</v-icon>
-      </v-btn>
-      
-      </v-toolbar-items>
-  </v-toolbar>
-
-  <v-data-table
-      :headers="headers"
-      :items="lista"
-      :loading="loading"
-      loading-text="Loading... Please wait"
-      class="elevation-1"
-  >
-      
-      <template v-slot:item.fecha_proximo_contacto="{ item }">
-        <span v-if="item.fecha_proximo_contacto">{{presentDate(item.fecha_proximo_contacto)}}</span>
-      </template>
-
-      <template v-slot:item.full_name="{ item }">
-        <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
-      </template>
-
-      <template v-slot:item.movil="{ item }">
-        <span @click="$copyText(item.movil);setInfo(item.movil)">{{item.movil}}</span>
-      </template>
-
-      <template v-slot:item.email="{ item }">
-        <span @click="$copyText(item.email);setInfo(item.email)">{{item.email}}</span>
-      </template>
-
-      <template v-slot:item.action="{ item }">
-        <!--
-        <v-icon smallclass="mr-2" @click="viewItem(item)">
-          remove_red_eye
-        </v-icon>
-        -->
-        
-      </template>
-
-      <template v-slot:item.sede="{ item }">
-        <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>
-        <span v-else>{{item.sede}}</span>
-      </template>
-
-    </v-data-table>
-    <v-dialog v-model="viewDialog" persistent max-width="800px">
-      <LeadsView :lead_id="leadIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar"></LeadsView>
-    </v-dialog>
-    <v-row justify="center">
-      <v-dialog v-model="dialogFilter" persistent max-width="560px">
-        <!-- <template v-slot:activator="{ on }">
-          <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
-        </template> -->
-        <v-card>
-          <v-card-title>
-            <span class="headline">Descargas de Lead</span>
-          </v-card-title>
-          <v-card-text>
-            <v-container>
-              <v-row>
-
-                  <v-col cols="2">
-                    <v-checkbox
-                      v-model="filtro.CheckFecha"
-                      :disabled="loading"
-                      prepend-icon="event">
-                    </v-checkbox>
-                  </v-col>
-                <v-col cols="12" lg="5">
-                  <v-menu
-                    ref="menu1"
-                    v-model="menu1"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    max-width="290px"
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-text-field
-                        v-model="filtro.FechaInicial"
-                        label="Desde"
-                        :disabled="!filtro.CheckFecha || loading"
-                        @blur="dateFrom = parseDate(filtro.FechaInicial)"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker v-model="dateFrom" no-title @input="menu1 = false"></v-date-picker>
-                  </v-menu>
-                  <!-- <p>Date in ISO format: <strong>{{ dateFrom }}</strong></p> -->
-                </v-col>
-
-                <v-col cols="12" lg="5">
-                  <v-menu
-                    v-model="menu2"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    max-width="290px"
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-text-field
-                        v-model="filtro.FechaFinal"
-                        label="Hasta"
-                        :disabled="!filtro.CheckFecha || loading"
-                        @blur="dateTo = parseDate(filtro.FechaFinal)"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker v-model="dateTo" no-title @input="menu2 = false"></v-date-picker>
-                  </v-menu>
-                  <!-- <p>Date in ISO format: <strong>{{ dateTo }}</strong></p> -->
-                </v-col>
-              </v-row>
-                <v-row>
-                  <v-col cols="2">
-                    <v-checkbox
-                      v-model="filtro.CheckSede"
-                      :disabled="loading"
-                      prepend-icon="list_alt">
-                    </v-checkbox>
-                  </v-col>
-                  <v-col cols="10">
-                      <v-select v-model="filtro.Sede" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="!filtro.CheckSede || loading">
-                      </v-select>
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <v-col cols="2">
-                    <v-checkbox
-                      v-model="filtro.CheckEstado"
-                      :disabled="loading"
-                      prepend-icon="list_alt">
-                    </v-checkbox>
-                  </v-col>
-                  <v-col cols="10">
-                      <v-select v-model="filtro.Estado" :items="estados" label="Estado" item-text="nombre" item-value="id" :disabled="!filtro.CheckEstado || loading">
-                      </v-select>
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <v-col cols="2">
-                    <v-checkbox
-                      v-model="filtro.CheckEmail"
-                      :disabled="loading"
-                      prepend-icon="email">
-                    </v-checkbox>
-                  </v-col>
-                  <v-col cols="10">
-                    <v-text-field
-                      v-model="filtro.Email"
-                      label="E-mail"
-                      :disabled="!filtro.CheckEmail || loading"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="2">
-                    <v-checkbox
-                      v-model="filtro.CheckTelefono"
-                      :disabled="loading"
-                      prepend-icon="phone">
-                    </v-checkbox>
-                  </v-col>
-                  <v-col cols="10">
-                    <v-text-field
-                      v-model="filtro.Telefono"
-                      label="Teléfono"
-                      :disabled="!filtro.CheckTelefono || loading"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              <v-row>
-
-
-                <!-- <v-col cols="12" sm="6">
-                  <v-select
-                    :items="['0-17', '18-29', '30-54', '54+']"
-                    label="Age*"
-                    required
-                  ></v-select>
-                </v-col>
-                <v-col cols="12" sm="6">
-                  <v-autocomplete
-                    :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                    label="Interests"
-                    multiple
-                  ></v-autocomplete>
-                </v-col> -->
-              </v-row>
-            </v-container>
-            <!-- <small>*indicates required field</small> -->
-          </v-card-text>
-          <v-card-actions>
+    <div>
+        <v-toolbar flat light dense color="blue lighten-5">
+            <v-toolbar-title>{{getTitle}}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text :disabled="loading" @click="filtroDescargaCerrar()">Cerrar</v-btn>
-            <v-btn color="blue darken-1" text :disabled="loading" @click="descargarReporte()">Descargar</v-btn>
-          </v-card-actions>
+            <v-toolbar-items >
+                <v-subheader>{{pagination.total}} registros</v-subheader>
+                <!-- <v-btn v-if="lista.length>0" flat small color="info" dark @click="descargarReporte">
+                    <v-icon>cloud_download</v-icon>
+                </v-btn> -->
+                <v-btn small color="info" dark @click="filtroDescargaAbrir()">
+                    <v-icon>cloud_download</v-icon>
+                </v-btn>
+                <v-btn small color="info" dark @click="actualizar()">
+                    <v-icon>autorenew</v-icon>
+                </v-btn>
+            </v-toolbar-items>
+        </v-toolbar>
+        <v-card>
+            <!-- <v-card-title>
+                List
+                <v-spacer></v-spacer>
+                <v-text-field
+                    v-model="search"
+                    append-icon="search"
+                    label="Search"
+                    single-line
+                    hide-details>
+                </v-text-field>
+            </v-card-title> -->
+
+                <!-- :search="search" -->
+            <v-data-table
+                :headers="headers"
+                :items="lista"
+                :loading="loading"
+                loading-text="Loading... Please wait"
+                class="elevation-1">
+                <template v-slot:item.fecha_proximo_contacto="{ item }">
+                    <span v-if="item.fecha_proximo_contacto">{{presentDate(item.fecha_proximo_contacto)}}</span>
+                </template>
+                <template v-slot:item.full_name="{ item }">
+                    <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
+                </template>
+                <template v-slot:item.movil="{ item }">
+                    <span @click="$copyText(item.movil);setInfo(item.movil)">{{item.movil}}</span>
+                </template>
+                <template v-slot:item.email="{ item }">
+                    <span @click="$copyText(item.email);setInfo(item.email)">{{item.email}}</span>
+                </template>
+                <template v-slot:item.action="{ item }">
+                    <!-- <v-icon smallclass="mr-2" @click="viewItem(item)">
+                      remove_red_eye
+                    </v-icon> -->
+                    <v-icon smallclass="mr-2" @click="viewHistory(item)">
+                      info
+                  </v-icon>
+                </template>
+                <template v-slot:item.sede="{ item }">
+                    <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>
+                    <span v-else>{{item.sede}}</span>
+                </template>
+            </v-data-table>
         </v-card>
-      </v-dialog>
-    </v-row>
-  </div>
-  
+        <v-dialog v-model="viewDialog" persistent max-width="800px">
+            <LeadsView :lead_id="leadIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar"></LeadsView>
+        </v-dialog>
+        <v-dialog v-model="dialogFilter" persistent max-width="560px">
+            <LeadsDownloads @cerrar="filtroDescargaCerrar"></LeadsDownloads>
+        </v-dialog>
+        <v-dialog v-model="viewDialogHistorico" persistent max-width="800px">
+            <CallcenterHistorico :btnCerrar="true" :lead_id="leadIdDialog" @cerrar="cerrarHistory"></CallcenterHistorico>
+        </v-dialog>
+    </div>
 </template>
 
 <script>
-  import {mapState, mapActions, mapMutations} from 'vuex';
-  import LeadsView from '@/components/Leads/LeadsView'
-  import Vue from 'vue'
-  import VueClipboard from 'vue-clipboard2'
+import {mapState, mapActions, mapMutations} from 'vuex';
+import LeadsView from '@/components/Leads/LeadsView'
+import LeadsDownloads from '@/components/Leads/LeadsDownloads'
+import CallcenterHistorico from '@/components/Callcenter/CallcenterHistorico'
+import Vue from 'vue'
+import VueClipboard from 'vue-clipboard2'
  
 Vue.use(VueClipboard)
-
   export default {
     name: 'CallcenterCoordinatorList',
     components: {
-      LeadsView
+        LeadsView,
+        LeadsDownloads,
+        CallcenterHistorico
     },
     data () {
       return {
@@ -253,37 +102,13 @@ Vue.use(VueClipboard)
           { text: 'Agente', value: 'ultima_llamada.agente.nombre' },
           { text: 'Actions', value: 'action', sortable: false }
         ],
-        filtro: {
-          FechaInicial: this.formatDate(new Date().toISOString().substr(0, 10)), 
-          FechaFinal: this.formatDate(new Date().toISOString().substr(0, 10)),
-          Email:'',
-          Sede: '',
-          Estado: '',
-          CheckFecha: false,
-          CheckEmail: false,
-          CheckSede: false,
-          CheckEstado: false,
-        },
-        dateFrom:null,
-        dateTo:null, 
-        menu1: false,
-        menu2: false,
         dialogFilter: false,
+        viewDialogHistorico: false,
         viewDialog : false,
         loading: false,
         rowsPerPage : [100],
         search: '',
         payload: {},
-        sedes:[],
-        estados:[
-          { "id": "asistio_primera_cita", "nombre": "Asiste a primera cita" }, 
-          { "id": "interesado", "nombre": "Interesado" }, 
-          { "id": "agendado_primera_vez", "nombre": "Agendado por primera vez" }, 
-          { "id": "esperando_segunda_vez", "nombre": "Esperando segunda vez" }, 
-          { "id": "registro_completo", "nombre": "Registro completo" }, 
-          { "id": "errado", "nombre": "Errado" }, 
-          { "id": "registro_incompleto", "nombre": "Registro incompleto" }
-          ],
         leadSeleccionado:null
       }
     },
@@ -293,13 +118,11 @@ Vue.use(VueClipboard)
     
     mounted () {
       this.actualizar()
-      this.traerSedes()
     },
     methods:{
       ...mapActions({
         fetchLista: 'callcenter_coordinator/fetchLista',
-        listarSedes: 'sedes/fetchLista',
-        
+        fetchDetalle: 'leads/fetchDetalle',
       }),
       ...mapMutations({
         setInfo: 'setInfo',
@@ -311,31 +134,6 @@ Vue.use(VueClipboard)
           this.loading = false;
         })
       },
-
-      prepararPayload(){
-
-      },
-      async descargarReporte(){
-        this.loading = true
-        this.prepararPayload()
-        this.payload.filters = this.copy(this.filtro);
-        this.payload.filters.FechaInicial = this.parseDate(this.filtro.FechaInicial);
-        this.payload.filters.FechaFinal = this.parseDate(this.filtro.FechaFinal);
-        this.payload.download_tipo = 'csv'
-        
-        let response = await Vue.http.post("callcenter/descargar_cordinador", this.payload).finally(()=>{
-          this.loading = false
-        });
-
-        let blob = new Blob([response.data], {type:response.headers.get('content-type')});
-        let link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = 'leads.'+this.payload.download_tipo;
-        link.click();
-        this.filtroDescargaCerrar();
-      },
-
-      
       viewItem(item){
         this.loading = true;
         this.fetchDetalle({id:item._id})
@@ -361,38 +159,18 @@ Vue.use(VueClipboard)
       filtroDescargaCerrar(){
         this.dialogFilter = false;
       },
-      formatDate (date) {
-        if (!date) return null
-        const [year, month, day] = date.split('-')
-        return `${day}/${month}/${year}`
-      },
-      parseDate (date) {
-        if (!date) return null
-        const [day, month, year] = date.split('/')
-        console.log(date);
-        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-      },
-      copy(o) {
-          if (o === null) return null;
-
-          var output, v, key;
-          output = Array.isArray(o) ? [] : {};
-          for (key in o) {
-              v = o[key];
-              output[key] = (typeof v === "object") ? this.copy(v) : v;
-          }
-          return output;
-      },
-      traerSedes() {
-          this.listarSedes()
-              .then(result => {
-                  this.sedes = result;
-              })
-              .catch(error => {
-                  console.log(error)
-              }).finally(() => {
+      viewHistory(item) {
+          this.loading = true;
+          this.fetchDetalle({id:item._id}).finally(()=>{
+              this.loading = false;
+              this.viewDialogHistorico = true;
+              this.leadSeleccionado = item
           });
-      }
+      },
+      cerrarHistory(){
+          this.viewDialogHistorico = false;
+          this.leadSeleccionado = null
+      },
     },
     computed: {
       ...mapState({
@@ -411,12 +189,6 @@ Vue.use(VueClipboard)
       }     
     },
     watch: {
-      dateFrom (val) {
-        this.filtro.FechaInicial = this.formatDate(val)
-      },
-      dateTo (val) {
-        this.filtro.FechaFinal = this.formatDate(val)
-      },
     },
   }
   

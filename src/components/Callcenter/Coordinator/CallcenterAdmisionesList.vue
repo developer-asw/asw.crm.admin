@@ -55,6 +55,12 @@
                 </v-icon>
             </template>
 
+            <template v-slot:item.action="{ item }">
+                <v-icon smallclass="mr-2" @click="viewHistory(item)">
+                    info
+                </v-icon>
+            </template>
+
             <template v-slot:item.sede="{ item }">
                 <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>
                 <span v-else>{{item.sede}}</span>
@@ -66,6 +72,9 @@
         <v-dialog v-model="viewDialogNewLead" persistent max-width="800px">
             <LeadsNewView :lead_id="leadIdDialog"  @cerrar="cerrarDialog" @actualizar="actualizar"></LeadsNewView >
         </v-dialog>
+        <v-dialog v-model="viewDialogHistorico" persistent max-width="800px">
+            <CallcenterHistorico :btnCerrar="true" :lead_id="leadIdDialog" @cerrar="cerrarHistory"></CallcenterHistorico>
+        </v-dialog>
     </div>
 </template>
 <script>
@@ -76,11 +85,13 @@
     } from 'vuex';
     import AgendaAsistencia from '@/components/Agenda/AgendaAsistencia'
     import LeadsNewView from '@/components/Leads/LeadsNewView'
+    import CallcenterHistorico from '@/components/Callcenter/CallcenterHistorico'
     export default {
         name: 'CallcenterAdmisionesList',
         components: {
             AgendaAsistencia,
-            LeadsNewView
+            LeadsNewView,
+            CallcenterHistorico
         },
         mounted() {
             this.actualizar()
@@ -122,6 +133,7 @@
 
                 viewDialog: false,
                 viewDialogNewLead:false,
+                viewDialogHistorico: false,
                 loading: false,
                 rowsPerPage: [100],
                 search: '',
@@ -167,7 +179,18 @@
                 this.viewDialogNewLead = false;
                 this.leadSeleccionado = null
             },
-
+            cerrarHistory(){
+                this.viewDialogHistorico = false;
+                this.leadSeleccionado = null
+            },
+            viewHistory(item) {
+                this.loading = true;
+                this.fetchDetalle({id:item._id}).finally(()=>{
+                    this.loading = false;
+                    this.viewDialogHistorico = true;
+                    this.leadSeleccionado = item
+                });
+            },
         },
         computed: {
             ...mapState({
