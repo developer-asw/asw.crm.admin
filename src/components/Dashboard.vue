@@ -1,43 +1,35 @@
 <template>
+<div>
+    <v-toolbar flat light dense color="blue lighten-5">
+        <!-- <v-toolbar-title>{{getTitle}}</v-toolbar-title> -->
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+            <v-btn small color="info" dark @click="consultar">
+                <v-icon>autorenew</v-icon>
+            </v-btn>
+        </v-toolbar-items>
+    </v-toolbar>
+
     <v-container>
         <v-layout text-center wrap>
 
-            <!-- <v-row>
-                <v-flex mb-4>
-                    <h1 class="display-2 font-weight-bold mb-3">
-                        Dashboard
-                    </h1>
-                </v-flex>
-            </v-row> -->
-            <!-- <v-row>
-                <v-col cols="8" class="text-center" style="text-aling: center;">
-                    <ul id="example-1">
-                        <li v-for="item in lista" :key="item.value">
-                            {{ item.title }} - {{ item.data }}
-                        </li>
-                    </ul>
-                    <v-img src="https://www.americanschoolway.edu.co/wp-content/uploads/2019/10/acerca_asw_4.jpg">
-                        <div class="fill-height bottom-gradient"></div>
-                    </v-img>
-                </v-col>
-            </v-row> -->
+            <v-expansion-panels multiple v-model="panels">
+                <v-expansion-panel v-for="(data, key, index) in estadisticas" :key="index">
+                    <v-expansion-panel-header dark color="indigo darken-5" flat :style="{'color':'white','font-weight':'900'}">
+                        {{data.titulo}}
+
+                    </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+
 
             <v-row>
                 <template>
                     <v-container fluid>
                         <v-data-iterator
-                        :items="lista"
+                        :items="data.datos"
                         :items-per-page.sync="itemsPerPage"
                         hide-default-footer>
-                        <template v-slot:header>
-                            <v-toolbar
-                            class="mb-2"
-                            color="indigo darken-5"
-                            dark
-                            flat>
-                            <v-toolbar-title>{{titulo}}</v-toolbar-title>
-                            </v-toolbar>
-                        </template>
+                        
 
                         <template v-slot:default="props">
                             <v-row>
@@ -79,6 +71,10 @@
                 </template>
             </v-row>
 
+                        </v-expansion-panel-content>
+                </v-expansion-panel>
+            </v-expansion-panels>
+
 
             <!-- <v-row>
               <v-col offset-sm="2" offset="3" cols="6" sm="4">
@@ -89,6 +85,8 @@
             </v-row> -->
         </v-layout>
     </v-container>
+</div>
+
 </template>
 
 <script>
@@ -99,8 +97,8 @@ export default {
 name: 'Dashboard',
 
     data: () => ({
-        lista: [],
-        titulo: '',
+        estadisticas: [],
+        panels: [0],
         itemsPerPage:4
     }),
     mounted() {
@@ -118,8 +116,7 @@ name: 'Dashboard',
             this.loading = true;
             this.consultarDashboard({})
                 .then(result => {
-                    this.lista = result.datos;
-                    this.titulo = result.titulo;
+                    this.estadisticas = result.datos;
                 })
                 .catch(error => {
                     console.log(error)
