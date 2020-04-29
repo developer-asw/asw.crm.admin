@@ -75,9 +75,30 @@ const actions = {
         });
     },
     consultarHistoricos:({ commit }, data) => {
+        data.path = window.location.hash;
+        if (data.path.includes("/")){
+            data.path = data.path.substring(data.path.indexOf("/")+1,data.path.length)
+        }
+        console.log(data)
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
             Vue.http.post('lead/historico',data).then(
+                response =>{
+                    commit('setLista',response.data.datos);
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+    consultarDashboard:({ commit }, data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.post('lead/dashboard',data).then(
                 response =>{
                     commit('setLista',response.data.datos);
                     resolve(response.data)

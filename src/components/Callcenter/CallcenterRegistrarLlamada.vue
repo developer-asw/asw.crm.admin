@@ -143,6 +143,8 @@
                 errado_motivo: null
             },
             descartado_motivos: [
+                { text: 'Ciudad sin sede', value: 'Ciudad sin sede' },
+                { text: 'Menor de 12 años', value: 'Menor de 12 años' },
                 { text: 'Muy costoso', value: 'Muy costoso' },
                 { text: 'No tiene tiempo', value: 'No tiene tiempo' },
                 { text: 'Metodologia', value: 'Metodologia' },

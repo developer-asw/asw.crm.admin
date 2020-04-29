@@ -28,9 +28,12 @@
 
                     
                     <v-col cols="12" md="6">
-                        <v-select v-model="lead.origen" label="Origen" :items="['Inbound','Chat','Walk-In','Referido','Facebook','Instagram']">
-                            -----
-                            <!-- ['Amarilla','Walking','Chat'] -->
+                        <v-select v-model="lead.origen" label="Campaña" :items="listado.origenes" item-text="title" item-value="value">
+                        </v-select>
+                    </v-col>
+                    
+                    <v-col cols="12" md="6">
+                        <v-select v-model="lead.como_llego" label="¿Cómo llego?" :items="listado.comoLlego" item-text="title" item-value="value">
                         </v-select>
                     </v-col>
 
@@ -70,14 +73,17 @@
                 origen: null,
             },
             sedes: [],
+            listado: {}
         }),
         mounted() {
             this.traerSedes()
+            this.traerOrigenes();
         },
         methods: {
             ...mapActions({
                 listarSedes: 'sedes/fetchLista',
                 generarLeads: 'leads/crearLeads',
+                listarOrigenes: 'listado/fetchLista',
             }),
             ...mapMutations({}),
 
@@ -123,6 +129,17 @@
                     .catch(error => {
                         console.log(error)
                         ///this.setError(error)
+                    }).finally(() => {
+
+                    });
+            },
+            traerOrigenes() {
+                this.listarOrigenes()
+                    .then(result => {
+                        this.listado = result;
+                    })
+                    .catch(error => {
+                        console.log(error)
                     }).finally(() => {
 
                     });
