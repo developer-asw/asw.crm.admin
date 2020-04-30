@@ -19,9 +19,7 @@
                         {{data.titulo}}
 
                     </v-expansion-panel-header>
-                        <v-expansion-panel-content>
-
-
+                    <v-expansion-panel-content>
             <v-row>
                 <template>
                     <v-container fluid>
@@ -40,7 +38,7 @@
                                 sm="6"
                                 md="4"
                                 lg="4">
-                                <v-card>
+                                <v-card v-if="item.tipo === 0">
                                     <v-card-title class="subheading font-weight-bold">{{ item.title }}</v-card-title>
 
                                     <v-divider></v-divider>
@@ -52,6 +50,40 @@
                                             <v-list-item-content :style="{'text-align':'right'}" class="align-end">{{ v }}</v-list-item-content>
                                         </v-list-item>
                                     </v-list>
+                                </v-card>
+
+
+                                <v-card
+                                    class="mx-auto text-center"
+                                    color="green"
+                                    dark
+                                    max-width="600" v-if="item.tipo === 1">
+                                    <v-card-text>
+                                        <v-sheet color="rgba(0, 0, 0, .12)">
+                                            <v-sparkline
+                                                :value="item.data.values"
+                                                :labels="item.data.labels"
+                                                color="white"
+                                                line-width="2"
+                                                padding="16">
+                                            <template v-slot:label="item">
+                                                {{ item.value }}
+                                            </template>
+                                            </v-sparkline>
+                                        </v-sheet>
+                                    </v-card-text>
+
+                                    <v-card-text>
+                                        <div class="display-1 font-weight-thin">
+                                            {{item.title}}
+                                        </div>
+                                    </v-card-text>
+
+                                    <v-divider></v-divider>
+
+                                    <!-- <v-card-actions class="justify-center">
+                                        <v-btn block text>Go to Report</v-btn>
+                                    </v-card-actions> -->
                                 </v-card>
                             </v-col>
                             </v-row>
@@ -99,7 +131,16 @@ name: 'Dashboard',
     data: () => ({
         estadisticas: [],
         panels: [0],
-        itemsPerPage:4
+        itemsPerPage:4,
+        value: [
+            423,
+            446,
+            675,
+            510,
+            590,
+            610,
+            760,
+        ],
     }),
     mounted() {
         this.consultar();

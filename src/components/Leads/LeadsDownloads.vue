@@ -7,7 +7,7 @@
             <span class="headline">Descargas de Lead</span>
         </v-card-title>
         <v-card-text>
-            <v-container>
+            <v-container >
                 <v-row>
                     <v-col cols="2">
                         <v-checkbox
@@ -123,8 +123,8 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text :disabled="loading" @click="cerrar()">Cerrar</v-btn>
-            <v-btn color="blue darken-1" text :disabled="loading" @click="descargarReporte()">Descargar</v-btn>
+            <v-btn color="blue darken-1" text :disabled="loading" :loading="loading" @click="cerrar()">Cerrar</v-btn>
+            <v-btn color="blue darken-1" text :disabled="loading" :loading="loading" @click="descargarReporte()">Descargar</v-btn>
         </v-card-actions>
     </v-card>
 </template>
@@ -133,6 +133,7 @@
 
 import { mapActions, mapMutations } from 'vuex';
 import Vue from 'vue'
+import config from '@/modules/config'
 
 export default {
     
@@ -195,10 +196,57 @@ export default {
             link.href = window.URL.createObjectURL(blob);
             link.download = 'leads.'+payload.download_tipo;
             link.click();
+            
             this.$emit('cerrar');
 
         },
-        formatDate (date) {
+        async descargarReporteOriginal(){
+            this.loading = true
+            let payload = {};
+            payload.filters = this.copy(this.filtro);
+            payload.filters.FechaInicial = this.parseDate(this.filtro.FechaInicial);
+            payload.filters.FechaFinal = this.parseDate(this.filtro.FechaFinal);
+            payload.download_tipo = 'csv'
+            
+            let ruta = config.ROOT_API + "callcenter/descargar_cordinador?" + this.getUrlString(payload);
+
+            let newWindow = window.open(ruta, '_blank');
+            newWindow.focus();
+            newWindow.onblur = function() { newWindow.close(); };
+            this.loading = false
+            this.$emit('cerrar');
+        },
+        getUrlString (params, keys = [], isArray = false) {
+            const p = Object.keys(params).map(key => {
+                let val = params[key]
+
+                if ("[object Object]" === Object.prototype.toString.call(val) || Array.isArray(val)) {
+                if (Array.isArray(params)) {
+                    keys.push("")
+                } else {
+                    keys.push(key)
+                }
+                return this.getUrlString(val, keys, Array.isArray(val))
+                } else {
+                let tKey = key
+
+                if (keys.length > 0) {
+                    const tKeys = isArray ? keys : [...keys, key]
+                    tKey = tKeys.reduce((str, k) => { return "" === str ? k : `${str}[${k}]` }, "")
+                }
+                if (isArray) {
+                    return `${ tKey }[]=${ val }`
+                } else {
+                    return `${ tKey }=${ val }`
+                }
+
+                }
+            }).join('&')
+
+            keys.pop()
+            return p
+        }
+        ,formatDate (date) {
             if (!date) return null
             const [year, month, day] = date.split('-')
             return `${day}/${month}/${year}`
