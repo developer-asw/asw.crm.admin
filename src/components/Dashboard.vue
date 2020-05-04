@@ -13,7 +13,8 @@
     <v-container>
         <v-layout text-center wrap>
 
-            <v-expansion-panels multiple v-model="panels">
+            <!-- multiple -->
+            <v-expansion-panels  v-model="panels">
                 <v-expansion-panel v-for="(data, key, index) in estadisticas" :key="index">
                     <v-expansion-panel-header dark color="indigo darken-5" flat :style="{'color':'white','font-weight':'900'}">
                         {{data.titulo}}
@@ -79,7 +80,26 @@
                                         </div>
                                     </v-card-text>
 
-                                    <v-divider></v-divider>
+                                    <!-- <v-divider></v-divider> -->
+
+                                    <!-- <v-card-actions class="justify-center">
+                                        <v-btn block text>Go to Report</v-btn>
+                                    </v-card-actions> -->
+                                </v-card>
+                                
+                                <v-card
+                                    class="mx-auto text-center"
+                                    max-width="600" v-if="item.tipo === 2">
+                                    <v-card-text>
+                                        <apexchart type="area" height="350" :options="item.data.chartOptions" :series="item.data.series"></apexchart>
+                                    </v-card-text>
+
+                                    <!-- <v-card-text>
+                                        <div class="display-1 font-weight-thin">
+                                            {{item.title}}
+                                        </div>
+                                    </v-card-text> -->
+                                    
 
                                     <!-- <v-card-actions class="justify-center">
                                         <v-btn block text>Go to Report</v-btn>
@@ -124,23 +144,18 @@
 <script>
 
 import { mapActions, mapMutations } from 'vuex';
+import VueApexCharts from 'vue-apexcharts'
 
 export default {
 name: 'Dashboard',
-
+    components: { 
+        apexchart: VueApexCharts, 
+    },
     data: () => ({
         estadisticas: [],
-        panels: [0],
-        itemsPerPage:4,
-        value: [
-            423,
-            446,
-            675,
-            510,
-            590,
-            610,
-            760,
-        ],
+        panels: 0,
+        // panels: [0],
+        itemsPerPage:6,
     }),
     mounted() {
         this.consultar();
@@ -158,6 +173,7 @@ name: 'Dashboard',
             this.consultarDashboard({})
                 .then(result => {
                     this.estadisticas = result.datos;
+                    console.log(this.estadisticas)
                 })
                 .catch(error => {
                     console.log(error)
