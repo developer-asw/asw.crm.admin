@@ -89,6 +89,19 @@
                 <v-row>
                     <v-col cols="2">
                         <v-checkbox
+                            v-model="filtro.CheckContactado"
+                            :disabled="loading"
+                            prepend-icon="list_alt">
+                        </v-checkbox>
+                    </v-col>
+                    <v-col cols="10">
+                        <v-select v-model="filtro.Contactado" :items="contactados" label="Agente" item-text="nombre" item-value="id" :disabled="!filtro.CheckContactado || loading">
+                        </v-select>
+                    </v-col>
+                </v-row>
+                <!-- <v-row>
+                    <v-col cols="2">
+                        <v-checkbox
                             v-model="filtro.CheckEmail"
                             :disabled="loading"
                             prepend-icon="email">
@@ -117,7 +130,7 @@
                             :disabled="!filtro.CheckTelefono || loading">
                         </v-text-field>
                     </v-col>
-                </v-row>
+                </v-row> -->
             </v-container>
             <!-- <small>*indicates required field</small> -->
         </v-card-text>
@@ -166,6 +179,12 @@ export default {
                 { "id": "registro_completo", "nombre": "Registro completo" }, 
                 { "id": "errado", "nombre": "Errado" }, 
                 { "id": "registro_incompleto", "nombre": "Registro incompleto" }
+            ],
+            contactados:[
+                { "id": "asignado", "nombre": "Asignado a agente" },
+                { "id": "sin_solicitante", "nombre": "Sin solicitante" },
+                { "id": "no_contestados", "nombre": "No contestados" },
+                { "id": "todos", "nombre": "Todos" }, 
             ],
         }
     },
