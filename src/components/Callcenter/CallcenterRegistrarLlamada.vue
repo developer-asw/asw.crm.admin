@@ -40,7 +40,7 @@
                         <v-select v-model="resolucion.errado_motivo" :items="opcion_errados" label="Opciones"></v-select>
                     </v-col>
                     <v-col cols="12" md="12">
-                        <v-textarea :disabled="resolucion.errado_motivo !== 'Otro'" label="Observación" v-model="resolucion.observacion"></v-textarea>
+                        <v-textarea v-if="resolucion.errado_motivo === 'Otro'" label="Observación" v-model="resolucion.observacion"></v-textarea>
                     </v-col>
                 </v-row>
                 <v-row v-if="estado == 'agendar_llamada'">
