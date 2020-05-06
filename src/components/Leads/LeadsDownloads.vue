@@ -182,6 +182,7 @@ export default {
             ],
             contactados:[
                 { "id": "asignado", "nombre": "Asignado a agente" },
+                { 'id': "pendientes", "nombre": 'Pendientes'},
                 { "id": "sin_solicitante", "nombre": "Sin solicitante" },
                 { "id": "no_contestados", "nombre": "No contestados" },
                 { "id": "todos", "nombre": "Todos" }, 
