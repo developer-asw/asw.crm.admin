@@ -122,7 +122,7 @@ export default {
                 { text: 'Sede', value: 'sede' },
                 { text: 'Solicitado', value: 'ultima_llamada.solicitante.nombre' },
                 { text: 'Origen', value: 'ultimo_origen' },
-                { text: 'Estudiante', value: 'es_estudiante' },
+                //{ text: 'Estudiante', value: 'es_estudiante' },
                 { text: 'Actions', value: 'action', sortable: false }
             ],
             viewDialog : false,
