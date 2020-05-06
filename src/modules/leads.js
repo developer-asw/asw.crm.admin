@@ -111,7 +111,6 @@ const mutations = {
             return element._id==e._id
         })
         if(index>=0){
-            console.log('encontrado en:'+index)
             state.lista.splice(index,1,e)
         }
     },
