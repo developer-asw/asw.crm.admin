@@ -181,7 +181,7 @@
 
     <v-footer color="indigo" class="white--text text-center">
        <v-card-text>
-         American School Way &copy; 2020 - v.1.0.7
+         American School Way &copy; 2020 - v.1.0.8
        </v-card-text>
     </v-footer>
     
