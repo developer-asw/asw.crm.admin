@@ -157,7 +157,7 @@
                         </v-select>
                     </v-col>
                 </v-row>
-                <!-- <v-row>
+                <v-row>
                     <v-col cols="2">
                         <v-checkbox
                             v-model="filtro.CheckEmail"
@@ -188,7 +188,7 @@
                             :disabled="!filtro.CheckTelefono || loading">
                         </v-text-field>
                     </v-col>
-                </v-row> -->
+                </v-row>
             </v-container>
             <!-- <small>*indicates required field</small> -->
         </v-card-text>
@@ -298,6 +298,7 @@ export default {
             payload.download_tipo = 'csv'
             
             let ruta = config.ROOT_API + "callcenter/descargar_cordinador?" + this.getUrlString(payload);
+            //console.log(ruta)
 
             let newWindow = window.open(ruta, '_blank');
             newWindow.focus();
