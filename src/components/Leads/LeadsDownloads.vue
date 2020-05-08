@@ -10,9 +10,12 @@
             <v-container >
                 <v-row>
                     <v-col cols="2">
+                        
                         <v-checkbox
                             v-model="filtro.CheckFecha"
+                            v-on:change="sesceleccionarUno('CheckFecha', 'CheckActualizadoEn')"
                             :disabled="loading"
+                            :title="'Fecha de registro'"
                             prepend-icon="event">
                         </v-checkbox>
                     </v-col>
@@ -56,6 +59,61 @@
                             </v-text-field>
                         </template>
                         <v-date-picker v-model="dateTo" no-title @input="menu2 = false"></v-date-picker>
+                    </v-menu>
+                    <!-- <p>Date in ISO format: <strong>{{ dateTo }}</strong></p> -->
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="2">
+                        <v-checkbox
+                            v-model="filtro.CheckActualizadoEn"
+                            v-on:change="sesceleccionarUno('CheckActualizadoEn', 'CheckFecha')"
+                            :disabled="loading"
+                            :title="'Fecha de ultima modificación'"
+                            prepend-icon="event">
+                        </v-checkbox>
+                    </v-col>
+                    <v-col cols="12" lg="5">
+                        <v-menu
+                            ref="menu3"
+                            v-model="menu3"
+                            :close-on-content-click="false"
+                            transition="scale-transition"
+                            offset-y
+                            max-width="290px"
+                            min-width="290px">
+                            <template v-slot:activator="{ on }">
+                                <v-text-field
+                                    v-model="filtro.ActualizadoInicial"
+                                    label="Desde"
+                                    :disabled="!filtro.CheckActualizadoEn || loading"
+                                    @blur="date2From = parseDate(filtro.ActualizadoInicial)"
+                                    v-on="on">
+                                </v-text-field>
+                            </template>
+                            <v-date-picker v-model="date2From" no-title @input="menu3 = false"></v-date-picker>
+                        </v-menu>
+                        <!-- <p>Date in ISO format: <strong>{{ dateFrom }}</strong></p> -->
+                    </v-col>
+                    <v-col cols="12" lg="5">
+                    <v-menu
+                        ref="menu4"
+                        v-model="menu4"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        max-width="290px"
+                        min-width="290px">
+                        <template v-slot:activator="{ on }">
+                            <v-text-field
+                                v-model="filtro.ActualizadoFinal"
+                                label="Hasta"
+                                :disabled="!filtro.CheckActualizadoEn || loading"
+                                @blur="date2To = parseDate(filtro.ActualizadoFinal)"
+                                v-on="on">
+                            </v-text-field>
+                        </template>
+                        <v-date-picker v-model="date2To" no-title @input="menu4 = false"></v-date-picker>
                     </v-menu>
                     <!-- <p>Date in ISO format: <strong>{{ dateTo }}</strong></p> -->
                     </v-col>
@@ -157,12 +215,18 @@ export default {
             loading: false,
             dateFrom:null,
             dateTo:null, 
+            date2From:null,
+            date2To:null, 
             menu1: false,
             menu2: false,
+            menu3: false,
+            menu4: false,
             sedes:[],
             filtro: {
                 FechaInicial: this.formatDate(new Date().toISOString().substr(0, 10)), 
                 FechaFinal: this.formatDate(new Date().toISOString().substr(0, 10)),
+                ActualizadoInicial: this.formatDate(new Date().toISOString().substr(0, 10)), 
+                ActualizadoFinal: this.formatDate(new Date().toISOString().substr(0, 10)),
                 Email:'',
                 Sede: '',
                 Estado: '',
@@ -170,6 +234,7 @@ export default {
                 CheckEmail: false,
                 CheckSede: false,
                 CheckEstado: false,
+                CheckActualizadoEn: false,
             },
             estados:[
                 { "id": "asistio_primera_cita", "nombre": "Asiste a primera cita" }, 
@@ -205,6 +270,8 @@ export default {
             payload.filters = this.copy(this.filtro);
             payload.filters.FechaInicial = this.parseDate(this.filtro.FechaInicial);
             payload.filters.FechaFinal = this.parseDate(this.filtro.FechaFinal);
+            payload.filters.ActualizadoInicial = this.parseDate(this.filtro.ActualizadoInicial);
+            payload.filters.ActualizadoFinal = this.parseDate(this.filtro.ActualizadoFinal);
             payload.download_tipo = 'csv'
             
             let response = await Vue.http.post("callcenter/descargar_cordinador", payload).finally(()=>{
@@ -226,6 +293,8 @@ export default {
             payload.filters = this.copy(this.filtro);
             payload.filters.FechaInicial = this.parseDate(this.filtro.FechaInicial);
             payload.filters.FechaFinal = this.parseDate(this.filtro.FechaFinal);
+            payload.filters.ActualizadoInicial = this.parseDate(this.filtro.ActualizadoInicial);
+            payload.filters.ActualizadoFinal = this.parseDate(this.filtro.ActualizadoFinal);
             payload.download_tipo = 'csv'
             
             let ruta = config.ROOT_API + "callcenter/descargar_cordinador?" + this.getUrlString(payload);
@@ -300,6 +369,9 @@ export default {
                     console.log(error)
                 }).finally(() => {
             });
+        },
+        sesceleccionarUno(p, s) {
+            if( this.filtro[p] ) this.filtro[s] = false;
         }
     },
     mounted() {
@@ -311,6 +383,12 @@ export default {
         },
         dateTo (val) {
             this.filtro.FechaFinal = this.formatDate(val)
+        },
+        date2From (val) {
+            this.filtro.ActualizadoInicial = this.formatDate(val)
+        },
+        date2To (val) {
+            this.filtro.ActualizadoFinal = this.formatDate(val)
         },
     },
 }
