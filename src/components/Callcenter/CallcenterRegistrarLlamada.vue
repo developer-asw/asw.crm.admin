@@ -123,8 +123,9 @@
 				{ text: 'Dato errado', value: 'errado' },
                 { text: 'Descartado', value: 'descartado' },
                 { text: 'Es estudiante', value: 'estudiante' },
+                { text: 'Matricula nueva', value: 'matricula_nueva' },
                 { text: 'Abonado', value: 'abonado' },
-                { text: 'Pago pendiente', value: 'pago_pendiente' },
+                { text: 'En seguimiento', value: 'pago_pendiente' },
             ],
             opcion_errados: ['Fuera de servicio' ,'Número equivocado' ,'Niega haber dejado datos' ,'Número no válido' ,'Otro'],
             estado: null,
@@ -304,8 +305,9 @@
                             return true
                         }
                     }
-                    
-                }else if(this.estado=='abonado'){
+                } else if(this.estado == 'matricula_nueva') {
+                    return true;
+                } else if(this.estado=='abonado'){
                     if(this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada && this.resolucion.observacion){
                         return true
                     }

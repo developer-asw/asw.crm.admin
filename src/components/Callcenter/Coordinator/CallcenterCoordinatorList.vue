@@ -17,23 +17,25 @@
             </v-toolbar-items>
         </v-toolbar>
         <v-card>
-            <!-- <v-card-title>
+            <v-card-title>
                 List
                 <v-spacer></v-spacer>
                 <v-text-field
-                    v-model="search"
+                    v-model="payload.search"
                     append-icon="search"
+                    clearable
+                    :append-outer-icon="payload.search ? 'send' : ''"
+                    @click:append-outer="preFiltro"
                     label="Search"
                     single-line
                     hide-details>
                 </v-text-field>
-            </v-card-title> -->
-
-                <!-- :search="search" -->
+            </v-card-title>
             <v-data-table
                 :headers="headers"
                 :items="lista"
                 :loading="loading"
+                :search="payload.search"
                 loading-text="Loading... Please wait"
                 class="elevation-1">
                 <template v-slot:item.fecha_proximo_contacto="{ item }">
@@ -107,9 +109,28 @@ Vue.use(VueClipboard)
         viewDialog : false,
         loading: false,
         rowsPerPage : [100],
-        search: '',
-        payload: {},
-        leadSeleccionado:null
+        payload: {
+          search:'',
+          CheckTelefono: true,
+          CheckEmail: false,
+        },
+        leadSeleccionado:null,
+
+        password: 'Password',
+        show: false,
+        message: 'Hey!',
+        marker: true,
+        iconIndex: 0,
+        icons: [
+          'emoticon',
+          'emoticon_cool',
+          'emoticon_dead',
+          'emoticon_excited',
+          'emoticon_happy',
+          'emoticon_neutral',
+          'emoticon_sad',
+          'emoticon_tongue',
+        ],
       }
     },
     props : {
@@ -122,6 +143,7 @@ Vue.use(VueClipboard)
     methods:{
       ...mapActions({
         fetchLista: 'callcenter_coordinator/fetchLista',
+        filtroCordinador: 'callcenter_coordinator/filtroCordinador',
         fetchDetalle: 'leads/fetchDetalle',
       }),
       ...mapMutations({
@@ -133,6 +155,28 @@ Vue.use(VueClipboard)
         .finally(()=>{
           this.loading = false;
         })
+      },
+      filtrar(filtro){
+        this.loading = true;
+        this.filtroCordinador(filtro)
+        .finally(()=>{
+          this.loading = false;
+        })
+      },
+      preFiltro(){
+        if(this.payload.search && this.payload.search.length > 4) {
+          let filtro = this.payload;
+          if(filtro.CheckTelefono) {
+            filtro.Telefono = filtro.search;
+          }
+          if(filtro.CheckEmail) {
+            filtro.Email = filtro.search;
+          }
+          console.log(filtro)
+          this.filtrar(filtro);
+        }else{
+          this.setInfo("Por favor, ingrese mas de 4 caracteres para realizar la busqueda")
+        }
       },
       viewItem(item){
         this.loading = true;
@@ -186,7 +230,8 @@ Vue.use(VueClipboard)
         }else{
           return null
         }
-      }     
+      },
+      
     },
     watch: {
     },

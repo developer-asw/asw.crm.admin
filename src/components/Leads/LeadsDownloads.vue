@@ -31,7 +31,7 @@
                             <template v-slot:activator="{ on }">
                                 <v-text-field
                                     v-model="filtro.FechaInicial"
-                                    label="Desde"
+                                    label="Registrado en (>)"
                                     :disabled="!filtro.CheckFecha || loading"
                                     @blur="dateFrom = parseDate(filtro.FechaInicial)"
                                     v-on="on">
@@ -52,7 +52,7 @@
                         <template v-slot:activator="{ on }">
                             <v-text-field
                                 v-model="filtro.FechaFinal"
-                                label="Hasta"
+                                label="Registrado en (<)"
                                 :disabled="!filtro.CheckFecha || loading"
                                 @blur="dateTo = parseDate(filtro.FechaFinal)"
                                 v-on="on">
@@ -85,7 +85,7 @@
                             <template v-slot:activator="{ on }">
                                 <v-text-field
                                     v-model="filtro.ActualizadoInicial"
-                                    label="Desde"
+                                    label="Actualizado en (>)"
                                     :disabled="!filtro.CheckActualizadoEn || loading"
                                     @blur="date2From = parseDate(filtro.ActualizadoInicial)"
                                     v-on="on">
@@ -107,7 +107,7 @@
                         <template v-slot:activator="{ on }">
                             <v-text-field
                                 v-model="filtro.ActualizadoFinal"
-                                label="Hasta"
+                                label="Actualizado en (<)"
                                 :disabled="!filtro.CheckActualizadoEn || loading"
                                 @blur="date2To = parseDate(filtro.ActualizadoFinal)"
                                 v-on="on">
