@@ -115,22 +115,7 @@ Vue.use(VueClipboard)
           CheckEmail: false,
         },
         leadSeleccionado:null,
-
-        password: 'Password',
-        show: false,
-        message: 'Hey!',
-        marker: true,
-        iconIndex: 0,
-        icons: [
-          'emoticon',
-          'emoticon_cool',
-          'emoticon_dead',
-          'emoticon_excited',
-          'emoticon_happy',
-          'emoticon_neutral',
-          'emoticon_sad',
-          'emoticon_tongue',
-        ],
+        
       }
     },
     props : {

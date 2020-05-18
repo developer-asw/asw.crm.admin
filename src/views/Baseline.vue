@@ -145,7 +145,38 @@
 
           </v-list-group>
 
+          <v-list-group no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Reportes</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Hits')" active-class="border">
+            
+              <v-list-item-action>
+                <v-icon>filter_list</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Hits</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+          <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Llamadas')" active-class="border">
+
+            <v-list-item-action>
+              <v-icon>filter_list</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Llamadas</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          </v-list-group>
+
         </v-list-item-group>
+
+        
 
         <v-divider></v-divider>
 

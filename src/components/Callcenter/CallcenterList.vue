@@ -38,9 +38,9 @@
                 <template v-slot:item.full_name="{ item }">
                     <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
                 </template>
-                <template v-slot:item.movil="{ item }">
+                <!-- <template v-slot:item.movil="{ item }">
                     <span @click="copiarDato(item.movil)">{{item.movil}}</span>
-                </template>
+                </template> -->
                 <template v-slot:item.email="{ item }">
                     <span @click="$copyText(item.email);setInfo(item.email)">{{item.email}}</span>
                 </template>
@@ -117,7 +117,7 @@ export default {
             headers: [
                 { text: 'Solicitud', value: 'ultima_llamada.fecha_solicitado' },
                 { text: 'Nombre', value: 'full_name' },
-                { text: 'Móvil', value: 'uid' },
+                // { text: 'Móvil', value: 'uid' },
                 { text: 'Email', value: 'email' },
                 { text: 'Sede', value: 'sede' },
                 { text: 'Solicitado', value: 'ultima_llamada.solicitante.nombre' },

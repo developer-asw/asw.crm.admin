@@ -12,6 +12,8 @@ import CallcenterCoordinatorList from '../components/Callcenter/Coordinator/Call
 import CallcenterAdmisionesList from '../components/Callcenter/Coordinator/CallcenterAdmisionesList'
 import CRMImportar from '../components/CRM/Importar'
 import CRMConsultar from '../components/CRM/Consultar'
+import ReportesHits from '../components/Reportes/Hits'
+import ReportesLlamadas from '../components/Reportes/Llamadas'
 
 Vue.use(VueRouter)
 
@@ -88,6 +90,18 @@ const routes = [
     name: 'CRMConsultar',
     component: CRMConsultar,
     meta: { Auth: true, title: 'CRM - Consulta' , view: 'baseline'},
+  },
+  {
+    path: '/Reportes/Hits',
+    name: 'ReportesHits',
+    component: ReportesHits,
+    meta: { Auth: true, title: 'Reportes - Hits' , view: 'baseline'},
+  },
+  {
+    path: '/Reportes/Llamadas',
+    name: 'ReportesLlamadas',
+    component: ReportesLlamadas,
+    meta: { Auth: true, title: 'Reportes - Llamadas' , view: 'baseline'},
   },
   {
     path: '/about',
