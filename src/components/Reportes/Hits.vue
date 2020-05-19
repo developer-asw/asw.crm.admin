@@ -133,7 +133,7 @@ import VueClipboard from 'vue-clipboard2'
  
 Vue.use(VueClipboard)
   export default {
-    name: 'CallcenterCoordinatorList',
+    name: 'ReportesHits',
     components: {
         
     },

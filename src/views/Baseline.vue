@@ -162,6 +162,17 @@
               </v-list-item-content>
             </v-list-item>
 
+
+            <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Leads')" active-class="border">
+            
+              <v-list-item-action>
+                <v-icon>filter_list</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Leads</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
           <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Llamadas')" active-class="border">
 
             <v-list-item-action>
@@ -212,7 +223,7 @@
 
     <v-footer color="indigo" class="white--text text-center">
        <v-card-text>
-         American School Way &copy; 2020 - v.1.2.0
+         American School Way &copy; 2020 - v.1.2.1
        </v-card-text>
     </v-footer>
     

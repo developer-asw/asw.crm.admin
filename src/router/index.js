@@ -14,6 +14,7 @@ import CRMImportar from '../components/CRM/Importar'
 import CRMConsultar from '../components/CRM/Consultar'
 import ReportesHits from '../components/Reportes/Hits'
 import ReportesLlamadas from '../components/Reportes/Llamadas'
+import ReportesLeads from '../components/Reportes/Leads'
 
 Vue.use(VueRouter)
 
@@ -102,6 +103,12 @@ const routes = [
     name: 'ReportesLlamadas',
     component: ReportesLlamadas,
     meta: { Auth: true, title: 'Reportes - Llamadas' , view: 'baseline'},
+  },
+  {
+    path: '/Reportes/Leads',
+    name: 'ReportesLeads',
+    component: ReportesLeads,
+    meta: { Auth: true, title: 'Reportes - Leads' , view: 'baseline'},
   },
   {
     path: '/about',

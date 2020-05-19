@@ -46,7 +46,8 @@
                 </template>
                 <template v-slot:item.ultimo_origen="{ item }">
                     <div v-if="item.ultimo_origen">
-                        <span v-if="item.ultimo_origen.origen">{{item.ultimo_origen.origen}}</span>
+                        <span v-if="item.ultimo_origen.utm_campaign">{{item.ultimo_origen.utm_campaign}} {{item.ultimo_origen.utm_medium}}</span>
+                        <span v-else-if="item.ultimo_origen.origen">{{item.ultimo_origen.origen}}</span>
                         <span v-else-if="item.ultimo_origen.referer">{{item.ultimo_origen.referer}}</span>
                     </div>
                 </template>

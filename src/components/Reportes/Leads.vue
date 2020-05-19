@@ -25,10 +25,6 @@
                 List
                 <v-spacer></v-spacer>
                 
-                <v-select v-model="filtro.Tipo" :items="tipos" label="Estado" item-text="nombre" item-value="id" :disabled="loading" v-on:change="seleccionarTipo()">
-                </v-select>
-                <v-spacer></v-spacer>
-
                 <v-row>
                     <v-col cols="2" style="display: none;">
                         <v-checkbox
@@ -127,25 +123,20 @@ import VueClipboard from 'vue-clipboard2'
  
 Vue.use(VueClipboard)
   export default {
-    name: 'ReportesLlamadas',
+    name: 'ReportesLeads',
     components: {
         
     },
     data () {
         return {
             headers: [
-                { text: 'Realizado', value: 'fecha_realizado'},
-                { text: 'Solicitado', value: 'fecha_solicitado'},
-                { text: 'Asignado', value: 'fecha_asignado'},
+                { text: 'Fecha', value: 'fecha_ingreso'},
                 { text: 'Nombre', value: 'full_name' },
                 { text: 'Móvil', value: 'movil' },
                 { text: 'Email', value: 'email' },
                 { text: 'Sede', value: 'sede' },
                 { text: 'Estado', value: 'estado' },
-                { text: 'Agente', value: 'agente' },
-                { text: 'Solicitante', value: 'solicitante' },
-                { text: 'Solucion', value: 'resolucion' },
-                { text: 'Observacion', value: 'observacion' },
+                { text: 'Ciudad', value: 'ciudad' },
                 { text: 'Actions', value: 'action', sortable: false }
             ],
             dialogFilter: false,
@@ -163,13 +154,7 @@ Vue.use(VueClipboard)
                 FechaInicial: this.formatDate(new Date().toISOString().substr(0, 10)), 
                 FechaFinal: this.formatDate(new Date().toISOString().substr(0, 10)),
                 CheckFecha: true,
-                CheckSolicitado: false,
-                Tipo: 'realizado',
-            },
-            tipos: [
-                {id: 'realizado', nombre: 'Realizado'},
-                {id: 'solicitado', nombre: 'Solicitado'},
-            ]
+            }
         }
     },
     props : {
@@ -181,7 +166,7 @@ Vue.use(VueClipboard)
     },
     methods:{
         ...mapActions({
-            fetchLlamadas: 'reportes/fetchLlamadas',
+            fetchLeads: 'reportes/fetchLeads',
             fetchDetalle: 'leads/fetchDetalle',
         }),
         ...mapMutations({
@@ -189,7 +174,7 @@ Vue.use(VueClipboard)
         }),
         filtrar(filtro){
             this.loading = true;
-            this.fetchLlamadas(filtro)
+            this.fetchLeads(filtro)
             .finally(()=>{
                 this.loading = false;
             })
@@ -228,17 +213,6 @@ Vue.use(VueClipboard)
             const [day, month, year] = date.split('/')
             return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
         },
-        seleccionarTipo() {
-            switch (this.filtro.Tipo) {
-                case 'realizado':
-                    this.filtro.CheckFecha = true;
-                    break;
-                case 'solicitado':
-                    this.filtro.CheckSolicitado = true;
-                    break;
-
-            }
-        }
     },
     computed: {
         ...mapState({
@@ -246,7 +220,7 @@ Vue.use(VueClipboard)
             pagination: state => state.reportes.pagination,
         }),
         getTitle(){
-            return 'Reportes - Llamadas'
+            return 'Reportes - Leads'
         },
         leadIdDialog(){
             if(this.leadSeleccionado){
