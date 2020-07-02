@@ -2,7 +2,7 @@ const dev_enviroment = {
   ROOT_API: 'http://127.0.0.1:3343/api/admin/',
 };
 const production_enviroment = {
-  ROOT_API: 'https://asw-leads.extandar.com/api/admin/',
+  ROOT_API: 'https://crm.asw.edu.co/api/admin/',
 };
 
 let enviroment;
