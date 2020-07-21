@@ -16,7 +16,7 @@ const actions = {
   fetchLista:({commit},data) => {
     commit('startProcessing', null, { root: true });
     return new Promise((resolve, reject) => {
-      Vue.http.post('callcenter/lista',data).then(
+      Vue.http.post('callcenter/lista?v1',data).then(
         response =>{
           commit('setLista',response.data.datos);
           resolve(response.data)

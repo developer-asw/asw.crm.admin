@@ -18,7 +18,7 @@
                         </v-select>
                     </v-col>
                     <v-col cols="12" md="6">
-                        <v-text-field v-model="lead.movil" label="Telefono"></v-text-field>
+                        <v-text-field v-model="lead.movil" label="Telefono" required></v-text-field>
                     </v-col>
 
                     <v-col cols="12" md="6">
