@@ -15,7 +15,7 @@
             <v-form>
                 <v-row>
                     <v-col cols="12" md="12">
-                        <v-select v-model="estado" :items="estados" label="Estado"></v-select>
+                        <v-select v-model="estado" :items="estados.llamadas" label="Estado"></v-select>
                     </v-col>
                 </v-row>
                 <v-row v-if="estado == 'agendar_cita'">
@@ -37,7 +37,7 @@
                 </v-row>
                 <v-row v-if="estado == 'errado'">
                     <v-col cols="12" md="12">
-                        <v-select v-model="resolucion.errado_motivo" :items="opcion_errados" label="Opciones"></v-select>
+                        <v-select v-model="resolucion.errado_motivo" :items="estados.errados" label="Opciones"></v-select>
                     </v-col>
                     <v-col cols="12" md="12">
                         <v-textarea v-if="resolucion.errado_motivo === 'Otro'" label="Observación" v-model="resolucion.observacion"></v-textarea>
@@ -55,7 +55,7 @@
 
                 <v-row v-if="estado == 'descartado'">
                     <v-col cols="12" md="12">
-                        <v-select  v-model="resolucion.descartado_motivo" :items="descartado_motivos" label="Motivo para descartalo"
+                        <v-select  v-model="resolucion.descartado_motivo" :items="estados.descartados" label="Motivo para descartalo"
                             item-text="text" item-value="value"></v-select>
                         <v-textarea v-if="resolucion.descartado_motivo=='otro'" label="Otro motivo" v-model="resolucion.descartado_motivo_otro"></v-textarea>
                     </v-col>
@@ -63,7 +63,7 @@
 
                 <v-row v-if="estado == 'estudiante'">
                     <v-col cols="12" md="12">
-                        <v-select  v-model="resolucion.estudiante_motivo" :items="estudiante_motivos" label="Motivo de la llamada"
+                        <v-select  v-model="resolucion.estudiante_motivo" :items="estados.estudiantes" label="Motivo de la llamada"
                             item-text="text" item-value="value"></v-select>
                         <v-textarea v-if="resolucion.estudiante_motivo=='otro'" label="Otro motivo" v-model="resolucion.estudiante_motivo_otro"></v-textarea>
                     </v-col>
@@ -116,18 +116,7 @@
             menu2: false,
             date: new Date().toISOString().substr(0, 10),
             time: null,
-            estados: [
-				{ text: 'Agendar Cita', value: 'agendar_cita' },
-				{ text: 'Agendar Llamada', value: 'agendar_llamada' },
-				{ text: 'No contesta', value: 'no_contesta' },
-				{ text: 'Dato errado', value: 'errado' },
-                { text: 'Descartado', value: 'descartado' },
-                { text: 'Es estudiante', value: 'estudiante' },
-                { text: 'Matricula nueva', value: 'matricula_nueva' },
-                { text: 'Abonado', value: 'abonado' },
-                { text: 'En seguimiento', value: 'pago_pendiente' },
-            ],
-            opcion_errados: ['Fuera de servicio' ,'Número equivocado' ,'Niega haber dejado datos' ,'Número no válido' ,'Otro'],
+            estados: {},
             estado: null,
             resolucion: {
                 sede: null,
@@ -143,22 +132,6 @@
                 estudiante_motivo_otro: null,
                 errado_motivo: null
             },
-            descartado_motivos: [
-                { text: 'Ciudad sin sede', value: 'Ciudad sin sede' },
-                { text: 'Menor de 12 años', value: 'Menor de 12 años' },
-                { text: 'Muy costoso', value: 'Muy costoso' },
-                { text: 'No tiene tiempo', value: 'No tiene tiempo' },
-                { text: 'Metodologia', value: 'Metodologia' },
-                { text: 'Otra institución', value: 'Otra institución' },
-                { text: 'Otro', value: 'otro' },
-            ],
-            estudiante_motivos: [
-                { text: 'Clases virtuales', value: 'Clases virtuales' },
-                { text: 'Tutorias', value: 'Tutorias' },
-                { text: 'Vigencias', value: 'Vigencias' },
-                { text: 'Cancelación', value: 'Cancelación' },
-                { text: 'Otro', value: 'otro' },
-            ],
             fechas: [],
             sedes: [],
         }),
@@ -167,13 +140,15 @@
             lead_id: String,
         },
         mounted() {
-            this.traerDisponibilidad()
+            this.traerDisponibilidad();
+            this.traerEstados();
         },
         methods: {
             ...mapActions({
                 fetchDisponibilidad: 'agenda/fetchDisponibilidad',
                 crear: 'leads/crearCita',
                 cerrarLlamada: 'callcenter/cerrar',
+                listarEstados: 'listado/fetchListaLlamadas',
             }),
             ...mapMutations({
 				setInfo: 'setInfo',
@@ -241,7 +216,17 @@
 
                     })
             },
+            traerEstados() {
+                this.listarEstados()
+                    .then(result => {
+                        this.estados = result;
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    }).finally(() => {
 
+                    });
+            }
         },
         computed: {
             ...mapState({
@@ -305,7 +290,7 @@
                             return true
                         }
                     }
-                } else if(this.estado == 'matricula_nueva') {
+                } else if(this.estado == 'matricula_nueva' || this.estado == 'matricula_recaudo') {
                     return true;
                 } else if(this.estado=='abonado'){
                     if(this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada && this.resolucion.observacion){

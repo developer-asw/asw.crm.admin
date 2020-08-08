@@ -8,7 +8,7 @@
             <v-toolbar-items>
                 <v-subheader></v-subheader>
                 <v-tooltip bottom>
-                    <template v-slot:activator="{ on }">
+                    <template v-slot:activator="{ on }" v-on="on">
                         <v-btn small color="info" dark @click="viewNewLead()">
                             <v-icon>assignment_ind</v-icon>
                         </v-btn>
@@ -77,6 +77,7 @@
         </v-dialog>
     </div>
 </template>
+
 <script>
     import {
         mapState,

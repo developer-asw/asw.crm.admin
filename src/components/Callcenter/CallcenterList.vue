@@ -14,18 +14,6 @@
             </v-toolbar-items>
         </v-toolbar>
         <v-card>
-            <!-- <v-card-title>
-                List
-                <v-spacer></v-spacer>
-                <v-text-field
-                    v-model="search"
-                    append-icon="search"
-                    label="Search"
-                    single-line
-                    hide-details>
-                </v-text-field>
-            </v-card-title> -->
-                <!-- :search="search" -->
             <v-data-table
                 :headers="headers"
                 :items="lista"
@@ -238,7 +226,6 @@ export default {
           return false
       },
       copiarDato(value) {
-          console.log('copiando en list:')
           this.$copyText(value).then(
               () => {
                   this.setInfo('Copiado en list:' + value)

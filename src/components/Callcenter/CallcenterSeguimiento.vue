@@ -3,15 +3,12 @@
         <v-toolbar flat light dense color="blue lighten-5">
             <v-toolbar-title>{{getTitle}}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-toolbar-items >
+            <v-toolbar-items>
                 <v-subheader>{{pagination.total}} registros</v-subheader>
                 <!-- <v-btn v-if="lista.length>0" flat small color="info" dark @click="descargarReporte">
-                    <v-icon>cloud_download</v-icon>
+                  <v-icon>cloud_download</v-icon>
                 </v-btn> -->
-                <v-btn small color="info" dark @click="filtroDescargaAbrir()">
-                    <v-icon>cloud_download</v-icon>
-                </v-btn>
-                <v-btn small color="info" dark @click="actualizar()">
+                <v-btn small color="info" dark @click="actualizar">
                     <v-icon>autorenew</v-icon>
                 </v-btn>
             </v-toolbar-items>
@@ -20,9 +17,9 @@
             <v-card-title>
                 <!-- List -->
                 <v-radio-group v-model="payload.tipo" row>
-                  <v-radio label="Teléfono" value="telefono"></v-radio>
-                  <v-radio label="E-mail" value="email"></v-radio>
-                  <v-radio label="Nombre" value="nombre"></v-radio>
+                    <v-radio label="Teléfono" value="telefono"></v-radio>
+                    <v-radio label="E-mail" value="email"></v-radio>
+                    <v-radio label="Nombre" value="nombre"></v-radio>
                 </v-radio-group>
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -43,19 +40,26 @@
                 :search="payload.search"
                 loading-text="Loading... Please wait"
                 class="elevation-1">
-                <template v-slot:item.fecha_proximo_contacto="{ item }">
-                    <span v-if="item.fecha_proximo_contacto">{{presentDate(item.fecha_proximo_contacto)}}</span>
+                <template v-slot:item.ultima_llamada.fecha_solicitado="{ item }">
+                    <span v-if="item.ultima_llamada">{{presentDate(item.ultima_llamada.fecha_solicitado)}}</span>
                 </template>
                 <template v-slot:item.full_name="{ item }">
                     <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
                 </template>
                 <template v-slot:item.movil="{ item }">
-                    <span @click="$copyText(item.movil);setInfo(item.movil)">{{item.movil}}</span>
+                    <span @click="copiarDato(item.movil)">{{item.movil}}</span>
                 </template>
                 <template v-slot:item.email="{ item }">
                     <span @click="$copyText(item.email);setInfo(item.email)">{{item.email}}</span>
                 </template>
-                
+                <template v-slot:item.ultimo_origen="{ item }">
+                    <div v-if="item.ultimo_origen">
+                        <span v-if="item.ultimo_origen.utm_campaign">{{item.ultimo_origen.utm_campaign}} {{item.ultimo_origen.utm_medium}}</span>
+                        <span v-else-if="item.ultimo_origen.origen">{{item.ultimo_origen.origen == 'no_especificado' ? item.ultimo_origen.canal : item.ultimo_origen.origen}}</span>
+                        <span v-else-if="item.ultimo_origen.canal">{{item.ultimo_origen.canal}}</span>
+                        <span v-else-if="item.ultimo_origen.referer">{{item.ultimo_origen.referer}}</span>
+                    </div>
+                </template>
                 <template v-slot:item.action="{ item }">
                     <v-menu bottom left>
                         <template v-slot:activator="{ on, attrs }">
@@ -83,86 +87,74 @@
                 </template>
             </v-data-table>
         </v-card>
-        <v-dialog v-model="download.show" persistent max-width="560px">
-            <LeadsDownloads @cerrar="filtroDescargaCerrar"></LeadsDownloads>
-        </v-dialog>
     </div>
 </template>
 
 <script>
 import {mapState, mapActions, mapMutations} from 'vuex';
-import LeadsDownloads from '@/components/Leads/LeadsDownloads'
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
- 
+
 Vue.use(VueClipboard)
-  export default {
-    name: 'CallcenterCoordinatorList',
-    components: {
-        LeadsDownloads
-    },
+
+export default {
+    name: 'CallcenterSeguimiento',
+    components: { },
     data () {
-      return {
-        headers: [
-          { text: 'Próximo contacto', value: 'fecha_solicitud' },
-          //{ text: 'Primer contacto', value: 'inicia_callcenter' },
-          { text: 'Nombre', value: 'full_name' },
-          { text: 'Móvil', value: 'movil' },
-          { text: 'Email', value: 'email' },
-          { text: 'Sede', value: 'sede' },
-          { text: 'Agente', value: 'ultima_llamada.agente.nombre' },
-          { text: 'Actions', value: 'action', sortable: false }
-        ],
-        download: {
-          show: false
-        },
-        loading: false,
-        rowsPerPage : [100],
-        menu: [
-            { title: 'Ver', url:'/seguimiento/',path:'/detail' },
-            { title: 'Editar', url:'/seguimiento/', path:'/edit' },
-        ],
-        payload: {
-          search:'',
-          tipo:'telefono',
-          CheckTelefono: true,
-          CheckEmail: false,
-          CheckNombre: false,
+        return {
+            headers: [
+                { text: 'Solicitud', value: 'ultima_llamada.fecha_solicitado' },
+                { text: 'Nombre', value: 'full_name' },
+                { text: 'Móvil', value: 'uid' },
+                { text: 'Email', value: 'email' },
+                { text: 'Sede', value: 'sede' },
+                { text: 'Solicitado', value: 'ultima_llamada.solicitante.nombre' },
+                { text: 'Origen', value: 'ultimo_origen' },
+                // { text: 'Estudiante', value: 'es_estudiante' },
+                { text: 'Actions', value: 'action', sortable: false }
+            ],
+            loading: false,
+            rowsPerPage : [100],
+            search: '',
+            leadSeleccionado:null,
+            menu: [
+                { title: 'Ver', url:'/seguimiento/',path:'/detail' },
+                { title: 'Editar', url:'/seguimiento/', path:'/edit' },
+            ],
+            payload: {
+                search:'',
+                tipo:'telefono',
+                CheckTelefono: true,
+                CheckEmail: false,
+                CheckNombre: false,
+            }
         }
-      }
     },
     props : {
-      query: Object,
+        query: Object,
     },
-    
-    mounted () {
-      this.actualizar()
+    mounted() {
+        this.actualizar()
     },
     methods:{
       ...mapActions({
-        fetchLista: 'callcenter_coordinator/fetchLista',
-        filtroCordinador: 'callcenter_coordinator/filtroCordinador',
-        fetchDetalle: 'leads/fetchDetalle',
+          fetchLista: 'callcenter/fetchSeguimiento',
+          solicitar: 'callcenter/solicitar',
+          fetchDetalle: 'leads/fetchDetalle',
       }),
       ...mapMutations({
-        setInfo: 'setInfo',
+          reemplazar: 'callcenter/replaceListaElement',
+          setInfo: 'setInfo',
       }),
       dirigir(value, ruta){
         this.$router.push(`${ruta.url}${value._id}${ruta.path}`)
       },
       actualizar(){
-        this.loading = true;
-        this.fetchLista()
-        .finally(()=>{
-          this.loading = false;
-        })
-      },
-      filtrar(filtro){
-        this.loading = true;
-        this.filtroCordinador(filtro)
-        .finally(()=>{
-          this.loading = false;
-        })
+          this.loading = true;
+          this.fetchLista()
+          .finally(() => {
+              this.loading = false;
+          })
       },
       preFiltro(){
         if(this.payload.search && this.payload.search.length > 4) {
@@ -186,27 +178,37 @@ Vue.use(VueClipboard)
           this.setInfo("Por favor, ingrese mas de 4 caracteres para realizar la busqueda")
         }
       },
+      filtrar(filtro){
+        this.loading = true;
+        this.fetchLista(filtro)
+        .finally(()=>{
+          this.loading = false;
+        })
+      },
       presentDate(value){
-        return this.$moment(value).format('DD-MM-YYYY h:mm a')
+          return this.$moment(value).format('DD-MM-YYYY h:mm a')
       },
-      filtroDescargaAbrir(){
-        this.download.show = true;
-      },
-      filtroDescargaCerrar(){
-        this.download.show = false;
-      },
+      copiarDato(value) {
+          console.log('copiando en list:')
+          this.$copyText(value).then(
+              () => {
+                  this.setInfo('Copiado en list:' + value)
+              })
+              .catch(error => {
+                  console.log(error)
+                  this.setInfo(error)
+              })
+        },
     },
     computed: {
-      ...mapState({
-        lista: state => state.callcenter_coordinator.lista,
-        pagination: state => state.callcenter_coordinator.pagination,
-      }),
-      getTitle(){
-        return 'Callcenter Coordinator'
-      },
-    },
-    watch: {
-    },
-  }
-  
+        ...mapState({
+            lista: state => state.callcenter.lista,
+            pagination: state => state.callcenter.pagination,
+            user: state => state.auth.user,   
+        }),
+        getTitle(){
+            return 'Seguimiento'
+        },
+    }
+}
 </script>

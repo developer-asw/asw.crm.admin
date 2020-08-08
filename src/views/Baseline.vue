@@ -36,7 +36,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item v-if="isLogged && permiso('EF995E25')" link @click="dirigir('/leads')" active-class="border">
+          <v-list-item v-if="isLogged && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario') && permiso('EF995E25')" link @click="dirigir('/leads')" active-class="border">
             <v-list-item-action>
               <v-icon>contact_mail</v-icon>
             </v-list-item-action>
@@ -45,7 +45,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item v-if="isLogged && permiso('E5B05447')" link @click="dirigir('/plantillas')" active-class="border">
+          <v-list-item v-if="isLogged && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario') &&  permiso('E5B05447')" link @click="dirigir('/plantillas')" active-class="border">
             <v-list-item-action>
               <v-icon>perm_media</v-icon>
             </v-list-item-action>
@@ -53,27 +53,8 @@
               <v-list-item-title>Plantillas</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-  <!--
-          <v-list-item v-if="isLogged && permiso('C3372A4B')" link @click="dirigir('/orientadores')">
-            <v-list-item-action>
-              <v-icon>mdi-contact-mail</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Orientadores</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-  -->
-  <!--
-          <v-list-item v-if="isLogged && permiso('E677357D')" link @click="dirigir('/agenda')">
-            <v-list-item-action>
-              <v-icon>mdi-contact-mail</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Agenda</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-  -->
-          <v-list-item v-if="isLogged && permiso('2BF48DCE')" link @click="dirigir('/callcenter_admisiones')" active-class="border">
+
+          <v-list-item v-if="isLogged && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario') && permiso('2BF48DCE')" link @click="dirigir('/callcenter_admisiones')" active-class="border">
             <v-list-item-action>
               <v-icon>pan_tool</v-icon>
             </v-list-item-action>
@@ -82,7 +63,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-group
+          <v-list-group v-if="isLogged && esUsuario && user.data.rol == 'callcenter'"
             no-action
             sub-group
             value="true"
@@ -92,8 +73,8 @@
                 <v-list-item-title>Callcenter</v-list-item-title>
               </v-list-item-content>
             </template>
-
-            <v-list-item v-if="isLogged && permiso('A8229B00')" link @click="dirigir('/callcenter')" active-class="border">
+            <!-- && permiso('A8229B00') -->
+            <v-list-item v-if="isLogged" link @click="dirigir('/callcenter')" active-class="border">
             
               <v-list-item-action>
                 <v-icon>call</v-icon>
@@ -102,8 +83,48 @@
                 <v-list-item-title>Agente</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
+            <v-list-item v-if="isLogged" link @click="dirigir('/callcenter/seguimientos')" active-class="border">
+            
+              <v-list-item-action>
+                <v-icon>calendar_today</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Mis seguimientos</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
 
-          <v-list-item v-if="isLogged && permiso('2BF48DCE')" link @click="dirigir('/callcenter_coordinator')" active-class="border">
+          </v-list-group>
+          <v-list-group v-else-if="isLogged && esUsuario"
+            no-action
+            sub-group
+          >
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Coordinador</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <!-- && permiso('A8229B00') -->
+            <v-list-item v-if="isLogged" link @click="dirigir('/callcenter')" active-class="border">
+            
+              <v-list-item-action>
+                <v-icon>call</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Agente</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item v-if="isLogged" link @click="dirigir('/callcenter/seguimientos')" active-class="border">
+            
+              <v-list-item-action>
+                <v-icon>calendar_today</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Mis seguimientos</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+             <!-- && permiso('2BF48DCE') -->
+          <v-list-item v-if="isLogged && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario')" link @click="dirigir('/callcenter_coordinator')" active-class="border">
 
             <v-list-item-action>
               <v-icon>supervisor_account</v-icon>
@@ -114,8 +135,9 @@
           </v-list-item>
 
           </v-list-group>
+
           
-          <v-list-group no-action sub-group
+          <v-list-group v-if="isLogged  && (user.data.rol == 'superusuario')" no-action sub-group
           >
             <template v-slot:activator>
               <v-list-item-content>
@@ -123,7 +145,7 @@
               </v-list-item-content>
             </template>
 
-            <v-list-item v-if="isLogged" link @click="dirigir('/CRM/Importar')" active-class="border">
+            <v-list-item v-if="isLogged  && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario')" link @click="dirigir('/CRM/Importar')" active-class="border">
             
               <v-list-item-action>
                 <v-icon>import_export</v-icon>
@@ -145,7 +167,7 @@
 
           </v-list-group>
 
-          <v-list-group no-action sub-group>
+          <v-list-group v-if="isLogged && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario')" no-action sub-group>
             <template v-slot:activator>
               <v-list-item-content>
                 <v-list-item-title>Reportes</v-list-item-title>
@@ -223,7 +245,7 @@
 
     <v-footer color="indigo" class="white--text text-center">
        <v-card-text>
-         American School Way &copy; 2020 - v.1.2.1
+         American School Way &copy; 2020 - v.1.2.3
        </v-card-text>
     </v-footer>
     
@@ -307,6 +329,13 @@
           return this.user.data.primer_nombre+' '+this.user.data.primer_apellido
         }
         return ''
+      },
+      esUsuario(){
+          if(this.user && this.user.data) {
+              return ['callcenter', 'coordinador', 'superusuario'].indexOf(this.user.data.rol) >= 0
+          }else{
+              return false;
+          }
       },
       isErrorDialogShowed:{
         get(){

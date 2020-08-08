@@ -10,7 +10,7 @@
         </v-toolbar-items>
     </v-toolbar>
 
-    <v-container>
+    <v-container v-if="esUsuario()">
         <v-layout text-center wrap>
 
             <!-- multiple -->
@@ -137,13 +137,16 @@
             </v-row> -->
         </v-layout>
     </v-container>
+    <v-container v-else>
+        <h1>Bienvenido a leads</h1>
+    </v-container>
 </div>
 
 </template>
 
 <script>
 
-import { mapActions, mapMutations } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 import VueApexCharts from 'vue-apexcharts'
 
 export default {
@@ -158,11 +161,13 @@ name: 'Dashboard',
         itemsPerPage:6,
     }),
     mounted() {
+        this.usuarioLogueado();
         this.consultar();
     },
     methods: {
         ...mapActions({
-            consultarDashboard: 'leads/consultarDashboard',
+            consultarDashboard: 'dashboard/consultarDashboard',
+            usuarioLogueado: 'dashboard/usuarioLogueado'
         }),
         ...mapMutations({
             setInfo: 'setInfo',
@@ -173,7 +178,6 @@ name: 'Dashboard',
             this.consultarDashboard({})
                 .then(result => {
                     this.estadisticas = result.datos;
-                    console.log(this.estadisticas)
                 })
                 .catch(error => {
                     console.log(error)
@@ -182,6 +186,18 @@ name: 'Dashboard',
                     this.loading = false;
                 })
         },
+        esUsuario(){
+            if(this.user && this.user.data) {
+                return ['callcenter', 'coordinador', 'superusuario'].indexOf(this.user.data.rol) >= 0
+            }else{
+                return false;
+            }
+        }
+    },
+    computed:{
+        ...mapState({
+            user: state => state.dashboard.user,  
+        }) 
     }
 };
 </script>

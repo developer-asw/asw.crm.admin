@@ -8,8 +8,12 @@ import PlantillasList from '../components/Plantillas/PlantillasList'
 import OrientadoresList from '../components/Orientadores/OrientadoresList'
 import AgendaActual from '../components/Agenda/AgendaActual'
 import CallcenterList from '../components/Callcenter/CallcenterList'
+import CallcenterSeguimiento from '../components/Callcenter/CallcenterSeguimiento'
 import CallcenterCoordinatorList from '../components/Callcenter/Coordinator/CallcenterCoordinatorList'
-import CallcenterAdmisionesList from '../components/Callcenter/Coordinator/CallcenterAdmisionesList'
+//import CallcenterAdmisionesList from '../components/Callcenter/Coordinator/CallcenterAdmisionesList'
+import LeadsNewView from '@/components/Leads/LeadsNewView'
+import LeadsEditView from '@/components/Leads/LeadsEditView'
+import LeadsDetailView from '@/components/Leads/LeadsDetailView'
 import CRMImportar from '../components/CRM/Importar'
 import CRMConsultar from '../components/CRM/Consultar'
 import ReportesHits from '../components/Reportes/Hits'
@@ -42,43 +46,61 @@ const routes = [
     path: '/leads',
     name: 'leads',
     component: LeadsList,
-    meta: { Auth: true, title: 'LeadsList' , view: 'baseline'},
+    meta: { Auth: true, title: 'Leads - List' , view: 'baseline'},
   },
   {
     path: '/plantillas',
     name: 'plantillas',
     component: PlantillasList,
-    meta: { Auth: true, title: 'PlantillasList' , view: 'baseline'},
+    meta: { Auth: true, title: 'Templates - List' , view: 'baseline'},
   },
   {
     path: '/orientadores',
     name: 'orientadores',
     component: OrientadoresList,
-    meta: { Auth: true, title: 'OrientadoresList' , view: 'baseline'},
+    meta: { Auth: true, title: 'Guidance - List' , view: 'baseline'},
   },
   {
     path: '/agenda',
     name: 'agenda',
     component: AgendaActual,
-    meta: { Auth: true, title: 'AgendaActual' , view: 'baseline'},
+    meta: { Auth: true, title: 'Current Agenda' , view: 'baseline'},
   },
   {
     path: '/callcenter',
     name: 'callcenter',
     component: CallcenterList,
-    meta: { Auth: true, title: 'CallcenterList' , view: 'baseline'},
+    meta: { Auth: true, title: 'Callcenter - List' , view: 'baseline'},
+  },
+  {
+    path: '/callcenter/seguimientos',
+    name: 'seguimiento',
+    component: CallcenterSeguimiento,
+    meta: { Auth: true, title: 'Callcenter - Tracing' , view: 'baseline'},
   },
   {
     path: '/callcenter_coordinator',
     name: 'callcenter_coordinator',
     component: CallcenterCoordinatorList,
-    meta: { Auth: true, title: 'CallcenterCoordinatorList' , view: 'baseline'},
+    meta: { Auth: true, title: 'Callcenter - Coordinator' , view: 'baseline'},
   },
   {
     path: '/callcenter_admisiones',
     name: 'callcenter_admisiones',
-    component: CallcenterAdmisionesList,
-    meta: { Auth: true, title: 'CallcenterAdmisionesList' , view: 'baseline'},
+    component: LeadsNewView,
+    meta: { Auth: true, title: 'Nuevo' , view: 'baseline'},
+  },
+  {
+    path: '/seguimiento/:id/edit',
+    name: 'seguimiento_edit',
+    component: LeadsEditView,
+    meta: { Auth: true, title: 'Editar' , view: 'baseline'},
+  },
+  {
+    path: '/seguimiento/:id/detail',
+    name: 'seguimiento_detail',
+    component: LeadsDetailView,
+    meta: { Auth: true, title: 'Detalle' , view: 'baseline'},
   },
   {
     path: '/CRM/Importar',

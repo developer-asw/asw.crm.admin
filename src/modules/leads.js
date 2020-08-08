@@ -74,12 +74,26 @@ const actions = {
             })
         });
     },
+    actualizarLeads:({commit},data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.post(`lead/actualizar/${data._id}`,data).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
     consultarHistoricos:({ commit }, data) => {
         data.path = window.location.hash;
         if (data.path.includes("/")){
             data.path = data.path.substring(data.path.indexOf("/")+1,data.path.length)
         }
-        console.log(data)
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
             Vue.http.post('lead/historico',data).then(
@@ -95,13 +109,29 @@ const actions = {
             })
         });
     },
-    consultarDashboard:({ commit }, data) => {
+    buscarTelefono({ commit }, telefono) {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-            Vue.http.post('lead/dashboard',data).then(
+            Vue.http.get(`lead/movil/${telefono}`).then(
                 response =>{
-                    commit('setLista',response.data.datos);
-                    resolve(response.data)
+                    commit('setLista',response.body);
+                    resolve(response.body)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+    buscarEmail({ commit }, email) {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.get(`lead/email/${email}`).then(
+                response =>{
+                    commit('setLista',response.body);
+                    resolve(response.body)
                 }
             ).catch(error=>{
                 commit('setError', error, { root: true });

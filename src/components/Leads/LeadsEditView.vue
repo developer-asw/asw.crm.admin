@@ -1,5 +1,5 @@
 <template>
-    <div>        
+    <div>
         <v-card>
             <v-card-title>
                 <span class="headline">{{getTitle}}</span>
@@ -8,7 +8,7 @@
                 <v-card-text>
                         <v-row>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-select v-model="lead.sede" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="disabled" :rules="rules.id">
+                                <v-select v-model="lead.sede" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="disabled || !userCanEdit" @change="consola()">
                                     <template slot="item" slot-scope="data">
                                         {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.nombre }}
                                     </template>
@@ -21,53 +21,50 @@
                                 <v-text-field v-model="lead.identificacion" label="Identificación" :disabled="disabled"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-text-field v-model="lead.primer_nombre" label="Primer Nombre" :disabled="disabled" :rules="rules.firstname"></v-text-field>
+                                <v-text-field v-model="lead.primer_nombre" label="Primer Nombre" :disabled="disabled"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-text-field v-model="lead.segundo_nombre" label="Segundo Nombre" :disabled="disabled"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-text-field v-model="lead.primer_apellido" label="Primer Apellido" :disabled="disabled" :rules="rules.lastname"></v-text-field>
+                                <v-text-field v-model="lead.primer_apellido" label="Primer Apellido" :disabled="disabled"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-text-field v-model="lead.segundo_apellido" label="Segundo Apellido" :disabled="disabled"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-text-field v-model="lead.email" label="Email" @blur="buscarEmail()" :disabled="disabled" :rules="rules.email">
-                                </v-text-field>
+                                <v-text-field v-model="lead.email" label="Email" :disabled="disabled || !userCanEdit" :rules="rules.email" @blur="buscarEmail()"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-text-field v-model="lead.movil" label="Teléfono" @blur="buscarTelefono()" :disabled="disabled" :rules="rules.telefono"></v-text-field>
+                                <v-text-field v-model="lead.movil" label="Teléfono" :disabled="disabled || !userCanEdit" :rules="rules.telefono" @blur="buscarTelefono()"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-select v-model="lead.renovacion" label="Renovación" :items="siNo" :disabled="disabled"></v-select>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-select v-model="lead.origen" label="Campaña" :items="listado.origenes" item-text="title" item-value="value" :disabled="disabled" :rules="rules.field"></v-select>
+                                <v-select v-model="lead.origen" label="Campaña" :items="listado.origenes" item-text="title" item-value="value" :disabled="disabled"></v-select>
                             </v-col>
                             
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-select v-model="lead.como_llego" label="¿Cómo llego?" :items="listado.comoLlego" item-text="title" item-value="value" :disabled="disabled" :rules="rules.field"></v-select>
+                                <v-select v-model="lead.como_llego" label="¿Cómo llego?" :items="listado.comoLlego" item-text="title" item-value="value" :disabled="disabled"></v-select>
                             </v-col>
 
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-select v-model="lead.como_se_entero" label="¿Cómo se entero?" :items="listado.comoSeEntero" item-text="title" item-value="value" :disabled="disabled" :rules="rules.field"></v-select>
+                                <v-select v-model="lead.como_se_entero" label="¿Cómo se entero?" :items="listado.comoSeEntero" item-text="title" item-value="value" :disabled="disabled"></v-select>
                             </v-col>
 
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-select v-model="lead.programa_interes" label="Programa de interés" :items="listado.programaInteres" item-text="title" item-value="value" :disabled="disabled" :rules="rules.field"></v-select>
+                                <v-select v-model="lead.programa_interes" label="Programa de interés" :items="listado.programaInteres" item-text="title" item-value="value" :disabled="disabled"></v-select>
                             </v-col>
 
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-select v-model="lead.agente" label="Agente" :items="listado.agentes" item-text="primer_nombre" item-value="email" :disabled="disabled" :rules="rules.field">
+                                <v-select v-model="lead.agente" label="Agente" :items="listado.agentes" item-text="value" item-value="email" :disabled="disabled || !userCanEdit">
                                     <template slot="item" slot-scope="data">
-                                        {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
-                                    </template>
-                                    <template slot="selection" slot-scope="data">
-                                        <!-- // HTML that describe how select should render selected items -->
-                                        <!-- {{ data.item.name }} - {{ data.item.description }} -->
-                                        {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
-                                    </template>
+                                            {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
+                                        </template>
+                                        <template slot="selection" slot-scope="data">
+                                            {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
+                                        </template>
                                 </v-select>
                             </v-col>
                         </v-row>
@@ -79,7 +76,6 @@
                 </v-card-actions>
             </v-form>
         </v-card>
-
         <v-dialog v-model="dialog.show" persistent max-width="360">
             <v-card>
                 <v-card-title class="headline">¡Atención!</v-card-title>
@@ -109,11 +105,8 @@
             </v-card>
         </v-dialog>
     </div>
-
-
 </template>
 <script>
-
     import {
         mapState,
         mapGetters,
@@ -121,7 +114,7 @@
         mapMutations
     } from 'vuex';
     export default {
-        name: 'LeadsNewView',
+        name: 'LeadsEditView',
         data: () => ({
             siNo: ['Si', 'No'],
             lead: {
@@ -140,6 +133,7 @@
                 programa_interes:null,
                 agente:null
             },
+            leadBack: {},
             sedes: [],
             listado: {},
             dialog: {
@@ -151,37 +145,40 @@
             disabled: false,
         }),
         mounted() {
-            this.traerSedes()
+            this.traerLead();
+            this.traerSedes();
             this.traerOrigenes();
         },
         methods: {
             ...mapActions({
                 listarSedes: 'sedes/fetchLista',
-                generarLeads: 'leads/crearLeads',
+                actualizarLeads: 'leads/actualizarLeads',
+                consultar: 'leads/fetchDetalle',
                 listarOrigenes: 'listado/fetchListaLeads',
                 buscarEmailLead: 'leads/buscarEmail',
                 buscarTelefonoLead: 'leads/buscarTelefono',
             }),
             ...mapMutations({}),
+            traerLead() {
+                this.consultar({id:this.$route.params.id})
+                    .then(result => {
+                        this.lead = result.datos;
+                        this.separarNombre();
+                        this.leadBack = {...result.datos }
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    }).finally(() => {
 
-            reiniciar() {
-                this.lead = {
-                    primer_nombre: null,
-                    primer_apellido: null,
-                    movil: null,
-                    sede: null,
-                    email: null,
-                    id: null
-                };
-                this.$refs.leadForm.resetValidation()
+                    });
             },
             gurdarLeads() {
                 this.procesando = true;
-                this.generarLeads(this.lead)
+                this.actualizarLeads(this.lead)
                     .then(result => {
                         if (result.lead) {
-                            this.reiniciar();
-                            alert("Registro guardaddo exitosamente")
+                            alert("Actualizado correctamente")
+                            this.regresar()
                         }
                     })
                     .catch(error => {
@@ -215,6 +212,11 @@
                     }).finally(() => {
 
                     });
+            },
+            submitHandler(){
+                if (this.$refs.leadForm.validate()){
+                    this.gurdarLeads();
+                }
             },
             buscarEmail() {
                 if(this.consultando.buscando) return;
@@ -252,7 +254,7 @@
             },
             existeRegistroMsg(elemento) {
                 this.dialog.message = `Fue encontrado un registro con el mismo ${elemento}`;
-                if (this.dialog.resultados.length > 0) {
+                if (this.dialog.resultados.length > 0 && this.dialog.resultados[0]._id != this.lead._id) {
                     this.dialog.show = true;
                 }else{
                     this.dialog.show = false;
@@ -262,10 +264,10 @@
                 this.dialog.show = false;
                 switch(this.consultando.objeto) {
                     case 'email':
-                        this.lead.email = '';
+                        this.lead.email = this.leadBack.email;
                         break;
                     case 'telefono':
-                        this.lead.movil = '';
+                        this.lead.movil = this.leadBack.movil;
                         break;
                 }
                 
@@ -277,11 +279,14 @@
                     this.$router.push(`/seguimiento/${id}/detail`);
                 }
             },
-            submitHandler(){
-                if (this.$refs.leadForm.validate()){
-                    this.gurdarLeads();
+            separarNombre() {
+                if(!this.lead.primer_nombre) {
+                    this.lead.primer_nombre = this.lead.full_name;
                 }
             },
+            consola() {
+                console.log(this.lead)
+            }
         },
         computed: {
             ...mapState({
@@ -292,10 +297,10 @@
                 detalle: 'leads/getDetalle',
             }),
             getTitle() {
-                return 'Nuevo Leads'
+                return 'Editar Leads'
             },
             userCanEdit() {
-                return this.user && this.user.data ? this.user.data.disponibilidad : false
+                return this.user && this.user.data && this.user.data.rol == 'coordinador'
             },
             rules(){
                 const _rules = {}

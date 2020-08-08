@@ -45,14 +45,14 @@
         <span @click="$copyText(item.email);setInfo(item.email)">{{item.email}}</span>
       </template>
 
-      <template v-slot:item.action="{ item }">
-        <!--
+      <!-- <template v-slot:item.action="{ item }">
+        
         <v-icon smallclass="mr-2" @click="viewItem(item)">
           remove_red_eye
         </v-icon>
-        -->
+       
         
-      </template>
+      </template> -->
 
       <template v-slot:item.sede="{ item }">
         <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>

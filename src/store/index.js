@@ -12,6 +12,7 @@ import callcenter_admisiones from '@/modules/callcenter_admisiones';
 import crm from '@/modules/crm';
 import listado from '@/modules/listado';
 import reportes from '@/modules/reportes';
+import dashboard from '@/modules/dashboard';
 
 Vue.use(Vuex)
 
@@ -125,6 +126,7 @@ const store = new Vuex.Store({
     crm,
     listado,
     reportes,
+    dashboard,
   }
 })
 
