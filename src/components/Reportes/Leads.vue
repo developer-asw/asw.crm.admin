@@ -87,30 +87,7 @@
                 :search="filtro.search"
                 loading-text="Loading... Please wait"
                 class="elevation-1">
-                <template v-slot:item.fecha_proximo_contacto="{ item }">
-                    <span v-if="item.fecha_proximo_contacto">{{presentDate(item.fecha_proximo_contacto)}}</span>
-                </template>
-                <template v-slot:item.full_name="{ item }">
-                    <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
-                </template>
-                <template v-slot:item.movil="{ item }">
-                    <span @click="$copyText(item.movil);setInfo(item.movil)">{{item.movil}}</span>
-                </template>
-                <template v-slot:item.email="{ item }">
-                    <span @click="$copyText(item.email);setInfo(item.email)">{{item.email}}</span>
-                </template>
-                <template v-slot:item.action="{ item }">
-                    <!-- <v-icon smallclass="mr-2" @click="viewItem(item)">
-                      remove_red_eye
-                    </v-icon> -->
-                    <!-- <v-icon smallclass="mr-2" @click="viewHistory(item)">
-                      info
-                  </v-icon> -->
-                </template>
-                <template v-slot:item.sede="{ item }">
-                    <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>
-                    <span v-else>{{item.sede}}</span>
-                </template>
+                
             </v-data-table>
         </v-card>
     </div>
@@ -135,9 +112,13 @@ Vue.use(VueClipboard)
                 { text: 'Móvil', value: 'movil' },
                 { text: 'Email', value: 'email' },
                 { text: 'Sede', value: 'sede' },
+                { text: 'Origen', value: 'origen' },
+                { text: 'Como Llego', value: 'como_llego' },
                 { text: 'Estado', value: 'estado' },
                 { text: 'Ciudad', value: 'ciudad' },
-                { text: 'Actions', value: 'action', sortable: false }
+                { text: 'Agente Asignado', value: 'agente_fecha_asignado' },
+                { text: 'Agente Nombre', value: 'agente_nombre' },
+                // { text: 'Actions', value: 'action', sortable: false }
             ],
             dialogFilter: false,
             viewDialogHistorico: false,
