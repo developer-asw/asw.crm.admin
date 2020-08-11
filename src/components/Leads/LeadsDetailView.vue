@@ -91,22 +91,12 @@
                             :loading="loading" 
                             loading-text="Loading... Please wait"
                             class="elevation-1">
-                            <template v-slot:item.created_at="{ item }">
-                                <span v-if="item.created_at">
-                                    {{item.created_at | moment("DD/MM/YYYY HH:mm:ss") }}
+                            <template v-slot:[`item.fecha`]="{ item }">
+                                <span v-if="item.fecha">
+                                    {{item.fecha | moment("DD/MM/YYYY HH:mm:ss") }}
                                 </span>
                             </template>
-                            <template v-slot:item.fecha_solicitado="{ item }">
-                                <span v-if="item.fecha_solicitado">
-                                    {{item.fecha_solicitado | moment("DD/MM/YYYY") }}
-                                </span>
-                            </template>
-                            <template v-slot:item.fecha_realizado="{ item }">
-                                <span v-if="item.fecha_realizado">
-                                    {{item.fecha_realizado | moment("DD/MM/YYYY") }}
-                                </span>
-                            </template>
-                            <template v-slot:item.tipo="{ item }">
+                            <template v-slot:[`item.tipo`]="{ item }">
                                 <v-icon v-if="item.tipo == 'llamada'" @click="viewDetail(item)">call</v-icon>
                                 <v-icon v-else @click="viewDetail(item)">event</v-icon>
                             </template>
@@ -220,7 +210,7 @@
             listado: {},
             headerSeguimientos: [
                 { text: '', value: 'tipo' },
-                { text: 'Registrado', value: 'created_at' },
+                { text: 'Fecha', value: 'fecha' },
                 { text: 'Usuario', value: 'usuario.nombre' },
                 { text: 'Acción', value: 'accion' },
                 { text: 'Observación', value: 'observacion' },
@@ -238,7 +228,7 @@
         },
         methods: {
             ...mapActions({
-                consultar: 'leads/fetchDetalle',
+                consultar: 'leads/fetchDetalleSeguimiento',
                 listarOrigenes: 'listado/fetchListaLeads',
             }),
             ...mapMutations({
