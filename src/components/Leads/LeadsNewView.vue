@@ -299,10 +299,6 @@
             },
             rules(){
                 const _rules = {}
-                _rules.email= [
-                    v => !!v || 'El E-mail es necesario',
-                    v => /.+@.+\..+/.test(v) || 'El E-mail debe ser válido',
-                ];
                 _rules.telefono= [
                     v => !!v || 'El Teléfono es necesario'
                 ];
@@ -311,6 +307,11 @@
                     v => (v && v.length > 2) || 'El nombre debe ser mayor de 2 caracteres',
                 ];
                 if(!this.userCanEdit) {
+                    
+                    _rules.email= [
+                        v => !!v || 'El E-mail es necesario',
+                        v => /.+@.+\..+/.test(v) || 'El E-mail debe ser válido',
+                    ];
                     _rules.field= [
                         v => !!v || 'Este campo es necesario'
                     ];
