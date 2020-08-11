@@ -59,7 +59,7 @@
                             </v-col>
 
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-select v-model="lead.agente" label="Agente" :items="listado.agentes" item-text="primer_nombre" item-value="email" :disabled="disabled" :rules="rules.field">
+                                <v-select v-model="lead.agente" label="Agente" :items="listado.agentes" item-text="primer_nombre" item-value="email" :disabled="disabled">
                                     <template slot="item" slot-scope="data">
                                         {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
                                     </template>
