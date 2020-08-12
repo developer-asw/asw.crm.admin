@@ -70,11 +70,45 @@
                                     </template>
                                 </v-select>
                             </v-col>
+
+                            <v-col cols="12" sm="6" md="4" lg="3">
+                                <v-checkbox v-model="lead.contactar" label="Contactar" title="Especificar una fecha de contacto" :disabled="disabled" @change="check()"></v-checkbox>
+                            </v-col>
+
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="lead.contactar">
+                                <v-dialog ref="date" v-model="date.modal" :return-value.sync="lead.fecha_contacto" persistent width="290px">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-text-field v-model="lead.fecha_contacto" label="Fecha Contacto" readonly v-bind="attrs" v-on="on" :disabled="disabled">
+                                        </v-text-field>
+                                    </template>
+                                    <v-date-picker v-model="lead.fecha_contacto" scrollable>
+                                        <v-spacer></v-spacer>
+                                        <v-btn text color="primary" @click="date.modal = false">Cancel</v-btn>
+                                        <v-btn text color="primary" @click="$refs.date.save(lead.fecha_contacto)">OK</v-btn>
+                                    </v-date-picker>
+                                </v-dialog>
+                            </v-col>
+
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="lead.contactar">
+                                <v-dialog ref="time" v-model="time.modal" :return-value.sync="lead.hora_contacto" persistent width="290px">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-text-field v-model="lead.hora_contacto" label="Hora contacto" readonly v-bind="attrs" v-on="on" :disabled="disabled">
+                                        </v-text-field>
+                                    </template>
+                                    <v-time-picker v-model="lead.hora_contacto" scrollable full-width :disabled="disabled">
+                                        <v-spacer></v-spacer>
+                                        <v-btn text color="primary" @click="time.modal = false">Cancel</v-btn>
+                                        <v-btn text color="primary" @click="$refs.time.save(lead.hora_contacto)">OK</v-btn>
+                                    </v-time-picker>
+                                </v-dialog>
+                            </v-col>
+
                         </v-row>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="regresar">Regresar</v-btn>
+                    <v-btn color="blue darken-1" text @click="consola">Consula</v-btn>
                     <v-btn color="red darken-1" text type="submit">Guardar</v-btn>
                 </v-card-actions>
             </v-form>
@@ -138,7 +172,10 @@
                 como_llego:null,
                 como_se_entero:null,
                 programa_interes:null,
-                agente:null
+                agente:null,
+                contactar: false,
+                fecha_contacto: new Date().toISOString().substr(0, 10),
+                hora_contacto: new Date().toISOString().substr(11,5)
             },
             sedes: [],
             listado: {},
@@ -149,6 +186,16 @@
             },
             consultando: { buscando: false, objeto: ''},
             disabled: false,
+            time: {
+                date: new Date().toISOString().substr(0, 10),
+                menu: false,
+                modal: false
+            },
+            date: {
+                date: new Date().toISOString().substr(0, 10),
+                menu: false,
+                modal: false
+            },
         }),
         mounted() {
             this.traerSedes()
@@ -163,7 +210,15 @@
                 buscarTelefonoLead: 'leads/buscarTelefono',
             }),
             ...mapMutations({}),
-
+            check() {
+                if(this.lead.contactar) {
+                    this.lead.fecha_contacto= new Date().toISOString().substr(0, 10);
+                    let [shora, minuto] = new Date().toISOString().substr(11,5).split(':');
+                    let hora = parseInt(shora);
+                    hora = hora - 5;
+                    this.lead.hora_contacto= `${(hora+'').padStart(2, '0')}:${minuto.padStart(2, '0')}`
+                }
+            },
             reiniciar() {
                 this.lead = {
                     primer_nombre: null,
@@ -192,6 +247,11 @@
             },
             regresar() {
                 this.$router.back();
+            },
+            consola() {
+                console.log(new Date().toISOString())
+                console.log(new Date().toUTCString())
+                console.log(this.lead);
             },
             traerSedes() {
                 this.listarSedes()
