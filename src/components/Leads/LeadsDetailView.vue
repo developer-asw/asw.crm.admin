@@ -63,13 +63,13 @@
                         <v-spacer></v-spacer>
                         <v-btn class="ma-2" color="red darken-1" text :to="{ name: 'seguimiento_edit', params: { id: leadIdDialog } }"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
                         
-                        <v-btn class="ma-2" v-if="puedeSolicitar()" color="green darken-1" text @click="iniciarSolicitar()">
+                        <v-btn class="ma-2" v-if="puedeSolicitar()" color="green darken-1" text @click="iniciarSolicitar()" :loading="loading">
                             <v-icon left small>phone</v-icon>&nbsp;Accion &nbsp;
                         </v-btn>
-                        <v-btn class="ma-2" v-else-if="estaAsignado()" color="green darken-1" text @click="iniciarCerrar()">
+                        <v-btn class="ma-2" v-else-if="estaAsignado()" color="green darken-1" text @click="iniciarCerrar()" :loading="loading">
                             <v-icon left small>warning</v-icon>&nbsp;Accion &nbsp;
                         </v-btn>
-                        <v-btn class="ma-2" v-else color="green darken-1" text @click="historyOnly()">
+                        <v-btn class="ma-2" v-else color="green darken-1" text @click="historyOnly()" :loading="loading">
                             <v-icon left small>phone_locked</v-icon>&nbsp;Accion &nbsp;
                         </v-btn>
 
@@ -88,7 +88,6 @@
                             v-if="lead.seguimientos && lead.seguimientos.length > 0"
                             :headers="headerSeguimientos" 
                             :items="lead.seguimientos" 
-                            :loading="loading" 
                             loading-text="Loading... Please wait"
                             class="elevation-1">
                             <template v-slot:[`item.fecha`]="{ item }">
@@ -230,6 +229,8 @@
             ...mapActions({
                 consultar: 'leads/fetchDetalleSeguimiento',
                 listarOrigenes: 'listado/fetchListaLeads',
+                solicitar: 'callcenter/solicitar',
+                fetchDetalle: 'leads/fetchDetalle'
             }),
             ...mapMutations({
 				setInfo: 'setInfo',
@@ -282,8 +283,19 @@
                 return false
             },
             iniciarSolicitar(){
-                this.llamada.show = true
-                this.llamada.llamada = true;
+                this.loading = true;
+                this.solicitar({id_lead:this.lead._id})
+                .then((result) => {
+                    if(result.result == 'ok') {
+                        this.viewItem()
+                    }
+                    if(result.result == 'llamando'){
+                        this.setInfo('Ya fue asignado')
+                    }            
+                })
+                .finally(()=>{
+                    this.loading = false;
+                })
             },
             estaAsignado() {
                 if(this.lead.ultima_llamada && this.lead.ultima_llamada.estado == 'llamando' && this.lead.ultima_llamada.agente && this.lead.ultima_llamada.agente.email == this.user.data.email){
@@ -292,13 +304,40 @@
                 return false
             },
             iniciarCerrar(){
-                this.llamada.show = true
-                this.llamada.llamada = true;
+                this.viewItem()
             },
             historyOnly() {
                 this.setInfo('Ya lo llamaron');
                 this.llamada.show = true;
                 this.llamada.llamada = false;
+            },
+            viewItem() {
+                this.loading = true;
+                this.fetchDetalle({id:this.lead._id}).then((result) => {
+                    if(result.datos && result.datos.uid){
+                        let phoneCopy = result.datos.uid
+                        if(phoneCopy) {
+                            if(phoneCopy.startsWith('57')){
+                            phoneCopy = phoneCopy.substring(2)
+                            }
+                            if(phoneCopy.length==10){
+                            phoneCopy = '9'+phoneCopy
+                            }
+                            this.$copyText(phoneCopy).then(() => {
+                                this.setInfo('Autorizado y Copiado')
+                            })
+                            .catch(error=>{
+                                console.log(error)
+                            })
+                        }
+                    }
+                    //this.viewDialog = true
+                    this.llamada.show = true
+                    this.llamada.llamada = true;
+                })
+                .finally(() => {
+                    this.loading = false;
+                })  
             },
             ////////////LLAMADAS
 

@@ -20,19 +20,19 @@
                 :loading="loading"
                 loading-text="Loading... Please wait"
                 class="elevation-1">
-                <template v-slot:item.ultima_llamada.fecha_solicitado="{ item }">
+                <template v-slot:[`item.ultima_llamada.fecha_solicitado`]="{ item }">
                     <span v-if="item.ultima_llamada">{{presentDate(item.ultima_llamada.fecha_solicitado)}}</span>
                 </template>
-                <template v-slot:item.full_name="{ item }">
+                <template v-slot:[`item.full_name`]="{ item }">
                     <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
                 </template>
                 <!-- <template v-slot:item.movil="{ item }">
                     <span @click="copiarDato(item.movil)">{{item.movil}}</span>
                 </template> -->
-                <template v-slot:item.email="{ item }">
+                <template v-slot:[`item.email`]="{ item }">
                     <span @click="$copyText(item.email);setInfo(item.email)">{{item.email}}</span>
                 </template>
-                <template v-slot:item.ultimo_origen="{ item }">
+                <template v-slot:[`item.ultimo_origen`]="{ item }">
                     <div v-if="item.ultimo_origen">
                         <span v-if="item.ultimo_origen.utm_campaign">{{item.ultimo_origen.utm_campaign}} {{item.ultimo_origen.utm_medium}}</span>
                         <span v-else-if="item.ultimo_origen.origen">{{item.ultimo_origen.origen == 'no_especificado' ? item.ultimo_origen.canal : item.ultimo_origen.origen}}</span>
@@ -40,7 +40,7 @@
                         <span v-else-if="item.ultimo_origen.referer">{{item.ultimo_origen.referer}}</span>
                     </div>
                 </template>
-                <template v-slot:item.action="{ item }">
+                <template v-slot:[`item.action`]="{ item }">
                     <!-- <v-icon smallclass="mr-2" @click="viewItem(item)">
                         remove_red_eye
                     </v-icon> -->
@@ -58,7 +58,7 @@
                         phone_locked
                     </v-icon>
                 </template>
-                <template v-slot:item.sede="{ item }">
+                <template v-slot:[`item.sede`]="{ item }">
                     <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>
                     <span v-else>{{item.sede}}</span>
                 </template>
