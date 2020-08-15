@@ -51,6 +51,10 @@ const store = new Vuex.Store({
             state.error = data.error.message;
           }else{
             state.error = data.error;
+            if(data.salir) {
+              this.dispatch('auth/logout')
+              this.$router.push('/login')
+            }
           }  
         }else{
           state.error = data;

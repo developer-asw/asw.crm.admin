@@ -22,6 +22,19 @@
             </v-card>
           </v-flex>
         </v-layout>
+         <div class="text-center">
+          <!-- <v-btn :disabled="dialog" :loading="dialog" class="white--text" color="purple darken-2" @click="dialog = true">
+            Start loading
+          </v-btn> -->
+          <v-dialog v-model="dialog.show" persistent width="300">
+            <v-card color="primary" dark>
+              <v-card-text class="text-center">
+                {{dialog.message}}
+                <v-progress-linear indeterminate color="white" class="mb-0" ></v-progress-linear>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
+        </div>
       </v-container>
     
 </template>
@@ -38,6 +51,10 @@
           username: '',
           password: '',
         },
+        dialog: {
+          show: false,
+          message: 'Iniciando sesión',
+        }
       }
     },
     methods: {
@@ -46,16 +63,38 @@
         
       }),
       ...mapMutations({
-
+				setInfo: 'setInfo',
       }),
       processLogin () {
+        this.dialog.show = true;
+        this.dialog.message = "Verificando datos, por favor espere un momento";
+        setTimeout(() => {
+          this.process();
+        }, 750);
+      },
+      process() {
         this.login(this.user).then(
           user => {
             console.log('logged:'+user)
-            this.$router.push('/');
+            setTimeout(() => {
+              this.dialog.message = "Logueado, por favor espere un momento"
+              this.dialog.show = false;
+              this.$router.push('/');
+            }, 1000);
           },
           error => {
-            console.log(error)
+            if(error.data) {
+              if(error.data.error) {
+                this.dialog.message = error.data.error;
+                this.setInfo(error.data.error);
+              }else{
+                this.dialog.message = error.data;
+                this.setInfo(error.data);
+              }
+            }
+            setTimeout(() => {
+              this.dialog.show = false;
+            }, 1000);
           })
       }
     }
