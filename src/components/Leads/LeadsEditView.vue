@@ -198,7 +198,9 @@
                 buscarEmailLead: 'leads/buscarEmail',
                 buscarTelefonoLead: 'leads/buscarTelefono',
             }),
-            ...mapMutations({}),
+            ...mapMutations({
+                setInfo: 'setInfo',
+            }),
             check() {
                 if(this.lead.contactar) {
                     this.lead.fecha_contacto= new Date().toISOString().substr(0, 10);
@@ -226,7 +228,7 @@
                 this.actualizarLeads(this.lead)
                     .then(result => {
                         if (result.lead) {
-                            alert("Actualizado correctamente")
+                            this.setInfo("Actualizado correctamente")
                             this.regresar()
                         }
                     })

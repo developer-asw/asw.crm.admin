@@ -108,7 +108,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="regresar">Regresar</v-btn>
-                    <v-btn color="blue darken-1" text @click="consola">Consula</v-btn>
+                    <!-- <v-btn color="blue darken-1" text @click="consola">Consula</v-btn> -->
                     <v-btn color="red darken-1" text type="submit">Guardar</v-btn>
                 </v-card-actions>
             </v-form>
@@ -209,7 +209,9 @@
                 buscarEmailLead: 'leads/buscarEmail',
                 buscarTelefonoLead: 'leads/buscarTelefono',
             }),
-            ...mapMutations({}),
+            ...mapMutations({
+                setInfo: 'setInfo',
+            }),
             check() {
                 if(this.lead.contactar) {
                     this.lead.fecha_contacto= new Date().toISOString().substr(0, 10);
@@ -236,7 +238,7 @@
                     .then(result => {
                         if (result.lead) {
                             this.reiniciar();
-                            alert("Registro guardaddo exitosamente")
+                            this.setInfo("Registro guardado exitosamente")
                         }
                     })
                     .catch(error => {
