@@ -54,7 +54,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item v-if="isLogged && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario') && permiso('2BF48DCE')" link @click="dirigir('/callcenter_admisiones')" active-class="border">
+          <v-list-item v-if="isLogged && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario')" link @click="dirigir('/callcenter_admisiones')" active-class="border">
             <v-list-item-action>
               <v-icon>pan_tool</v-icon>
             </v-list-item-action>
@@ -245,7 +245,7 @@
 
     <v-footer color="indigo" class="white--text text-center">
        <v-card-text>
-         American School Way &copy; 2020 - v.1.2.4
+         American School Way &copy; 2020 - v.1.2.5
        </v-card-text>
     </v-footer>
     

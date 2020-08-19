@@ -18,19 +18,19 @@
                                 </v-select>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-text-field v-model="lead.identificacion" label="Identificación" :disabled="disabled"></v-text-field>
+                                <v-text-field v-model="lead.identificacion" label="Identificación" :disabled="disabled" @blur="limpiarCampo('identificacion')"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-text-field v-model="lead.primer_nombre" label="Primer Nombre" :disabled="disabled"></v-text-field>
+                                <v-text-field v-model="lead.primer_nombre" label="Primer Nombre" :disabled="disabled" @blur="limpiarCampoNombre()"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-text-field v-model="lead.segundo_nombre" label="Segundo Nombre" :disabled="disabled"></v-text-field>
+                                <v-text-field v-model="lead.segundo_nombre" label="Segundo Nombre" :disabled="disabled" @blur="limpiarCampo('segundo_nombre')"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-text-field v-model="lead.primer_apellido" label="Primer Apellido" :disabled="disabled"></v-text-field>
+                                <v-text-field v-model="lead.primer_apellido" label="Primer Apellido" :disabled="disabled" @blur="limpiarCampo('primer_apellido')"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-text-field v-model="lead.segundo_apellido" label="Segundo Apellido" :disabled="disabled"></v-text-field>
+                                <v-text-field v-model="lead.segundo_apellido" label="Segundo Apellido" :disabled="disabled" @blur="limpiarCampo('segundo_apellido')"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-text-field v-model="lead.email" label="Email" :disabled="disabled || !userCanEdit" :rules="rules.email" @blur="buscarEmail()"></v-text-field>
@@ -215,6 +215,7 @@
                     .then(result => {
                         this.lead = result.datos;
                         this.separarNombre();
+                        this.limpiarEmail();
                         this.leadBack = {...result.datos }
                     })
                     .catch(error => {
@@ -269,7 +270,14 @@
                     this.gurdarLeads();
                 }
             },
+            limpiarEmail() {
+                if (this.lead.email) {
+                    this.lead.email = this.limpiarTexto(this.lead.email);
+                    this.lead.email = this.quitarEspacios(this.lead.email)
+                }
+            },
             buscarEmail() {
+                this.limpiarEmail();
                 if(this.consultando.buscando) return;
                 this.disabled = true;
                 this.consultando.objeto = 'email';
@@ -286,7 +294,14 @@
                     this.disabled = false;
                 });
             },
+            limpiarTelefono() {
+                if (this.lead.movil) {
+                    this.lead.movil = this.limpiarTexto(this.lead.movil);
+                    this.lead.movil = this.quitarEspacios(this.lead.movil)
+                }
+            },
             buscarTelefono() {
+                this.limpiarTelefono();
                 if(this.consultando.buscando) return;
                 this.disabled = true;
                 this.consultando.objeto = 'telefono';
@@ -333,10 +348,72 @@
             separarNombre() {
                 if(!this.lead.primer_nombre) {
                     this.lead.primer_nombre = this.lead.full_name;
+                    this.limpiarCampoNombre();
+                }else{
+                    if((!!this.lead.primer_nombre) && !this.lead.segundo_nombre && !this.lead.primer_apellido && !this.lead.segundo_apellido) {
+                        this.limpiarCampoNombre();
+                    }
                 }
             },
             consola() {
                 console.log(this.lead)
+            },
+            separar(cadena){
+                let result = [];
+                let valores = cadena.split(' ');
+                for (const key in valores) {
+                    if(valores[key]) {
+                        result.push(valores[key])
+                    }
+                }
+                return result;
+            },
+            limpiarCampoNombre() {
+                if(this.lead.primer_nombre) {
+                    this.lead.primer_nombre = this.limpiarTexto(this.lead.primer_nombre);
+                    if(this.lead.primer_nombre.includes(' ')) {
+                        let nom_separado = this.separar(this.lead.primer_nombre);
+                        switch(nom_separado.length) {
+                            case 1:
+                                this.lead.primer_nombre = nom_separado[0];
+                                break;
+                            case 2:
+                                this.lead.primer_nombre = nom_separado[0];
+                                this.lead.primer_apellido = nom_separado[1];
+                                break;
+                            case 3:
+                                this.lead.primer_nombre = nom_separado[0];
+                                this.lead.primer_apellido = nom_separado[1];
+                                this.lead.segundo_apellido = nom_separado[2];
+                                break;
+                            case 4:
+                                this.lead.primer_nombre = nom_separado[0];
+                                this.lead.segundo_nombre = nom_separado[1];
+                                this.lead.primer_apellido = nom_separado[2];
+                                this.lead.segundo_apellido = nom_separado[3];
+                                break;
+                            default:
+                                this.lead.primer_nombre = nom_separado[0];
+                                nom_separado.splice(0, 1);
+                                if (!this.lead.primer_apellido) {
+                                    this.lead.primer_apellido = nom_separado.join(' ');
+                                }else{
+                                    this.lead.segundo_apellido = nom_separado.join(' ');
+                                }
+                        }
+                    }
+                }
+            },
+            limpiarCampo(key) {
+                if (this.lead[key]) {
+                    this.lead[key] = this.limpiarTexto(this.lead[key])
+                }
+            },
+            limpiarTexto(cadena) {
+                return cadena.replace(/['"]+/g, '');
+            },
+            quitarEspacios(cadena) {
+                return cadena.replace(/ /g, '');
             }
         },
         computed: {
