@@ -109,7 +109,7 @@
                         </v-list-item>
                     </v-list-group>
 
-                    <v-list-group  no-action sub-group >
+                    <v-list-group v-if="isLogged && esUsuario"  no-action sub-group >
                         <template v-slot:activator>
                             <v-list-item-content>
                                 <v-list-item-title>Consultas</v-list-item-title>
