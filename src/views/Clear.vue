@@ -1,21 +1,18 @@
 <template>
-  <v-app id="inspire">
-    <v-content>
-      <router-view></router-view>
-    </v-content>
-  </v-app>
+    <v-app id="inspire">
+        <v-content>
+            <router-view></router-view>
+        </v-content>
+    </v-app>
 </template>
-
 <script>
 
-  export default {
+export default {
     data: () => ({
-      drawer: null,
-      
+        drawer: null,
     }),
     props: {
-      //source: String
+        //source: String
     },
-     
-  }
+}
 </script>

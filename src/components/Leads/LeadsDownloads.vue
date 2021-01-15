@@ -140,7 +140,8 @@
                         </v-checkbox>
                     </v-col>
                     <v-col cols="10">
-                        <v-select v-model="filtro.Estado" :items="estados" label="Estado" item-text="nombre" item-value="id" :disabled="!filtro.CheckEstado || loading">
+                        <v-select v-model="filtro.Estado" :items="estados" label="Estado" item-text="nombre" item-value="id" :disabled="!filtro.CheckEstado || loading"
+                        multiple chips>
                         </v-select>
                     </v-col>
                 </v-row>
@@ -263,6 +264,9 @@ export default {
         }),
         cerrar() {
             this.$emit('cerrar');
+        },
+        cambios() {
+            console.log(this.filtro)
         },
         async descargarReporte(){
             this.loading = true

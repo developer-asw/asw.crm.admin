@@ -29,6 +29,38 @@ const actions = {
       })
     });
   },
+  fetchListaConvenio:({commit},data) => {
+    commit('startProcessing', null, { root: true });
+    return new Promise((resolve, reject) => {
+      Vue.http.post('callcenter/convenio?v1',data).then(
+        response =>{
+          commit('setLista',response.data.datos);
+          resolve(response.data)
+        }
+      ).catch(error=>{
+        commit('setError', error, { root: true });
+        reject(error)
+      }).finally(()=>{
+        commit('stopProcessing', null, { root: true });
+      })
+    });
+  },
+  fetchListaEnCola:({commit},data) => {
+    commit('startProcessing', null, { root: true });
+    return new Promise((resolve, reject) => {
+      Vue.http.post('callcenter/stack?v1',data).then(
+        response =>{
+          commit('setLista',response.data.datos);
+          resolve(response.data)
+        }
+      ).catch(error=>{
+        commit('setError', error, { root: true });
+        reject(error)
+      }).finally(()=>{
+        commit('stopProcessing', null, { root: true });
+      })
+    });
+  },
   fetchSeguimiento:({commit}, data) => {
     commit('startProcessing', null, { root: true });
     return new Promise((resolve, reject) => {

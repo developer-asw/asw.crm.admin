@@ -8,6 +8,10 @@ import PlantillasList from '../components/Plantillas/PlantillasList'
 import OrientadoresList from '../components/Orientadores/OrientadoresList'
 import AgendaActual from '../components/Agenda/AgendaActual'
 import CallcenterList from '../components/Callcenter/CallcenterList'
+import SearchList from '../components/Callcenter/SearchList';
+import Contact from '../components/Callcenter/Contact'
+import HistoricalList from '../components/Callcenter/View/HistoricalList'
+import SeguimientoList from '../components/Callcenter/View/SeguimientoList'
 import CallcenterSeguimiento from '../components/Callcenter/CallcenterSeguimiento'
 import CallcenterCoordinatorList from '../components/Callcenter/Coordinator/CallcenterCoordinatorList'
 //import CallcenterAdmisionesList from '../components/Callcenter/Coordinator/CallcenterAdmisionesList'
@@ -71,6 +75,30 @@ const routes = [
     name: 'callcenter',
     component: CallcenterList,
     meta: { Auth: true, title: 'Callcenter - List' , view: 'baseline'},
+  },
+  {
+    path: '/consultar',
+    name: 'consultar',
+    component: SearchList,
+    meta: { Auth: true, title: 'Consulta - List' , view: 'baseline'},
+  },
+  {
+    path: '/contact',
+    name: 'contact',
+    component: Contact,
+    meta: { Auth: true, title: 'Contact' , view: 'baseline'},
+  },
+  {
+    path: '/callcenter/view/historical',
+    name: 'callcenter.view.historical',
+    component: HistoricalList,
+    meta: { Auth: true, title: 'Callcenter - Historical - List' , view: 'baseline'},
+  },
+  {
+    path: '/callcenter/view/tracing',
+    name: 'callcenter.view.tracing',
+    component: SeguimientoList,
+    meta: { Auth: true, title: 'Callcenter - Tracing - List' , view: 'baseline'},
   },
   {
     path: '/callcenter/seguimientos',

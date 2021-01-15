@@ -97,7 +97,7 @@ import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 
 export default {
-    name: 'CallcenterList',
+    name: 'HistoricalList',
     components: {
       CallcenterRegistrarLlamada,
       CallcenterHistorico
@@ -105,13 +105,12 @@ export default {
     data () {
         return {
             headers: [
-                { text: 'Contactar en', value: 'ultima_llamada.fecha_solicitado' },
+                { text: 'Solicitud', value: 'ultima_llamada.fecha_solicitado' },
                 { text: 'Nombre', value: 'full_name' },
                 // { text: 'Móvil', value: 'uid' },
                 { text: 'Email', value: 'email' },
                 { text: 'Sede', value: 'sede' },
-                { text: 'Ultimo Contacto', value: 'ultima_llamada.solicitante.nombre' },
-                // { text: 'Agente Actual', value: 'ultima_llamada.agente.nombre' },
+                { text: 'Solicitado', value: 'ultima_llamada.solicitante.nombre' },
                 { text: 'Origen', value: 'ultimo_origen' },
                 // { text: 'Estudiante', value: 'es_estudiante' },
                 { text: 'Actions', value: 'action', sortable: false }

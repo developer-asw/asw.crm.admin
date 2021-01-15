@@ -5,13 +5,7 @@
             <v-spacer></v-spacer>
             <v-toolbar-items >
                 <v-subheader>{{pagination.total}} registros</v-subheader>
-                <!-- <v-btn v-if="lista.length>0" flat small color="info" dark @click="descargarReporte">
-                    <v-icon>cloud_download</v-icon>
-                </v-btn> -->
-                <v-btn small color="info" dark @click="filtroDescargaAbrir()">
-                    <v-icon>cloud_download</v-icon>
-                </v-btn>
-                <v-btn small color="info" dark @click="actualizar()">
+                <v-btn small color="info" dark @click="preFiltro()">
                     <v-icon>autorenew</v-icon>
                 </v-btn>
             </v-toolbar-items>
@@ -97,7 +91,7 @@ import VueClipboard from 'vue-clipboard2'
  
 Vue.use(VueClipboard)
   export default {
-    name: 'CallcenterCoordinatorList',
+    name: 'Contact',
     components: {
         LeadsDownloads
     },
@@ -136,11 +130,10 @@ Vue.use(VueClipboard)
     },
     
     mounted () {
-      this.actualizar()
+      //this.preFiltro()
     },
     methods:{
       ...mapActions({
-        fetchLista: 'callcenter_coordinator/fetchLista',
         filtroCordinador: 'callcenter_coordinator/filtroCordinador',
         fetchDetalle: 'leads/fetchDetalle',
       }),
@@ -149,13 +142,6 @@ Vue.use(VueClipboard)
       }),
       dirigir(value, ruta){
         this.$router.push(`${ruta.url}${value._id}${ruta.path}`)
-      },
-      actualizar(){
-        this.loading = true;
-        this.fetchLista()
-        .finally(()=>{
-          this.loading = false;
-        })
       },
       filtrar(filtro){
         this.loading = true;
@@ -202,7 +188,7 @@ Vue.use(VueClipboard)
         pagination: state => state.callcenter_coordinator.pagination,
       }),
       getTitle(){
-        return 'Callcenter Coordinator'
+        return 'Contact'
       },
     },
     watch: {

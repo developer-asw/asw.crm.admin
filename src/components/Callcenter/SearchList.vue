@@ -97,7 +97,7 @@ import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 
 export default {
-    name: 'CallcenterList',
+    name: 'SearchList',
     components: {
       CallcenterRegistrarLlamada,
       CallcenterHistorico
@@ -133,7 +133,7 @@ export default {
     },
     methods:{
       ...mapActions({
-          fetchLista: 'callcenter/fetchLista',
+          fetchLista: 'callcenter/fetchListaConvenio',
           solicitar: 'callcenter/solicitar',
           fetchDetalle: 'leads/fetchDetalle',
       }),
