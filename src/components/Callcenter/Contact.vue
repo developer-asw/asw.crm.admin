@@ -38,7 +38,7 @@
                 loading-text="Loading... Please wait"
                 class="elevation-1">
                 <template v-slot:[`item.ultima_llamada.fecha_solicitado`]="{ item }">
-                    <span v-if="item.ultima_llamada.fecha_solicitado">{{presentDate(item.ultima_llamada.fecha_solicitado)}}</span>
+                    <span v-if="item.ultima_llamada && item.ultima_llamada.fecha_solicitado">{{presentDate(item.ultima_llamada.fecha_solicitado)}}</span>
                 </template>
                 <template v-slot:[`item.full_name`]="{ item }">
                     <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
