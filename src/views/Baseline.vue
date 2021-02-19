@@ -34,7 +34,7 @@
                             <v-list-item-title>Inicio</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-list-item v-if="isLogged && permiso('AFD4E76')" link @click="dirigir('/')">
+                    <v-list-item v-if="isLogged && permiso('AFD4E76')" link @click="dirigir('/dashboard')">
                         <v-list-item-action>
                             <v-icon>dashboard</v-icon>
                         </v-list-item-action>

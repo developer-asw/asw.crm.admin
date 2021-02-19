@@ -34,10 +34,10 @@ const routes = [
     meta: { Auth: true, title: 'Home' , view: 'baseline'},
   },
   {
-    path: '/',
+    path: '/dashboard',
     name: 'stat',
     component: Dashboard,
-    meta: { Auth: true, title: 'Stat' , view: 'baseline'},
+    meta: { Auth: true, title: 'Dashboard' , view: 'baseline'},
   },
   {
       path: '/login',
