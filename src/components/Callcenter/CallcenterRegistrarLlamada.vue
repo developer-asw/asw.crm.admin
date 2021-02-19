@@ -269,7 +269,7 @@
 					if(this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada){
 						return true
 					}
-				}else if(this.estado=='no_contesta' || this.estado == 'venta_telefonica'){
+				}else if(this.estado=='no_contesta' || this.estado == 'venta_telefonica' || this.estado == 'seguimiento_whatsapp'){
 					return true
 				}else if(this.estado=='errado'){
                     if(this.resolucion.errado_motivo && this.resolucion.errado_motivo.length > 0){
