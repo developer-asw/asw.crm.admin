@@ -28,7 +28,7 @@
                 <v-text-field
                     v-model="payload.search"
                     clearable
-                    :append-outer-icon="payload.search ? 'send' : ''"
+                    :append-outer-icon="payload.search ? 'search' : ''"
                     @click:append-outer="preFiltro"
                     label="Search"
                     single-line
