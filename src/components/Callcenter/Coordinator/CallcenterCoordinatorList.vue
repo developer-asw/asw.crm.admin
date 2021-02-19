@@ -27,7 +27,6 @@
                 <v-spacer></v-spacer>
                 <v-text-field
                     v-model="payload.search"
-                    append-icon="search"
                     clearable
                     :append-outer-icon="payload.search ? 'send' : ''"
                     @click:append-outer="preFiltro"
