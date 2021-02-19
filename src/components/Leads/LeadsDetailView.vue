@@ -50,7 +50,10 @@
                         AGENTE: <br>{{getAgente}}
                     </v-col>
                     <v-col cols="12" sm="6" md="4" lg="3">
-                        ESTADO: <br>{{lead.estado}}
+                        ESTADO: <br>{{lead.ultima_llamada_estado}}
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4" lg="3">
+                        COMENTARIOS PAGINA WEB: <br>{{lead.comentarios}}
                     </v-col>
                     <v-col cols="12" sm="6" md="4" lg="3">
                         OBSERVACIONES: <br>{{getObservacion}}
@@ -77,7 +80,7 @@
                     <!-- </v-card-actions>  -->
                 </v-row>
                 <v-row class="mt-10">
-                    <LeadHistoricView :lead_id="lead_id" :ver_detalles="true"></LeadHistoricView>
+                    <LeadHistoricView :lead_id="leadId" :ver_detalles="true"></LeadHistoricView>
                 </v-row>
             </v-card-text>
         </v-card>
@@ -176,7 +179,7 @@ export default {
         },
         ////////////////////
         traerLead() {
-            this.viewItem();
+            this.viewItemConsulta();
         },
         puedeSolicitar(){
             if(this.lead.ultima_llamada && this.lead.ultima_llamada.estado == 'pendiente'){
@@ -241,6 +244,17 @@ export default {
                 this.loading = false;
             })  
         },
+        viewItemConsulta() {
+            this.loading = true;
+            this.fetchDetalle({id:this.leadId}).then((result) => {
+                if(result.datos){
+                    this.lead = result.datos;
+                }
+            })
+            .finally(() => {
+                this.loading = false;
+            })  
+        },
         ////////////LLAMADAS
     },
     computed: {
@@ -293,11 +307,7 @@ export default {
             return "Sin observaciones";
         },
         leadId(){
-            if(this.lead){
-                return this.lead._id
-            }else{
-                return this.$route.params.id
-            }
+            return this.$route.params.id
         }
     }
 };
