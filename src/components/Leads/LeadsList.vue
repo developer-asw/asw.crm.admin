@@ -30,7 +30,7 @@
       class="elevation-1"
   >
     
-    <template v-slot:item.action="{ item }">
+    <template v-slot:[`item.action`]="{ item }">
       <v-icon smallclass="mr-2" @click="viewItem(item)">
         remove_red_eye
       </v-icon>

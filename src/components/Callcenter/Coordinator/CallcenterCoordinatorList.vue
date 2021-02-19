@@ -136,7 +136,7 @@ Vue.use(VueClipboard)
     },
     
     mounted () {
-      this.actualizar()
+      this.actualizar();
     },
     methods:{
       ...mapActions({
@@ -194,7 +194,7 @@ Vue.use(VueClipboard)
       },
       filtroDescargaCerrar(){
         this.download.show = false;
-      },
+      }
     },
     computed: {
       ...mapState({

@@ -8,7 +8,7 @@
                 <v-card-text>
                         <v-row>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-select v-model="lead.sede" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="disabled || !userCanEdit" @change="consola()">
+                                <v-select v-model="lead.sede_id" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="disabled || !userCanEdit" @change="consola()">
                                     <template slot="item" slot-scope="data">
                                         {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.nombre }}
                                     </template>

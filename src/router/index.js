@@ -3,6 +3,7 @@ import store from '../store'
 import VueRouter from 'vue-router'
 import Login from '../components/Auth/Login.vue'
 import Dashboard from '../components/Dashboard'
+import Consultar from '../components/Consultar'
 import LeadsList from '../components/Leads/LeadsList'
 import PlantillasList from '../components/Plantillas/PlantillasList'
 import OrientadoresList from '../components/Orientadores/OrientadoresList'
@@ -10,11 +11,8 @@ import AgendaActual from '../components/Agenda/AgendaActual'
 import CallcenterList from '../components/Callcenter/CallcenterList'
 import SearchList from '../components/Callcenter/SearchList';
 import Contact from '../components/Callcenter/Contact'
-import HistoricalList from '../components/Callcenter/View/HistoricalList'
-import SeguimientoList from '../components/Callcenter/View/SeguimientoList'
 import CallcenterSeguimiento from '../components/Callcenter/CallcenterSeguimiento'
 import CallcenterCoordinatorList from '../components/Callcenter/Coordinator/CallcenterCoordinatorList'
-//import CallcenterAdmisionesList from '../components/Callcenter/Coordinator/CallcenterAdmisionesList'
 import LeadsNewView from '@/components/Leads/LeadsNewView'
 import LeadsEditView from '@/components/Leads/LeadsEditView'
 import LeadsDetailView from '@/components/Leads/LeadsDetailView'
@@ -24,14 +22,22 @@ import ReportesHits from '../components/Reportes/Hits'
 import ReportesLlamadas from '../components/Reportes/Llamadas'
 import ReportesLeads from '../components/Reportes/Leads'
 
+import RecepcionView from '@/components/Recepcion/RecepcionView'
+
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: Dashboard,
+    component: Consultar,
     meta: { Auth: true, title: 'Home' , view: 'baseline'},
+  },
+  {
+    path: '/',
+    name: 'stat',
+    component: Dashboard,
+    meta: { Auth: true, title: 'Stat' , view: 'baseline'},
   },
   {
       path: '/login',
@@ -87,18 +93,6 @@ const routes = [
     name: 'contact',
     component: Contact,
     meta: { Auth: true, title: 'Contact' , view: 'baseline'},
-  },
-  {
-    path: '/callcenter/view/historical',
-    name: 'callcenter.view.historical',
-    component: HistoricalList,
-    meta: { Auth: true, title: 'Callcenter - Historical - List' , view: 'baseline'},
-  },
-  {
-    path: '/callcenter/view/tracing',
-    name: 'callcenter.view.tracing',
-    component: SeguimientoList,
-    meta: { Auth: true, title: 'Callcenter - Tracing - List' , view: 'baseline'},
   },
   {
     path: '/callcenter/seguimientos',
@@ -167,7 +161,13 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+  },
+  {
+    path: '/recepcion/:id/view',
+    name: 'recepcion_view',
+    component: RecepcionView,
+    meta: { Auth: true, title: 'Recepcion' , view: 'baseline'},
+  },
 ]
 
 const router = new VueRouter({

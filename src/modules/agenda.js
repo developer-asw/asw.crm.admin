@@ -26,6 +26,7 @@ const actions = {
   confirmarAsistencia:({commit},data) => {
     commit('startProcessing', null, { root: true });
     return new Promise((resolve, reject) => {
+      console.log(data)
       Vue.http.post('agenda_actual/confirmar_asistencia',data).then(
         response =>{
           resolve(response.data)

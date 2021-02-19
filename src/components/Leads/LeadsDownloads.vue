@@ -140,7 +140,7 @@
                         </v-checkbox>
                     </v-col>
                     <v-col cols="10">
-                        <v-select v-model="filtro.Estado" :items="estados" label="Estado" item-text="nombre" item-value="id" :disabled="!filtro.CheckEstado || loading"
+                        <v-select v-model="filtro.Estado" :items="llamadas_estados" label="Estados" item-text="text" item-value="text" :disabled="!filtro.CheckEstado || loading"
                         multiple chips>
                         </v-select>
                     </v-col>
@@ -148,46 +148,15 @@
                 <v-row>
                     <v-col cols="2">
                         <v-checkbox
-                            v-model="filtro.CheckContactado"
+                            v-model="filtro.CheckCategoria"
                             :disabled="loading"
                             prepend-icon="list_alt">
                         </v-checkbox>
                     </v-col>
                     <v-col cols="10">
-                        <v-select v-model="filtro.Contactado" :items="contactados" label="Agente" item-text="nombre" item-value="id" :disabled="!filtro.CheckContactado || loading">
+                        <v-select v-model="filtro.Categoria" :items="categorias" label="Categoría" :disabled="!filtro.CheckCategoria || loading"
+                        multiple chips>
                         </v-select>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col cols="2">
-                        <v-checkbox
-                            v-model="filtro.CheckEmail"
-                            :disabled="loading"
-                            prepend-icon="email">
-                        </v-checkbox>
-                    </v-col>
-                    <v-col cols="10">
-                        <v-text-field
-                            v-model="filtro.Email"
-                            label="E-mail"
-                            :disabled="!filtro.CheckEmail || loading">
-                        </v-text-field>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col cols="2">
-                        <v-checkbox
-                            v-model="filtro.CheckTelefono"
-                            :disabled="loading"
-                            prepend-icon="phone">
-                        </v-checkbox>
-                    </v-col>
-                    <v-col cols="10">
-                        <v-text-field
-                            v-model="filtro.Telefono"
-                            label="Teléfono"
-                            :disabled="!filtro.CheckTelefono || loading">
-                        </v-text-field>
                     </v-col>
                 </v-row>
             </v-container>
@@ -231,33 +200,23 @@ export default {
                 Email:'',
                 Sede: '',
                 Estado: '',
+                Categoria: '',
                 CheckFecha: false,
                 CheckEmail: false,
                 CheckSede: false,
                 CheckEstado: false,
+                CheckCategoria: false,
                 CheckActualizadoEn: false,
             },
-            estados:[
-                { "id": "asistio_primera_cita", "nombre": "Asiste a primera cita" }, 
-                { "id": "interesado", "nombre": "Interesado" }, 
-                { "id": "agendado_primera_vez", "nombre": "Agendado por primera vez" }, 
-                { "id": "esperando_segunda_vez", "nombre": "Esperando segunda vez" }, 
-                { "id": "registro_completo", "nombre": "Registro completo" }, 
-                { "id": "errado", "nombre": "Errado" }, 
-                { "id": "registro_incompleto", "nombre": "Registro incompleto" }
-            ],
-            contactados:[
-                { "id": "asignado", "nombre": "Asignado a agente" },
-                { 'id': "pendientes", "nombre": 'Pendientes'},
-                { "id": "sin_solicitante", "nombre": "Sin solicitante" },
-                { "id": "no_contestados", "nombre": "No contestados" },
-                { "id": "todos", "nombre": "Todos" }, 
-            ],
+            estados:{},
+            llamadas_estados: [],
+            categorias: ['Convenio', 'Digital', 'Examen', 'Referido', 'Walk-In']
         }
     },
     methods: {
         ...mapActions({
             listarSedes: 'sedes/fetchLista',
+            listarEstados: 'listado/fetchListaLlamadas',
         }),
         ...mapMutations({
             setInfo: 'setInfo',
@@ -377,10 +336,27 @@ export default {
         },
         sesceleccionarUno(p, s) {
             if( this.filtro[p] ) this.filtro[s] = false;
+        },
+        traerEstados() {
+            this.listarEstados()
+            .then(result => {
+                this.estados = result;
+                console.log(this.estados)
+                this.llamadas_estados = [];
+                if (this.estados && this.estados.llamadas) {
+                    this.llamadas_estados = this.estados.llamadas;
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            }).finally(() => {
+
+            });
         }
     },
     mounted() {
-      this.traerSedes()
+      this.traerSedes();
+      this.traerEstados();
     },
     watch: {
         dateFrom (val) {

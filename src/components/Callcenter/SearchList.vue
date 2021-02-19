@@ -41,12 +41,6 @@
                     </div>
                 </template>
                 <template v-slot:[`item.action`]="{ item }">
-                    <!-- <v-icon smallclass="mr-2" @click="viewItem(item)">
-                        remove_red_eye
-                    </v-icon> -->
-                    <!-- <v-icon smallclass="mr-2" @click="viewHistory(item)">
-                        info
-                    </v-icon> -->
                 
                     <v-icon v-if="puedeSolicitar(item)" smallclass="mr-2" @click="iniciarSolicitar(item)">
                         phone
@@ -65,24 +59,7 @@
             </v-data-table>
         </v-card>
         <v-dialog v-model="viewDialog" persistent max-width="800px">
-            <v-tabs vertical>
-                <v-tab left>
-                    <v-icon left>phone</v-icon>
-                    
-                </v-tab>
-                <v-tab>
-                    <v-icon left>history</v-icon>
-                    
-                </v-tab>
-
-                <v-tab-item>
-                    <CallcenterRegistrarLlamada :lead_id="leadIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada>
-                </v-tab-item>
-                <v-tab-item>
-                    <CallcenterHistorico :btnCerrar="false" :lead_id="leadIdDialog" @cerrar="cerrarHistory" @copiarDatoParent="copiarDato"></CallcenterHistorico>
-                </v-tab-item>
-            </v-tabs>
-
+            <CallcenterRegistrarLlamada :lead_id="leadIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada>
         </v-dialog>
     </div>
 </template>
@@ -90,7 +67,6 @@
 <script>
 import {mapState, mapActions, mapMutations} from 'vuex';
 import CallcenterRegistrarLlamada from '@/components/Callcenter/CallcenterRegistrarLlamada'
-import CallcenterHistorico from '@/components/Callcenter/CallcenterHistorico'
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
 
@@ -99,8 +75,7 @@ Vue.use(VueClipboard)
 export default {
     name: 'SearchList',
     components: {
-      CallcenterRegistrarLlamada,
-      CallcenterHistorico
+      CallcenterRegistrarLlamada
     },
     data () {
         return {
@@ -198,18 +173,6 @@ export default {
       cerrarDialog(){
           this.viewDialog = false;
           this.leadSeleccionado = null
-      },
-      cerrarHistory(){
-          this.viewDialogHistorico = false;
-          this.leadSeleccionado = null
-      },
-      viewHistory(item) {
-          this.loading = true;
-          this.fetchDetalle({id:item._id}).finally(()=>{
-              this.loading = false;
-              this.viewDialogHistorico = true;
-              this.leadSeleccionado = item
-          });
       },
       presentDate(value){
           return this.$moment(value).format('DD-MM-YYYY h:mm a')

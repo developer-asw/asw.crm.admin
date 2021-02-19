@@ -7,12 +7,15 @@ import orientadores from '@/modules/orientadores';
 import agenda from '@/modules/agenda';
 import sedes from '@/modules/sedes';
 import callcenter from '@/modules/callcenter';
+import recepcionista from '@/modules/recepcion';
 import callcenter_coordinator from '@/modules/callcenter_coordinator';
+import contact from '@/modules/contact';
 import callcenter_admisiones from '@/modules/callcenter_admisiones';
 import crm from '@/modules/crm';
 import listado from '@/modules/listado';
 import reportes from '@/modules/reportes';
 import dashboard from '@/modules/dashboard';
+import consultar from '@/modules/consultar';
 
 Vue.use(Vuex)
 
@@ -125,12 +128,15 @@ const store = new Vuex.Store({
     agenda,
     callcenter,
     callcenter_coordinator,
+    contact,
     callcenter_admisiones,
     sedes,
     crm,
     listado,
     reportes,
     dashboard,
+    consultar,
+    recepcionista,
   }
 })
 

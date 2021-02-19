@@ -14,14 +14,40 @@
             </v-toolbar-items>
         </v-toolbar>
         <v-card>
+            <v-card-title>
+                <!-- <v-select v-model="payload.prioridad" :items="prioridad" label="Prioridad" item-text="text" item-value="value" :disabled="loading"></v-select>
+                <v-select v-model="payload.estado" :items="llamadas_estados" label="Estados" item-text="text" item-value="value" :disabled="loading"></v-select> -->
+                <!-- <v-select v-model="payload.limit" :items="limits" item-text="text" item-value="value" :disabled="loading"></v-select> -->
+                <!-- <v-radio-group v-model="payload.tipo" row>
+                    <v-radio label="Teléfono" value="telefono"></v-radio>
+                    <v-radio label="E-mail" value="email"></v-radio>
+                    <v-radio label="Nombre" value="nombre"></v-radio>
+                </v-radio-group>-->
+                <v-spacer></v-spacer>
+                <v-text-field
+                    v-model="payload.search"
+                    append-icon="search"
+                    clearable
+                    label="Search"
+                    single-line
+                    hide-details
+                    class="pa-0 ma-0">
+                </v-text-field> 
+            </v-card-title>
             <v-data-table
                 :headers="headers"
                 :items="lista"
+                :search="payload.search"
                 :loading="loading"
                 loading-text="Loading... Please wait"
                 class="elevation-1">
-                <template v-slot:[`item.ultima_llamada.fecha_solicitado`]="{ item }">
-                    <span v-if="item.ultima_llamada && item.ultima_llamada.fecha_solicitado">{{presentDate(item.ultima_llamada.fecha_solicitado)}}</span>
+                <template v-slot:[`item.ultima_llamada.fecha`]="{ item }">
+                    <span title="Asignado" v-if="item.ultima_llamada && item.ultima_llamada.fecha_asignado">{{presentDate(item.ultima_llamada.fecha_asignado)}}</span>
+                    <span title="Solicitado" v-else-if="item.ultima_llamada && item.ultima_llamada.fecha_solicitado">{{presentDate(item.ultima_llamada.fecha_solicitado)}}</span>
+                </template>
+                <template v-slot:[`item.ultima_llamada.usuario`]="{ item }">
+                    <span v-if="item.ultima_llamada && item.ultima_llamada.agente">{{item.ultima_llamada.agente.nombre}}</span>
+                    <span v-else-if="item.ultima_llamada && item.ultima_llamada.solicitante">{{item.ultima_llamada.solicitante.nombre}}</span>
                 </template>
                 <template v-slot:[`item.full_name`]="{ item }">
                     <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
@@ -39,6 +65,20 @@
                         <span v-else-if="item.ultimo_origen.canal">{{item.ultimo_origen.canal}}</span>
                         <span v-else-if="item.ultimo_origen.referer">{{item.ultimo_origen.referer}}</span>
                     </div>
+                </template>
+                <template v-slot:[`item.prioridad`]="{ item }">
+                    <v-icon v-if="item.prioridad == 0" smallclass="mr-2">
+                        mark_email_unread
+                    </v-icon>
+                    <v-icon v-else-if="item.prioridad == 1" smallclass="mr-2">
+                        mark_chat_unread
+                    </v-icon>
+                    <v-icon v-else-if="item.prioridad == 2" smallclass="mr-2">
+                        mark_email_read
+                    </v-icon>
+                    <v-icon v-else smallclass="mr-2">
+                        pending
+                    </v-icon>
                 </template>
                 <template v-slot:[`item.action`]="{ item }">
                     <!-- <v-icon smallclass="mr-2" @click="viewItem(item)">
@@ -65,24 +105,7 @@
             </v-data-table>
         </v-card>
         <v-dialog v-model="viewDialog" persistent max-width="800px">
-            <v-tabs vertical>
-                <v-tab left>
-                    <v-icon left>phone</v-icon>
-                    
-                </v-tab>
-                <v-tab>
-                    <v-icon left>history</v-icon>
-                    
-                </v-tab>
-
-                <v-tab-item>
-                    <CallcenterRegistrarLlamada :lead_id="leadIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada>
-                </v-tab-item>
-                <v-tab-item>
-                    <CallcenterHistorico :btnCerrar="false" :lead_id="leadIdDialog" @cerrar="cerrarHistory" @copiarDatoParent="copiarDato"></CallcenterHistorico>
-                </v-tab-item>
-            </v-tabs>
-
+            <CallcenterRegistrarLlamada :lead_id="leadIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada>
         </v-dialog>
     </div>
 </template>
@@ -90,7 +113,6 @@
 <script>
 import {mapState, mapActions, mapMutations} from 'vuex';
 import CallcenterRegistrarLlamada from '@/components/Callcenter/CallcenterRegistrarLlamada'
-import CallcenterHistorico from '@/components/Callcenter/CallcenterHistorico'
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
 
@@ -99,43 +121,52 @@ Vue.use(VueClipboard)
 export default {
     name: 'CallcenterList',
     components: {
-      CallcenterRegistrarLlamada,
-      CallcenterHistorico
+      CallcenterRegistrarLlamada
     },
     data () {
         return {
             headers: [
-                { text: 'Contactar en', value: 'ultima_llamada.fecha_solicitado' },
+                { text: '', value: 'prioridad' },
+                { text: 'Contactar en', value: 'ultima_llamada.fecha' },
                 { text: 'Nombre', value: 'full_name' },
-                // { text: 'Móvil', value: 'uid' },
                 { text: 'Email', value: 'email' },
                 { text: 'Sede', value: 'sede' },
-                { text: 'Ultimo Contacto', value: 'ultima_llamada.solicitante.nombre' },
-                // { text: 'Agente Actual', value: 'ultima_llamada.agente.nombre' },
+                { text: 'Ultimo Contacto', value: 'ultima_llamada.usuario' },
                 { text: 'Origen', value: 'ultimo_origen' },
-                // { text: 'Estudiante', value: 'es_estudiante' },
+                { text: 'Estado', value: 'ultima_llamada_estado' },
                 { text: 'Actions', value: 'action', sortable: false }
             ],
             viewDialog : false,
-            viewDialogHistorico: false,
             loading: false,
             rowsPerPage : [100],
             search: '',
             payload: {},
-            leadSeleccionado:null
+            leadSeleccionado:null,
+            prioridad:[ 
+                { text: 'Todos', value: null }, 
+                { text: 'Sin llamar', value:0 }, 
+                { text: 'Contactar nuevamente', value : 1 } 
+            ],
+            llamadas_estados:[],
+            estados: {},
+            limits:[
+                { text: '100', value: 100 }, 
+                { text: '1000', value: 1000 }, 
+                { text: '10000', value : 10000 } 
+            ]
         }
     },
     props : {
         query: Object,
     },
     mounted() {
-        this.actualizar()
+        this.actualizar();
     },
     methods:{
       ...mapActions({
-          fetchLista: 'callcenter/fetchLista',
-          solicitar: 'callcenter/solicitar',
-          fetchDetalle: 'leads/fetchDetalle',
+            fetchLista: 'callcenter/fetchLista',
+            solicitar: 'callcenter/solicitar',
+            fetchDetalle: 'leads/fetchDetalle',
       }),
       ...mapMutations({
           reemplazar: 'callcenter/replaceListaElement',
@@ -143,7 +174,7 @@ export default {
       }),
       actualizar(){
           this.loading = true;
-          this.fetchLista()
+          this.fetchLista(this.payload)
           .finally(() => {
               this.loading = false;
           })
@@ -198,18 +229,6 @@ export default {
       cerrarDialog(){
           this.viewDialog = false;
           this.leadSeleccionado = null
-      },
-      cerrarHistory(){
-          this.viewDialogHistorico = false;
-          this.leadSeleccionado = null
-      },
-      viewHistory(item) {
-          this.loading = true;
-          this.fetchDetalle({id:item._id}).finally(()=>{
-              this.loading = false;
-              this.viewDialogHistorico = true;
-              this.leadSeleccionado = item
-          });
       },
       presentDate(value){
           return this.$moment(value).format('DD-MM-YYYY h:mm a')

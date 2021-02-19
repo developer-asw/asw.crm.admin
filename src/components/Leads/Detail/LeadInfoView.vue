@@ -1,0 +1,238 @@
+<template>
+<!-- dark -->
+    <v-simple-table dense class="blue lighten-5">
+        <template v-slot:default>
+            <tbody v-if="lead">
+                <tr>
+                    <td><b>Nombre: </b></td>
+                    <td>{{ lead.full_name }}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><b>E-Mail: </b></td>
+                    <td>{{ lead.email }}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><b>Teléfono: </b></td>
+                    <td>{{ lead.movil }}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><b>Sede: </b></td>
+                    <td>
+                        <span v-if="ver_sede">{{lead.sede_full  ? lead.sede_full.nombre:""}}</span>
+                        <v-select v-else v-model="lead.sede_id" :items="sedes" item-text="nombre" item-value="id">
+                            <template slot="item" slot-scope="data">
+                                {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.sede }}
+                            </template>
+                            <template slot="selection" slot-scope="data">
+                                {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.sede }}
+                            </template>
+                        </v-select>
+                    </td>
+                    <td class="text-right">
+                        <v-icon v-if="!ver_sede" @click="actualizarSede()" small right>save</v-icon>
+                        <v-icon v-if="ver_sede" @click="editarSede()" small right>edit</v-icon>
+                        <v-icon v-else @click="editarSede()" small right>cancel</v-icon>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Programa de interes: </b></td>
+                    <td>
+                        <span v-if="ver_programa_interes">{{lead.programa_interes}}</span>
+                        <v-select v-else v-model="lead.programa_interes" :items="listado.programaInteres" item-text="title" item-value="value">
+                        </v-select>
+                    </td>
+                    <td class="text-right">
+                        <v-icon v-if="!ver_programa_interes" @click="actualizarProgramaInteres()" small right>save</v-icon>
+                        <v-icon v-if="ver_programa_interes" @click="editarProgramaInteres()" small right>edit</v-icon>
+                        <v-icon v-else @click="editarProgramaInteres()" small right>cancel</v-icon>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Ciudad: </b></td>
+                    <td>{{ lead.ciudad }}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><b>Cómo llego: </b></td>
+                    <td>{{ lead.como_llego }}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><b>Cómo se entero: </b></td>
+                    <td>{{ lead.como_se_entero }}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><b>Comentarios Pagina Web: </b></td>
+                    <td>{{ lead.comentarios }}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><b>Estado: </b></td>
+                    <td>{{ lead.ultima_llamada_estado }}</td>
+                    <td></td>
+                </tr>
+                
+            </tbody>
+            <tbody v-else>
+                <tr>
+                    <td colspan="2">
+                        <v-icon @click="actualizar" right>refresh</v-icon>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        ParangaritirimicuR
+                    </td>
+                </tr>
+
+            </tbody>
+            
+        </template>
+    </v-simple-table>
+</template>
+
+<script>
+
+import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';//,,
+
+export default {
+    name: 'LeadInfoView',
+    data: () => ({
+        listado: [],
+        ver_sede: true,
+        ver_programa_interes: true,
+        lead_new: null,
+    }),
+    props: {
+        lead_id: String,
+        setLead: Object,
+        setSedes: Array,
+    },
+    mounted() {
+        this.verificar();
+        this.traerOrigenes();
+    },
+    methods: {
+        ...mapActions({
+            fetchDetalle: 'leads/fetchDetalle',
+            listarOrigenes: 'listado/fetchListaLeads',
+            sedeUpdate: 'leads/actualizarSede',
+            programaInteresUpdate: 'leads/actualizarProgramaInteres',
+        }),
+        ...mapMutations({
+            setInfo: 'setInfo',
+            setError: 'setError',
+        }),
+        traerOrigenes() {
+            this.listarOrigenes()
+                .then(result => {
+                    this.listado = result;
+                })
+                .catch(error => {
+                    console.log(error)
+                }).finally(() => {
+
+                });
+        },
+        editarSede() {
+            this.ver_sede = !this.ver_sede;
+        },
+        editarProgramaInteres() {
+            this.ver_programa_interes = !this.ver_programa_interes;
+        },
+        actualizarSede() {
+            this.procesando = true;
+            const dato = { id: this.lead._id, sede:this.lead.sede_id };
+            this.sedeUpdate(dato)
+                .then(result => {
+                    if (result && result.codigo == 1) {
+                        this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                        this.lead.sede_full = result.dato;
+                        this.lead.sede_id = this.lead.sede_id;
+                        this.ver_sede = true;
+                    }else{
+                        this.setError(result)
+                    }
+                })
+                .catch(error => {
+                    this.setError(error)
+                    console.log(error)
+                }).finally(() => {
+                    this.procesando = false;
+                });
+        },
+        actualizarProgramaInteres() {
+            this.procesando = true;
+            const dato = { id: this.lead._id, programa_interes:this.lead.programa_interes };
+            this.programaInteresUpdate(dato)
+                .then(result => {
+                    console.log(result)
+                    if (result && result.codigo == 1) {
+                        this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                        this.lead.sede_full = result.dato;
+                        this.lead.sede_id = this.lead.sede_id;
+                        this.ver_programa_interes = true;
+                    }else{
+                        this.setError(result)
+                    }
+                })
+                .catch(error => {
+                    this.setError(error)
+                    console.log(error)
+                }).finally(() => {
+                    this.procesando = false;
+                });
+        },
+        verificar() {
+            this.viewItem()
+        },
+        viewItem() {
+            this.loading = true;
+            this.fetchDetalle({id:this.lead_id}).then(result => {
+                if (result && result.datos) {
+                    this.lead = result.datos;
+                }
+            })
+            .finally(() => {
+                this.loading = false;
+            })  
+        },
+        actualizar(){
+            this.viewItem();
+        }
+    },
+    computed: {
+        ...mapState({
+            error: state => state.error,
+        }),
+        ...mapGetters({
+            detalle: 'leads/getDetalle',
+        }),
+        getTitle() {
+            return 'Registro de llamada'
+        },
+        sedes() {
+            return this.setSedes
+        },
+        lead: {
+            get: function() { return this.lead_new ? this.lead_new : this.setLead } ,
+            set: function(newValue) {
+                this.lead_new = newValue;
+            }
+        }
+
+    }
+}
+</script>
+
+<style lang="scss">
+    tbody {
+        tr:hover {
+            background-color: transparent !important;
+        }
+    }
+</style>

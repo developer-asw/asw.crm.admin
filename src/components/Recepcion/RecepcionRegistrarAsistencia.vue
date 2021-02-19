@@ -9,13 +9,19 @@
                     <LeadInfoView :lead_id="lead_id" :setLead="lead" :setSedes="sedes"></LeadInfoView>
 				</v-col>
 			</v-row>
-            <v-row class="mt-10">
-                <LeadHistoricView :lead_id="lead_id" :ver_detalles="false" :collapse="true"></LeadHistoricView>
-            </v-row>
             <v-form>
                 <v-row>
                     <v-col cols="12" md="12">
                         <v-select v-model="estado" :items="llamadas_estados" label="Estado"></v-select>
+                    </v-col>
+                </v-row>
+                <v-row v-if="estado == 'asistido'">
+                    <v-col cols="12" md="6">
+                        <v-select v-model="resolucion.sede" :items="sedes" label="Sede Asitencia"
+                            item-text="text" item-value="id">
+                        </v-select>
+                        <v-select v-model="resolucion.orientador" :items="orientadores" label="Orientador Asignado" item-text="nombre_completo" item-value="id">
+                        </v-select>
                     </v-col>
                 </v-row>
                 <v-row v-if="estado == 'agendar_cita'">
@@ -44,10 +50,10 @@
                     </v-col>
                 </v-row>
                 <v-row v-if="estado == 'agendar_llamada'">
-                    <v-col cols="12" md="6" sm="6">
+                    <v-col cols="12" md="6">
 						<v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
                     </v-col>
-                    <v-col cols="12" md="6"  sm="6"> 
+                    <v-col cols="12" md="6">
 						<v-time-picker v-model="resolucion.hora_proxima_llamada" full-width>
 						</v-time-picker>
                     </v-col>
@@ -73,10 +79,10 @@
                     <v-col cols="12">
                         Próxima llamada:
                     </v-col>
-                    <v-col cols="12" md="6" sm="6">
+                    <v-col cols="12" md="6">
                         <v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
                     </v-col>
-                    <v-col cols="12" md="6" sm="6">
+                    <v-col cols="12" md="6">
                         <v-time-picker v-model="resolucion.hora_proxima_llamada" full-width>
                         </v-time-picker>
                     </v-col>
@@ -85,16 +91,16 @@
                 </v-row>
 
                 <v-row v-if="estado == 'pago_pendiente'">
-                    <v-col cols="12" md="6" sm="6">
+                    <v-col cols="12" md="6">
                         <v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
                     </v-col>
-                    <v-col cols="12" md="6" sm="6">
-                        <v-time-picker v-model="resolucion.hora_proxima_llamada" full-width></v-time-picker>
+                    <v-col cols="12" md="6">
+                        <v-time-picker v-model="resolucion.hora_proxima_llamada" full-width>
+                        </v-time-picker>
                     </v-col>
 
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
                 </v-row>
-
             </v-form>
 
         </v-card-text>
@@ -108,13 +114,11 @@
 <script>
     import {mapState,mapGetters,mapActions,mapMutations} from 'vuex';
     import LeadInfoView from '@/components/Leads/Detail/LeadInfoView'
-    import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
 
     export default {
-        name: 'CallcenterRegistrarLlamada',
+        name: 'RecepcionRegistrarAsistencia',
         components:{
-            LeadInfoView,
-            LeadHistoricView
+            LeadInfoView
         },
         data: () => ({
             date: new Date().toISOString().substr(0, 10),
@@ -138,20 +142,25 @@
             },
             fechas: [],
             sedes: [],
+            orientadores: [],
         }),
 
         props: {
             lead_id: String,
+            sede_id: Number
         },
         mounted() {
+            this.usuarioLogueado();
             this.traerDisponibilidad();
             this.traerEstados();
+            this.reiniciar();
         },
         methods: {
             ...mapActions({
+                usuarioLogueado: 'consultar/usuarioLogueado',
                 fetchDisponibilidad: 'agenda/fetchDisponibilidad',
                 crear: 'leads/crearCita',
-                cerrarLlamada: 'callcenter/cerrar',
+                cerrarCita: 'recepcionista/cerrar',
                 listarEstados: 'listado/fetchListaLlamadas',
             }),
             ...mapMutations({
@@ -159,7 +168,7 @@
             }),
             reiniciar() {
                 this.resolucion = {
-					sede: null,
+					sede: this.sede_id ? this.sede_id : this.getSedeUsuario(),
 					id: null,
 					fecha_cita: null,
 					hora_cita: null,
@@ -178,7 +187,7 @@
                 this.resolucion.id = this.lead_id;
                 this.resolucion.solucion = this.estado;
 
-                this.cerrarLlamada(this.resolucion)
+                this.cerrarCita(this.resolucion)
                 .then((result)=>{
 					if(result.result=='ok'){
 						this.setInfo('Proceso exitoso.')
@@ -212,6 +221,7 @@
                     .then(result => {
                         this.fechas = result.resultSet.fechas
                         this.sedes = result.resultSet.sedes
+                        this.orientadores = result.resultSet.orientadores
                     })
                     .catch(error => {
                         console.log(error)
@@ -226,7 +236,7 @@
                         this.estados = result;
                         this.llamadas_estados = [];
                         if (this.estados && this.estados.llamadas) {
-                            this.llamadas_estados = this.estados.llamadas.filter(x => (x.tipo && x.tipo == 'call') || !x.tipo)
+                            this.llamadas_estados = this.estados.llamadas.filter(x => (x.tipo && x.tipo == 'recepcion') || !x.tipo)
                         }
                     })
                     .catch(error => {
@@ -234,17 +244,25 @@
                     }).finally(() => {
 
                     });
+            },
+            getSedeUsuario(){
+                if(this.user && this.user.data) {
+                    return this.user.data.sede_id;
+                }else{
+                    return null;
+                }
             }
         },
         computed: {
             ...mapState({
+                user: state => state.consultar.user,  
                 error: state => state.error,
             }),
             ...mapGetters({
                 detalle: 'leads/getDetalle',
             }),
             getTitle() {
-                return 'Registro de llamada'
+                return 'Registro de asistencia'
             },
             horas() {
                 if (this.resolucion.fecha_cita) {
@@ -269,7 +287,7 @@
 					if(this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada){
 						return true
 					}
-				}else if(this.estado=='no_contesta' || this.estado == 'venta_telefonica'){
+				}else if(this.estado=='no_contesta' || this.estado == 'venta_telefonica' || this.estado == 'asistido' || this.estado == 'ausencia'){
 					return true
 				}else if(this.estado=='errado'){
                     if(this.resolucion.errado_motivo && this.resolucion.errado_motivo.length > 0){

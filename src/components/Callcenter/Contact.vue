@@ -21,9 +21,8 @@
                 <v-spacer></v-spacer>
                 <v-text-field
                     v-model="payload.search"
-                    append-icon="search"
                     clearable
-                    :append-outer-icon="payload.search ? 'send' : ''"
+                    :append-outer-icon="payload.search ? 'search' : ''"
                     @click:append-outer="preFiltro"
                     label="Search"
                     single-line
@@ -130,11 +129,11 @@ Vue.use(VueClipboard)
     },
     
     mounted () {
-      //this.preFiltro()
+      // this.preFiltro()
     },
     methods:{
       ...mapActions({
-        filtroCordinador: 'callcenter_coordinator/filtroCordinador',
+        filtro: 'contact/filtro',
         fetchDetalle: 'leads/fetchDetalle',
       }),
       ...mapMutations({
@@ -145,7 +144,7 @@ Vue.use(VueClipboard)
       },
       filtrar(filtro){
         this.loading = true;
-        this.filtroCordinador(filtro)
+        this.filtro(filtro)
         .finally(()=>{
           this.loading = false;
         })
@@ -184,8 +183,8 @@ Vue.use(VueClipboard)
     },
     computed: {
       ...mapState({
-        lista: state => state.callcenter_coordinator.lista,
-        pagination: state => state.callcenter_coordinator.pagination,
+        lista: state => state.contact.lista,
+        pagination: state => state.contact.pagination,
       }),
       getTitle(){
         return 'Contact'

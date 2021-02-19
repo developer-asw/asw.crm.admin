@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 const state = {
     lista: [],
+    historial: [],
     pagination:{
         total : 0,
         page : 1,
@@ -44,12 +45,12 @@ const actions = {
             })
         });
     },
-    fetchDetalleSeguimiento:({commit},data) => {
+    fetchLeadHistorial:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-            Vue.http.post('lead/detalleSeguimiento',data).then(
+            Vue.http.post('lead/historial',data).then(
                 response =>{
-                    commit('setDetalle',response.data.datos);
+                    commit('setHistorial',response.data.datos);
                     resolve(response.data)
                 }
             ).catch(error=>{
@@ -105,26 +106,6 @@ const actions = {
             })
         });
     },
-    consultarHistoricos:({ commit }, data) => {
-        data.path = window.location.hash;
-        if (data.path.includes("/")){
-            data.path = data.path.substring(data.path.indexOf("/")+1,data.path.length)
-        }
-        commit('startProcessing', null, { root: true });
-        return new Promise((resolve, reject) => {
-            Vue.http.post('lead/historico',data).then(
-                response =>{
-                    commit('setLista',response.data.datos);
-                    resolve(response.data)
-                }
-            ).catch(error=>{
-                commit('setError', error, { root: true });
-                reject(error)
-            }).finally(()=>{
-                commit('stopProcessing', null, { root: true });
-            })
-        });
-    },
     buscarTelefono({ commit }, telefono) {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
@@ -156,12 +137,47 @@ const actions = {
                 commit('stopProcessing', null, { root: true });
             })
         });
+    },
+    actualizarSede:({commit}, dato) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            console.log(dato);
+            Vue.http.patch(`lead/sede/${dato.id}`, dato).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+    actualizarProgramaInteres:({commit}, dato) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            console.log(dato);
+            Vue.http.patch(`lead/programa_interes/${dato.id}`, dato).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
     }
 };
 
 const getters = {
     getDetalle: (state) => (id) =>{
         return state.detalles[id]
+    },
+    getHistorial: (state) => () =>{
+        return state.historial
     }
 };
 
@@ -183,6 +199,9 @@ const mutations = {
     },
     setDetalle: (state, detalle) => {
         state.detalles[detalle._id] = detalle
+    },
+    setHistorial: (state, datos) => {
+        state.historial = datos
     },
     restart: (state) => {
         state.lista = []
