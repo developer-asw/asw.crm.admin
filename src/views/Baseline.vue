@@ -39,7 +39,7 @@
                             <v-icon>dashboard</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title>Statistics</v-list-item-title>
+                            <v-list-item-title>Dashboard</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
 <!-- 
@@ -234,7 +234,7 @@
 
         <v-footer color="indigo" class="white--text text-center">
             <v-card-text>
-                American School Way &copy; 2020 - v.1.2.6
+                American School Way &copy; 2020 - v.1.3.0
             </v-card-text>
         </v-footer>
         
