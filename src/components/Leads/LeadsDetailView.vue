@@ -80,7 +80,7 @@
                     <!-- </v-card-actions>  -->
                 </v-row>
                 <v-row class="mt-10">
-                    <LeadHistoricView :lead_id="leadId" :ver_detalles="true"></LeadHistoricView>
+                    <LeadHistoricView :key="lead_id" :lead_id="leadId" :ver_detalles="true"></LeadHistoricView>
                 </v-row>
             </v-card-text>
         </v-card>

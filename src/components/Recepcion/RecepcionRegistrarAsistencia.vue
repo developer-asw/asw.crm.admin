@@ -4,9 +4,9 @@
             <span class="headline">{{getTitle}}</span>
         </v-card-title>
         <v-card-text>
-			<v-row v-if="lead">
+			<v-row>
 				<v-col cols="12" md="12">
-                    <LeadInfoView :lead_id="lead_id" :setLead="lead" :setSedes="sedes"></LeadInfoView>
+                    <LeadInfoView :key="lead_id" :lead_id="lead_id" :setSedes="sedes"></LeadInfoView>
 				</v-col>
 			</v-row>
             <v-form>

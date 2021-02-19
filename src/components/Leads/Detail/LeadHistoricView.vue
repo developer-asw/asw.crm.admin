@@ -150,6 +150,7 @@ export default {
             consultar: 'leads/fetchLeadHistorial',
         }),
         traerHistorial() {
+            if (this.lead_id)
             this.consultar({id:this.lead_id})
                 .then(result => {
                     this.historial = result.datos;

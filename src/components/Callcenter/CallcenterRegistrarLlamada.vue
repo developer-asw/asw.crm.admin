@@ -4,13 +4,13 @@
             <span class="headline">{{getTitle}}</span>
         </v-card-title>
         <v-card-text>
-			<v-row v-if="lead">
+			<v-row>
 				<v-col cols="12" md="12">
-                    <LeadInfoView :lead_id="lead_id" :setLead="lead" :setSedes="sedes"></LeadInfoView>
+                    <LeadInfoView :key="lead_id" :lead_id="lead_id" :setSedes="sedes"></LeadInfoView>
 				</v-col>
 			</v-row>
             <v-row class="mt-10">
-                <LeadHistoricView :lead_id="lead_id" :ver_detalles="false" :collapse="true"></LeadHistoricView>
+                <LeadHistoricView :key="lead_id" :lead_id="lead_id" :ver_detalles="false" :collapse="true"></LeadHistoricView>
             </v-row>
             <v-form>
                 <v-row>

@@ -2,7 +2,7 @@
 <!-- dark -->
     <v-simple-table dense class="blue lighten-5">
         <template v-slot:default>
-            <tbody v-if="lead">
+            <tbody>
                 <tr>
                     <td><b>Nombre: </b></td>
                     <td>{{ lead.full_name }}</td>
@@ -75,22 +75,10 @@
                     <td>{{ lead.ultima_llamada_estado }}</td>
                     <td></td>
                 </tr>
-                
+                <!-- <td colspan="2">
+                    <v-icon @click="actualizar" right>refresh</v-icon>
+                </td> -->
             </tbody>
-            <tbody v-else>
-                <tr>
-                    <td colspan="2">
-                        <v-icon @click="actualizar" right>refresh</v-icon>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        ParangaritirimicuR
-                    </td>
-                </tr>
-
-            </tbody>
-            
         </template>
     </v-simple-table>
 </template>
@@ -105,11 +93,10 @@ export default {
         listado: [],
         ver_sede: true,
         ver_programa_interes: true,
-        lead_new: null,
+        lead: {},
     }),
     props: {
         lead_id: String,
-        setLead: Object,
         setSedes: Array,
     },
     mounted() {
@@ -118,7 +105,7 @@ export default {
     },
     methods: {
         ...mapActions({
-            fetchDetalle: 'leads/fetchDetalle',
+            fetchLead: 'leads/fetchLead',
             listarOrigenes: 'listado/fetchListaLeads',
             sedeUpdate: 'leads/actualizarSede',
             programaInteresUpdate: 'leads/actualizarProgramaInteres',
@@ -191,9 +178,10 @@ export default {
             this.viewItem()
         },
         viewItem() {
-            this.loading = true;
-            this.fetchDetalle({id:this.lead_id}).then(result => {
+            if (this.lead_id)
+            this.fetchLead({id:this.lead_id}).then((result) => {
                 if (result && result.datos) {
+                    console.log(this.lead)
                     this.lead = result.datos;
                 }
             })
@@ -218,12 +206,9 @@ export default {
         sedes() {
             return this.setSedes
         },
-        lead: {
-            get: function() { return this.lead_new ? this.lead_new : this.setLead } ,
-            set: function(newValue) {
-                this.lead_new = newValue;
-            }
-        }
+        // lead() {
+        //     return this.detalle(this.lead_id)
+        // }
 
     }
 }
