@@ -49,7 +49,7 @@
             AGENTE: <br />{{ getAgente }}
           </v-col>
           <v-col cols="12" sm="6" md="4" lg="3">
-            ESTADO: <br />{{ lead.ultima_llamada_estado }}
+            ESTADO: <br />{{ lead.ultima_llamada_estado ? lead.ultima_llamada_estado : getEstado(lead.estado) }}
           </v-col>
           <v-col cols="12" sm="6" md="4" lg="3">
             COMENTARIOS PAGINA WEB: <br />{{ lead.comentarios }}
@@ -330,6 +330,11 @@ export default {
         }
       }
       return this.lead.agente;
+    },
+    getEstado(value) {
+        let result = this.listado.find(x => x.value == value);
+        if (result) return result.text;
+        return value;
     },
     getObservacion() {
       if (this.lead.observacion) {
