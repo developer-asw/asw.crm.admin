@@ -165,10 +165,12 @@ export default {
     llamada: {
       show: false,
     },
+    estados: {},
   }),
   mounted() {
     this.traerLead();
     this.traerOrigenes();
+    this.traerEstados();
   },
   methods: {
     ...mapActions({
@@ -176,6 +178,7 @@ export default {
       listarOrigenes: "listado/fetchListaLeads",
       solicitar: "callcenter/solicitar",
       fetchDetalle: "leads/fetchDetalle",
+      listarEstados: 'listado/fetchListaLlamadas',
     }),
     ...mapMutations({
       setInfo: "setInfo",
@@ -298,6 +301,24 @@ export default {
           this.loading = false;
         });
     },
+    getEstado(value) {
+        if (this.estados && this.estados.llamadas) {
+            let result = this.estados.llamadas.find(x => x.value == value);
+            if (result) return result.text;
+        }
+        return value;
+    },
+    traerEstados() {
+        this.listarEstados()
+            .then(result => {
+                this.estados = result;
+            })
+            .catch(error => {
+                console.log(error)
+            }).finally(() => {
+
+            });
+    }
     ////////////LLAMADAS
   },
   computed: {
@@ -330,11 +351,6 @@ export default {
         }
       }
       return this.lead.agente;
-    },
-    getEstado(value) {
-        //let result = this.listado.find(x => x.value == value);
-        //if (result) return result.text;
-        return value;
     },
     getObservacion() {
       if (this.lead.observacion) {
