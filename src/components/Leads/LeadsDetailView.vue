@@ -332,8 +332,8 @@ export default {
       return this.lead.agente;
     },
     getEstado(value) {
-        let result = this.listado.find(x => x.value == value);
-        if (result) return result.text;
+        //let result = this.listado.find(x => x.value == value);
+        //if (result) return result.text;
         return value;
     },
     getObservacion() {
