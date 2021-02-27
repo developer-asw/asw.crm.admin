@@ -140,7 +140,7 @@
                         </v-checkbox>
                     </v-col>
                     <v-col cols="10">
-                        <v-select v-model="filtro.Estado" :items="llamadas_estados" label="Estados" item-text="text" item-value="text" :disabled="!filtro.CheckEstado || loading"
+                        <v-select v-model="filtro.Estado" :items="llamadas_estados" label="Estados" item-text="text" item-value="value" :disabled="!filtro.CheckEstado || loading"
                         multiple chips>
                         </v-select>
                     </v-col>

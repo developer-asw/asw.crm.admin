@@ -97,11 +97,18 @@
 
             </v-form>
 
+            <blockquote v-if="accion">
+                {{accion_mensaje}} <br> ¿Desea crear este nuevo registro?
+            </blockquote>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions v-if="!accion">
             <v-spacer></v-spacer>
             <v-btn v-if="puedeRegistrar" color="red darken-1" text @click="registrar">Registrar</v-btn>
-            
+        </v-card-actions>
+        <v-card-actions v-else>
+            <v-spacer></v-spacer>
+            <v-btn color="gray darken-1" text @click="cerrar">No</v-btn>
+            <v-btn color="red darken-1" text @click="registrarForzado">Si</v-btn>
         </v-card-actions>
     </v-card>
 </template>
@@ -134,10 +141,13 @@
                 descartado_motivo_otro: null,
                 estudiante_motivo: null,
                 estudiante_motivo_otro: null,
-                errado_motivo: null
+                errado_motivo: null,
+                forzar: false,
             },
             fechas: [],
             sedes: [],
+            accion: '',
+            accion_mensaje: '',
         }),
 
         props: {
@@ -170,29 +180,72 @@
                     descartado_motivo_otro: null,
                     estudiante_motivo: null,
                     estudiante_motivo_otro: null,
+                    forzar: false,
                 };
                 this.estado=null;
+                this.accion = '';
+                this.accion_mensaje = '';
             },
             registrar() {
                 this.procesando = true;
                 this.resolucion.id = this.lead_id;
                 this.resolucion.solucion = this.estado;
-
                 this.cerrarLlamada(this.resolucion)
                 .then((result)=>{
+                    this.accion = "";
 					if(result.result=='ok'){
 						this.setInfo('Proceso exitoso.')
 					}
-				})
+				}).catch(error => {
+                    this.accion = "";
+                    if (error.body.error) {
+                        let result = error.body.error.split("@");
+                        if (result && result.length) {
+                            this.accion = result[result.length -1];
+                            this.accion_mensaje = result[0];
+                        } 
+                    }
+                })
                 .finally(() => {
-                    this.reiniciar();
                     this.procesando = false;
-                    this.$emit('cerrar');
-                    this.$emit('actualizar');
+                    if (!this.accion) {
+                        this.cerrar();
+                    }
+                })
+            },
+            registrarForzado() {
+                this.procesando = true;
+                this.resolucion.id = this.lead_id;
+                this.resolucion.solucion = this.estado;
+                this.resolucion.forzar = true;
+                console.log(this.resolucion)
+                this.cerrarLlamada(this.resolucion)
+                .then((result)=>{
+                    this.accion = "";
+					if(result.result=='ok'){
+						this.setInfo('Proceso exitoso.')
+					}
+				}).catch(error => {
+                    this.accion = "";
+                    if (error.body.error) {
+                        let result = error.body.error.split("@");
+                        if (result && result.length) {
+                            this.accion = result[result.length -1];
+                            this.accion_mensaje = result[0];
+                        } 
+                    }
+                })
+                .finally(() => {
+                    this.procesando = false;
+                    if (!this.accion) {
+                        this.cerrar();
+                    }
                 })
             },
             cerrar() {
+                this.reiniciar();
                 this.$emit('cerrar');
+                this.$emit('actualizar');
             },
             formatDate(date) {
                 if (!date) return null

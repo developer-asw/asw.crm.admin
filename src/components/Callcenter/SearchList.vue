@@ -59,7 +59,7 @@
             </v-data-table>
         </v-card>
         <v-dialog v-model="viewDialog" persistent max-width="800px">
-            <CallcenterRegistrarLlamada :lead_id="leadIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada>
+            <CallcenterRegistrarLlamada :key="leadIdDialog" :lead_id="leadIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada>
         </v-dialog>
     </div>
 </template>

@@ -98,14 +98,6 @@
                                 <v-list-item-title>Convenio</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged" link @click="dirigir('/contact')">
-                            <v-list-item-action>
-                                <v-icon>phone_in_talk</v-icon>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                                <v-list-item-title>Contactar</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
                         <!-- && permiso('2BF48DCE') -->
                         <v-list-item v-if="isLogged && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario')" link @click="dirigir('/callcenter_coordinator')">
                             <v-list-item-action>

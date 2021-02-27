@@ -181,7 +181,6 @@ export default {
             if (this.lead_id)
             this.fetchLead({id:this.lead_id}).then((result) => {
                 if (result && result.datos) {
-                    console.log(this.lead)
                     this.lead = result.datos;
                 }
             })

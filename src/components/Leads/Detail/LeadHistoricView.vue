@@ -5,12 +5,17 @@
             <v-row v-if="isCollapse">
                 <v-expansion-panels>
                     <v-expansion-panel>
-                        <v-expansion-panel-header>                        
-                            <v-col cols="8"><h4>HISTORIAL</h4></v-col>
-                            <v-col cols="4" class="text-right"><v-icon @click="traerHistorial" right>refresh</v-icon></v-col>
+                        <v-expansion-panel-header>     
+
+                            <v-col>
+                                <h4>
+                                    HISTORIAL [{{historial && historial.length ? historial[0].accion+" : "+(historial[0].observacion?historial[0].observacion:'') : 'Sin historicos'}}]
+                                </h4>
+                            </v-col>
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
-                            <v-data-table dense
+                            
+                            <v-data-table dense full-width  
                                 v-if="historial && historial.length > 0"
                                 :headers="headerHistorial" 
                                 :items="historial" 
@@ -32,6 +37,22 @@
                                     <v-icon v-else-if="ver_detalles" x-small @click="viewDetail(item)">edit</v-icon>
                                     <v-icon v-else-if="item.tipo == 'llamada'" x-small>call</v-icon>
                                     <v-icon v-else x-small>edit</v-icon>
+                                </template>
+                                
+                                <template v-slot:top>
+                                    <v-toolbar flat>
+                                        <!-- <v-toolbar-title>HISTORIAL</v-toolbar-title> -->
+                                        <v-toolbar-title><v-icon>folder</v-icon></v-toolbar-title>
+                                        <v-divider class="mx-4" inset vertical></v-divider>
+                                        <v-spacer></v-spacer>
+                                        <v-btn
+                                        color="primary"
+                                        dark
+                                        class="mb-2"
+                                        @click="traerHistorial">
+                                        Actualizar
+                                        </v-btn>
+                                    </v-toolbar>
                                 </template>
                             </v-data-table>
                         </v-expansion-panel-content>
@@ -43,14 +64,10 @@
             <v-row v-else>
                 <v-col>
                     <v-row>
-                        <v-col cols="8"><h4>HISTORIAL</h4></v-col>
-                        <v-col cols="4" class="text-right"><v-icon @click="traerHistorial" right>refresh</v-icon></v-col>
-                    </v-row>
-                    <v-row>
 
                         <v-col cols="12">
 
-                            <v-data-table dense
+                            <v-data-table dense full-width  
                                 v-if="historial && historial.length > 0"
                                 :headers="headerHistorial" 
                                 :items="historial" 
@@ -73,6 +90,22 @@
                                     <v-icon v-else-if="item.tipo == 'llamada'" x-small>call</v-icon>
                                     <v-icon v-else x-small>edit</v-icon>
                                 </template>
+                                
+                                <template v-slot:top>
+                                    <v-toolbar flat>
+                                        <v-toolbar-title>HISTORIAL</v-toolbar-title>
+                                        <v-divider class="mx-4" inset vertical></v-divider>
+                                        <v-spacer></v-spacer>
+                                        <v-btn
+                                        color="primary"
+                                        dark
+                                        class="mb-2"
+                                        @click="traerHistorial">
+                                        Actualizar
+                                        </v-btn>
+                                    </v-toolbar>
+                                </template>
+
                             </v-data-table>
                         </v-col>
                     </v-row>
