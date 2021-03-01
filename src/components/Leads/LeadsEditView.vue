@@ -428,7 +428,7 @@
                 return 'Editar Leads'
             },
             userCanEdit() {
-                return this.user && this.user.data && this.user.data.rol == 'coordinador'
+                return this.user && this.user.data && (this.user.data.rol == 'coordinador' || this.user.data.rol == 'recepcion')
             },
             rules(){
                 const _rules = {}
@@ -440,10 +440,10 @@
                     v => (v && v.length > 2) || 'El nombre debe ser mayor de 2 caracteres',
                 ];
                 if(!this.userCanEdit) {
-                    _rules.email= [
-                        v => !!v || 'El E-mail es necesario',
-                        v => /.+@.+\..+/.test(v) || 'El E-mail debe ser válido',
-                    ];
+                    // _rules.email= [
+                    //     v => !!v || 'El E-mail es necesario',
+                    //     v => /.+@.+\..+/.test(v) || 'El E-mail debe ser válido',
+                    // ];
                     _rules.field= [
                         v => !!v || 'Este campo es necesario'
                     ];

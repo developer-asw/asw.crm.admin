@@ -119,7 +119,7 @@ name: 'Consultar',
         }),
         esUsuario(){
             if(this.user && this.user.data) {
-                return ['recepcionista', 'callcenter', 'coordinador', 'superusuario'].indexOf(this.user.data.rol) >= 0
+                return ['recepcion', 'callcenter', 'coordinador', 'superusuario'].indexOf(this.user.data.rol) >= 0
             }else{
                 return false;
             }

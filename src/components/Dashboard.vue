@@ -188,7 +188,7 @@ name: 'Dashboard',
         },
         esUsuario(){
             if(this.user && this.user.data) {
-                return ['callcenter', 'coordinador', 'superusuario'].indexOf(this.user.data.rol) >= 0
+                return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.data.rol) >= 0
             }else{
                 return false;
             }

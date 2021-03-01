@@ -52,7 +52,7 @@
                         </v-list-item-content>
                     </v-list-item> -->
 
-                    <v-list-item v-if="isLogged && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario') &&  permiso('E5B05447')" link @click="dirigir('/plantillas')">
+                    <v-list-item v-if="isLogged && (user.data.rol == 'superusuario')" link @click="dirigir('/plantillas')">
                         <v-list-item-action>
                             <v-icon>perm_media</v-icon>
                         </v-list-item-action>
@@ -61,7 +61,7 @@
                         </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-item v-if="isLogged && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario')" link @click="dirigir('/callcenter_admisiones')">
+                    <v-list-item v-if="isLogged && (user.data.rol == 'recepcion' || user.data.rol == 'coordinador' || user.data.rol == 'superusuario')" link @click="dirigir('/callcenter_admisiones')">
                         <v-list-item-action>
                             <v-icon>add</v-icon>
                         </v-list-item-action>
@@ -70,7 +70,7 @@
                         </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-group v-if="isLogged && esUsuario"
+                    <v-list-group v-if="isLogged && (user.data.rol == 'callcenter' || user.data.rol == 'coordinador' || user.data.rol == 'superusuario')"
                     no-action
                     sub-group
                     value="true"
@@ -301,7 +301,7 @@
           },
           esUsuario(){
               if(this.user && this.user.data) {
-                  return ['callcenter', 'coordinador', 'superusuario'].indexOf(this.user.data.rol) >= 0
+                  return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.data.rol) >= 0
               }else{
                   return false;
               }
