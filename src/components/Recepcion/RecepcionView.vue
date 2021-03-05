@@ -1,25 +1,28 @@
 <template>
     <div>
         <v-card>
-            <v-card-title>
+            <!-- <v-card-title>
                 <span class="headline">{{getTitle}}</span>
                 
-            </v-card-title>
+            </v-card-title> -->
             <v-card-text>
                 <v-row>
-                    <v-col cols="12" md="12">
+                    <v-col cols="12" sm="3" md="2"></v-col>
+                    <v-col cols="12" sm="6" md="8">
                         <LeadInfoView :key="lead_id" :lead_id="lead_id" :setSedes="sedes"></LeadInfoView>
                     </v-col>
                 </v-row>
 
                 <v-row>
-                    <v-col cols="12" sm="4" md="3">
+                    <v-col cols="12" sm="3" md="2"></v-col>
+
+                    <v-col cols="12" sm="6" md="8">
                         <v-select v-model="sede" :items="sedes" label="Sede" item-text="text" item-value="id"></v-select>
                         <v-spacer></v-spacer>
-                    </v-col>
-                    <v-col cols="12" sm="8" md="9" class="text-right">
-                        <v-btn class="ma-2" color="red darken-1" text @click="iniciarSolicitar"><v-icon left small>event</v-icon>&nbsp;Asiste a Cita&nbsp;</v-btn>
-                        <v-btn class="ma-2" color="blue darken-1" text @click="regresar"><v-icon>navigate_before</v-icon>&nbsp;Regresar&nbsp;</v-btn>
+                        <div class="text-right">
+                            <v-btn class="ma-2" color="red darken-1" text @click="iniciarSolicitar"><v-icon left small>event</v-icon>&nbsp;Asiste a Cita&nbsp;</v-btn>
+                            <v-btn class="ma-2" color="blue darken-1" text @click="regresar"><v-icon>navigate_before</v-icon>&nbsp;Regresar&nbsp;</v-btn>
+                        </div>
                     </v-col>
                      <!-- <v-card-actions>  -->
 
@@ -27,7 +30,10 @@
                 </v-row>
                 
                 <v-row class="mt-10">
-                    <LeadHistoricView :key="lead_id" :lead_id="lead_id"  :ver_detalles="true"></LeadHistoricView>
+                    <v-col cols="12" sm="3" md="2"></v-col>
+                    <v-col cols="12" sm="6" md="8">
+                        <LeadHistoricView :key="lead_id" :lead_id="lead_id"  :ver_detalles="true"></LeadHistoricView>
+                    </v-col>
                 </v-row>
             </v-card-text>
         </v-card>
