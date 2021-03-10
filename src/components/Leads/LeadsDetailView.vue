@@ -244,8 +244,8 @@ export default {
       if (
         this.lead.ultima_llamada &&
         this.lead.ultima_llamada.estado == "llamando" &&
-        this.lead.ultima_llamada.agente &&
-        this.lead.ultima_llamada.agente.email == this.user.data.email
+        this.lead.ultima_llamada.agente 
+        // && this.lead.ultima_llamada.agente.email == this.user.data.email
       ) {
         return true;
       }
