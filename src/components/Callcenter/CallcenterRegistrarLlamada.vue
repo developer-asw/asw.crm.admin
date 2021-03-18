@@ -95,6 +95,12 @@
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
                 </v-row>
 
+                
+                <v-row v-if="estado == 'seguimiento_whatsapp'">
+                    <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
+                </v-row>
+
+
             </v-form>
 
             <blockquote v-if="accion">
