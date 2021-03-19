@@ -26,7 +26,7 @@
 
                 <v-list-item-group v-model="model">
 
-                    <v-list-item v-if="isLogged && permiso('AFD4E76')" link @click="dirigir('/')">
+                    <v-list-item v-if="isLogged" link @click="dirigir('/')">
                         <v-list-item-action>
                             <v-icon>home</v-icon>
                         </v-list-item-action>
@@ -34,7 +34,7 @@
                             <v-list-item-title>Inicio</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-list-item v-if="isLogged && permiso('AFD4E76')" link @click="dirigir('/dashboard')">
+                    <v-list-item v-if="isLogged && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario')" link @click="dirigir('/dashboard')">
                         <v-list-item-action>
                             <v-icon>dashboard</v-icon>
                         </v-list-item-action>
@@ -226,7 +226,7 @@
 
         <v-footer color="indigo" class="white--text text-center">
             <v-card-text>
-                American School Way &copy; 2020 - v.1.3.0
+                American School Way &copy; 2020 - v.1.3.1
             </v-card-text>
         </v-footer>
         

@@ -1,2 +1,11 @@
 npm run serve
 
+npm i -g @adonisjs/cli
+
+git status
+git add .
+git commit -m "Se agregan cambios previos (seguimiento ws)"
+git push origin master
+
+git config user.email "lpachecod@asw.edu.co"
+git config user.name "Lenier Diaz"
