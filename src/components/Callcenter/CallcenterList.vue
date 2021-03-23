@@ -152,7 +152,7 @@ export default {
             prioridad:[ 
                 { text: 'Datos entrantes', value:0 }, 
                 { text: 'No contestan - Pendientes', value : 1 },
-                { text: 'Todos', value: null }, 
+                //{ text: 'Todos', value: null }, 
             ],
             llamadas_estados:[],
             estados: {},
