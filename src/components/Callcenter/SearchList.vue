@@ -20,8 +20,9 @@
                 :loading="loading"
                 loading-text="Loading... Please wait"
                 class="elevation-1">
-                <template v-slot:[`item.ultima_llamada.fecha_solicitado`]="{ item }">
-                    <span v-if="item.ultima_llamada && item.ultima_llamada.fecha_solicitado">{{presentDate(item.ultima_llamada.fecha_solicitado)}}</span>
+                <template v-slot:[`item.ultima_llamada.fecha`]="{ item }">
+                    <span title="Asignado" v-if="item.ultima_llamada && item.ultima_llamada.fecha_asignado">{{presentDate(item.ultima_llamada.fecha_asignado)}}</span>
+                    <span title="Solicitado" v-else-if="item.ultima_llamada && item.ultima_llamada.fecha_solicitado">{{presentDate(item.ultima_llamada.fecha_solicitado)}}</span>
                 </template>
                 <template v-slot:[`item.full_name`]="{ item }">
                     <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
@@ -56,6 +57,20 @@
                     <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>
                     <span v-else>{{item.sede}}</span>
                 </template>
+                <template v-slot:[`item.prioridad`]="{ item }">
+                    <v-icon v-if="item.prioridad == 0" smallclass="mr-2">
+                        mark_email_unread
+                    </v-icon>
+                    <v-icon v-else-if="item.prioridad == 1" smallclass="mr-2">
+                        mark_chat_unread
+                    </v-icon>
+                    <v-icon v-else-if="item.prioridad == 2" smallclass="mr-2">
+                        mark_email_read
+                    </v-icon>
+                    <v-icon v-else smallclass="mr-2">
+                        pending
+                    </v-icon>
+                </template>
             </v-data-table>
         </v-card>
         <v-dialog v-model="viewDialog" persistent max-width="800px">
@@ -80,7 +95,8 @@ export default {
     data () {
         return {
             headers: [
-                { text: 'Contactar en', value: 'ultima_llamada.fecha_solicitado' },
+                { text: '', value: 'prioridad' },
+                { text: 'Contactar en', value: 'ultima_llamada.fecha' },
                 { text: 'Nombre', value: 'full_name' },
                 // { text: 'Móvil', value: 'uid' },
                 { text: 'Email', value: 'email' },
@@ -88,7 +104,7 @@ export default {
                 { text: 'Ultimo Contacto', value: 'ultima_llamada.solicitante.nombre' },
                 // { text: 'Agente Actual', value: 'ultima_llamada.agente.nombre' },
                 { text: 'Origen', value: 'ultimo_origen' },
-                // { text: 'Estudiante', value: 'es_estudiante' },
+                { text: 'Estado', value: 'ultima_llamada_estado' },
                 { text: 'Actions', value: 'action', sortable: false }
             ],
             viewDialog : false,

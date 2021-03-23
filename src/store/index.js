@@ -16,6 +16,7 @@ import listado from '@/modules/listado';
 import reportes from '@/modules/reportes';
 import dashboard from '@/modules/dashboard';
 import consultar from '@/modules/consultar';
+import coordinador from '@/modules/coordinador';
 
 Vue.use(Vuex)
 
@@ -137,6 +138,7 @@ const store = new Vuex.Store({
     dashboard,
     consultar,
     recepcionista,
+    coordinador,
   }
 })
 

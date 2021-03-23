@@ -15,7 +15,8 @@
         </v-toolbar>
         <v-card>
             <v-card-title>
-                <!-- <v-select v-model="payload.prioridad" :items="prioridad" label="Prioridad" item-text="text" item-value="value" :disabled="loading"></v-select>
+                 <v-select v-model="payload.prioridad" :items="prioridad" label="Prioridad" item-text="text" item-value="value" :disabled="loading"></v-select>
+                <!--
                 <v-select v-model="payload.estado" :items="llamadas_estados" label="Estados" item-text="text" item-value="value" :disabled="loading"></v-select> -->
                 <!-- <v-select v-model="payload.limit" :items="limits" item-text="text" item-value="value" :disabled="loading"></v-select> -->
                 <!-- <v-radio-group v-model="payload.tipo" row>
@@ -140,12 +141,14 @@ export default {
             loading: false,
             rowsPerPage : [100],
             search: '',
-            payload: {},
+            payload: {
+                prioridad: 0,
+            },
             leadSeleccionado:null,
             prioridad:[ 
+                { text: 'Datos entrantes', value:0 }, 
+                { text: 'No contestan - Pendientes', value : 1 },
                 { text: 'Todos', value: null }, 
-                { text: 'Sin llamar', value:0 }, 
-                { text: 'Contactar nuevamente', value : 1 } 
             ],
             llamadas_estados:[],
             estados: {},

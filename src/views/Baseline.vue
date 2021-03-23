@@ -223,7 +223,6 @@
             <router-view></router-view>
         </v-content>
 
-
         <v-footer color="indigo" class="white--text text-center">
             <v-card-text>
                 American School Way &copy; 2020 - v.1.3.1
