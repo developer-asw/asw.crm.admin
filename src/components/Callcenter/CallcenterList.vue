@@ -104,6 +104,7 @@
                     <span v-else>{{item.sede}}</span>
                 </template>
                 <template v-slot:[`item.ultima_llamada_estado`]="{ item }">
+                    <span v-if="item.ultima_llamada_estado == 'Admisiones - Venta telefónica'">Admisiones - Venta telefónica</span>
                     <span v-if="item.reingreso == 1">Reingreso</span>
                     <span v-else>{{item.ultima_llamada_estado}}</span>
                 </template>

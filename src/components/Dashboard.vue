@@ -11,10 +11,101 @@
     </v-toolbar>
 
     <v-container v-if="esUsuario()">
+        
         <v-layout text-center wrap>
+            <v-row>
+                <v-col cols="12" sm="6">
+                    <v-date-picker v-model="dates" range>
+                    </v-date-picker>
+                </v-col>
+                <v-col cols="12" sm="6">
+                    <v-text-field
+                        v-model="dateRangeText"
+                        label="Date range"
+                        prepend-icon="mdi-calendar"
+                        readonly>
+                    </v-text-field>
+                model: {{ dates }}
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col
+                    v-for="item in estadisticas.datos"
+                    :key="item.value"
+                    cols="12"
+                    sm="6"
+                    md="4"
+                    lg="4">
+                    <v-card v-if="item.tipo === 0">
+                        <v-card-title class="subheading font-weight-bold">{{ item.title }}</v-card-title>
 
+                        <v-divider></v-divider>
+
+
+                        <v-list dense>
+                            <v-list-item v-for="(v, k, i) in item.data" :key="i">
+                                <v-list-item-content>{{k}}:</v-list-item-content>
+                                <v-list-item-content :style="{'text-align':'right'}" class="align-end">{{ v }}</v-list-item-content>
+                            </v-list-item>
+                        </v-list>
+                    </v-card>
+
+
+                    <v-card
+                        class="mx-auto text-center"
+                        color="green"
+                        dark
+                        max-width="600" v-if="item.tipo === 1">
+                        <v-card-text>
+                            <v-sheet color="rgba(0, 0, 0, .12)">
+                                <v-sparkline
+                                    :value="item.data.values"
+                                    :labels="item.data.labels"
+                                    color="white"
+                                    line-width="2"
+                                    padding="16">
+                                <template v-slot:label="item">
+                                    {{ item.value }}
+                                </template>
+                                </v-sparkline>
+                            </v-sheet>
+                        </v-card-text>
+
+                        <v-card-text>
+                            <div class="display-1 font-weight-thin">
+                                {{item.title}}
+                            </div>
+                        </v-card-text>
+
+                        <!-- <v-divider></v-divider> -->
+
+                        <!-- <v-card-actions class="justify-center">
+                            <v-btn block text>Go to Report</v-btn>
+                        </v-card-actions> -->
+                    </v-card>
+                    
+                    <v-card
+                        class="mx-auto text-center"
+                        max-width="600" v-if="item.tipo === 2">
+                        <v-card-text>
+                            <apexchart type="area" height="350" :options="item.data.chartOptions" :series="item.data.series"></apexchart>
+                        </v-card-text>
+
+                        <!-- <v-card-text>
+                            <div class="display-1 font-weight-thin">
+                                {{item.title}}
+                            </div>
+                        </v-card-text> -->
+                        
+
+                        <!-- <v-card-actions class="justify-center">
+                            <v-btn block text>Go to Report</v-btn>
+                        </v-card-actions> -->
+                    </v-card>
+                </v-col>
+            </v-row>
             <!-- multiple -->
-            <v-expansion-panels  v-model="panels">
+            <!-- <v-expansion-panels  v-model="panels">
                 <v-expansion-panel v-for="(data, key, index) in estadisticas" :key="index">
                     <v-expansion-panel-header dark color="indigo darken-5" flat :style="{'color':'white','font-weight':'900'}">
                         {{data.titulo}}
@@ -80,11 +171,7 @@
                                         </div>
                                     </v-card-text>
 
-                                    <!-- <v-divider></v-divider> -->
 
-                                    <!-- <v-card-actions class="justify-center">
-                                        <v-btn block text>Go to Report</v-btn>
-                                    </v-card-actions> -->
                                 </v-card>
                                 
                                 <v-card
@@ -93,31 +180,11 @@
                                     <v-card-text>
                                         <apexchart type="area" height="350" :options="item.data.chartOptions" :series="item.data.series"></apexchart>
                                     </v-card-text>
-
-                                    <!-- <v-card-text>
-                                        <div class="display-1 font-weight-thin">
-                                            {{item.title}}
-                                        </div>
-                                    </v-card-text> -->
-                                    
-
-                                    <!-- <v-card-actions class="justify-center">
-                                        <v-btn block text>Go to Report</v-btn>
-                                    </v-card-actions> -->
                                 </v-card>
                             </v-col>
                             </v-row>
                         </template>
 
-                        <!-- <template v-slot:footer>
-                            <v-toolbar
-                            class="mt-2"
-                            color="indigo"
-                            dark
-                            flat>
-                            <v-toolbar-title class="subheading">This is a footer</v-toolbar-title>
-                            </v-toolbar>
-                        </template> -->
                         </v-data-iterator>
                     </v-container>
                 </template>
@@ -125,20 +192,12 @@
 
                         </v-expansion-panel-content>
                 </v-expansion-panel>
-            </v-expansion-panels>
+            </v-expansion-panels> -->
 
-
-            <!-- <v-row>
-              <v-col offset-sm="2" offset="3" cols="6" sm="4">
-                  <v-img aspect-ratio="1/2" src="https://www.americanschoolway.edu.co/wp-content/uploads/2019/10/acerca_asw_4.jpg">
-                      <div class="fill-height bottom-gradient"></div>
-                  </v-img>
-              </v-col>
-            </v-row> -->
         </v-layout>
     </v-container>
     <v-container v-else>
-        <h1>Bienvenido a leads</h1>
+        <h1>Bienvenido a CRM</h1>
     </v-container>
 </div>
 
@@ -159,8 +218,10 @@ name: 'Dashboard',
         panels: 0,
         // panels: [0],
         itemsPerPage:6,
+        dates: ['2019-09-10', '2019-09-20'],
     }),
     mounted() {
+        this.setDates();
         this.usuarioLogueado();
         this.consultar();
     },
@@ -175,7 +236,7 @@ name: 'Dashboard',
         }),
         consultar() {
             this.loading = true;
-            this.consultarDashboard({})
+            this.consultarDashboard({desde: this.dates[0], hasta: this.dates[1]})
                 .then(result => {
                     this.estadisticas = result.datos;
                 })
@@ -192,12 +253,20 @@ name: 'Dashboard',
             }else{
                 return false;
             }
+        },
+        setDates() {
+            console.log(this.$moment().format('YYYY-MM-DD'))
+            this.dates[0] = this.$moment().format('YYYY-MM-DD');
+            this.dates[1] = this.$moment().format('YYYY-MM-DD');
         }
     },
     computed:{
         ...mapState({
             user: state => state.dashboard.user,  
-        }) 
+        }),
+        dateRangeText () {
+            return this.dates.join(' ~ ')
+        }
     }
 };
 </script>
