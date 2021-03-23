@@ -62,7 +62,7 @@
                         mark_email_unread
                     </v-icon>
                     <v-icon v-else-if="item.prioridad == 1" smallclass="mr-2">
-                        mark_chat_unread
+                        mark_email_unread
                     </v-icon>
                     <v-icon v-else-if="item.prioridad == 2" smallclass="mr-2">
                         mark_email_read
