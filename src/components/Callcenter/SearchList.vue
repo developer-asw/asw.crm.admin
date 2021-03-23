@@ -71,6 +71,10 @@
                         pending
                     </v-icon>
                 </template>
+                <template v-slot:[`item.ultima_llamada_estado`]="{ item }">
+                    <span v-if="item.reingreso == 1">Reingreso</span>
+                    <span v-else>{{item.ultima_llamada_estado}}</span>
+                </template>
             </v-data-table>
         </v-card>
         <v-dialog v-model="viewDialog" persistent max-width="800px">
