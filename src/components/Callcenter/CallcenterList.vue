@@ -103,6 +103,10 @@
                     <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>
                     <span v-else>{{item.sede}}</span>
                 </template>
+                <template v-slot:[`item.ultima_llamada_estado`]="{ item }">
+                    <span v-if="item.ultima_llamada_estado && item.estado == 'interesado'">Reingreso</span>
+                    <span v-else>{{item.ultima_llamada_estado}}</span>
+                </template>
             </v-data-table>
         </v-card>
         <v-dialog v-model="viewDialog" persistent max-width="800px">
