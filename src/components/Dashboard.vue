@@ -13,22 +13,53 @@
     <v-container v-if="esUsuario()">
         
         <v-layout text-center wrap>
-            <v-row>
-                <v-col cols="12" sm="6">
-                    <v-date-picker v-model="dates" range>
-                    </v-date-picker>
+            <v-container>
+                <v-col cols="12" sm="6" lg="4">
+                    <!-- v-model="menu1" -->
+                    <v-menu 
+                    ref="menu1"
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    :value="shown"
+                    max-width="290px"
+                    min-width="auto">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                                v-model="dateRangeText"
+                                label="Rango de fecha"
+                                prepend-icon="mdi-calendar"
+                                readonly
+                                v-bind="attrs"
+                                v-on="on">
+                            </v-text-field>
+                            <!-- <v-text-field
+                                v-model="dateFormatted"
+                                label="Date"
+                                hint="MM/DD/YYYY format"
+                                persistent-hint
+                                prepend-icon="mdi-calendar"
+                                v-bind="attrs"
+                                @blur="date = parseDate(dateFormatted)"
+                                v-on="on">
+                            </v-text-field> -->
+                        </template>
+                        <v-icon @click="closemenu">
+                            close
+                        </v-icon>
+                        <!-- <v-date-picker
+                            v-model="date"
+                            no-title
+                            @input="menu1 = false">
+                        </v-date-picker> -->
+                        <v-date-picker v-model="dates" no-title range @input="menu1 = false">
+                            
+                        </v-date-picker>
+                    </v-menu>
+                    <!--model: {{ dates }}-->
                 </v-col>
-                <v-col cols="12" sm="6">
-                    <v-text-field
-                        v-model="dateRangeText"
-                        label="Date range"
-                        prepend-icon="mdi-calendar"
-                        readonly>
-                    </v-text-field>
-                model: {{ dates }}
-                </v-col>
-            </v-row>
-            <v-row>
+            </v-container>
+            <v-container>
                 <v-col
                     v-for="item in estadisticas.datos"
                     :key="item.value"
@@ -103,7 +134,7 @@
                         </v-card-actions> -->
                     </v-card>
                 </v-col>
-            </v-row>
+            </v-container>
             <!-- multiple -->
             <!-- <v-expansion-panels  v-model="panels">
                 <v-expansion-panel v-for="(data, key, index) in estadisticas" :key="index">
@@ -219,6 +250,8 @@ name: 'Dashboard',
         // panels: [0],
         itemsPerPage:6,
         dates: ['2019-09-10', '2019-09-20'],
+        menu1: false,
+        shown: false
     }),
     mounted() {
         this.setDates();
@@ -255,9 +288,11 @@ name: 'Dashboard',
             }
         },
         setDates() {
-            console.log(this.$moment().format('YYYY-MM-DD'))
             this.dates[0] = this.$moment().format('YYYY-MM-DD');
             this.dates[1] = this.$moment().format('YYYY-MM-DD');
+        },
+        closemenu() {
+            this.shown = false;
         }
     },
     computed:{
@@ -265,7 +300,7 @@ name: 'Dashboard',
             user: state => state.dashboard.user,  
         }),
         dateRangeText () {
-            return this.dates.join(' ~ ')
+            return this.dates.map(x => this.$moment(x).format("DD/MM/YYYY")).join(' ~ ')
         }
     }
 };
