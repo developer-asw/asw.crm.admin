@@ -148,13 +148,15 @@ export default {
             rowsPerPage : [100],
             search: '',
             payload: {
-                prioridad: 0,
+                prioridad: null,
             },
             leadSeleccionado:null,
             prioridad:[ 
+                { text: 'Predeterminado', value: null }, 
+                { text: 'Mis pendientes', value:1 }, 
                 { text: 'Datos entrantes', value:0 }, 
-                { text: 'No contestan - Pendientes', value : 1 },
-                //{ text: 'Todos', value: null }, 
+                { text: 'No contestan - Pendientes', value : 2 },
+                { text: 'Admisiones - Venta telefónica', value : 3 },
             ],
             llamadas_estados:[],
             estados: {},

@@ -73,7 +73,6 @@
 
                             <v-divider></v-divider>
 
-
                             <v-list dense>
                                 <v-list-item v-for="(v, k, i) in item.data" :key="i">
                                     <v-list-item-content>{{k}}:</v-list-item-content>
@@ -128,8 +127,6 @@
                                     {{item.title}}
                                 </div>
                             </v-card-text> -->
-                            
-
                             <!-- <v-card-actions class="justify-center">
                                 <v-btn block text>Go to Report</v-btn>
                             </v-card-actions> -->
