@@ -104,7 +104,7 @@
                     <span v-else>{{item.sede}}</span>
                 </template>
                 <template v-slot:[`item.ultima_llamada_estado`]="{ item }">
-                    <span v-if="payload.prioridad == 0">{{item.reingreso == 0 ? "" : "Reingreso"}}</span>
+                    <span v-if="payload.prioridad == 0">{{item.reingreso == 2 ? "Reingreso" : ""}}</span>
                     <span v-else-if="item.reingreso == 2">Reingreso</span>
                     <span v-else>{{item.ultima_llamada_estado}}</span>
                 </template>
