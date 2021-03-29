@@ -147,11 +147,11 @@ export default {
             rowsPerPage : [100],
             search: '',
             payload: {
-                prioridad: null,
+                prioridad: 0,
             },
             leadSeleccionado:null,
             prioridad:[ 
-                { text: 'Predeterminado', value: null }, 
+                // { text: 'Predeterminado', value: null }, 
                 { text: 'Mis pendientes', value:1 }, 
                 { text: 'Datos entrantes', value:0 }, 
                 { text: 'No contestan - Pendientes', value : 2 },
