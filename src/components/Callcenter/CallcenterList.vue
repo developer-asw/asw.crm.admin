@@ -170,8 +170,8 @@ export default {
         query: Object,
     },
     mounted() {
-        this.actualizar();
         this.actualizarListado();
+        this.actualizar();
     },
     methods:{
       ...mapActions({
@@ -267,7 +267,6 @@ export default {
               })
         },
         actualizarListado() {
-            console.log(this.user.data.rol);
             if (this.user && this.user.data) {
                 if (this.user.data.grupo_id == 26) {
                     this.payload.prioridad = 1;
