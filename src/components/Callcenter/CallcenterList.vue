@@ -267,6 +267,7 @@ export default {
               })
         },
         actualizarListado() {
+            console.log(this.user.data.rol);
             if (this.user && this.user.data) {
                 if (this.user.data.grupo_id == 26) {
                     this.payload.prioridad = 1;
@@ -276,12 +277,20 @@ export default {
                         { text: 'Admisiones - Venta telefónica', value : 3 },
                     ];
                 }else{
-                    this.prioridad = [ 
-                        { text: 'Mis pendientes', value:1 }, 
-                        { text: 'Datos entrantes', value:0 }, 
-                        { text: 'No contestan - Pendientes', value : 2 },
-                        { text: 'Admisiones - Venta telefónica', value : 3 },
-                    ];
+                    if (this.user.data.rol == 'callcenter') {
+                        this.prioridad = [ 
+                            { text: 'Mis pendientes', value:1 }, 
+                            { text: 'Datos entrantes', value:0 }, 
+                            { text: 'No contestan - Pendientes', value : 2 }
+                        ];
+                    } else {
+                        this.prioridad = [ 
+                            { text: 'Mis pendientes', value:1 }, 
+                            { text: 'Datos entrantes', value:0 }, 
+                            { text: 'No contestan - Pendientes', value : 2 },
+                            { text: 'Admisiones - Venta telefónica', value : 3 },
+                        ];
+                    }
                 }
 
             }
