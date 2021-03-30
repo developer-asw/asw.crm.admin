@@ -18,9 +18,9 @@
                 <v-row v-if="estado == 'asistido'">
                     <v-col cols="12" md="6">
                         <v-select v-model="resolucion.sede" :items="sedes" label="Sede Asitencia"
-                            item-text="text" item-value="id">
+                            item-text="text" item-value="id" @change="traerOrientadores">
                         </v-select>
-                        <v-select v-model="resolucion.orientador" :items="orientadores" label="Orientador Asignado" item-text="nombre_completo" item-value="id">
+                        <v-select v-model="resolucion.orientador" :items="orientadores" label="Orientador Asignado" item-text="nombre" item-value="numero">
                         </v-select>
                     </v-col>
                 </v-row>
@@ -106,6 +106,7 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer></v-spacer>
+            <v-btn color="gray darken-1" text @click="cerrar">Cerrar</v-btn>
             <v-btn v-if="puedeRegistrar" color="red darken-1" text @click="registrar">Registrar</v-btn>
             
         </v-card-actions>
@@ -159,6 +160,7 @@
             ...mapActions({
                 usuarioLogueado: 'consultar/usuarioLogueado',
                 fetchDisponibilidad: 'agenda/fetchDisponibilidad',
+                fetchOrientadores: 'admisiones/fetchLista',
                 crear: 'leads/crearCita',
                 cerrarCita: 'recepcionista/cerrar',
                 listarEstados: 'listado/fetchListaLlamadas',
@@ -221,7 +223,19 @@
                     .then(result => {
                         this.fechas = result.resultSet.fechas
                         this.sedes = result.resultSet.sedes
-                        this.orientadores = result.resultSet.orientadores
+                        // this.orientadores = result.resultSet.orientadores
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        this.setError(error)
+                    }).finally(() => {
+
+                    })
+            },
+            traerOrientadores() {  
+                this.fetchOrientadores(this.resolucion.sede)
+                    .then(result => {
+                        this.orientadores = result;
                     })
                     .catch(error => {
                         console.log(error)

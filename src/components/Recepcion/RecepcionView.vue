@@ -143,18 +143,19 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
                 this.dialog = !this.dialog;
             },
             iniciarSolicitar(){
-                this.loading = true;
-                this.solicitar({id_lead:this.lead_id, sede: this.sede})
-                .then((result) => {
-                    if(result.result == 'ok') {
-                        this.dialog = true;
-                    }else{
-                        this.setInfo(result.mensaje)
-                    }           
-                })
-                .finally(()=>{
-                    this.loading = false;
-                })
+                this.dialog = true;
+                // this.loading = true;
+                // this.solicitar({id_lead:this.lead_id, sede: this.sede})
+                // .then((result) => {
+                //     if(result.result == 'ok') {
+                //         this.dialog = true;
+                //     }else{
+                //         this.setInfo(result.mensaje)
+                //     }           
+                // })
+                // .finally(()=>{
+                //     this.loading = false;
+                // })
             },
             cerrarDialog(){
                 this.dialog = false;
