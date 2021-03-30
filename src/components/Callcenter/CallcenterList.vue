@@ -171,6 +171,7 @@ export default {
     },
     mounted() {
         this.actualizar();
+        this.actualizarListado();
     },
     methods:{
       ...mapActions({
@@ -264,6 +265,36 @@ export default {
                   console.log(error)
                   this.setInfo(error)
               })
+        },
+        actualizarListado() {
+            if (this.user && this.user.data) {
+                if (this.user.data.grupo_id == 26) {
+                    this.payload.prioridad = 1;
+                    this.prioridad = [ 
+                        { text: 'Mis pendientes', value:1 }, 
+                        { text: 'No contestan - Pendientes', value : 2 },
+                        { text: 'Admisiones - Venta telefónica', value : 3 },
+                    ];
+                }else{
+                    this.prioridad = [ 
+                        { text: 'Mis pendientes', value:1 }, 
+                        { text: 'Datos entrantes', value:0 }, 
+                        { text: 'No contestan - Pendientes', value : 2 },
+                        { text: 'Admisiones - Venta telefónica', value : 3 },
+                    ];
+                }
+
+            }
+            else{
+                this.prioridad = [];
+            }
+        },
+        esUsuario(){
+            if(this.user && this.user.data) {
+                return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.data.rol) >= 0
+            }else{
+                return false;
+            }
         }
     },
     computed: {
