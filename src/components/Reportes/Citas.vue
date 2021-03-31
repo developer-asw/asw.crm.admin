@@ -25,6 +25,10 @@
                 List
                 <v-spacer></v-spacer>
                 
+                <v-select v-model="filtro.Tipo" :items="tipos" label="Estado" item-text="nombre" item-value="id" :disabled="loading" v-on:change="seleccionarTipo()">
+                </v-select>
+                <v-spacer></v-spacer>
+
                 <v-row>
                     <v-col cols="2" style="display: none;">
                         <v-checkbox
@@ -87,7 +91,35 @@
                 :search="filtro.search"
                 loading-text="Loading... Please wait"
                 class="elevation-1">
-                
+                <template v-slot:[`item.fecha_proximo_contacto`]="{ item }">
+                    <span v-if="item.fecha_proximo_contacto">{{presentDate(item.fecha_proximo_contacto)}}</span>
+                </template>
+                <template v-slot:[`item.full_name`]="{ item }">
+                    <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
+                </template>
+                <template v-slot:[`item.movil`]="{ item }">
+                    <span @click="$copyText(item.movil);setInfo(item.movil)">{{item.movil}}</span>
+                </template>
+                <template v-slot:[`item.email`]="{ item }">
+                    <span @click="$copyText(item.email);setInfo(item.email)">{{item.email}}</span>
+                </template>
+                <!--<template v-slot:[`item.action`]="{ item }">
+                    <v-icon smallclass="mr-2" @click="viewItem(item)">
+                      remove_red_eye
+                    </v-icon> 
+                    <v-icon smallclass="mr-2" @click="viewHistory(item)">
+                      info
+                  </v-icon>
+                </template> -->
+                <template v-slot:[`item.sede`]="{ item }">
+                    <span v-if="item.sede">{{item.sede.nombre}}</span>
+                </template>
+                <template v-slot:[`item.sede_asistencia`]="{ item }">
+                    <span v-if="item.sede_asistencia">{{item.sede_asistencia.nombre}}</span>
+                </template>
+                <template v-slot:[`item.recepcion`]="{ item }">
+                    <span v-if="item.recepcionista">{{item.recepcionista.nombre}}</span>
+                </template>
             </v-data-table>
         </v-card>
     </div>
@@ -100,25 +132,23 @@ import VueClipboard from 'vue-clipboard2'
  
 Vue.use(VueClipboard)
   export default {
-    name: 'ReportesLeads',
+    name: 'ReportesCitas',
     components: {
         
     },
     data () {
         return {
             headers: [
-                { text: 'Fecha', value: 'fecha_ingreso'},
+                { text: 'Asiste', value: 'fecha_asistencia'},
+                { text: 'Cita', value: 'fecha_cita'},
                 { text: 'Nombre', value: 'full_name' },
                 { text: 'Móvil', value: 'movil' },
                 { text: 'Email', value: 'email' },
-                { text: 'Sede', value: 'sede' },
-                { text: 'Origen', value: 'origen' },
-                { text: 'Como Llego', value: 'como_llego' },
+                { text: 'Sede Cita', value: 'sede' },
+                { text: 'Sede Asiste', value: 'sede_asistencia' },
                 { text: 'Estado', value: 'estado' },
-                { text: 'Ciudad', value: 'ciudad' },
-                { text: 'Agente Asignado', value: 'agente_fecha_asignado' },
-                { text: 'Agente Nombre', value: 'agente_nombre' },
-                // { text: 'Actions', value: 'action', sortable: false }
+                { text: 'Recepcion', value: 'recepcion' },
+                { text: 'Actions', value: 'action', sortable: false }
             ],
             dialogFilter: false,
             viewDialogHistorico: false,
@@ -135,7 +165,13 @@ Vue.use(VueClipboard)
                 FechaInicial: this.formatDate(new Date().toISOString().substr(0, 10)), 
                 FechaFinal: this.formatDate(new Date().toISOString().substr(0, 10)),
                 CheckFecha: true,
-            }
+                CheckSolicitado: false,
+                Tipo: 'realizado',
+            },
+            tipos: [
+                {id: 'realizado', nombre: 'Realizado'},
+                {id: 'solicitado', nombre: 'Solicitado'},
+            ]
         }
     },
     props : {
@@ -147,7 +183,7 @@ Vue.use(VueClipboard)
     },
     methods:{
         ...mapActions({
-            fetchLeads: 'reportes/fetchLeads',
+            fetchCitas: 'reportes/fetchCitas',
             fetchDetalle: 'leads/fetchDetalle',
         }),
         ...mapMutations({
@@ -155,7 +191,7 @@ Vue.use(VueClipboard)
         }),
         filtrar(filtro){
             this.loading = true;
-            this.fetchLeads(filtro)
+            this.fetchCitas(filtro)
             .finally(()=>{
                 this.loading = false;
             })
@@ -194,14 +230,25 @@ Vue.use(VueClipboard)
             const [day, month, year] = date.split('/')
             return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
         },
+        seleccionarTipo() {
+            switch (this.filtro.Tipo) {
+                case 'realizado':
+                    this.filtro.CheckFecha = true;
+                    break;
+                case 'solicitado':
+                    this.filtro.CheckSolicitado = true;
+                    break;
+
+            }
+        }
     },
     computed: {
         ...mapState({
-            lista: state => state.reportes.leads.lista,
-            pagination: state => state.reportes.leads.pagination,
+            lista: state => state.reportes.citas.lista,
+            pagination: state => state.reportes.citas.pagination,
         }),
         getTitle(){
-            return 'Reportes - Leads'
+            return 'Reportes - Llamadas'
         },
         leadIdDialog(){
             if(this.leadSeleccionado){

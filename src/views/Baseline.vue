@@ -172,6 +172,14 @@
                                 <v-list-item-title>Hits</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
+                        <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Citas')">
+                            <v-list-item-action>
+                                <v-icon>filter_list</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Citas</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
                         <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Leads')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
@@ -181,12 +189,19 @@
                             </v-list-item-content>
                         </v-list-item>
                         <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Llamadas')">
-
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
                                 <v-list-item-title>Llamadas</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Agentes')">
+                            <v-list-item-action>
+                                <v-icon>filter_list</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Agentes</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list-group>

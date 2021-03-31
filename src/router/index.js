@@ -21,6 +21,8 @@ import CRMConsultar from '../components/CRM/Consultar'
 import ReportesHits from '../components/Reportes/Hits'
 import ReportesLlamadas from '../components/Reportes/Llamadas'
 import ReportesLeads from '../components/Reportes/Leads'
+import ReportesCitas from '../components/Reportes/Citas'
+import ReportesAgentes from '../components/Reportes/Agentes'
 
 import RecepcionView from '@/components/Recepcion/RecepcionView'
 
@@ -143,6 +145,12 @@ const routes = [
     meta: { Auth: true, title: 'Reportes - Hits' , view: 'baseline'},
   },
   {
+    path: '/Reportes/Citas',
+    name: 'ReportesCitas',
+    component: ReportesCitas,
+    meta: { Auth: true, title: 'Reportes - Citas' , view: 'baseline'},
+  },
+  {
     path: '/Reportes/Llamadas',
     name: 'ReportesLlamadas',
     component: ReportesLlamadas,
@@ -152,6 +160,12 @@ const routes = [
     path: '/Reportes/Leads',
     name: 'ReportesLeads',
     component: ReportesLeads,
+    meta: { Auth: true, title: 'Reportes - Leads' , view: 'baseline'},
+  },
+  {
+    path: '/Reportes/Agentes',
+    name: 'ReportesAgentes',
+    component: ReportesAgentes,
     meta: { Auth: true, title: 'Reportes - Leads' , view: 'baseline'},
   },
   {
