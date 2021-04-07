@@ -156,8 +156,22 @@ const actions = {
     actualizarSede:({commit}, dato) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-            console.log(dato);
             Vue.http.patch(`lead/sede/${dato.id}`, dato).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+    actualizarIdentificacion:({commit}, dato) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.patch(`lead/identificacion/${dato.id}`, dato).then(
                 response =>{
                     resolve(response.data)
                 }
@@ -172,8 +186,97 @@ const actions = {
     actualizarProgramaInteres:({commit}, dato) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-            console.log(dato);
             Vue.http.patch(`lead/programa_interes/${dato.id}`, dato).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+    actualizarPrimerNombre:({commit}, dato) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.patch(`lead/primer_nombre/${dato.id}`, dato).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+    actualizarSegundoNombre:({commit}, dato) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.patch(`lead/segundo_nombre/${dato.id}`, dato).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+    actualizarPrimerApellido:({commit}, dato) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.patch(`lead/primer_apellido/${dato.id}`, dato).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+    actualizarSegundoApellido:({commit}, dato) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.patch(`lead/segundo_apellido/${dato.id}`, dato).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+    actualizarEmail:({commit}, dato) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.patch(`lead/email/${dato.id}`, dato).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+    actualizarMovil:({commit}, dato) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.patch(`lead/movil/${dato.id}`, dato).then(
                 response =>{
                     resolve(response.data)
                 }

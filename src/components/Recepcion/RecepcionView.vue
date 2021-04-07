@@ -20,7 +20,8 @@
                         <v-select v-model="sede" :items="sedes" label="Sede" item-text="text" item-value="id"></v-select>
                         <v-spacer></v-spacer>
                         <div class="text-right">
-                            <v-btn class="ma-2" color="red darken-1" text @click="iniciarSolicitar"><v-icon left small>event</v-icon>&nbsp;Asiste a Cita&nbsp;</v-btn>
+                            <v-btn v-if="setAsisteCita == true" class="ma-2" color="red darken-1" text @click="iniciarSolicitar"><v-icon left small>event</v-icon>&nbsp;Asiste a Cita&nbsp;</v-btn>
+                            <v-btn class="ma-2" color="orange darken-1" text :to="{ name: 'seguimiento_edit', params: { id: lead_id } }"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
                             <v-btn class="ma-2" color="blue darken-1" text @click="regresar"><v-icon>navigate_before</v-icon>&nbsp;Regresar&nbsp;</v-btn>
                         </div>
                     </v-col>
@@ -98,6 +99,7 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
                 setLead: 'leads/setDetalle',
             }),
             traerSedesYFechas() {
+                console.log(this.setAsisteCita());
                 this.fetchDisponibilidad()
                     .then(result => {
                         this.fechas = result.resultSet.fechas
@@ -168,6 +170,15 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
                     return this.user.data.sede_id;
                 }else{
                     return null;
+                }
+            },
+            setAsisteCita(){
+                if(this.user && this.user.data) {
+                    // 'callcenter', 'coordinador',
+                    return ['superusuario', 'recepcion'].indexOf(this.user.data.rol) >= 0
+                    // return this.user.data.rol;
+                }else{
+                    return false;
                 }
             }
         },

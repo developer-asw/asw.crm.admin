@@ -67,8 +67,7 @@
             color="red darken-1"
             text
             :to="{ name: 'seguimiento_edit', params: { id: leadId } }"
-            ><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn
-          >
+            ><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
 
           <v-btn
             class="ma-2"
@@ -76,8 +75,7 @@
             color="green darken-1"
             text
             @click="iniciarSolicitar()"
-            :loading="loading"
-          >
+            :loading="loading">
             <v-icon left small>phone</v-icon>&nbsp;Accion &nbsp;
           </v-btn>
           <v-btn
@@ -86,8 +84,7 @@
             color="green darken-1"
             text
             @click="iniciarCerrar()"
-            :loading="loading"
-          >
+            :loading="loading">
             <v-icon left small>warning</v-icon>&nbsp;Accion &nbsp;
           </v-btn>
           <v-btn

@@ -105,7 +105,7 @@ export default {
                 // { text: 'Móvil', value: 'uid' },
                 { text: 'Email', value: 'email' },
                 { text: 'Sede', value: 'sede' },
-                { text: 'Ultimo Contacto', value: 'ultima_llamada.solicitante.nombre' },
+                { text: 'Ultimo Agente', value: 'ultima_llamada.solicitante.nombre' },
                 // { text: 'Agente Actual', value: 'ultima_llamada.agente.nombre' },
                 { text: 'Origen', value: 'ultimo_origen' },
                 { text: 'Estado', value: 'ultima_llamada_estado' },
@@ -115,7 +115,7 @@ export default {
             viewDialogHistorico: false,
             loading: false,
             rowsPerPage : [100],
-            search: '',
+            search: '', 
             payload: {},
             leadSeleccionado:null
         }

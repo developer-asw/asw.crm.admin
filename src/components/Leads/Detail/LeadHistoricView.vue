@@ -86,8 +86,10 @@
                                 <template v-slot:[`item.tipo`]="{ item }">
                                     <v-icon></v-icon>
                                     <v-icon v-if="item.tipo == 'llamada' && ver_detalles" @click="viewDetail(item)" x-small>call</v-icon>
+                                    <v-icon v-else-if="item.tipo == 'cita' && ver_detalles" x-small @click="viewDetail(item)">event</v-icon>
                                     <v-icon v-else-if="ver_detalles" x-small @click="viewDetail(item)">edit</v-icon>
                                     <v-icon v-else-if="item.tipo == 'llamada'" x-small>call</v-icon>
+                                    <v-icon v-else-if="item.tipo == 'cita'" x-small>event</v-icon>
                                     <v-icon v-else x-small>edit</v-icon>
                                 </template>
                                 

@@ -137,7 +137,7 @@ export default {
                 { text: 'Nombre', value: 'full_name' },
                 { text: 'Email', value: 'email' },
                 { text: 'Sede', value: 'sede' },
-                { text: 'Ultimo Contacto', value: 'ultima_llamada.usuario' },
+                { text: 'Ultimo Agente', value: 'ultima_llamada.usuario' },
                 { text: 'Origen', value: 'ultimo_origen' },
                 { text: 'Estado', value: 'ultima_llamada_estado' },
                 { text: 'Actions', value: 'action', sortable: false }

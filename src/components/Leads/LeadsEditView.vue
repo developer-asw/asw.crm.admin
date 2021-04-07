@@ -6,37 +6,115 @@
             </v-card-title>
             <v-form ref="leadForm" @submit.prevent="submitHandler">
                 <v-card-text>
+
                         <v-row>
-                            <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-select v-model="lead.sede_id" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="disabled || !userCanEdit" @change="consola()">
-                                    <template slot="item" slot-scope="data">
-                                        {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.nombre }}
-                                    </template>
-                                    <template slot="selection" slot-scope="data">
-                                        {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.nombre }}
-                                    </template>
-                                </v-select>
+                            <v-col cols="12">
+                                <span>Ultima actualización: {{formatDate(lead.updated_at)}}</span>
+
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-text-field v-model="lead.identificacion" label="Identificación" :disabled="disabled" @blur="limpiarCampo('identificacion')"></v-text-field>
+                                <v-row>
+                                    <v-col cols="11" sm="10">
+                                        <v-select v-model="lead.sede_id" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="disabled || !userCanEdit">
+                                            <template slot="item" slot-scope="data">
+                                                {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.nombre }}
+                                            </template>
+                                            <template slot="selection" slot-scope="data">
+                                                {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.nombre }}
+                                            </template>
+                                        </v-select>
+                                    </v-col>
+                                    <v-col cols="1" sm="2">
+                                        <v-btn v-if="cambioSede" @click="actualizarSede" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                        <v-icon v-if="!cambioSede">checkbox</v-icon>
+                                        <v-btn v-else @click="lead.sede_id = leadOriginal.sede_id" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                    </v-col>
+                                </v-row>
+
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-text-field v-model="lead.primer_nombre" label="Primer Nombre" :disabled="disabled" @blur="limpiarCampoNombre()"></v-text-field>
+                                <v-row>
+                                    <v-col cols="11" sm="10">
+                                        <v-text-field v-model="lead.identificacion" label="Identificación" :disabled="disabled" @blur="limpiarCampo('identificacion')"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="1" sm="2">
+                                        <v-btn v-if="cambioId" @click="actualizarId" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                        <v-icon v-if="!cambioId">check</v-icon>
+                                        <v-btn v-else @click="lead.identificacion = leadOriginal.identificacion" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                    </v-col>
+                                </v-row>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-text-field v-model="lead.segundo_nombre" label="Segundo Nombre" :disabled="disabled" @blur="limpiarCampo('segundo_nombre')"></v-text-field>
+                                <v-row>
+                                    <v-col cols="11" sm="10">
+                                        <v-text-field v-model="lead.primer_nombre" label="Primer Nombre" :disabled="disabled" @blur="limpiarCampoNombre()"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="1" sm="2">
+                                        <v-btn v-if="cambioPrimerNombre" @click="actualizarPrimerNombre" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                        <v-icon v-if="!cambioPrimerNombre">check</v-icon>
+                                        <v-btn v-else @click="lead.primer_nombre = leadOriginal.primer_nombre" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                    </v-col>
+                                </v-row>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-text-field v-model="lead.primer_apellido" label="Primer Apellido" :disabled="disabled" @blur="limpiarCampo('primer_apellido')"></v-text-field>
+                                <v-row>
+                                    <v-col cols="11" sm="10">
+                                        <v-text-field v-model="lead.segundo_nombre" label="Segundo Nombre" :disabled="disabled" @blur="limpiarCampo('segundo_nombre')"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="1" sm="2">
+                                        <v-btn v-if="cambioSegundoNombre" @click="actualizarSegundoNombre" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                        <v-icon v-if="!cambioSegundoNombre">check</v-icon>
+                                        <v-btn v-else @click="lead.segundo_nombre = leadOriginal.segundo_nombre" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                    </v-col>
+                                </v-row>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-text-field v-model="lead.segundo_apellido" label="Segundo Apellido" :disabled="disabled" @blur="limpiarCampo('segundo_apellido')"></v-text-field>
+                                <v-row>
+                                    <v-col cols="11" sm="10">
+                                        <v-text-field v-model="lead.primer_apellido" label="Primer Apellido" :disabled="disabled" @blur="limpiarCampo('primer_apellido')"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="1" sm="2">
+                                        <v-btn v-if="cambioPrimerApellido" @click="actualizarPrimerApellido" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                        <v-icon v-if="!cambioPrimerApellido">check</v-icon>
+                                        <v-btn v-else @click="lead.primer_apellido = leadOriginal.primer_apellido" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                    </v-col>
+                                </v-row>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-text-field v-model="lead.email" label="Email" :disabled="disabled || !userCanEdit" :rules="rules.email" @blur="buscarEmail()"></v-text-field>
+                                <v-row>
+                                    <v-col cols="11" sm="10">
+                                        <v-text-field v-model="lead.segundo_apellido" label="Segundo Apellido" :disabled="disabled" @blur="limpiarCampo('segundo_apellido')"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="1" sm="2">
+                                        <v-btn v-if="cambioSegundoApellido" @click="actualizarSegundoApellido" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                        <v-icon v-if="!cambioSegundoApellido">check</v-icon>
+                                        <v-btn v-else @click="lead.segundo_apellido = leadOriginal.segundo_apellido" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                    </v-col>
+                                </v-row>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-text-field v-model="lead.movil" label="Teléfono" :disabled="disabled || !userCanEdit" :rules="rules.telefono" @blur="buscarTelefono()"></v-text-field>
+                                <v-row>
+                                    <v-col cols="11" sm="10">
+                                        <v-text-field v-model="lead.email" label="Email" :disabled="disabled || !userCanEdit" :rules="rules.email" @blur="buscarEmail()"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="1" sm="2">
+                                        <v-btn v-if="cambioEmail" @click="actualizarEmail" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                        <v-icon v-if="!cambioEmail">check</v-icon>
+                                        <v-btn v-else @click="lead.segundo_apellido = leadOriginal.segundo_apellido" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                    </v-col>
+                                </v-row>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="4" lg="3">
+                                <v-row>
+                                    <v-col cols="11" sm="10">
+                                        <v-text-field v-model="lead.movil" label="Teléfono" :disabled="disabled || !userCanEdit" :rules="rules.telefono" @blur="buscarTelefono()"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="1" sm="2">
+                                        <v-btn v-if="cambioMovil" @click="actualizarMovil" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                        <v-icon v-if="!cambioMovil">check</v-icon>
+                                        <v-btn v-else @click="lead.segundo_apellido = leadOriginal.segundo_apellido" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                    </v-col>
+                                </v-row>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-select v-model="lead.renovacion" label="Renovación" :items="siNo" :disabled="disabled"></v-select>
@@ -68,7 +146,7 @@
                                 </v-select>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-checkbox v-model="lead.contactar" label="Contactar" :disabled="disabled" @change="check()"></v-checkbox>
+                                <v-checkbox v-model="lead.contactar" label="Enviar a la bolsa de nuevos" :disabled="disabled" @change="check()"></v-checkbox>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3" v-if="lead.contactar">
                                 <v-dialog ref="date" v-model="date.modal" :return-value.sync="lead.fecha_contacto" persistent width="290px">
@@ -102,7 +180,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="regresar">Regresar</v-btn>
-                    <v-btn color="red darken-1" text type="submit">Guardar</v-btn>
+                    <!-- <v-btn color="red darken-1" text type="submit">Guardar</v-btn> -->
                 </v-card-actions>
             </v-form>
         </v-card>
@@ -163,6 +241,7 @@
                 programa_interes:null,
                 agente:null
             },
+            leadOriginal:{},
             leadBack: {},
             sedes: [],
             listado: {},
@@ -183,6 +262,10 @@
                 menu: false,
                 modal: false
             },
+            ver:{
+                sede: true,
+                programa_interes: true
+            },
         }),
         mounted() {
             this.traerLead();
@@ -197,6 +280,15 @@
                 listarOrigenes: 'listado/fetchListaLeads',
                 buscarEmailLead: 'leads/buscarEmail',
                 buscarTelefonoLead: 'leads/buscarTelefono',
+                sedeUpdate: 'leads/actualizarSede',
+                identificacionUpdate: 'leads/actualizarIdentificacion',
+                programaInteresUpdate: 'leads/actualizarProgramaInteres',
+                primerNombreUpdate: 'leads/actualizarPrimerNombre',
+                segundoNombreUpdate: 'leads/actualizarSegundoNombre',
+                primerApellidoUpdate: 'leads/actualizarPrimerApellido',
+                segundoApellidoUpdate: 'leads/actualizarSegundoApellido',
+                emailUpdate: 'leads/actualizarEmail',
+                movilUpdate: 'leads/actualizarMovil',
             }),
             ...mapMutations({
                 setInfo: 'setInfo',
@@ -214,6 +306,7 @@
                 this.consultar({id:this.$route.params.id})
                     .then(result => {
                         this.lead = result.datos;
+                        this.leadOriginal = JSON.parse(JSON.stringify(result.datos));
                         this.separarNombre();
                         this.limpiarEmail();
                         this.leadBack = {...result.datos }
@@ -355,9 +448,6 @@
                     }
                 }
             },
-            consola() {
-                console.log(this.lead)
-            },
             separar(cadena){
                 let result = [];
                 let valores = cadena.split(' ');
@@ -414,6 +504,210 @@
             },
             quitarEspacios(cadena) {
                 return cadena.replace(/ /g, '');
+            },
+            formatDate(value){
+                if (value instanceof Date)
+                    return this.$moment(value).format('DD/MM/YYYY h:mm a')
+                else 
+                    return value
+            },
+            actualizarSede() {
+                this.procesando = true;
+                const dato = { id: this.lead._id, sede:this.lead.sede_id };
+                this.sedeUpdate(dato)
+                    .then(result => {
+                        console.log(result);
+                        if (result && result.codigo == 1) {
+                            this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                            this.lead.sede_full = result.dato.valor;
+                            this.lead.updated_at = new Date(result.dato.updated_at);
+                            this.leadOriginal.sede_id = this.lead.sede_id;
+                        }else{
+                            this.setError(result)
+                        }
+                    })
+                    .catch(error => {
+                        this.setError(error)
+                        console.log(error)
+                    }).finally(() => {
+                        this.procesando = false;
+                    });
+            },
+            actualizarId() {
+                this.procesando = true;
+                const dato = { id: this.lead._id, valor:this.lead.identificacion };
+                this.identificacionUpdate(dato)
+                    .then(result => {
+                        console.log(result);
+                        if (result && result.codigo == 1) {
+                            this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                            this.lead.identificacion = result.dato.valor;
+                            this.leadOriginal.identificacion = result.dato.valor;
+                            this.lead.updated_at = new Date(result.dato.updated_at);
+                        }else{
+                            this.setError(result)
+                        }
+                    })
+                    .catch(error => {
+                        this.setError(error)
+                        console.log(error)
+                    }).finally(() => {
+                        this.procesando = false;
+                    });
+            },
+            actualizarPrimerNombre() {
+                this.procesando = true;
+                const dato = { id: this.lead._id, valor:this.lead.primer_nombre };
+                this.primerNombreUpdate(dato)
+                    .then(result => {
+                        console.log(result);
+                        if (result && result.codigo == 1) {
+                            this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                            this.lead.primer_nombre = result.dato.valor;
+                            this.leadOriginal.primer_nombre = result.dato.valor;
+                            this.lead.updated_at = new Date(result.dato.updated_at);
+                        }else{
+                            this.setError(result)
+                        }
+                    })
+                    .catch(error => {
+                        this.setError(error)
+                        console.log(error)
+                    }).finally(() => {
+                        this.procesando = false;
+                    });
+            },
+            actualizarSegundoNombre() {
+                this.procesando = true;
+                const dato = { id: this.lead._id, valor:this.lead.segundo_nombre };
+                this.segundoNombreUpdate(dato)
+                    .then(result => {
+                        console.log(result);
+                        if (result && result.codigo == 1) {
+                            this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                            this.lead.segundo_nombre = result.dato.valor;
+                            this.leadOriginal.segundo_nombre = result.dato.valor;
+                            this.lead.updated_at = new Date(result.dato.updated_at);
+                        }else{
+                            this.setError(result)
+                        }
+                    })
+                    .catch(error => {
+                        this.setError(error)
+                        console.log(error)
+                    }).finally(() => {
+                        this.procesando = false;
+                    });
+            },
+            actualizarPrimerApellido() {
+                this.procesando = true;
+                const dato = { id: this.lead._id, valor:this.lead.primer_apellido };
+                this.primerApellidoUpdate(dato)
+                    .then(result => {
+                        console.log(result);
+                        if (result && result.codigo == 1) {
+                            this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                            this.lead.primer_apellido = result.dato.valor;
+                            this.leadOriginal.primer_apellido = result.dato.valor;
+                            this.lead.updated_at = new Date(result.dato.updated_at);
+                        }else{
+                            this.setError(result)
+                        }
+                    })
+                    .catch(error => {
+                        this.setError(error)
+                        console.log(error)
+                    }).finally(() => {
+                        this.procesando = false;
+                    });
+            },
+            actualizarSegundoApellido() {
+                this.procesando = true;
+                const dato = { id: this.lead._id, valor:this.lead.segundo_apellido };
+                this.segundoApellidoUpdate(dato)
+                    .then(result => {
+                        console.log(result);
+                        if (result && result.codigo == 1) {
+                            this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                            this.lead.segundo_apellido = result.dato.valor;
+                            this.leadOriginal.segundo_apellido = result.dato.valor;
+                            this.lead.updated_at = new Date(result.dato.updated_at);
+                        }else{
+                            this.setError(result)
+                        }
+                    })
+                    .catch(error => {
+                        this.setError(error)
+                        console.log(error)
+                    }).finally(() => {
+                        this.procesando = false;
+                    });
+            },
+            actualizarEmail() {
+                this.procesando = true;
+                const dato = { id: this.lead._id, valor:this.lead.email };
+                this.emailUpdate(dato)
+                    .then(result => {
+                        console.log(result);
+                        if (result && result.codigo == 1) {
+                            this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                            this.lead.email = result.dato.valor;
+                            this.leadOriginal.email = result.dato.valor;
+                            this.lead.updated_at = new Date(result.dato.updated_at);
+                        }else{
+                            this.setError(result)
+                        }
+                    })
+                    .catch(error => {
+                        this.setError(error)
+                        console.log(error)
+                    }).finally(() => {
+                        this.procesando = false;
+                    });
+            },
+            actualizarMovil() {
+                this.procesando = true;
+                const dato = { id: this.lead._id, valor:this.lead.movil };
+                this.movilUpdate(dato)
+                    .then(result => {
+                        console.log(result);
+                        if (result && result.codigo == 1) {
+                            this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                            this.lead.movil = result.dato.valor;
+                            this.leadOriginal.movil = result.dato.valor;
+                            this.lead.updated_at = new Date(result.dato.updated_at);
+                        }else{
+                            this.setError(result)
+                        }
+                    })
+                    .catch(error => {
+                        this.setError(error)
+                        console.log(error)
+                    }).finally(() => {
+                        this.procesando = false;
+                    });
+            },
+            actualizarProgramaInteres() {
+                this.procesando = true;
+                const dato = { id: this.lead._id, programa_interes:this.lead.programa_interes };
+                this.programaInteresUpdate(dato)
+                    .then(result => {
+                        console.log(result)
+                        if (result && result.codigo == 1) {
+                            this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                            this.lead.sede_full = result.dato;
+                            this.lead.sede_id = this.lead.sede_id;
+                            this.ver.programa_interes = true;
+                        }else{
+                            this.setError(result)
+                        }
+                    })
+                    .catch(error => {
+                        this.setError(error)
+                        console.log(error)
+                    }).finally(() => {
+                        this.procesando = false;
+                    });
             }
         },
         computed: {
@@ -429,6 +723,30 @@
             },
             userCanEdit() {
                 return this.user && this.user.data && (this.user.data.rol == 'coordinador' || this.user.data.rol == 'recepcion')
+            },
+            cambioSede() {
+                return this.lead.sede_id != this.leadOriginal.sede_id;
+            },
+            cambioId() {
+                return this.lead.identificacion != this.leadOriginal.identificacion
+            },
+            cambioPrimerNombre() {
+                return this.lead.primer_nombre != this.leadOriginal.primer_nombre
+            },
+            cambioSegundoNombre() {
+                return this.lead.segundo_nombre != this.leadOriginal.segundo_nombre
+            },
+            cambioPrimerApellido() {
+                return this.lead.primer_apellido != this.leadOriginal.primer_apellido
+            },
+            cambioSegundoApellido() {
+                return this.lead.segundo_apellido != this.leadOriginal.segundo_apellido
+            },
+            cambioMovil() {
+                return this.lead.movil != this.leadOriginal.movil
+            },
+            cambioEmail() {
+                return this.lead.email != this.leadOriginal.email
             },
             rules(){
                 const _rules = {}
