@@ -96,7 +96,7 @@
                 </v-row>
 
                 
-                <v-row v-if="estado == 'seguimiento_whatsapp'">
+                <v-row v-if="estado == 'seguimiento_whatsapp' || estado == 'venta_telefonica'">
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
                 </v-row>
 
