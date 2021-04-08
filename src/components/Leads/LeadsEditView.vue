@@ -180,7 +180,7 @@
                                 </v-row>
                             </v-col>
 
-                            <v-col cols="12" sm="6" md="4" lg="3" v-if="userAdmin">
+                            <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
                                         <v-select v-model="lead.agente" label="Agente" :items="listado.agentes" item-text="value" item-value="email" :disabled="disabled || !userCanEdit">
@@ -199,7 +199,7 @@
                                     </v-col>
                                 </v-row>
                             </v-col>
-                            <v-col cols="12" sm="6" md="4" lg="3" v-if="userAdmin">
+                            <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-checkbox v-model="lead.contactar" label="Enviar a la bolsa de nuevos" :disabled="disabled" @change="check()"></v-checkbox>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3" v-if="lead.contactar">
