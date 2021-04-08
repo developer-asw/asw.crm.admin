@@ -99,7 +99,6 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
                 setLead: 'leads/setDetalle',
             }),
             traerSedesYFechas() {
-                console.log(this.setAsisteCita());
                 this.fetchDisponibilidad()
                     .then(result => {
                         this.fechas = result.resultSet.fechas

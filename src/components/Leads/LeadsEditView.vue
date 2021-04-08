@@ -180,7 +180,7 @@
                                 </v-row>
                             </v-col>
 
-                            <v-col cols="12" sm="6" md="4" lg="3" v-if="false">
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="userAdmin">
                                 <v-row>
                                     <v-col cols="11" sm="10">
                                         <v-select v-model="lead.agente" label="Agente" :items="listado.agentes" item-text="value" item-value="email" :disabled="disabled || !userCanEdit">
@@ -199,7 +199,7 @@
                                     </v-col>
                                 </v-row>
                             </v-col>
-                            <v-col cols="12" sm="6" md="4" lg="3" v-if="false">
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="userAdmin">
                                 <v-checkbox v-model="lead.contactar" label="Enviar a la bolsa de nuevos" :disabled="disabled" @change="check()"></v-checkbox>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3" v-if="lead.contactar">
@@ -228,6 +228,11 @@
                                         <v-btn text color="primary" @click="$refs.time.save(lead.hora_contacto)">OK</v-btn>
                                     </v-time-picker>
                                 </v-dialog>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="4" lg="3">                                
+                                <v-btn v-if="lead.contactar" @click="actualizarContactar" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                <v-icon v-if="!lead.contactar">check</v-icon>
+                                <v-btn v-else @click="lead.contactar = false" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
                             </v-col>
                         </v-row>
                 </v-card-text>
@@ -348,6 +353,7 @@
                 comoLlegoUpdate: 'leads/actualizarComoLlego',
                 comoSeEnteroUpdate: 'leads/actualizarComoSeEntero',
                 agenteUpdate: 'leads/actualizarAgente',
+                contactarUpdate: 'leads/actualizarContactar',
             }),
             ...mapMutations({
                 setInfo: 'setInfo',
@@ -889,6 +895,30 @@
                     }).finally(() => {
                         this.procesando = false;
                     });
+            },
+            actualizarContactar() {
+                this.procesando = true;
+                const dato = { id: this.lead._id, valor:{fecha_contacto:this.lead.fecha_contacto, hora_contacto:this.lead.hora_contacto} };
+                this.contactarUpdate(dato)
+                    .then(result => {
+                        console.log(result)
+                        if (result && result.codigo == 1) {
+                            this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                            this.lead.fecha_contacto = result.dato.valor.fecha_contacto;
+                            this.lead.hora_contacto = result.dato.valor.hora_contacto;
+                            this.leadOriginal.fecha_contacto = result.dato.valor.fecha_contacto;
+                            this.leadOriginal.hora_contacto = result.dato.valor.hora_contacto;
+                            this.lead.updated_at = new Date(result.dato.updated_at);
+                        }else{
+                            this.setError(result)
+                        }
+                    })
+                    .catch(error => {
+                        this.setError(error)
+                        console.log(error)
+                    }).finally(() => {
+                        this.procesando = false;
+                    });
             }
         },
         computed: {
@@ -904,6 +934,9 @@
             },
             userCanEdit() {
                 return this.user && this.user.data && (this.user.data.rol == 'coordinador' || this.user.data.rol == 'recepcion')
+            },
+            userAdmin() {
+                return this.user && this.user.data && (this.user.data.rol == 'coordinador' || this.user.data.rol == 'superusuario')
             },
             cambioSede() {
                 return this.lead.sede_id != this.leadOriginal.sede_id;
