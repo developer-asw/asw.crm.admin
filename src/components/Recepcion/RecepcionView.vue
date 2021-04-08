@@ -96,6 +96,7 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             }),
             ...mapMutations({
 				setInfo: 'setInfo',
+				setError: 'setError',
                 setLead: 'leads/setDetalle',
             }),
             traerSedesYFechas() {
@@ -163,6 +164,13 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             },
             actualizar(){
                 this.viewItem();
+            },
+            getSedeUsuario(){
+                if(this.user && this.user.data) {
+                    return this.user.data.sede_id;
+                }else{
+                    return null;
+                }
             }
         },
         computed: {
@@ -185,13 +193,6 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             ...mapGetters({
                 detalle: 'leads/getDetalle',
             }),
-            getSedeUsuario(){
-                if(this.user && this.user.data) {
-                    return this.user.data.sede_id;
-                }else{
-                    return null;
-                }
-            },
             setAsisteCita(){
                 if(this.user && this.user.data) {
                     // 'callcenter', 'coordinador',
