@@ -168,20 +168,38 @@
                             </v-col>
 
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-select v-model="lead.programa_interes" label="Programa de interés" :items="listado.programaInteres" item-text="title" item-value="value" :disabled="disabled"></v-select>
+                                <v-row>
+                                    <v-col cols="11" sm="10">
+                                        <v-select v-model="lead.programa_interes" label="Programa de interés" :items="listado.programaInteres" item-text="title" item-value="value" :disabled="disabled"></v-select>
+                                    </v-col>
+                                    <v-col cols="1" sm="2">
+                                        <v-btn v-if="cambioProgramaInteres" @click="actualizarProgramaInteres" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                        <v-icon v-if="!cambioProgramaInteres">check</v-icon>
+                                        <v-btn v-else @click="lead.programa_interes = leadOriginal.programa_interes" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                    </v-col>
+                                </v-row>
                             </v-col>
 
-                            <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-select v-model="lead.agente" label="Agente" :items="listado.agentes" item-text="value" item-value="email" :disabled="disabled || !userCanEdit">
-                                    <template slot="item" slot-scope="data">
-                                            {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
-                                        </template>
-                                        <template slot="selection" slot-scope="data">
-                                            {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
-                                        </template>
-                                </v-select>
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="false">
+                                <v-row>
+                                    <v-col cols="11" sm="10">
+                                        <v-select v-model="lead.agente" label="Agente" :items="listado.agentes" item-text="value" item-value="email" :disabled="disabled || !userCanEdit">
+                                            <template slot="item" slot-scope="data">
+                                                    {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
+                                                </template>
+                                                <template slot="selection" slot-scope="data">
+                                                    {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
+                                                </template>
+                                        </v-select>
+                                    </v-col>
+                                    <v-col cols="1" sm="2">
+                                        <v-btn v-if="cambioAgente" @click="actualizarAgente" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                        <v-icon v-if="!cambioAgente">check</v-icon>
+                                        <v-btn v-else @click="lead.agente = leadOriginal.agente" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                    </v-col>
+                                </v-row>
                             </v-col>
-                            <v-col cols="12" sm="6" md="4" lg="3">
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="false">
                                 <v-checkbox v-model="lead.contactar" label="Enviar a la bolsa de nuevos" :disabled="disabled" @change="check()"></v-checkbox>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3" v-if="lead.contactar">
@@ -329,6 +347,7 @@
                 origenUpdate: 'leads/actualizarOrigen',
                 comoLlegoUpdate: 'leads/actualizarComoLlego',
                 comoSeEnteroUpdate: 'leads/actualizarComoSeEntero',
+                agenteUpdate: 'leads/actualizarAgente',
             }),
             ...mapMutations({
                 setInfo: 'setInfo',
@@ -835,9 +854,31 @@
                         console.log(result)
                         if (result && result.codigo == 1) {
                             this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
-                            this.lead.sede_full = result.dato;
-                            this.lead.sede_id = this.lead.sede_id;
-                            this.ver.programa_interes = true;
+                            this.lead.programa_interes = result.dato.valor;
+                            this.leadOriginal.programa_interes = result.dato.valor;
+                            this.lead.updated_at = new Date(result.dato.updated_at);
+                        }else{
+                            this.setError(result)
+                        }
+                    })
+                    .catch(error => {
+                        this.setError(error)
+                        console.log(error)
+                    }).finally(() => {
+                        this.procesando = false;
+                    });
+            },
+            actualizarAgente() {
+                this.procesando = true;
+                const dato = { id: this.lead._id, valor:this.lead.agente };
+                this.agenteUpdate(dato)
+                    .then(result => {
+                        console.log(result)
+                        if (result && result.codigo == 1) {
+                            this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                            this.lead.agente = result.dato.valor;
+                            this.leadOriginal.agente = result.dato.valor;
+                            this.lead.updated_at = new Date(result.dato.updated_at);
                         }else{
                             this.setError(result)
                         }
@@ -899,6 +940,12 @@
             },
             cambioComoSeEntero() {
                 return this.lead.como_se_entero != this.leadOriginal.como_se_entero
+            },
+            cambioProgramaInteres() {
+                return this.lead.programa_interes != this.leadOriginal.programa_interes
+            },
+            cambioAgente() {
+                return this.lead.agente != this.leadOriginal.agente
             },
             rules(){
                 const _rules = {}
