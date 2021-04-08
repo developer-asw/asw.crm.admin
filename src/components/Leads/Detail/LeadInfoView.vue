@@ -138,7 +138,7 @@ export default {
                 .then(result => {
                     if (result && result.codigo == 1) {
                         this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
-                        this.lead.sede_full = result.dato;
+                        this.lead.sede_full = result.dato.valor;
                         this.lead.sede_id = this.lead.sede_id;
                         this.ver_sede = true;
                     }else{
@@ -160,8 +160,7 @@ export default {
                     console.log(result)
                     if (result && result.codigo == 1) {
                         this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
-                        this.lead.sede_full = result.dato;
-                        this.lead.sede_id = this.lead.sede_id;
+                        this.lead.programa_interes = result.dato.valor;
                         this.ver_programa_interes = true;
                     }else{
                         this.setError(result)

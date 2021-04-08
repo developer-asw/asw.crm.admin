@@ -287,6 +287,36 @@ const actions = {
                 commit('stopProcessing', null, { root: true });
             })
         });
+    },
+    actualizarRenovacion:({commit}, dato) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.patch(`lead/renovacion/${dato.id}`, dato).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+    actualizarOrigen:({commit}, dato) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.patch(`lead/origen/${dato.id}`, dato).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
     }
 };
 

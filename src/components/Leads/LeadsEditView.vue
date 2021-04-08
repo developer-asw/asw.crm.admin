@@ -100,7 +100,7 @@
                                     <v-col cols="1" sm="2">
                                         <v-btn v-if="cambioEmail" @click="actualizarEmail" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
                                         <v-icon v-if="!cambioEmail">check</v-icon>
-                                        <v-btn v-else @click="lead.segundo_apellido = leadOriginal.segundo_apellido" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                        <v-btn v-else @click="lead.email = leadOriginal.email" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
                                     </v-col>
                                 </v-row>
                             </v-col>
@@ -112,15 +112,33 @@
                                     <v-col cols="1" sm="2">
                                         <v-btn v-if="cambioMovil" @click="actualizarMovil" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
                                         <v-icon v-if="!cambioMovil">check</v-icon>
-                                        <v-btn v-else @click="lead.segundo_apellido = leadOriginal.segundo_apellido" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                        <v-btn v-else @click="lead.movil = leadOriginal.movil" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
                                     </v-col>
                                 </v-row>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-select v-model="lead.renovacion" label="Renovación" :items="siNo" :disabled="disabled"></v-select>
+                                <v-row>
+                                    <v-col cols="11" sm="10">
+                                        <v-select v-model="lead.renovacion" label="Renovación" :items="siNo" :disabled="disabled"></v-select>
+                                    </v-col>
+                                    <v-col cols="1" sm="2">
+                                        <v-btn v-if="cambioRenovacion" @click="actualizarRenovacion" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                        <v-icon v-if="!cambioRenovacion">check</v-icon>
+                                        <v-btn v-else @click="lead.renovacion = leadOriginal.renovacion" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                    </v-col>
+                                </v-row>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-select v-model="lead.origen" label="Campaña" :items="listado.origenes" item-text="title" item-value="value" :disabled="disabled"></v-select>
+                                <v-row>
+                                    <v-col cols="11" sm="10">
+                                        <v-select v-model="lead.origen" label="Campaña" :items="listado.origenes" item-text="title" item-value="value" :disabled="disabled"></v-select>
+                                    </v-col>
+                                    <v-col cols="1" sm="2">
+                                        <v-btn v-if="cambioOrigen" @click="actualizarOrigen" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                        <v-icon v-if="!cambioOrigen">check</v-icon>
+                                        <v-btn v-else @click="lead.origen = leadOriginal.origen" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                    </v-col>
+                                </v-row>
                             </v-col>
                             
                             <v-col cols="12" sm="6" md="4" lg="3">
@@ -289,6 +307,8 @@
                 segundoApellidoUpdate: 'leads/actualizarSegundoApellido',
                 emailUpdate: 'leads/actualizarEmail',
                 movilUpdate: 'leads/actualizarMovil',
+                renovacionUpdate: 'leads/actualizarRenovacion',
+                origenUpdate: 'leads/actualizarOrigen',
             }),
             ...mapMutations({
                 setInfo: 'setInfo',
@@ -309,7 +329,10 @@
                         this.leadOriginal = JSON.parse(JSON.stringify(result.datos));
                         this.separarNombre();
                         this.limpiarEmail();
-                        this.leadBack = {...result.datos }
+                        this.leadBack = {...result.datos };
+                        if (this.listado && this.listado.origenes) {
+                            this.setOrigenLead()
+                        }
                     })
                     .catch(error => {
                         console.log(error)
@@ -351,12 +374,20 @@
                 this.listarOrigenes()
                     .then(result => {
                         this.listado = result;
+                        if(this.lead) {
+                            this.setOrigenLead();
+                        }
                     })
                     .catch(error => {
                         console.log(error)
                     }).finally(() => {
 
                     });
+            },
+            setOrigenLead() {
+                if (this.listado.origenes.indexOf(x => x.value == this.lead.origen) == -1){
+                    this.listado.origenes.push({title:this.lead.origen,value:this.lead.origen})
+                }
             },
             submitHandler(){
                 if (this.$refs.leadForm.validate()){
@@ -687,6 +718,50 @@
                         this.procesando = false;
                     });
             },
+            actualizarRenovacion() {
+                this.procesando = true;
+                const dato = { id: this.lead._id, valor:this.lead.renovacion };
+                this.renovacionUpdate(dato)
+                    .then(result => {
+                        console.log(result);
+                        if (result && result.codigo == 1) {
+                            this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                            this.lead.renovacion = result.dato.valor;
+                            this.leadOriginal.renovacion = result.dato.valor;
+                            this.lead.updated_at = new Date(result.dato.updated_at);
+                        }else{
+                            this.setError(result)
+                        }
+                    })
+                    .catch(error => {
+                        this.setError(error)
+                        console.log(error)
+                    }).finally(() => {
+                        this.procesando = false;
+                    });
+            },
+            actualizarOrigen() {
+                this.procesando = true;
+                const dato = { id: this.lead._id, valor:this.lead.origen };
+                this.origenUpdate(dato)
+                    .then(result => {
+                        console.log(result);
+                        if (result && result.codigo == 1) {
+                            this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                            this.lead.origen = result.dato.valor;
+                            this.leadOriginal.origen = result.dato.valor;
+                            this.lead.updated_at = new Date(result.dato.updated_at);
+                        }else{
+                            this.setError(result)
+                        }
+                    })
+                    .catch(error => {
+                        this.setError(error)
+                        console.log(error)
+                    }).finally(() => {
+                        this.procesando = false;
+                    });
+            },
             actualizarProgramaInteres() {
                 this.procesando = true;
                 const dato = { id: this.lead._id, programa_interes:this.lead.programa_interes };
@@ -747,6 +822,12 @@
             },
             cambioEmail() {
                 return this.lead.email != this.leadOriginal.email
+            },
+            cambioRenovacion() {
+                return this.lead.renovacion != this.leadOriginal.renovacion
+            },
+            cambioOrigen() {
+                return this.lead.origen != this.leadOriginal.origen
             },
             rules(){
                 const _rules = {}
