@@ -177,6 +177,7 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
                     return ['superusuario', 'recepcion'].indexOf(this.user.data.rol) >= 0
                     // return this.user.data.rol;
                 }else{
+                    if (this.user && this.user.data && this.user.data.grupo_id == 20) return true;
                     return false;
                 }
             }
