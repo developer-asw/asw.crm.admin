@@ -22,13 +22,13 @@
                                 loading-text="Loading... Please wait"
                                 class="elevation-1">
                                 <template v-slot:[`item.fecha`]="{ item }">
-                                    <span v-if="item.fecha">
-                                        {{item.fecha | moment("DD/MM/YYYY") }}
+                                    <span v-if="item.fecha_mostrar">
+                                        {{item.fecha_mostrar | moment("DD/MM/YYYY") }}
                                     </span>
                                 </template>
                                 <template v-slot:[`item.hora`]="{ item }">
-                                    <span v-if="item.fecha">
-                                        {{item.fecha | moment("HH:mm:ss") }}
+                                    <span v-if="item.fecha_mostrar">
+                                        {{item.fecha_mostrar | moment("HH:mm:ss") }}
                                     </span>
                                 </template>
                                 <template v-slot:[`item.tipo`]="{ item }">
@@ -74,13 +74,13 @@
                                 loading-text="Loading... Please wait"
                                 class="elevation-1">
                                 <template v-slot:[`item.fecha`]="{ item }">
-                                    <span v-if="item.fecha">
-                                        {{item.fecha | moment("DD/MM/YYYY") }}
+                                    <span v-if="item.fecha_mostrar">
+                                        {{item.fecha_mostrar | moment("DD/MM/YYYY") }}
                                     </span>
                                 </template>
                                 <template v-slot:[`item.hora`]="{ item }">
-                                    <span v-if="item.fecha">
-                                        {{item.fecha | moment("HH:mm:ss") }}
+                                    <span v-if="item.fecha_mostrar">
+                                        {{item.fecha_mostrar | moment("HH:mm:ss") }}
                                     </span>
                                 </template>
                                 <template v-slot:[`item.tipo`]="{ item }">
