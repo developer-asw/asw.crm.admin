@@ -142,11 +142,29 @@
                             </v-col>
                             
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-select v-model="lead.como_llego" label="¿Cómo llego?" :items="listado.comoLlego" item-text="title" item-value="value" :disabled="disabled"></v-select>
+                                <v-row>
+                                    <v-col cols="11" sm="10">
+                                        <v-select v-model="lead.como_llego" label="¿Cómo llego?" :items="listado.comoLlego" item-text="title" item-value="value" :disabled="disabled"></v-select>
+                                    </v-col>
+                                    <v-col cols="1" sm="2">
+                                        <v-btn v-if="cambioComoLlego" @click="actualizarComoLlego" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                        <v-icon v-if="!cambioComoLlego">check</v-icon>
+                                        <v-btn v-else @click="lead.como_llego = leadOriginal.como_llego" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                    </v-col>
+                                </v-row>
                             </v-col>
 
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-select v-model="lead.como_se_entero" label="¿Cómo se entero?" :items="listado.comoSeEntero" item-text="title" item-value="value" :disabled="disabled"></v-select>
+                                <v-row>
+                                    <v-col cols="11" sm="10">
+                                        <v-select v-model="lead.como_se_entero" label="¿Cómo se entero?" :items="listado.comoSeEntero" item-text="title" item-value="value" :disabled="disabled"></v-select>
+                                    </v-col>
+                                    <v-col cols="1" sm="2">
+                                        <v-btn v-if="cambioComoSeEntero" @click="actualizarComoSeEntero" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                        <v-icon v-if="!cambioComoSeEntero">check</v-icon>
+                                        <v-btn v-else @click="lead.como_se_entero = leadOriginal.como_se_entero" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                    </v-col>
+                                </v-row>
                             </v-col>
 
                             <v-col cols="12" sm="6" md="4" lg="3">
@@ -309,9 +327,12 @@
                 movilUpdate: 'leads/actualizarMovil',
                 renovacionUpdate: 'leads/actualizarRenovacion',
                 origenUpdate: 'leads/actualizarOrigen',
+                comoLlegoUpdate: 'leads/actualizarComoLlego',
+                comoSeEnteroUpdate: 'leads/actualizarComoSeEntero',
             }),
             ...mapMutations({
                 setInfo: 'setInfo',
+                setError: 'setError',
             }),
             check() {
                 if(this.lead.contactar) {
@@ -385,7 +406,7 @@
                     });
             },
             setOrigenLead() {
-                if (this.listado.origenes.indexOf(x => x.value == this.lead.origen) == -1){
+                if (this.lead.origen && this.listado.origenes.indexOf(x => x.value == this.lead.origen) == -1){
                     this.listado.origenes.push({title:this.lead.origen,value:this.lead.origen})
                 }
             },
@@ -762,6 +783,50 @@
                         this.procesando = false;
                     });
             },
+            actualizarComoLlego() {
+                this.procesando = true;
+                const dato = { id: this.lead._id, valor:this.lead.como_llego };
+                this.comoLlegoUpdate(dato)
+                    .then(result => {
+                        console.log(result);
+                        if (result && result.codigo == 1) {
+                            this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                            this.lead.como_llego = result.dato.valor;
+                            this.leadOriginal.como_llego = result.dato.valor;
+                            this.lead.updated_at = new Date(result.dato.updated_at);
+                        }else{
+                            this.setError(result)
+                        }
+                    })
+                    .catch(error => {
+                        this.setError(error)
+                        console.log(error)
+                    }).finally(() => {
+                        this.procesando = false;
+                    });
+            },
+            actualizarComoSeEntero() {
+                this.procesando = true;
+                const dato = { id: this.lead._id, valor:this.lead.como_se_entero };
+                this.comoSeEnteroUpdate(dato)
+                    .then(result => {
+                        console.log(result);
+                        if (result && result.codigo == 1) {
+                            this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                            this.lead.como_se_entero = result.dato.valor;
+                            this.leadOriginal.como_se_entero = result.dato.valor;
+                            this.lead.updated_at = new Date(result.dato.updated_at);
+                        }else{
+                            this.setError(result)
+                        }
+                    })
+                    .catch(error => {
+                        this.setError(error)
+                        console.log(error)
+                    }).finally(() => {
+                        this.procesando = false;
+                    });
+            },
             actualizarProgramaInteres() {
                 this.procesando = true;
                 const dato = { id: this.lead._id, programa_interes:this.lead.programa_interes };
@@ -828,6 +893,12 @@
             },
             cambioOrigen() {
                 return this.lead.origen != this.leadOriginal.origen
+            },
+            cambioComoLlego() {
+                return this.lead.como_llego != this.leadOriginal.como_llego
+            },
+            cambioComoSeEntero() {
+                return this.lead.como_se_entero != this.leadOriginal.como_se_entero
             },
             rules(){
                 const _rules = {}

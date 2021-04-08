@@ -317,6 +317,36 @@ const actions = {
                 commit('stopProcessing', null, { root: true });
             })
         });
+    },
+    actualizarComoLlego:({commit}, dato) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.patch(`lead/como_llego/${dato.id}`, dato).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+    actualizarComoSeEntero:({commit}, dato) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.patch(`lead/como_se_entero/${dato.id}`, dato).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
     }
 };
 
