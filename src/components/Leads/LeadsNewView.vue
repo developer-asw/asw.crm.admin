@@ -71,7 +71,7 @@
                                 </v-select>
                             </v-col>
 
-                            <v-col v-if="false" cols="12" sm="6" md="4" lg="3">
+                            <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-checkbox v-model="lead.contactar" label="Contactar" title="Especificar una fecha de contacto" :disabled="disabled" @change="check()"></v-checkbox>
                             </v-col>
 
