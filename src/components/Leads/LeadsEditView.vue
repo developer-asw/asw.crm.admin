@@ -180,7 +180,7 @@
                                 </v-row>
                             </v-col>
 
-                            <v-col cols="12" sm="6" md="4" lg="3">
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="false">
                                 <v-row>
                                     <v-col cols="11" sm="10">
                                         <v-select v-model="lead.agente" label="Agente" :items="listado.agentes" item-text="value" item-value="email" :disabled="disabled || !userCanEdit">
@@ -199,8 +199,29 @@
                                     </v-col>
                                 </v-row>
                             </v-col>
+
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="lead.como_llego == 'Walk-In'">
+                                <v-row>
+                                    <v-col cols="11" sm="10">
+                                        <v-select v-model="lead.agente" label="Coordinador de Admisiones" :items="listado.coordinadores" item-text="value" item-value="email" :disabled="disabled || !userCanEdit">
+                                            <template slot="item" slot-scope="data">
+                                                    {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
+                                                </template>
+                                                <template slot="selection" slot-scope="data">
+                                                    {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
+                                                </template>
+                                        </v-select>
+                                    </v-col>
+                                    <v-col cols="1" sm="2">
+                                        <v-btn v-if="cambioAgente" @click="actualizarAgente" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                        <v-icon v-if="!cambioAgente">check</v-icon>
+                                        <v-btn v-else @click="lead.agente = leadOriginal.agente" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
+                                    </v-col>
+                                </v-row>
+                            </v-col>
+
                             <v-col cols="12" sm="6" md="4" lg="3">
-                                <v-checkbox v-model="lead.contactar" label="Enviar a la bolsa de nuevos" :disabled="disabled" @change="check()"></v-checkbox>
+                                <v-checkbox v-model="lead.contactar" label="Enviar al Callcenter" :disabled="disabled" @change="check()"></v-checkbox>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3" v-if="lead.contactar">
                                 <v-dialog ref="date" v-model="date.modal" :return-value.sync="lead.fecha_contacto" persistent width="290px">

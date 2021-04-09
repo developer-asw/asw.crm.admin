@@ -65,6 +65,21 @@
                 <v-row>
                     <v-col cols="2">
                         <v-checkbox
+                            v-model="filtro.CheckAgente"
+                            :disabled="loading"
+                            prepend-icon="list_alt">
+                        </v-checkbox>
+                    </v-col>
+                    <v-col cols="10">
+                        <v-radio-group label="Agente:" v-model="filtro.Agente" row>
+                            <v-radio label="Último" value="ultimo" :disabled="!filtro.CheckAgente || loading"></v-radio>
+                            <v-radio label="Primero" value="primero" :disabled="!filtro.CheckAgente || loading"></v-radio>
+                        </v-radio-group>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="2">
+                        <v-checkbox
                             v-model="filtro.CheckSede"
                             :disabled="loading"
                             prepend-icon="list_alt">
@@ -143,9 +158,11 @@ export default {
                 Sede: '',
                 Estado: '',
                 Categoria: '',
+                Agente: 'ultimo',
                 CheckFecha: false,
                 CheckEmail: false,
                 CheckSede: false,
+                CheckAgente: false,
                 CheckEstado: false,
                 CheckCategoria: false,
             },

@@ -58,7 +58,7 @@
                                 <v-select v-model="lead.programa_interes" label="Programa de interés" :items="listado.programaInteres" item-text="title" item-value="value" :disabled="disabled" :rules="rules.field"></v-select>
                             </v-col>
 
-                            <v-col cols="12" sm="6" md="4" lg="3">
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="false">
                                 <v-select v-model="lead.agente" label="Agente" :items="listado.agentes" item-text="primer_nombre" item-value="email" :disabled="disabled">
                                     <template slot="item" slot-scope="data">
                                         {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
@@ -71,7 +71,20 @@
                                 </v-select>
                             </v-col>
 
-                            <v-col cols="12" sm="6" md="4" lg="3">
+                            
+
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="lead.como_llego == 'Walk-In'">
+                                <v-select v-model="lead.agente" label="Coordinador de admisiones" :items="listado.coordinadores" item-text="primer_nombre" item-value="email" :disabled="disabled">
+                                    <template slot="item" slot-scope="data">
+                                        {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
+                                    </template>
+                                    <template slot="selection" slot-scope="data">
+                                        {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
+                                    </template>
+                                </v-select>
+                            </v-col>
+
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="false">
                                 <v-checkbox v-model="lead.contactar" label="Contactar" title="Especificar una fecha de contacto" :disabled="disabled" @change="check()"></v-checkbox>
                             </v-col>
 
