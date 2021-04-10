@@ -200,7 +200,7 @@
                                 </v-row>
                             </v-col>
 
-                            <v-col cols="12" sm="6" md="4" lg="3" v-if="lead.como_llego == 'Walk-In'">
+                            <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
                                         <v-select v-model="lead.agente" label="Coordinador de Admisiones" :items="listado.coordinadores" item-text="value" item-value="email" :disabled="disabled || !userCanEdit">
