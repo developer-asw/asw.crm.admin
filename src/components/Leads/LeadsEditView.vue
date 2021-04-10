@@ -250,7 +250,7 @@
                                     </v-time-picker>
                                 </v-dialog>
                             </v-col>
-                            <v-col cols="12" sm="6" md="4" lg="3">                                
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="lead.contactar">
                                 <v-btn v-if="lead.contactar" @click="actualizarContactar" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
                                 <v-icon v-if="!lead.contactar">check</v-icon>
                                 <v-btn v-else @click="lead.contactar = false" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
