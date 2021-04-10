@@ -220,7 +220,7 @@
                                 </v-row>
                             </v-col>
 
-                            <v-col cols="12" sm="6" md="4" lg="3">
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="false">
                                 <v-checkbox v-model="lead.contactar" label="Enviar al Callcenter" :disabled="disabled" @change="check()"></v-checkbox>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3" v-if="lead.contactar">
