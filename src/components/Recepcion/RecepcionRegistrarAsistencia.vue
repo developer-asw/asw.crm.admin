@@ -20,7 +20,13 @@
                         <v-select v-model="resolucion.sede" :items="sedes" label="Sede Asitencia"
                             item-text="text" item-value="id" @change="traerOrientadores">
                         </v-select>
-                        <v-select v-model="resolucion.orientador" :items="orientadores" label="Orientador Asignado" item-text="nombre" item-value="numero">
+                        <v-select v-model="resolucion.orientador" :items="orientadores" label="Orientador Asignado" item-text="primer_nombre" item-value="email">
+                            <template slot="item" slot-scope="data">
+                                {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
+                            </template>
+                            <template slot="selection" slot-scope="data">
+                                {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
+                            </template>
                         </v-select>
                     </v-col>
                 </v-row>
@@ -235,6 +241,7 @@
             traerOrientadores() {  
                 this.fetchOrientadores(this.resolucion.sede)
                     .then(result => {
+                        console.log(result);
                         this.orientadores = result;
                     })
                     .catch(error => {
