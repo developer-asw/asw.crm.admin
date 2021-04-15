@@ -115,6 +115,9 @@
                     <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>
                     <span v-else>{{item.sede}}</span>
                 </template>
+                <template v-slot:[`item.vencidos_restantes`]="{ item }">
+                    <span>{{item.vencidos - item.vencidos_seguimiento_whatsapp}}</span>
+                </template>
             </v-data-table>
         </v-card>
     </div>
@@ -138,6 +141,8 @@ Vue.use(VueClipboard)
                 { text: 'Agente - Email', value: '_id.agente.email'},
                 { text: 'Total', value: 'total'},
                 { text: 'Vencidos', value: 'vencidos' },
+                { text: 'Vencidos SW', value: 'vencidos_seguimiento_whatsapp' },
+                { text: 'Vencidos - Vencidos SW', value: 'vencidos_restantes' },
                 { text: 'Pendientes', value: 'pendientes' },
                 { text: 'Actions', value: 'action', sortable: false }
             ],

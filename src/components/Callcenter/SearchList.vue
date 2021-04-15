@@ -14,6 +14,20 @@
             </v-toolbar-items>
         </v-toolbar>
         <v-card>
+            <v-card-title>
+            <v-select v-model="payload.prioridad" :items="prioridad" label="Prioridad" item-text="text" item-value="value" :disabled="loading" @change="actualizar"></v-select>
+                            <v-spacer></v-spacer>
+                <v-text-field
+                    v-model="payload.search"
+                    append-icon="search"
+                    clearable
+                    label="Search"
+                    single-line
+                    hide-details
+                    class="pa-0 ma-0">
+                </v-text-field> 
+            </v-card-title>
+-
             <v-data-table
                 :headers="headers"
                 :items="lista"
@@ -117,13 +131,21 @@ export default {
             rowsPerPage : [100],
             search: '', 
             payload: {},
-            leadSeleccionado:null
+            leadSeleccionado:null,
+            prioridad:[ 
+                // { text: 'Predeterminado', value: null }, 
+                { text: 'Mis pendientes', value:1 }, 
+                { text: 'Datos entrantes', value:0 }, 
+                { text: 'No contestan - Pendientes', value : 2 },
+                { text: 'Admisiones - Venta telefónica', value : 3 },
+            ]
         }
     },
     props : {
         query: Object,
     },
     mounted() {
+        this.actualizarListado();
         this.actualizar()
     },
     methods:{
@@ -138,7 +160,7 @@ export default {
       }),
       actualizar(){
           this.loading = true;
-          this.fetchLista()
+          this.fetchLista(this.payload)
           .finally(() => {
               this.loading = false;
           })
@@ -218,12 +240,43 @@ export default {
                   console.log(error)
                   this.setInfo(error)
               })
+        },
+        actualizarListado() {
+            if (this.user && this.user.data) {
+                if (this.user.data.grupo_id == 26) {
+                    this.payload.prioridad = 1;
+                    this.prioridad = [ 
+                        { text: 'Mis pendientes', value:1 },
+                        { text: 'No contestan - Pendientes', value : 2 },
+                        { text: 'Admisiones - Venta telefónica', value : 3 },
+                    ];
+                }else{
+                    if (this.user.data.rol == 'callcenter') {
+                        this.prioridad = [ 
+                            { text: 'Mis pendientes', value:1 }, 
+                            { text: 'Datos entrantes', value:0 }, 
+                            { text: 'No contestan - Pendientes', value : 2 }
+                        ];
+                    } else {
+                        this.prioridad = [ 
+                            { text: 'Mis pendientes', value:1 }, 
+                            { text: 'Datos entrantes', value:0 }, 
+                            { text: 'No contestan - Pendientes', value : 2 },
+                            { text: 'Admisiones - Venta telefónica', value : 3 },
+                        ];
+                    }
+                }
+
+            }
+            else{
+                this.prioridad = [];
+            }
         }
     },
     computed: {
         ...mapState({
-            lista: state => state.callcenter.lista,
-            pagination: state => state.callcenter.pagination,
+            lista: state => state.callcenter.consultas.lista,
+            pagination: state => state.callcenter.consultas.pagination,
             user: state => state.auth.user,   
         }),
         getTitle(){

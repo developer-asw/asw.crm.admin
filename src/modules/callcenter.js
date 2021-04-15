@@ -8,6 +8,15 @@ const state = {
     perPage : 100,
     lastPage : 1,
   },
+  consultas:{
+    lista:[],
+    pagination: {
+        total : 0,
+        page : 1,
+        perPage : 100,
+        lastPage : 1,
+    }
+  },
   detalles: {}
 
 };
@@ -34,7 +43,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       Vue.http.post('callcenter/convenio?v1',data).then(
         response =>{
-          commit('setLista',response.data.datos);
+          commit('setConsulta',response.data.datos);
           resolve(response.data)
         }
       ).catch(error=>{
@@ -125,6 +134,13 @@ const mutations = {
     state.pagination.page = datos.page;
     state.pagination.perPage = datos.perPage;
     state.pagination.lastPage = datos.lastPage;
+  },
+  setConsulta: (state, datos) => {
+    state.consultas.lista = datos.data;
+    state.consultas.pagination.total = datos.total;
+    state.consultas.pagination.page = datos.page;
+    state.consultas.pagination.perPage = datos.perPage;
+    state.consultas.pagination.lastPage = datos.lastPage;
   },
   replaceListaElement: (state, e) => {
     let index = state.lista.findIndex(element=>{
