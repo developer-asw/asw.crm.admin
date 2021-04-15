@@ -72,6 +72,8 @@
                     <span v-else>{{item.sede}}</span>
                 </template>
                 <template v-slot:[`item.prioridad`]="{ item }">
+                    
+                    
                     <v-icon v-if="item.prioridad == 0" smallclass="mr-2">
                         mark_email_unread
                     </v-icon>
@@ -86,7 +88,8 @@
                     </v-icon>
                 </template>
                 <template v-slot:[`item.ultima_llamada_estado`]="{ item }">
-                    <span v-if="item.reingreso == 1">Reingreso</span>
+                    <span v-if="payload.prioridad == 0">{{item.reingreso == 2 ? "Reingreso" : ""}}</span>
+                    <span v-else-if="item.reingreso == 2">Reingreso</span>
                     <span v-else>{{item.ultima_llamada_estado}}</span>
                 </template>
             </v-data-table>
@@ -130,7 +133,9 @@ export default {
             loading: false,
             rowsPerPage : [100],
             search: '', 
-            payload: {},
+            payload: {
+                prioridad: 0,
+            },
             leadSeleccionado:null,
             prioridad:[ 
                 // { text: 'Predeterminado', value: null }, 
