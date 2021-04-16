@@ -283,7 +283,7 @@ export default {
                             { text: 'No contestan - Pendientes', value : 2 }
                         ];
                     } else {
-                        if (this.user.data.rol == 'superusuario') {
+                        if (this.user.data.rol == 'superusuario' || this.user.data.grupo_id == 20) {
                             this.prioridad = [ 
                                 { text: 'Mis pendientes', value:1 }, 
                                 { text: 'Datos entrantes', value:0 }, 
