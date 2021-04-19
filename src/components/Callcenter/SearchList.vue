@@ -255,7 +255,7 @@ export default {
                         { text: 'No contestan - Pendientes', value : 2 },
                         { text: 'Admisiones - Venta telefónica', value : 3 },
                     ];
-                }else{
+                } else {
                     if (this.user.data.rol == 'callcenter') {
                         this.prioridad = [ 
                             { text: 'Mis pendientes', value:1 }, 
@@ -272,6 +272,7 @@ export default {
                             ];
 
                         }else{
+                            this.payload.prioridad = 1;
                             this.prioridad = [ 
                                 { text: 'Mis pendientes', value:1 }, 
                                 { text: 'No contestan - Pendientes', value : 2 },

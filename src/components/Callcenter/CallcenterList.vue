@@ -292,6 +292,7 @@ export default {
                             ];
 
                         }else{
+                            this.payload.prioridad = 1;
                             this.prioridad = [ 
                                 { text: 'Mis pendientes', value:1 }, 
                                 { text: 'No contestan - Pendientes', value : 2 },

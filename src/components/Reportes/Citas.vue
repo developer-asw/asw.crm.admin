@@ -144,8 +144,13 @@ Vue.use(VueClipboard)
                 { text: 'Nombre', value: 'full_name' },
                 { text: 'Móvil', value: 'movil' },
                 { text: 'Email', value: 'email' },
+                
+                { text: 'Agente', value: 'agente.nombre' },
                 { text: 'Sede Cita', value: 'sede' },
-                { text: 'Sede Asiste', value: 'sede_asistencia' },
+
+                { text: 'Sede Asiste', value: 'sede_asistencia' },  
+                { text: 'Orientador', value: 'orientador.nombre' },
+
                 { text: 'Estado', value: 'estado' },
                 { text: 'Recepcion', value: 'recepcion' },
                 { text: 'Actions', value: 'action', sortable: false }
@@ -248,7 +253,7 @@ Vue.use(VueClipboard)
             pagination: state => state.reportes.citas.pagination,
         }),
         getTitle(){
-            return 'Reportes - Llamadas'
+            return 'Reportes - Citas'
         },
         leadIdDialog(){
             if(this.leadSeleccionado){
