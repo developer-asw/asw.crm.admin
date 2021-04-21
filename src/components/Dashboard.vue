@@ -289,7 +289,9 @@ name: 'Dashboard',
         setDates() {
             this.dates[0] = this.$moment().format('YYYY-MM-DD');
             this.dates[1] = this.$moment().format('YYYY-MM-DD');
+            console.log(this.user.data.email)
         },
+        
         closemenu() {
             this.shown = false;
         }

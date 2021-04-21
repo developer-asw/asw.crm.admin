@@ -300,6 +300,7 @@
                 return this.detalle(this.lead_id)
             },
             puedeRegistrar(){
+                console.log(this.estado)
 				if(this.estado=='agendar_cita'){
 					if(this.resolucion.fecha_cita && this.resolucion.hora_cita && this.resolucion.sede){
 						return true
@@ -308,7 +309,7 @@
 					if(this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada){
 						return true
 					}
-				}else if(this.estado=='no_contesta' || this.estado == 'venta_telefonica' || this.estado == 'asistido' || this.estado == 'ausencia'){
+				}else if(this.estado=='no_contesta' || this.estado == 'venta_telefonica' || this.estado == 'ausencia'){
 					return true
 				}else if(this.estado=='errado'){
                     if(this.resolucion.errado_motivo && this.resolucion.errado_motivo.length > 0){
@@ -349,6 +350,10 @@
                         return true
                     }
                     
+                }else if(this.estado == 'asistido') {
+                    if (this.resolucion.orientador) {
+                        return true;
+                    }
                 }
 
 				return false;
