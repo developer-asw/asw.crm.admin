@@ -18,7 +18,7 @@
                 <v-row v-if="estado == 'asistido'">
                     <v-col cols="12" md="6">
                         <v-select v-model="resolucion.sede" :items="sedes" label="Sede Asitencia"
-                            item-text="text" item-value="id" @change="traerOrientadores">
+                            item-text="text" item-value="id">
                         </v-select>
                         <v-select v-model="resolucion.orientador" :items="orientadores" label="Orientador Asignado" item-text="primer_nombre" item-value="email">
                             <template slot="item" slot-scope="data">
@@ -161,6 +161,7 @@
             this.traerDisponibilidad();
             this.traerEstados();
             this.reiniciar();
+            this.traerOrientadores();
         },
         methods: {
             ...mapActions({

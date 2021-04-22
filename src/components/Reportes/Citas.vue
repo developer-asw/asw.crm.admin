@@ -22,11 +22,17 @@
         </v-toolbar>
         <v-card>
             <v-card-title>
-                List
-                <v-spacer></v-spacer>
                 
-                <v-select v-model="filtro.Tipo" :items="tipos" label="Estado" item-text="nombre" item-value="id" :disabled="loading" v-on:change="seleccionarTipo()">
-                </v-select>
+                 <v-text-field
+                    v-model="filtro.search"
+                    clearable
+                    :append-outer-icon="filtro.search ? 'search' : ''"
+                    label="Search"
+                    :disabled="!lista || lista.length <= 0"
+                    single-line
+                    hide-details>
+                </v-text-field> 
+                
                 <v-spacer></v-spacer>
 
                 <v-row>
