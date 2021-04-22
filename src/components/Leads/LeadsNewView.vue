@@ -59,7 +59,7 @@
                             </v-col>
 
                             <v-col cols="12" sm="6" md="4" lg="3" v-if="false">
-                                <v-select v-model="lead.agente" label="Agente" :items="listado.agentes" item-text="primer_nombre" item-value="email" :disabled="disabled">
+                                <v-select v-model="lead.agente" label="Agente" :items="listado.agentes" item-text="primer_nombre" item-value="email" :disabled="disabled" :rules="rules.agente">
                                     <template slot="item" slot-scope="data">
                                         {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
                                     </template>
@@ -74,7 +74,8 @@
                             
 
                             <v-col cols="12" sm="6" md="4" lg="3" v-if="lead.como_llego == 'Walk-In'">
-                                <v-select v-model="lead.agente" label="Coordinador de admisiones" :items="listado.coordinadores" item-text="primer_nombre" item-value="email" :disabled="disabled">
+                                <v-select v-model="lead.agente" label="Coordinador de admisiones" :items="listado.coordinadores" item-text="primer_nombre" item-value="email" 
+                                :disabled="disabled" :rules="rules.coordinador_admision">
                                     <template slot="item" slot-scope="data">
                                         {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
                                     </template>
@@ -448,12 +449,16 @@
                 _rules.telefono= [
                     v => !!v || 'El Teléfono es necesario'
                 ];
-                _rules.firstname= [
+                _rules.firstname = [
                     v => !!v || 'El Nombre es necesario',
                     v => (v && v.length > 2) || 'El nombre debe ser mayor de 2 caracteres',
                 ];
+                if (this.lead.como_llego == 'Walk-In') {
+                    _rules.coordinador_admision = [
+                        v => !!v || 'El coordinador de admisión es necesario'
+                    ];
+                }
                 if(!this.userCanEdit) {
-                    
                     _rules.email= [
                         v => !!v || 'El E-mail es necesario',
                         v => /.+@.+\..+/.test(v) || 'El E-mail debe ser válido',

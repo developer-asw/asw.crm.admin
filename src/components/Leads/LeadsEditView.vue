@@ -95,7 +95,7 @@
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-text-field v-model="lead.email" label="Email" :disabled="disabled || !userCanEdit" :rules="rules.email" @blur="buscarEmail()"></v-text-field>
+                                        <v-text-field v-model="lead.email" label="Email" :disabled="disabled" :rules="rules.email" @blur="buscarEmail()"></v-text-field>
                                     </v-col>
                                     <v-col cols="1" sm="2">
                                         <v-btn v-if="cambioEmail" @click="actualizarEmail" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
@@ -107,7 +107,7 @@
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-text-field v-model="lead.movil" label="Teléfono" :disabled="disabled || !userCanEdit" :rules="rules.telefono" @blur="buscarTelefono()"></v-text-field>
+                                        <v-text-field v-model="lead.movil" label="Teléfono" :disabled="disabled" :rules="rules.telefono" @blur="buscarTelefono()"></v-text-field>
                                     </v-col>
                                     <v-col cols="1" sm="2">
                                         <v-btn v-if="cambioMovil" @click="actualizarMovil" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
@@ -954,7 +954,7 @@
                 return 'Editar Leads'
             },
             userCanEdit() {
-                return this.user && this.user.data && (this.user.data.rol == 'coordinador' || this.user.data.rol == 'recepcion')
+                return this.user && this.user.data && (this.user.data.rol == 'coordinador' || this.user.data.rol == 'recepcion' || this.user.data.rol == 'superusuario')
             },
             userAdmin() {
                 return this.user && this.user.data && (this.user.data.rol == 'coordinador' || this.user.data.rol == 'superusuario')
