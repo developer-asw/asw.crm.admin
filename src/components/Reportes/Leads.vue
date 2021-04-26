@@ -108,6 +108,7 @@ Vue.use(VueClipboard)
         return {
             headers: [
                 { text: 'Fecha', value: 'fecha_ingreso'},
+                { text: 'Identificación', value: 'identificacion' },
                 { text: 'Nombre', value: 'full_name' },
                 { text: 'Móvil', value: 'movil' },
                 { text: 'Email', value: 'email' },
