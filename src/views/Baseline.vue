@@ -90,7 +90,7 @@
                                 <v-list-item-title>Agente</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged && permiso('convenio')" link @click="dirigir('/consultar')">
+                        <v-list-item v-if="isLogged && permiso('convenio') || user.data.rol == 'callcenter'" link @click="dirigir('/consultar')">
                             <v-list-item-action>
                                 <v-icon>thumb_up</v-icon>
                             </v-list-item-action>
