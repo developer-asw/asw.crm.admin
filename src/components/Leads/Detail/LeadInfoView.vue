@@ -70,6 +70,24 @@
                     <td>{{ lead.comentarios }}</td>
                     <td></td>
                 </tr>
+                
+                <tr v-if="lead.form_plan">
+                    <td><b>Plan: </b></td>
+                    <td>{{ lead.form_plan }}</td>
+                    <td></td>
+                </tr>
+                
+                <tr v-if="lead.form_ciudad">
+                    <td><b>Ciudad: </b></td>
+                    <td>{{ lead.form_ciudad }}</td>
+                    <td></td>
+                </tr>
+                
+                <tr v-if="lead.form_adicional">
+                    <td><b>Adicional: </b></td>
+                    <td>{{ lead.form_adicional }}</td>
+                    <td></td>
+                </tr>
                 <tr>
                     <td><b>Estado: </b></td>
                     <td>{{ lead.ultima_llamada_estado }}</td>
