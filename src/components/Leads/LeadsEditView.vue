@@ -180,7 +180,15 @@
                                 </v-row>
                             </v-col>
 
-                            <v-col cols="12" sm="6" md="4" lg="3" v-if="false">
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="userChangeCall == true">
+                                <v-row>
+                                    <v-col cols="11" sm="10">
+                                        <v-select v-model="lead.tipo_ususario" label="Tipo de Usuario" :items="tipos_usuarios" item-text="title" item-value="value" :disabled="disabled"></v-select>
+                                    </v-col>
+                                </v-row>
+                            </v-col>
+
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="lead.tipo_ususario == 'callcenter'">
                                 <v-row>
                                     <v-col cols="11" sm="10">
                                         <v-select v-model="lead.agente" label="Agente" :items="listado.agentes" item-text="value" item-value="email" :disabled="disabled || !userCanEdit">
@@ -200,7 +208,7 @@
                                 </v-row>
                             </v-col>
 
-                            <v-col cols="12" sm="6" md="4" lg="3">
+                            <v-col cols="12" sm="6" md="4" lg="3"  v-if="lead.tipo_ususario == 'coordinador'">
                                 <v-row>
                                     <v-col cols="11" sm="10">
                                         <v-select v-model="lead.agente" label="Coordinador de Admisiones" :items="listado.coordinadores" item-text="value" item-value="email" :disabled="disabled || !userCanEdit">
@@ -346,6 +354,10 @@
                 sede: true,
                 programa_interes: true
             },
+            tipos_usuarios:[
+                {'value':'callcenter','title':'Agente Call center'},
+                {'value':'coordinador','title':'Coordinador de admisiones'}
+            ],
         }),
         mounted() {
             this.traerLead();
@@ -958,6 +970,11 @@
             },
             userAdmin() {
                 return this.user && this.user.data && (this.user.data.rol == 'coordinador' || this.user.data.rol == 'superusuario')
+            },
+            userChangeCall() {
+                console.log(this.user && this.user.data ? this.user.data.rol:'');
+                console.log(this.user && this.user.data ? this.user.data.grupo_id:'');
+                return this.user && this.user.data && (this.user.data.grupo_id == 20 || this.user.data.rol == 'superusuario')
             },
             cambioSede() {
                 return this.lead.sede_id != this.leadOriginal.sede_id;
