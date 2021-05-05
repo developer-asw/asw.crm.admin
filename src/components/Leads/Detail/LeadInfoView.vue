@@ -65,7 +65,7 @@
                     <td>{{ lead.como_se_entero }}</td>
                     <td></td>
                 </tr>
-                <tr>
+                <tr v-if="lead.comentarios">
                     <td><b>Comentarios Pagina Web: </b></td>
                     <td>{{ lead.comentarios }}</td>
                     <td></td>
@@ -88,6 +88,31 @@
                     <td>{{ lead.form_adicional }}</td>
                     <td></td>
                 </tr>
+                
+                <tr v-if="lead.inputNivel">
+                    <td><b>Nivel de inglés: </b></td>
+                    <td>{{ lead.inputNivel }}</td>
+                    <td></td>
+                </tr>
+                
+                <tr v-if="lead.inputOcupacion">
+                    <td><b>Ocupación: </b></td>
+                    <td>{{ lead.inputOcupacion }}</td>
+                    <td></td>
+                </tr>
+                
+                <tr v-if="lead.inputAge">
+                    <td><b>Edad: </b></td>
+                    <td>{{ lead.inputAge }}</td>
+                    <td></td>
+                </tr>
+
+                <tr v-if="lead.mesagge">
+                    <td><b>¿Quieres contarnos o preguntarnos algo más? </b></td>
+                    <td><p>{{ lead.mesagge }}</p></td>
+                    <td></td>
+                </tr>
+
                 <tr>
                     <td><b>Estado: </b></td>
                     <td>{{ lead.ultima_llamada_estado }}</td>

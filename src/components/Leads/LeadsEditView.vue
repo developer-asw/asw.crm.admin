@@ -972,8 +972,6 @@
                 return this.user && this.user.data && (this.user.data.rol == 'coordinador' || this.user.data.rol == 'superusuario')
             },
             userChangeCall() {
-                console.log(this.user && this.user.data ? this.user.data.rol:'');
-                console.log(this.user && this.user.data ? this.user.data.grupo_id:'');
                 return this.user && this.user.data && (this.user.data.grupo_id == 20 || this.user.data.rol == 'superusuario')
             },
             cambioSede() {

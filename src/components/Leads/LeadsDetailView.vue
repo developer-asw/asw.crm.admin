@@ -54,6 +54,22 @@
           <v-col cols="12" sm="6" md="4" lg="3">
             COMENTARIOS PAGINA WEB: <br />{{ lead.comentarios }}
           </v-col>
+
+          
+          <v-col cols="12" sm="6" md="4" lg="3">
+            NIVEL DE INGLÉS: <br />{{ lead.inputNivel }}
+          </v-col>
+          <v-col cols="12" sm="6" md="4" lg="3">
+            OCUPACIÓN: <br />{{ lead.inputOcupacion }}
+          </v-col>
+          <v-col cols="12" sm="6" md="4" lg="3">
+            EDAD: <br />{{ lead.inputAge }}
+          </v-col>
+          <v-col cols="12" sm="6" md="4" lg="3">
+            ¿QUIERES CONTARNOS O PREGUNTARNOS ALGO MÁS?: <br />{{ lead.mesagge }}
+          </v-col>
+
+          
           <v-col cols="12" sm="6" md="4" lg="3">
             OBSERVACIONES: <br />{{ getObservacion }}
           </v-col>
