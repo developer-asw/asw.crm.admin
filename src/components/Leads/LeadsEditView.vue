@@ -972,7 +972,7 @@
                 return this.user && this.user.data && (this.user.data.rol == 'coordinador' || this.user.data.rol == 'superusuario')
             },
             userChangeCall() {
-                return this.user && this.user.data && (this.user.data.grupo_id == 20 || this.user.data.rol == 'superusuario')
+                return this.user && this.user.data && (this.user.data.grupo_id == 20 || this.user.data.rol == 'superusuario' || this.user.data.rol == 'recepcion')
             },
             cambioSede() {
                 return this.lead.sede_id != this.leadOriginal.sede_id;
