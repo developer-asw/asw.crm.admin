@@ -961,6 +961,7 @@
             }),
             ...mapGetters({
                 detalle: 'leads/getDetalle',
+                permiso: 'auth/permiso', 
             }),
             getTitle() {
                 return 'Editar Leads'
@@ -972,7 +973,7 @@
                 return this.user && this.user.data && (this.user.data.rol == 'coordinador' || this.user.data.rol == 'superusuario')
             },
             userChangeCall() {
-                return this.user && this.user.data && (this.user.data.grupo_id == 20 || this.user.data.rol == 'superusuario' || this.user.data.rol == 'recepcion')
+                return this.user && this.user.data && (this.user.data.grupo_id === 20 || this.user.data.rol === 'superusuario' || this.user.data.rol === 'recepcion' || this.permiso('cambiar_agente') === 'cambiar_agente')
             },
             cambioSede() {
                 return this.lead.sede_id != this.leadOriginal.sede_id;
