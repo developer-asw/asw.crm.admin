@@ -15,7 +15,7 @@
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-select v-model="lead.sede_id" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="disabled || !userCanEdit">
+                                        <v-select v-model="lead.sede_id" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="disabled">
                                             <template slot="item" slot-scope="data">
                                                 {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.nombre }}
                                             </template>
@@ -191,7 +191,7 @@
                             <v-col cols="12" sm="6" md="4" lg="3" v-if="lead.tipo_ususario == 'callcenter'">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-select v-model="lead.agente" label="Agente" :items="listado.agentes" item-text="value" item-value="email" :disabled="disabled || !userCanEdit">
+                                        <v-select v-model="lead.agente" label="Agente" :items="listado.agentes" item-text="value" item-value="email" :disabled="disabled">
                                             <template slot="item" slot-scope="data">
                                                     {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
                                                 </template>
@@ -211,7 +211,7 @@
                             <v-col cols="12" sm="6" md="4" lg="3"  v-if="lead.tipo_ususario == 'coordinador'">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-select v-model="lead.agente" label="Coordinador de Admisiones" :items="listado.coordinadores" item-text="value" item-value="email" :disabled="disabled || !userCanEdit">
+                                        <v-select v-model="lead.agente" label="Coordinador de Admisiones" :items="listado.coordinadores" item-text="value" item-value="email" :disabled="disabled">
                                             <template slot="item" slot-scope="data">
                                                     {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
                                                 </template>
