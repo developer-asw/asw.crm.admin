@@ -14,177 +14,36 @@
         
         <v-layout text-center wrap>
             <v-container>
-                <v-col cols="12" sm="6" lg="4">
-                    <!-- v-model="menu1" -->
-                    <v-menu 
-                    ref="menu1"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    :value="shown"
-                    max-width="290px"
-                    min-width="auto">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-text-field
-                                v-model="dateRangeText"
-                                label="Rango de fecha"
-                                prepend-icon="mdi-calendar"
-                                readonly
-                                v-bind="attrs"
-                                v-on="on">
-                            </v-text-field>
-                            <!-- <v-text-field
-                                v-model="dateFormatted"
-                                label="Date"
-                                hint="MM/DD/YYYY format"
-                                persistent-hint
-                                prepend-icon="mdi-calendar"
-                                v-bind="attrs"
-                                @blur="date = parseDate(dateFormatted)"
-                                v-on="on">
-                            </v-text-field> -->
-                        </template>
-                        <v-icon @click="closemenu">
-                            close
-                        </v-icon>
-                        <!-- <v-date-picker
-                            v-model="date"
-                            no-title
-                            @input="menu1 = false">
-                        </v-date-picker> -->
-                        <v-date-picker v-model="dates" no-title range @input="menu1 = false">
-                            
-                        </v-date-picker>
-                    </v-menu>
-                    <!--model: {{ dates }}-->
-                </v-col>
-            </v-container>
-            <v-container>
                 <v-row>
+                    
                     <v-col
-                        v-for="item in estadisticas.datos"
-                        :key="item.value"
                         cols="12"
-                        sm="6"
-                        md="4"
-                        lg="4">
-                        <v-card v-if="item.tipo === 0">
-                            <v-card-title class="subheading font-weight-bold">{{ item.title }}</v-card-title>
-
-                            <v-divider></v-divider>
-
-                            <v-list dense>
-                                <v-list-item v-for="(v, k, i) in item.data" :key="i">
-                                    <v-list-item-content>{{k}}:</v-list-item-content>
-                                    <v-list-item-content :style="{'text-align':'right'}" class="align-end">{{ v }}</v-list-item-content>
-                                </v-list-item>
-                            </v-list>
-                        </v-card>
-
-
-                        <v-card
-                            class="mx-auto text-center"
-                            color="green"
-                            dark
-                            max-width="600" v-if="item.tipo === 1">
-                            <v-card-text>
-                                <v-sheet color="rgba(0, 0, 0, .12)">
-                                    <v-sparkline
-                                        :value="item.data.values"
-                                        :labels="item.data.labels"
-                                        color="white"
-                                        line-width="2"
-                                        padding="16">
-                                    <template v-slot:label="item">
-                                        {{ item.value }}
-                                    </template>
-                                    </v-sparkline>
-                                </v-sheet>
-                            </v-card-text>
-
-                            <v-card-text>
-                                <div class="display-1 font-weight-thin">
-                                    {{item.title}}
-                                </div>
-                            </v-card-text>
-
-                            <!-- <v-divider></v-divider> -->
-
-                            <!-- <v-card-actions class="justify-center">
-                                <v-btn block text>Go to Report</v-btn>
-                            </v-card-actions> -->
-                        </v-card>
-                        
-                        <v-card
-                            class="mx-auto text-center"
-                            max-width="600" v-if="item.tipo === 2">
-                            <v-card-text>
-                                <apexchart type="area" height="350" :options="item.data.chartOptions" :series="item.data.series"></apexchart>
-                            </v-card-text>
-
-                            <!-- <v-card-text>
-                                <div class="display-1 font-weight-thin">
-                                    {{item.title}}
-                                </div>
-                            </v-card-text> -->
-                            <!-- <v-card-actions class="justify-center">
-                                <v-btn block text>Go to Report</v-btn>
-                            </v-card-actions> -->
-                        </v-card>
-                    </v-col>
-                </v-row>
-            </v-container>
-            <!-- multiple -->
-            <!-- <v-expansion-panels  v-model="panels">
-                <v-expansion-panel v-for="(data, key, index) in estadisticas" :key="index">
-                    <v-expansion-panel-header dark color="indigo darken-5" flat :style="{'color':'white','font-weight':'900'}">
-                        {{data.titulo}}
-
-                    </v-expansion-panel-header>
-                    <v-expansion-panel-content>
-            <v-row>
-                <template>
-                    <v-container fluid>
-                        <v-data-iterator
-                        :items="data.datos"
-                        :items-per-page.sync="itemsPerPage"
-                        hide-default-footer>
-                        
-
-                        <template v-slot:default="props">
-                            <v-row>
-                            <v-col
-                                v-for="item in props.items"
-                                :key="item.value"
-                                cols="12"
-                                sm="6"
-                                md="4"
-                                lg="4">
-                                <v-card v-if="item.tipo === 0">
-                                    <v-card-title class="subheading font-weight-bold">{{ item.title }}</v-card-title>
-
-                                    <v-divider></v-divider>
-
-
-                                    <v-list dense>
-                                        <v-list-item v-for="(v, k, i) in item.data" :key="i">
-                                            <v-list-item-content>{{k}}:</v-list-item-content>
-                                            <v-list-item-content :style="{'text-align':'right'}" class="align-end">{{ v }}</v-list-item-content>
-                                        </v-list-item>
-                                    </v-list>
-                                </v-card>
-
-
+                        sm="12"
+                        md="9"
+                        lg="9">
+                        <v-row>
+                            <v-col v-if="d.grafico_por_dia" md="12" sm="12" cols="12">
+                                
                                 <v-card
                                     class="mx-auto text-center"
-                                    color="green"
+                                    >
+                                    <v-card-text>
+                                        <apexchart type="area" height="350" :options="d.grafico_por_dia.data.chartOptions" :series="d.grafico_por_dia.data.series"></apexchart>
+                                    </v-card-text>
+
+                                </v-card>
+                            </v-col>
+                            <v-col md="4" sm="12" cols="12" v-if="d.grafico_masterclass">
+                                <v-card
+                                    class="mx-auto text-center"
+                                    color="cyan"
                                     dark
-                                    max-width="600" v-if="item.tipo === 1">
+                                    max-width="600">
                                     <v-card-text>
                                         <v-sheet color="rgba(0, 0, 0, .12)">
                                             <v-sparkline
-                                                :value="item.data.values"
-                                                :labels="item.data.labels"
+                                                :value="d.grafico_masterclass.data.values"
+                                                :labels="d.grafico_masterclass.data.labels"
                                                 color="white"
                                                 line-width="2"
                                                 padding="16">
@@ -197,33 +56,135 @@
 
                                     <v-card-text>
                                         <div class="display-1 font-weight-thin">
-                                            {{item.title}}
+                                            {{d.grafico_masterclass.title}}
                                         </div>
                                     </v-card-text>
 
 
                                 </v-card>
-                                
+                            </v-col>
+                            <v-col md="4" sm="12" cols="12" v-if="d.grafico_presencial">
                                 <v-card
                                     class="mx-auto text-center"
-                                    max-width="600" v-if="item.tipo === 2">
+                                    color="orange"
+                                    dark
+                                    max-width="600">
                                     <v-card-text>
-                                        <apexchart type="area" height="350" :options="item.data.chartOptions" :series="item.data.series"></apexchart>
+                                        <v-sheet color="rgba(0, 0, 0, .12)">
+                                            <v-sparkline
+                                                :value="d.grafico_presencial.data.values"
+                                                :labels="d.grafico_presencial.data.labels"
+                                                color="white"
+                                                line-width="2"
+                                                padding="16">
+                                            <template v-slot:label="item">
+                                                {{ item.value }}
+                                            </template>
+                                            </v-sparkline>
+                                        </v-sheet>
                                     </v-card-text>
+
+                                    <v-card-text>
+                                        <div class="display-1 font-weight-thin">
+                                            {{d.grafico_presencial.title}}
+                                        </div>
+                                    </v-card-text>
+
+
                                 </v-card>
                             </v-col>
-                            </v-row>
-                        </template>
+                            <v-col md="4" sm="12" cols="12" v-if="d.grafico_matriculado">
+                                <v-card
+                                    class="mx-auto text-center"
+                                    color="light-green"
+                                    dark
+                                    max-width="600">
+                                    <v-card-text>
+                                        <v-sheet color="rgba(0, 0, 0, .12)">
+                                            <v-sparkline
+                                                :value="d.grafico_matriculado.data.values"
+                                                :labels="d.grafico_matriculado.data.labels"
+                                                color="white"
+                                                line-width="2"
+                                                padding="16">
+                                            <template v-slot:label="item">
+                                                {{ item.value }}
+                                            </template>
+                                            </v-sparkline>
+                                        </v-sheet>
+                                    </v-card-text>
 
-                        </v-data-iterator>
-                    </v-container>
-                </template>
-            </v-row>
+                                    <v-card-text>
+                                        <div class="display-1 font-weight-thin">
+                                            {{d.grafico_matriculado.title}}
+                                        </div>
+                                    </v-card-text>
 
-                        </v-expansion-panel-content>
-                </v-expansion-panel>
-            </v-expansion-panels> -->
 
+                                </v-card>
+                            </v-col>
+                        </v-row>
+
+                    </v-col>
+                    
+                    
+                    <v-col
+                        cols="12"
+                        sm="6"
+                        md="3"
+                        lg="3">
+                        <v-row>
+                            <v-col>
+                                <v-container>
+                                    <v-menu ref="menu1" :close-on-content-click="false" transition="scale-transition" offset-y :value="shown" max-width="290px" min-width="auto">
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-text-field
+                                                v-model="dateRangeText"
+                                                label="Rango de fecha"
+                                                prepend-icon="mdi-calendar"
+                                                readonly
+                                                v-bind="attrs"
+                                                v-on="on">
+                                            </v-text-field>
+                                        </template>
+                                        <v-icon @click="closemenu">
+                                            close
+                                        </v-icon>
+                                        <v-date-picker v-model="dates" no-title range @input="menu1 = false">
+                                            
+                                        </v-date-picker>
+                                    </v-menu>
+                                </v-container>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col v-if="d.general">
+                                <v-card>
+                                    <v-card-title class="subheading font-weight-bold">General</v-card-title>
+                                    <v-divider></v-divider>
+                                    <v-list dense>
+                                        <v-list-item v-for="(v, k, i) in d.general.data" :key="i">
+                                            <v-list-item-content>{{k}}:</v-list-item-content>
+                                            <v-list-item-content :style="{'text-align':'right'}" class="align-end">{{ v }}</v-list-item-content>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+
+                    <v-col lg="12" md="12" sm="12" cols="12" v-if="d.grafico_por_sede">
+                        <v-card class="mx-auto text-center">
+                                    <v-card-text>
+                                        <apexchart type="bar" height="350" :options="d.grafico_por_sede.data.chartOptions" :series="d.grafico_por_sede.data.series"></apexchart>
+                                    </v-card-text>
+
+                                </v-card>
+                    </v-col>
+                    
+                    
+                </v-row>
+            </v-container>
         </v-layout>
     </v-container>
     <v-container v-else>
@@ -250,7 +211,15 @@ name: 'Dashboard',
         itemsPerPage:6,
         dates: ['2019-09-10', '2019-09-20'],
         menu1: false,
-        shown: false
+        shown: false,
+        d:{
+            grafico_por_dia:null,
+            grafico_masterclass: null,
+            grafico_presencial: null,
+            grafico_matriculado: null,
+            grafico_por_sede: null,
+            general:null
+        }
     }),
     mounted() {
         this.setDates();
@@ -260,6 +229,12 @@ name: 'Dashboard',
     methods: {
         ...mapActions({
             consultarDashboard: 'dashboard/consultarDashboard',
+            consulta1: 'dashboard/consultarDatosPorDia',
+            consulta2: 'dashboard/consultarDatosGeneral',
+            consulta3: 'dashboard/consultarDatosMasterclass',
+            consulta4: 'dashboard/consultarDatosPresencial',
+            consulta5: 'dashboard/consultarDatosMatriculado',
+            consulta6: 'dashboard/consultarDatosPorSede',
             usuarioLogueado: 'dashboard/usuarioLogueado'
         }),
         ...mapMutations({
@@ -268,16 +243,53 @@ name: 'Dashboard',
         }),
         consultar() {
             this.loading = true;
-            this.consultarDashboard({desde: this.dates[0], hasta: this.dates[1]})
+            this.consulta1({desde: this.dates[0], hasta: this.dates[1]})
                 .then(result => {
-                    this.estadisticas = result.datos;
+                    if(result && result.datos) {
+                        this.d.grafico_por_dia = result.datos;
+                    }
                 })
-                .catch(error => {
-                    console.log(error)
-                    this.setError(error)
-                }).finally(() => {
-                    this.loading = false;
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
+            this.loading = true;
+            this.consulta2({desde: this.dates[0], hasta: this.dates[1]})
+                .then(result => {
+                    if(result && result.datos) {
+                        this.d.general = result.datos;
+                    }
                 })
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
+            this.loading = true;
+            this.consulta3({desde: this.dates[0], hasta: this.dates[1]})
+                .then(result => {
+                    if(result && result.datos) {
+                        this.d.grafico_masterclass = result.datos;
+                    }
+                })
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
+            this.loading = true;
+            this.consulta4({desde: this.dates[0], hasta: this.dates[1]})
+                .then(result => {
+                    if(result && result.datos) {
+                        this.d.grafico_presencial = result.datos;
+                    }
+                })
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
+            this.loading = true;
+            this.consulta5({desde: this.dates[0], hasta: this.dates[1]})
+                .then(result => {
+                    if(result && result.datos) {
+                        this.d.grafico_matriculado = result.datos;
+                    }
+                })
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
+            this.loading = true;
+            this.consulta6({desde: this.dates[0], hasta: this.dates[1]})
+                .then(result => {
+                    if(result && result.datos) {
+                        this.d.grafico_por_sede = result.datos;
+                    }
+                })
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
         },
         esUsuario(){
             if(this.user && this.user.data) {
@@ -287,7 +299,7 @@ name: 'Dashboard',
             }
         },
         setDates() {
-            this.dates[0] = this.$moment().format('YYYY-MM-DD');
+            this.dates[0] = this.$moment().format('YYYY-MM-01');
             this.dates[1] = this.$moment().format('YYYY-MM-DD');
         },
         

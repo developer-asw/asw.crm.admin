@@ -2,12 +2,12 @@
     <v-app id="inspire">
         <v-navigation-drawer
         v-model="drawer"
-        app
+        app dark class="blue-grey lighten-1"
         >
             <v-list dense>
 
                 <!-- <img src="https://www.americanschoolway.edu.co/wp-content/uploads/2020/02/logo_header_Asw_18a.jpg"/> -->
-                <v-img :aspect-ratio="36/9" src="https://www.americanschoolway.edu.co/wp-content/uploads/2020/02/logo_header_Asw_18a.jpg">
+                <v-img :aspect-ratio="36/9" src="https://www.americanschoolway.edu.co/wp-content/uploads/2019/12/logo_Asw.png">
                     <v-row align="end" class="lightbox white--text pa-2 fill-height">
                         <!-- <v-col>
                           <div class="subheading">{{getNombres}}</div>
@@ -227,7 +227,7 @@
 
         <v-app-bar
         app
-        color="indigo"
+        color="blue-grey lighten-1"
         dark
         >
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
@@ -238,7 +238,7 @@
             <router-view></router-view>
         </v-content>
 
-        <v-footer color="indigo" class="white--text text-center">
+        <v-footer color="blue-grey lighten-1" class="white--text text-center">
             <v-card-text>
                 American School Way &copy; 2020 - v.1.3.4
             </v-card-text>
