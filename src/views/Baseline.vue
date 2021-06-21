@@ -2,7 +2,7 @@
     <v-app id="inspire">
         <v-navigation-drawer
         v-model="drawer"
-        app dark class="blue-grey lighten-1"
+        app dark class="blue-grey"
         >
             <v-list dense>
 
@@ -227,7 +227,7 @@
 
         <v-app-bar
         app
-        color="blue-grey lighten-1"
+        color="blue-grey"
         dark
         >
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
@@ -238,7 +238,7 @@
             <router-view></router-view>
         </v-content>
 
-        <v-footer color="blue-grey lighten-1" class="white--text text-center">
+        <v-footer color="blue-grey" class="white--text text-center">
             <v-card-text>
                 American School Way &copy; 2020 - v.1.3.4
             </v-card-text>

@@ -62,6 +62,15 @@ const state = {
             lastPage : 1,
         }
     },
+    item7: {
+        lista: [],
+        pagination:{
+            total : 0,
+            page : 1,
+            perPage : 100,
+            lastPage : 1,
+        }
+    },
     detalles: {},
     user: null,
     logged: !!window.localStorage.getItem('_token')
@@ -180,6 +189,22 @@ const actions = {
             })
         });
     },
+    consultarDatosGeneralPorFecha:({ commit }, data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.post('lead/dashboard/datos_general_fecha',data).then(
+                response =>{
+                    commit('setItem7',response.data.datos);
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
     usuarioLogueado:({ commit }) => {
         commit('getUser');
     }
@@ -254,6 +279,13 @@ const mutations = {
         state.item6.pagination.page = datos.page;
         state.item6.pagination.perPage = datos.perPage;
         state.item6.pagination.lastPage = datos.lastPage;
+    },
+    setItem7: (state, datos) => {
+        state.item7.lista = datos.data;
+        state.item7.pagination.total = datos.total;
+        state.item7.pagination.page = datos.page;
+        state.item7.pagination.perPage = datos.perPage;
+        state.item7.pagination.lastPage = datos.lastPage;
     }
 };
 

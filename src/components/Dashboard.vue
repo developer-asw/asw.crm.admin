@@ -57,6 +57,8 @@
                                     <v-card-text>
                                         <div class="display-1 font-weight-thin">
                                             {{d.grafico_masterclass.title}}
+                                            <br>
+                                            {{d.grafico_masterclass.total}}
                                         </div>
                                     </v-card-text>
 
@@ -87,6 +89,8 @@
                                     <v-card-text>
                                         <div class="display-1 font-weight-thin">
                                             {{d.grafico_presencial.title}}
+                                            <br>
+                                            {{d.grafico_presencial.total}}
                                         </div>
                                     </v-card-text>
 
@@ -117,6 +121,8 @@
                                     <v-card-text>
                                         <div class="display-1 font-weight-thin">
                                             {{d.grafico_matriculado.title}}
+                                            <br>
+                                            {{d.grafico_matriculado.total}}
                                         </div>
                                     </v-card-text>
 
@@ -155,6 +161,20 @@
                                         </v-date-picker>
                                     </v-menu>
                                 </v-container>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col v-if="d.general_fecha">
+                                <v-card>
+                                    <v-card-title class="subheading font-weight-bold">General Por Fecha</v-card-title>
+                                    <v-divider></v-divider>
+                                    <v-list dense>
+                                        <v-list-item v-for="(v, k, i) in d.general_fecha.data" :key="i">
+                                            <v-list-item-content>{{k}}:</v-list-item-content>
+                                            <v-list-item-content :style="{'text-align':'right'}" class="align-end">{{ v }}</v-list-item-content>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-card>
                             </v-col>
                         </v-row>
                         <v-row>
@@ -218,7 +238,8 @@ name: 'Dashboard',
             grafico_presencial: null,
             grafico_matriculado: null,
             grafico_por_sede: null,
-            general:null
+            general:null,
+            general_fecha: null
         }
     }),
     mounted() {
@@ -231,6 +252,7 @@ name: 'Dashboard',
             consultarDashboard: 'dashboard/consultarDashboard',
             consulta1: 'dashboard/consultarDatosPorDia',
             consulta2: 'dashboard/consultarDatosGeneral',
+            consulta7: 'dashboard/consultarDatosGeneralPorFecha',
             consulta3: 'dashboard/consultarDatosMasterclass',
             consulta4: 'dashboard/consultarDatosPresencial',
             consulta5: 'dashboard/consultarDatosMatriculado',
@@ -287,6 +309,15 @@ name: 'Dashboard',
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_por_sede = result.datos;
+                    }
+                })
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; });
+            
+            this.loading = true;
+            this.consulta7({desde: this.dates[0], hasta: this.dates[1]})
+                .then(result => {
+                    if(result && result.datos) {
+                        this.d.general_fecha = result.datos;
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
