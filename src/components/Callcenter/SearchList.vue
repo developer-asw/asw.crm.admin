@@ -122,6 +122,7 @@ export default {
                 { text: 'Nombre', value: 'full_name' },
                 // { text: 'Móvil', value: 'uid' },
                 { text: 'Email', value: 'email' },
+                { text: 'Movil', value: 'movil' },
                 { text: 'Sede', value: 'sede' },
                 { text: 'Ultimo Agente', value: 'ultima_llamada.solicitante.nombre' },
                 // { text: 'Agente Actual', value: 'ultima_llamada.agente.nombre' },
