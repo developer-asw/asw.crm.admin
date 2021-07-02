@@ -11,7 +11,8 @@
                 
                 <v-btn small color="info" dark>
                     <download-excel
-                        :data   = "lista">
+                        :data   = "lista"
+                        :fields = "json_fields">
                         <!-- Download Data -->
                         <v-icon smallclass="mr-2">
                             file_download
@@ -145,8 +146,8 @@ Vue.use(VueClipboard)
     data () {
         return {
             headers: [
-                { text: 'Asiste', value: 'fecha_asistencia'},
-                { text: 'Cita', value: 'fecha_cita'},
+                { text: 'Fecha Asistencia', value: 'fecha_asistencia'},
+                { text: 'Fecha Agendamiento', value: 'fecha_cita'},
                 { text: 'Nombre', value: 'full_name' },
                 { text: 'Móvil', value: 'movil' },
                 { text: 'Email', value: 'email' },
@@ -154,13 +155,30 @@ Vue.use(VueClipboard)
                 { text: 'Agente', value: 'agente.nombre' },
                 { text: 'Sede Cita', value: 'sede' },
 
-                { text: 'Sede Asiste', value: 'sede_asistencia' },  
-                { text: 'Orientador', value: 'orientador.nombre' },
+                { text: 'Sede Asiste', value: 'sede_asistencia' }, 
 
-                { text: 'Estado', value: 'estado' },
-                { text: 'Recepcion', value: 'recepcion' },
-                { text: 'Actions', value: 'action', sortable: false }
+                { text: 'Estado', value: 'estado' }
             ],
+            json_fields:{
+                "Estado": "estado",
+                "Fecha Cumplimiento Cita": "fecha_asistencia",
+                "Sede Asistencia": "sede_asistencia.nombre",
+
+                "Fecha Agendamiento Cita": "fecha_cita",
+                "Nombre": "full_name",
+                "Email": "email",
+                "Móvil": "movil",
+                "Agente": "agente.nombre",
+                "Sede Cita": "sede.nombre",
+                //"Orientador": "orientador.nombre",
+                //"Recepcion": "recepcion.nombre",
+                /*"Telephone 2": {
+                    field: "phone.landline",
+                    callback: (value) => {
+                    return `Landline Phone - ${value}`;
+                    },
+                }*/
+      },
             dialogFilter: false,
             viewDialogHistorico: false,
             viewDialog : false,
