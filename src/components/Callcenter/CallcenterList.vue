@@ -140,6 +140,7 @@ export default {
                 { text: 'Sede', value: 'sede' },
                 { text: 'Ultimo Agente', value: 'ultima_llamada.usuario' },
                 { text: 'Origen', value: 'ultimo_origen' },
+                { text: 'Gestión', value: 'gestion' },
                 { text: 'Estado', value: 'ultima_llamada_estado' },
                 { text: 'Actions', value: 'action', sortable: false }
             ],
@@ -148,12 +149,12 @@ export default {
             rowsPerPage : [100],
             search: '',
             payload: {
-                prioridad: 0,
+                prioridad: 1,
             },
             leadSeleccionado:null,
             prioridad:[ 
                 // { text: 'Predeterminado', value: null }, 
-                { text: 'Mis pendientes', value:1 }, 
+                { text: 'Tareas Pendientes', value:1 }, 
                 { text: 'Datos entrantes', value:0 }, 
                 { text: 'No contestan - Pendientes', value : 2 },
                 { text: 'Admisiones - Venta telefónica', value : 3 },
@@ -272,21 +273,21 @@ export default {
                 if (this.user.data.grupo_id == 26) {
                     this.payload.prioridad = 1;
                     this.prioridad = [ 
-                        { text: 'Mis pendientes', value:1 },
+                        { text: 'Tareas Pendientes', value:1 },
                         { text: 'No contestan - Pendientes', value : 2 },
                         { text: 'Admisiones - Venta telefónica', value : 3 },
                     ];
                 }else{
                     if (this.user.data.rol == 'callcenter') {
                         this.prioridad = [ 
-                            { text: 'Mis pendientes', value:1 }, 
+                            { text: 'Tareas Pendientes', value:1 }, 
                             { text: 'Datos entrantes', value:0 }, 
                             { text: 'No contestan - Pendientes', value : 2 }
                         ];
                     } else {
                         if (this.user.data.rol == 'superusuario' || this.user.data.grupo_id == 20) {
                             this.prioridad = [ 
-                                { text: 'Mis pendientes', value:1 }, 
+                                { text: 'Tareas Pendientes', value:1 }, 
                                 { text: 'Datos entrantes', value:0 }, 
                                 { text: 'No contestan - Pendientes', value : 2 },
                                 { text: 'Admisiones - Venta telefónica', value : 3 },
@@ -295,7 +296,7 @@ export default {
                         }else{
                             this.payload.prioridad = 1;
                             this.prioridad = [ 
-                                { text: 'Mis pendientes', value:1 }, 
+                                { text: 'Tareas Pendientes', value:1 }, 
                                 { text: 'No contestan - Pendientes', value : 2 },
                                 { text: 'Admisiones - Venta telefónica', value : 3 },
                             ];

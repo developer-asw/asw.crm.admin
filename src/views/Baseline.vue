@@ -90,6 +90,14 @@
                                 <v-list-item-title>Agente</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
+                        <!--<v-list-item v-if="isLogged && user.data.rol == 'coordinador'" link @click="dirigir('/venta_telefonica')">
+                            <v-list-item-action>
+                                <v-icon>call</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Venta Teléfonica</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>-->
                         <v-list-item v-if="isLogged && permiso('convenio') || user.data.rol == 'callcenter'" link @click="dirigir('/consultar')">
                             <v-list-item-action>
                                 <v-icon>thumb_up</v-icon>
@@ -125,7 +133,7 @@
                         </v-list-item>
                     </v-list-group>
                     
-                    <v-list-group 
+                    <!--<v-list-group 
                     v-if="isLogged  && (user.data.rol == 'superusuario')" 
                     no-action 
                     sub-group
@@ -147,16 +155,16 @@
                                 <v-list-item-title>Importar</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <!-- <v-list-item v-if="isLogged" link @click="dirigir('/CRM/Consultar')">
+                         <v-list-item v-if="isLogged" link @click="dirigir('/CRM/Consultar')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
                                 <v-list-item-title>Consultar</v-list-item-title>
                             </v-list-item-content>
-                        </v-list-item> -->
+                        </v-list-item> 
 
-                    </v-list-group>
+                    </v-list-group>-->
 
                     <v-list-group v-if="isLogged && (user.data.rol == 'superusuario') || user.data.grupo_id == 20" no-action sub-group>
                         <template v-slot:activator>
@@ -164,14 +172,14 @@
                             <v-list-item-title>Reportes</v-list-item-title>
                           </v-list-item-content>
                         </template>
-                        <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Hits')">
+                        <!--<v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Hits')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
                                 <v-list-item-title>Hits</v-list-item-title>
                             </v-list-item-content>
-                        </v-list-item>
+                        </v-list-item>-->
                         <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Citas')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
@@ -180,14 +188,14 @@
                                 <v-list-item-title>Citas</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Leads')">
+                        <!--<v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Leads')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
                                 <v-list-item-title>Leads</v-list-item-title>
                             </v-list-item-content>
-                        </v-list-item>
+                        </v-list-item>-->
                         <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Llamadas')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
@@ -347,3 +355,14 @@
       }
   }
 </script>
+
+<style>
+.v-list-item--link:before{
+    background-color: #869ca7;
+    color: white !important;
+}
+.v-list-item .v-application .primary--text {
+    color: white !important;
+    caret-color: #fff !important;
+}
+</style>

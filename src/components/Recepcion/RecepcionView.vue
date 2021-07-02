@@ -9,7 +9,7 @@
                 <v-row>
                     <v-col cols="12" sm="3" md="2"></v-col>
                     <v-col cols="12" sm="6" md="8">
-                        <LeadInfoView :key="lead_id" :lead_id="lead_id" :setSedes="sedes"></LeadInfoView>
+                        <EditLead :key="lead_id" :lead_id="lead_id" :setSedes="sedes" @actualizar="actualizarHistorial"></EditLead>
                     </v-col>
                 </v-row>
 
@@ -52,7 +52,7 @@
     } from 'vuex';
 
 import RecepcionRegistrarAsistencia from '@/components/Recepcion/RecepcionRegistrarAsistencia'
-import LeadInfoView from '@/components/Leads/Detail/LeadInfoView'
+import EditLead from '@/components/Callcenter/EditLead'
 import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
 
 
@@ -60,7 +60,7 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
         name: 'RecepcionView',
         components: {
             RecepcionRegistrarAsistencia,
-            LeadInfoView,
+            EditLead,
             LeadHistoricView
         },
         data: () => ({
@@ -171,6 +171,9 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
                 }else{
                     return null;
                 }
+            },
+            actualizarHistorial() {
+
             }
         },
         computed: {

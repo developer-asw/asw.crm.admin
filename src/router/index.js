@@ -8,7 +8,8 @@ import LeadsList from '../components/Leads/LeadsList'
 import PlantillasList from '../components/Plantillas/PlantillasList'
 import OrientadoresList from '../components/Orientadores/OrientadoresList'
 import AgendaActual from '../components/Agenda/AgendaActual'
-import CallcenterList from '../components/Callcenter/CallcenterList'
+import CallcenterList from '../components/Callcenter/CallcenterList';
+import VentaTelefonicaList from '../components/Callcenter/VentaTelefonicaList';
 import SearchList from '../components/Callcenter/SearchList';
 import Contact from '../components/Callcenter/Contact'
 import CallcenterSeguimiento from '../components/Callcenter/CallcenterSeguimiento'
@@ -83,6 +84,12 @@ const routes = [
     name: 'callcenter',
     component: CallcenterList,
     meta: { Auth: true, title: 'Callcenter - List' , view: 'baseline'},
+  },
+  {
+    path: '/venta_telefonica',
+    name: 'venta_telefonica',
+    component: VentaTelefonicaList,
+    meta: { Auth: true, title: 'Venta Teléfonica - List' , view: 'baseline'},
   },
   {
     path: '/consultar',

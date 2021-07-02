@@ -48,13 +48,10 @@
           <v-col cols="12" sm="6" md="4" lg="3">
             AGENTE: <br />{{ getAgente }}
           </v-col>
+          
           <v-col cols="12" sm="6" md="4" lg="3">
             ESTADO: <br />{{ lead.ultima_llamada_estado ? lead.ultima_llamada_estado : getEstado(lead.estado) }}
           </v-col>
-          <v-col cols="12" sm="6" md="4" lg="3">
-            COMENTARIOS PAGINA WEB: <br />{{ lead.comentarios }}
-          </v-col>
-
           
           <v-col cols="12" sm="6" md="4" lg="3">
             NIVEL DE INGLÉS: <br />{{ lead.inputNivel }}
@@ -66,7 +63,7 @@
             EDAD: <br />{{ lead.inputAge }}
           </v-col>
           <v-col cols="12" sm="6" md="4" lg="3">
-            ¿QUIERES CONTARNOS O PREGUNTARNOS ALGO MÁS?: <br />{{ lead.mesagge }}
+            OBSERVACIONES CLIENTE: <br />{{ lead.mesagge ? lead.mesagge : lead.comentarios }}
           </v-col>
 
           

@@ -15,8 +15,16 @@
         </v-toolbar>
         <v-card>
             <v-card-title>
-            <v-select v-model="payload.prioridad" :items="prioridad" label="Prioridad" item-text="text" item-value="value" :disabled="loading" @change="actualizar"></v-select>
-                            <v-spacer></v-spacer>
+                 <v-select v-model="payload.prioridad" :items="prioridad" label="Prioridad" item-text="text" item-value="value" :disabled="loading" @change="actualizar"></v-select>
+                <!--
+                <v-select v-model="payload.estado" :items="llamadas_estados" label="Estados" item-text="text" item-value="value" :disabled="loading"></v-select> -->
+                <!-- <v-select v-model="payload.limit" :items="limits" item-text="text" item-value="value" :disabled="loading"></v-select> -->
+                <!-- <v-radio-group v-model="payload.tipo" row>
+                    <v-radio label="Teléfono" value="telefono"></v-radio>
+                    <v-radio label="E-mail" value="email"></v-radio>
+                    <v-radio label="Nombre" value="nombre"></v-radio>
+                </v-radio-group>-->
+                <v-spacer></v-spacer>
                 <v-text-field
                     v-model="payload.search"
                     append-icon="search"
@@ -27,16 +35,20 @@
                     class="pa-0 ma-0">
                 </v-text-field> 
             </v-card-title>
--
             <v-data-table
                 :headers="headers"
                 :items="lista"
+                :search="payload.search"
                 :loading="loading"
                 loading-text="Loading... Please wait"
                 class="elevation-1">
                 <template v-slot:[`item.ultima_llamada.fecha`]="{ item }">
                     <!-- <span title="Asignado" v-if="item.ultima_llamada && item.ultima_llamada.fecha_asignado">{{presentDate(item.ultima_llamada.fecha_asignado)}}</span> -->
                     <span title="Solicitado" v-if="item.ultima_llamada && item.ultima_llamada.fecha_solicitado">{{presentDate(item.ultima_llamada.fecha_solicitado)}}</span>
+                </template>
+                <template v-slot:[`item.ultima_llamada.usuario`]="{ item }">
+                    <span v-if="item.ultima_llamada && item.ultima_llamada.agente">{{item.ultima_llamada.agente.nombre}}</span>
+                    <span v-else-if="item.ultima_llamada && item.ultima_llamada.solicitante">{{item.ultima_llamada.solicitante.nombre}}</span>
                 </template>
                 <template v-slot:[`item.full_name`]="{ item }">
                     <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
@@ -55,7 +67,27 @@
                         <span v-else-if="item.ultimo_origen.referer">{{item.ultimo_origen.referer}}</span>
                     </div>
                 </template>
+                <template v-slot:[`item.prioridad`]="{ item }">
+                    <v-icon v-if="item.prioridad == 0" smallclass="mr-2">
+                        mark_email_unread
+                    </v-icon>
+                    <v-icon v-else-if="item.prioridad == 1" smallclass="mr-2">
+                        mark_email_unread
+                    </v-icon>
+                    <v-icon v-else-if="item.prioridad == 2" smallclass="mr-2">
+                        mark_email_read
+                    </v-icon>
+                    <v-icon v-else smallclass="mr-2">
+                        pending
+                    </v-icon>
+                </template>
                 <template v-slot:[`item.action`]="{ item }">
+                    <!-- <v-icon smallclass="mr-2" @click="viewItem(item)">
+                        remove_red_eye
+                    </v-icon> -->
+                    <!-- <v-icon smallclass="mr-2" @click="viewHistory(item)">
+                        info
+                    </v-icon> -->
                 
                     <v-icon v-if="puedeSolicitar(item)" smallclass="mr-2" @click="iniciarSolicitar(item)">
                         phone
@@ -70,22 +102,6 @@
                 <template v-slot:[`item.sede`]="{ item }">
                     <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>
                     <span v-else>{{item.sede}}</span>
-                </template>
-                <template v-slot:[`item.prioridad`]="{ item }">
-                    
-                    
-                    <v-icon v-if="item.prioridad == 0" smallclass="mr-2">
-                        mark_email_unread
-                    </v-icon>
-                    <v-icon v-else-if="item.prioridad == 1" smallclass="mr-2">
-                        mark_email_unread
-                    </v-icon>
-                    <v-icon v-else-if="item.prioridad == 2" smallclass="mr-2">
-                        mark_email_read
-                    </v-icon>
-                    <v-icon v-else smallclass="mr-2">
-                        pending
-                    </v-icon>
                 </template>
                 <template v-slot:[`item.ultima_llamada_estado`]="{ item }">
                     <span v-if="payload.prioridad == 0">{{item.reingreso == 2 ? "Reingreso" : ""}}</span>
@@ -110,7 +126,7 @@ import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 
 export default {
-    name: 'SearchList',
+    name: 'VentaTelefonicaList',
     components: {
       CallcenterRegistrarLlamada
     },
@@ -120,31 +136,35 @@ export default {
                 { text: '', value: 'prioridad' },
                 { text: 'Contactar en', value: 'ultima_llamada.fecha' },
                 { text: 'Nombre', value: 'full_name' },
-                // { text: 'Móvil', value: 'uid' },
                 { text: 'Email', value: 'email' },
                 { text: 'Sede', value: 'sede' },
-                { text: 'Ultimo Agente', value: 'ultima_llamada.solicitante.nombre' },
-                // { text: 'Agente Actual', value: 'ultima_llamada.agente.nombre' },
+                { text: 'Ultimo Agente', value: 'ultima_llamada.usuario' },
                 { text: 'Origen', value: 'ultimo_origen' },
                 { text: 'Gestión', value: 'gestion' },
                 { text: 'Estado', value: 'ultima_llamada_estado' },
                 { text: 'Actions', value: 'action', sortable: false }
             ],
             viewDialog : false,
-            viewDialogHistorico: false,
             loading: false,
             rowsPerPage : [100],
-            search: '', 
+            search: '',
             payload: {
-                prioridad: 0,
+                prioridad: 3,
             },
             leadSeleccionado:null,
             prioridad:[ 
                 // { text: 'Predeterminado', value: null }, 
-                { text: 'Mis pendientes', value:1 }, 
-                { text: 'Datos entrantes', value:0 }, 
-                { text: 'No contestan - Pendientes', value : 2 },
+                // { text: 'Mis pendientes', value:1 }, 
+                // { text: 'Datos entrantes', value:0 }, 
+                // { text: 'No contestan - Pendientes', value : 2 },
                 { text: 'Admisiones - Venta telefónica', value : 3 },
+            ],
+            llamadas_estados:[],
+            estados: {},
+            limits:[
+                { text: '100', value: 100 }, 
+                { text: '1000', value: 1000 }, 
+                { text: '10000', value : 10000 } 
             ]
         }
     },
@@ -152,14 +172,13 @@ export default {
         query: Object,
     },
     mounted() {
-        this.actualizarListado();
-        this.actualizar()
+        this.actualizar();
     },
     methods:{
       ...mapActions({
-          fetchLista: 'callcenter/fetchListaConvenio',
-          solicitar: 'callcenter/solicitar',
-          fetchDetalle: 'leads/fetchDetalle',
+            fetchLista: 'callcenter/fetchLista',
+            solicitar: 'callcenter/solicitar',
+            fetchDetalle: 'leads/fetchDetalle',
       }),
       ...mapMutations({
           reemplazar: 'callcenter/replaceListaElement',
@@ -248,52 +267,18 @@ export default {
                   this.setInfo(error)
               })
         },
-        actualizarListado() {
-            if (this.user && this.user.data) {
-                if (this.user.data.grupo_id == 26) {
-                    this.payload.prioridad = 1;
-                    this.prioridad = [ 
-                        { text: 'Mis pendientes', value:1 },
-                        { text: 'No contestan - Pendientes', value : 2 },
-                        { text: 'Admisiones - Venta telefónica', value : 3 },
-                    ];
-                } else {
-                    if (this.user.data.rol == 'callcenter') {
-                        this.prioridad = [ 
-                            { text: 'Mis pendientes', value:1 }, 
-                            { text: 'Datos entrantes', value:0 }, 
-                            { text: 'No contestan - Pendientes', value : 2 }
-                        ];
-                    } else {
-                        if (this.user.data.rol == 'superusuario' || this.user.data.grupo_id == 20) {
-                            this.prioridad = [ 
-                                { text: 'Mis pendientes', value:1 }, 
-                                { text: 'Datos entrantes', value:0 }, 
-                                { text: 'No contestan - Pendientes', value : 2 },
-                                { text: 'Admisiones - Venta telefónica', value : 3 },
-                            ];
-
-                        }else{
-                            this.payload.prioridad = 1;
-                            this.prioridad = [ 
-                                { text: 'Mis pendientes', value:1 }, 
-                                { text: 'No contestan - Pendientes', value : 2 },
-                                { text: 'Admisiones - Venta telefónica', value : 3 },
-                            ];
-                        }
-                    }
-                }
-
-            }
-            else{
-                this.prioridad = [];
+        esUsuario(){
+            if(this.user && this.user.data) {
+                return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.data.rol) >= 0
+            }else{
+                return false;
             }
         }
     },
     computed: {
         ...mapState({
-            lista: state => state.callcenter.consultas.lista,
-            pagination: state => state.callcenter.consultas.pagination,
+            lista: state => state.callcenter.lista,
+            pagination: state => state.callcenter.pagination,
             user: state => state.auth.user,   
         }),
         getTitle(){

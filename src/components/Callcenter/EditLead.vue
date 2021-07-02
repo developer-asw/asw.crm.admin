@@ -6,22 +6,34 @@
                 <tr>
                     <td><b>Nombre: </b></td>
                     <td>{{ lead.full_name }}</td>
-                    <td></td>
+                    <td>
+                        
+                    </td>
                 </tr>
                 <tr>
                     <td><b>E-Mail: </b></td>
-                    <td>{{ lead.email }}</td>
-                    <td></td>
+                    <td>
+                        <span v-if="ver.email">{{lead.email}}</span>
+                        <input type="email" v-else v-model="lead.email" />
+                    <td class="text-right">
+                        <v-icon v-if="!ver.email" @click="actualizarEmail()" small right>save</v-icon>
+                        <v-icon v-if="ver.email" @click="editarEmail()" small right>autorenew</v-icon>
+                        <v-icon v-else @click="editarEmail()" small right>cancel</v-icon>
+                    </td>
                 </tr>
                 <tr>
                     <td><b>Teléfono: </b></td>
                     <td>{{ lead.movil }}</td>
-                    <td></td>
+                    <td class="text-right">
+                        <v-icon v-if="!ver.movil" @click="actualizarMovil()" small right>save</v-icon>
+                        <v-icon v-if="ver.movil" @click="editarMovil()" small right>autorenew</v-icon>
+                        <v-icon v-else @click="editarMovil()" small right>cancel</v-icon>
+                    </td>
                 </tr>
                 <tr>
                     <td><b>Sede: </b></td>
                     <td>
-                        <span v-if="ver_sede">{{lead.sede_full  ? lead.sede_full.nombre:""}}</span>
+                        <span v-if="ver.sede">{{lead.sede_full  ? lead.sede_full.nombre:""}}</span>
                         <v-select v-else v-model="lead.sede_id" :items="sedes" item-text="nombre" item-value="id">
                             <template slot="item" slot-scope="data">
                                 {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.sede }}
@@ -32,21 +44,21 @@
                         </v-select>
                     </td>
                     <td class="text-right">
-                        <v-icon v-if="!ver_sede" @click="actualizarSede()" small right>save</v-icon>
-                        <v-icon v-if="ver_sede" @click="editarSede()" small right>autorenew</v-icon>
+                        <v-icon v-if="!ver.sede" @click="actualizarSede()" small right>save</v-icon>
+                        <v-icon v-if="ver.sede" @click="editarSede()" small right>autorenew</v-icon>
                         <v-icon v-else @click="editarSede()" small right>cancel</v-icon>
                     </td>
                 </tr>
                 <tr>
                     <td><b>Programa de interes: </b></td>
                     <td>
-                        <span v-if="ver_programa_interes">{{lead.programa_interes}}</span>
+                        <span v-if="ver.programa_interes">{{lead.programa_interes}}</span>
                         <v-select v-else v-model="lead.programa_interes" :items="listado.programaInteres" item-text="title" item-value="value">
                         </v-select>
                     </td>
                     <td class="text-right">
-                        <v-icon v-if="!ver_programa_interes" @click="actualizarProgramaInteres()" small right>save</v-icon>
-                        <v-icon v-if="ver_programa_interes" @click="editarProgramaInteres()" small right>autorenew</v-icon>
+                        <v-icon v-if="!ver.programa_interes" @click="actualizarProgramaInteres()" small right>save</v-icon>
+                        <v-icon v-if="ver.programa_interes" @click="editarProgramaInteres()" small right>autorenew</v-icon>
                         <v-icon v-else @click="editarProgramaInteres()" small right>cancel</v-icon>
                     </td>
                 </tr>
@@ -77,9 +89,9 @@
                     <td></td>
                 </tr>
                 
-                <tr v-if="lead.form_ciudad">
+                <tr v-if="lead.sede_full">
                     <td><b>Ciudad: </b></td>
-                    <td>{{ lead.form_ciudad }}</td>
+                    <td>{{ lead.sede_full.ciudad }}</td>
                     <td></td>
                 </tr>
                 
@@ -108,15 +120,26 @@
                 </tr>
 
                 <tr v-if="lead.mesagge">
-                    <td><b>¿Quieres contarnos o preguntarnos algo más? </b></td>
-                    <td><p>{{ lead.mesagge }}</p></td>
+                    <td><b>Observaciones Cliente </b></td>
+                    <td><p>{{ lead.mesagge ? lead.mesagge : lead.comentarios }}</p></td>
                     <td></td>
                 </tr>
 
                 <tr>
                     <td><b>Estado: </b></td>
-                    <td>{{ lead.ultima_llamada_estado }}</td>
-                    <td></td>
+                    <td>
+                        {{lead.ultima_llamada_estado}}
+                    </td>
+                    <td>
+                        <v-icon v-if="!ver.estado" @click="actualizarEstado()" small right>save</v-icon>
+                        <v-icon v-if="ver.estado" @click="editarEstado()" small right>autorenew</v-icon>
+                        <v-icon v-else @click="editarEstado()" small right>cancel</v-icon>
+                    </td>
+                </tr>
+                <tr v-if="!ver.estado">
+                    <td colspan="3" bgColor="white">
+                        <CallcenterTipificar :key="lead_id" :lead_id="lead_id" @actualizar="actualizarEstado" @copiarDatoParent="copiarDato"></CallcenterTipificar>
+                    </td>
                 </tr>
                 <!-- <td colspan="2">
                     <v-icon @click="actualizar" right>refresh</v-icon>
@@ -130,13 +153,24 @@
 
 import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';//,,
 
+import CallcenterTipificar from '@/components/Callcenter/CallcenterTipificar'
+
 export default {
-    name: 'LeadInfoView',
+    name: 'EditLead',
+    components: {
+      CallcenterTipificar
+    },
     data: () => ({
         listado: [],
-        ver_sede: true,
-        ver_programa_interes: true,
+        ver:{
+            sede: true,
+            programa_interes: true,
+            email: true,
+            movil: true,
+            estado: true,
+        },
         lead: {},
+        leadOriginal: {},
     }),
     props: {
         lead_id: String,
@@ -152,11 +186,32 @@ export default {
             listarOrigenes: 'listado/fetchListaLeads',
             sedeUpdate: 'leads/actualizarSede',
             programaInteresUpdate: 'leads/actualizarProgramaInteres',
+            identificacionUpdate: 'leads/actualizarIdentificacion',
+            primerNombreUpdate: 'leads/actualizarPrimerNombre',
+            segundoNombreUpdate: 'leads/actualizarSegundoNombre',
+            primerApellidoUpdate: 'leads/actualizarPrimerApellido',
+            segundoApellidoUpdate: 'leads/actualizarSegundoApellido',
+            emailUpdate: 'leads/actualizarEmail',
+            movilUpdate: 'leads/actualizarMovil',
+            renovacionUpdate: 'leads/actualizarRenovacion',
+            origenUpdate: 'leads/actualizarOrigen',
+            comoLlegoUpdate: 'leads/actualizarComoLlego',
+            comoSeEnteroUpdate: 'leads/actualizarComoSeEntero',
         }),
         ...mapMutations({
             setInfo: 'setInfo',
             setError: 'setError',
         }),
+        copiarDato(value) {
+          this.$copyText(value).then(
+              () => {
+                  this.setInfo('Copiado en list:' + value)
+              })
+              .catch(error => {
+                  console.log(error)
+                  this.setInfo(error)
+              })
+        },
         traerOrigenes() {
             this.listarOrigenes()
                 .then(result => {
@@ -169,10 +224,7 @@ export default {
                 });
         },
         editarSede() {
-            this.ver_sede = !this.ver_sede;
-        },
-        editarProgramaInteres() {
-            this.ver_programa_interes = !this.ver_programa_interes;
+            this.ver.sede = !this.ver.sede;
         },
         actualizarSede() {
             this.procesando = true;
@@ -183,8 +235,9 @@ export default {
                         this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                         this.lead.sede_full = result.dato.valor;
                         this.lead.sede_id = this.lead.sede_id;
-                        this.ver_sede = true;
+                        this.ver.sede = true;
                     }else{
+                        this.lead.sede_id = this.leadOriginal.sede_id;
                         this.setError(result)
                     }
                 })
@@ -194,6 +247,9 @@ export default {
                 }).finally(() => {
                     this.procesando = false;
                 });
+        },
+        editarProgramaInteres() {
+            this.ver.programa_interes = !this.ver.programa_interes;
         },
         actualizarProgramaInteres() {
             this.procesando = true;
@@ -204,8 +260,9 @@ export default {
                     if (result && result.codigo == 1) {
                         this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                         this.lead.programa_interes = result.dato.valor;
-                        this.ver_programa_interes = true;
+                        this.ver.programa_interes = true;
                     }else{
+                        this.lead.programa_interes = this.leadOriginal.programa_interes;
                         this.setError(result)
                     }
                 })
@@ -216,6 +273,65 @@ export default {
                     this.procesando = false;
                 });
         },
+        editarEmail() {
+            this.ver.email = !this.ver.email;
+            if (!this.ver.email) {
+                this.lead.email = this.leadOriginal.email;
+            }
+        },
+        actualizarEmail() {
+            this.procesando = true;
+            const dato = { id: this.lead._id, valor:this.lead.email };
+            this.emailUpdate(dato)
+                .then(result => {
+                    console.log(result);
+                    if (result && result.codigo == 1) {
+                        this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                        this.lead.email = result.dato.valor;
+                        this.ver.email = true;
+                    }else{
+                        this.lead.email = this.leadOriginal.email;
+                        this.setError(result)
+                    }
+                })
+                .catch(error => {
+                    this.setError(error)
+                    console.log(error)
+                }).finally(() => {
+                    this.procesando = false;
+                });
+        },
+        editarMovil() {
+            this.ver.movil = !this.ver.movil;
+        },
+        actualizarMovil() {
+            this.procesando = true;
+            const dato = { id: this.lead._id, valor:this.lead.movil };
+            this.emailUpdate(dato)
+                .then(result => {
+                    console.log(result);
+                    if (result && result.codigo == 1) {
+                        this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
+                        this.lead.movil = result.dato.valor;
+                        this.ver.movil = true;
+                    }else{
+                        this.lead.movil = this.leadOriginal.movil;
+                        this.setError(result)
+                    }
+                })
+                .catch(error => {
+                    this.setError(error)
+                    console.log(error)
+                }).finally(() => {
+                    this.procesando = false;
+                });
+        },
+        editarEstado() {
+            this.ver.estado = !this.ver.estado;
+        },
+        actualizarEstado() {
+            this.ver.estado = true;
+        },
         verificar() {
             this.viewItem()
         },
@@ -224,6 +340,7 @@ export default {
             this.fetchLead({id:this.lead_id}).then((result) => {
                 if (result && result.datos) {
                     this.lead = result.datos;
+                    this.leadOriginal = JSON.parse(JSON.stringify(result.datos));
                 }
             })
             .finally(() => {
@@ -246,11 +363,7 @@ export default {
         },
         sedes() {
             return this.setSedes
-        },
-        // lead() {
-        //     return this.detalle(this.lead_id)
-        // }
-
+        }
     }
 }
 </script>
