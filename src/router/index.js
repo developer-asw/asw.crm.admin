@@ -24,8 +24,11 @@ import ReportesLlamadas from '../components/Reportes/Llamadas'
 import ReportesLeads from '../components/Reportes/Leads'
 import ReportesCitas from '../components/Reportes/Citas'
 import ReportesAgentes from '../components/Reportes/Agentes'
-
 import RecepcionView from '@/components/Recepcion/RecepcionView'
+
+import MissedAppointments from '@/components/Management/MissedAppointments';
+import IncomingData from '@/components/Management/IncomingData';
+import Parameters from '@/components/Management/Parameters';
 
 Vue.use(VueRouter)
 
@@ -189,6 +192,24 @@ const routes = [
     component: RecepcionView,
     meta: { Auth: true, title: 'Recepcion' , view: 'baseline'},
   },
+  {
+    path: '/management/missed_appointments',
+    name: 'MissedAppointments',
+    component: MissedAppointments,
+    meta: { Auth: true, title: 'Management - missed_appointments' , view: 'baseline'},
+  },
+  {
+    path: '/management/incoming_data',
+    name: 'IncomingData',
+    component: IncomingData,
+    meta: { Auth: true, title: 'Management - incoming_data' , view: 'baseline'},
+  },
+  {
+    path: '/management/parameters',
+    name: 'Parameters',
+    component: Parameters,
+    meta: { Auth: true, title: 'Management - parameters' , view: 'baseline'},
+  }
 ]
 
 const router = new VueRouter({

@@ -18,6 +18,7 @@ import dashboard from '@/modules/dashboard';
 import consultar from '@/modules/consultar';
 import coordinador from '@/modules/coordinador';
 import admisiones from '@/modules/admisiones';
+import management from '@/modules/management';
 
 Vue.use(Vuex)
 
@@ -141,6 +142,7 @@ const store = new Vuex.Store({
     recepcionista,
     coordinador,
     admisiones,
+    management,
   }
 })
 

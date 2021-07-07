@@ -69,6 +69,43 @@
                             <v-list-item-title>Nuevo</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
+                    
+                    
+                    <v-list-group v-if="isLogged && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario')"
+                    no-action
+                    sub-group
+                    value="true"
+                    >
+                        <template v-slot:activator>
+                            <v-list-item-content>
+                                <v-list-item-title>Administración</v-list-item-title>
+                            </v-list-item-content>
+                        </template>
+                        <v-list-item v-if="isLogged" link @click="dirigir('/management/parameters')">
+                            <v-list-item-action>
+                                <v-icon>settings</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Parámetros</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item v-if="isLogged" link @click="dirigir('/management/incoming_data')">
+                            <v-list-item-action>
+                                <v-icon>update</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Datos Entrantes</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item v-if="isLogged" link @click="dirigir('/management/missed_appointments')">
+                            <v-list-item-action>
+                                <v-icon>pending_actions</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Citas Ausentes</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list-group>
 
                     <v-list-group v-if="isLogged && (user.data.rol == 'callcenter' || user.data.rol == 'coordinador' || user.data.rol == 'superusuario')"
                     no-action
@@ -166,13 +203,13 @@
 
                     </v-list-group>-->
 
-                    <v-list-group v-if="isLogged && (user.data.rol == 'superusuario') || user.data.grupo_id == 20" no-action sub-group>
+                    <v-list-group v-if="isLogged && (user.data.rol == 'superusuario' || user.data.rol == 'coordinador') || user.data.grupo_id == 20" no-action sub-group>
                         <template v-slot:activator>
                           <v-list-item-content>
                             <v-list-item-title>Reportes</v-list-item-title>
                           </v-list-item-content>
                         </template>
-                        <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Hits')">
+                        <v-list-item v-if="isLogged && (user.data.rol == 'superusuario') || user.data.grupo_id == 20" link @click="dirigir('/Reportes/Hits')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
@@ -196,7 +233,7 @@
                                 <v-list-item-title>Leads</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>-->
-                        <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Llamadas')">
+                        <v-list-item v-if="isLogged && (user.data.rol == 'superusuario') || user.data.grupo_id == 20" link @click="dirigir('/Reportes/Llamadas')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
@@ -204,7 +241,7 @@
                                 <v-list-item-title>Llamadas</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Agentes')">
+                        <v-list-item v-if="isLogged && (user.data.rol == 'superusuario') || user.data.grupo_id == 20" link @click="dirigir('/Reportes/Agentes')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
