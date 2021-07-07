@@ -71,7 +71,7 @@
                     </v-list-item>
                     
                     
-                    <v-list-group v-if="isLogged && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario')"
+                    <v-list-group v-if="isLogged && (user.data.rol == 'superusuario') && user.data.grupo_id == 20"
                     no-action
                     sub-group
                     value="true"
