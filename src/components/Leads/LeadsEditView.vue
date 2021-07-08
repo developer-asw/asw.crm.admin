@@ -252,7 +252,7 @@
                                         </v-text-field>
                                     </template>
                                     <v-time-picker v-model="lead.hora_contacto" scrollable full-width :disabled="disabled">
-                                        <v-spacer></v-spacer>
+                                        <v-spacer></v-spacer> 
                                         <v-btn text color="primary" @click="time.modal = false">Cancel</v-btn>
                                         <v-btn text color="primary" @click="$refs.time.save(lead.hora_contacto)">OK</v-btn>
                                     </v-time-picker>
@@ -263,6 +263,10 @@
                                 <v-icon v-if="!lead.contactar">check</v-icon>
                                 <v-btn v-else @click="lead.contactar = false" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
                             </v-col>
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="userAdmin && lead.agente">
+                                <v-btn @click="actualizarAgente" dark outlined color="warning">Solicitar contacto <v-icon>send</v-icon></v-btn>
+                            </v-col>
+
                         </v-row>
                 </v-card-text>
                 <v-card-actions>
@@ -970,7 +974,7 @@
                 return this.user && this.user.data && (this.user.data.rol == 'coordinador' || this.user.data.rol == 'recepcion' || this.user.data.rol == 'superusuario')
             },
             userAdmin() {
-                return this.user && this.user.data && (this.user.data.rol == 'coordinador' || this.user.data.rol == 'superusuario')
+                return this.user && this.user.data && (this.user.data.rol == 'superusuario')
             },
             userChangeCall() {
                 return this.user && this.user.data && (this.user.data.grupo_id === 20 || this.user.data.rol === 'superusuario' || this.user.data.rol === 'recepcion' || this.permiso('cambiar_agente') === 'cambiar_agente')

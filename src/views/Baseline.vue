@@ -74,7 +74,6 @@
                     <v-list-group v-if="isLogged && (user.data.rol == 'superusuario')"
                     no-action
                     sub-group
-                    value="true"
                     >
                         <template v-slot:activator>
                             <v-list-item-content>
