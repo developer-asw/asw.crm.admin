@@ -11,7 +11,8 @@
                 
                 <v-btn small color="info" dark>
                     <download-excel
-                        :data   = "lista">
+                        :data   = "lista"
+                        :fields = "json_fields">
                         <!-- Download Data -->
                         <v-icon smallclass="mr-2">
                             file_download
@@ -144,8 +145,16 @@ Vue.use(VueClipboard)
                 { text: 'Vencidos SW', value: 'vencidos_seguimiento_whatsapp' },
                 { text: 'Vencidos - Vencidos SW', value: 'vencidos_restantes' },
                 { text: 'Pendientes', value: 'pendientes' },
-                { text: 'Actions', value: 'action', sortable: false }
+                // { text: 'Actions', value: 'action', sortable: false }
             ],
+            json_fields:{
+                "Agente - Nombre": "_id.agente.nombre",
+                "Agente - Email": "_id.agente.email",
+                "Total": "total",
+                "Tareas Vencidas": "vencidos",
+                "Tareas Vencidas - Seguimiento Whatsapp": "vencidos_seguimiento_whatsapp",
+                "Tareas Pendientes": "pendientes",
+            },
             dialogFilter: false,
             viewDialogHistorico: false,
             viewDialog : false,

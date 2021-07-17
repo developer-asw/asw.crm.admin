@@ -135,8 +135,8 @@ Vue.use(VueClipboard)
         return {
             headers: [
                 { text: 'Realizado', value: 'fecha_realizado'},
-                { text: 'Solicitado', value: 'fecha_solicitado'},
-                { text: 'Asignado', value: 'fecha_asignado'},
+                //{ text: 'Solicitado', value: 'fecha_solicitado'},
+                //{ text: 'Asignado', value: 'fecha_asignado'},
                 { text: 'Nombre', value: 'full_name' },
                 { text: 'Móvil', value: 'movil' },
                 { text: 'Email', value: 'email' },
@@ -145,7 +145,7 @@ Vue.use(VueClipboard)
                 { text: 'Agente', value: 'agente' },
                 { text: 'Solucion', value: 'resolucion' },
                 { text: 'Observacion', value: 'observacion' },
-                { text: 'Actions', value: 'action', sortable: false }
+                // { text: 'Actions', value: 'action', sortable: false }
             ],
             dialogFilter: false,
             viewDialogHistorico: false,
@@ -159,8 +159,9 @@ Vue.use(VueClipboard)
             menu2: false,
             filtro: {
                 search:'',
-                FechaInicial: this.formatDate(new Date().toISOString().substr(0, 10)), 
-                FechaFinal: this.formatDate(new Date().toISOString().substr(0, 10)),
+                
+                FechaInicial: this.formatDate(this.$moment(new Date()).format('YYYY-MM-DD')), 
+                FechaFinal: this.formatDate(this.$moment(new Date()).format('YYYY-MM-DD')),
                 CheckFecha: true,
                 CheckSolicitado: false,
                 Tipo: 'realizado',
