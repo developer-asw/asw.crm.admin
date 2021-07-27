@@ -114,7 +114,6 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
                     })
             },
             regresar() {
-                console.log("Regresando....")
                 this.$router.back();
             },
             copiarDato(value) {
@@ -135,7 +134,7 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
                 // })
                 // .finally(() => {
                 //     this.loading = false;
-                // }) 
+                // })
                 this.fetchDetalle({id:this.lead_id})
                 .finally(() => {
                     this.loading = false;
@@ -199,9 +198,8 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             setAsisteCita(){
                 if(this.user && this.user.data) {
                     // 'callcenter', 'coordinador',
-                    console.log(this.user.data.rol);
-                    return ['superusuario', 'recepcion'].indexOf(this.user.data.rol) >= 0
                     // return this.user.data.rol;
+                    return ['superusuario', 'recepcion'].indexOf(this.user.data.rol) >= 0
                 }else{
                     if (this.user && this.user.data && this.user.data.grupo_id == 20) return true;
                     return false;

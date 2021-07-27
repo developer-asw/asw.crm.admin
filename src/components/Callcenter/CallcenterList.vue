@@ -275,6 +275,7 @@ export default {
                     this.payload.prioridad = 1;
                     this.prioridad = [ 
                         { text: 'Tareas Pendientes', value:1 },
+                        { text: 'Datos entrantes', value:0 }, 
                         { text: 'No contestan - Pendientes', value : 2 },
                         { text: 'Admisiones - Venta telefónica', value : 3 },
                     ];
