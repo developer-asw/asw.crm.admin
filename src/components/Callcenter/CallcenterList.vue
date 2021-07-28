@@ -156,7 +156,8 @@ export default {
             prioridad:[ 
                 // { text: 'Predeterminado', value: null }, 
                 { text: 'Tareas Pendientes', value:1 }, 
-                { text: 'Datos entrantes', value:0 }, 
+                { text: 'Datos Entrantes', value:0 }, 
+                { text: 'Datos Nuevos', value:4 }, 
                 { text: 'No contestan - Pendientes', value : 2 },
                 { text: 'Admisiones - Venta telefónica', value : 3 },
             ],
@@ -275,7 +276,7 @@ export default {
                     this.payload.prioridad = 1;
                     this.prioridad = [ 
                         { text: 'Tareas Pendientes', value:1 },
-                        { text: 'Datos entrantes', value:0 }, 
+                        { text: 'Datos Entrantes', value:0 }, 
                         { text: 'No contestan - Pendientes', value : 2 },
                         { text: 'Admisiones - Venta telefónica', value : 3 },
                     ];
@@ -283,14 +284,15 @@ export default {
                     if (this.user.data.rol == 'callcenter') {
                         this.prioridad = [ 
                             { text: 'Tareas Pendientes', value:1 }, 
-                            { text: 'Datos entrantes', value:0 }, 
+                            { text: 'Datos Entrantes', value:0 }, 
                             { text: 'No contestan - Pendientes', value : 2 }
                         ];
                     } else {
                         if (this.user.data.rol == 'superusuario' || this.user.data.grupo_id == 20) {
                             this.prioridad = [ 
                                 { text: 'Tareas Pendientes', value:1 }, 
-                                { text: 'Datos entrantes', value:0 }, 
+                                { text: 'Datos Entrantes', value:0 },  
+                                { text: 'Datos Nuevos', value:4 }, 
                                 { text: 'No contestan - Pendientes', value : 2 },
                                 { text: 'Admisiones - Venta telefónica', value : 3 },
                             ];

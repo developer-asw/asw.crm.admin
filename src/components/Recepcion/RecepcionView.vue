@@ -31,8 +31,8 @@
                 </v-row>
                 
                 <v-row class="mt-10">
-                    <v-col cols="12" sm="3" md="2"></v-col>
-                    <v-col cols="12" sm="6" md="8">
+                    <v-col cols="12" md="1"  sm="2"></v-col>
+                    <v-col cols="12" md="10" sm="8">
                         <LeadHistoricView :key="lead_id" :lead_id="lead_id"  :ver_detalles="true"></LeadHistoricView>
                     </v-col>
                 </v-row>
@@ -69,8 +69,8 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             listado: {},
             headerSeguimientos: [
                 { text: '', value: 'tipo' },
-                { text: 'Fecha', value: 'fecha' },
-                { text: 'Usuario', value: 'usuario.nombre' },
+                { text: 'Fecha', value: 'fecha', width: '20%', align: 'center' },
+                { text: 'Usuario', value: 'usuario.nombre', align: 'right' },
                 { text: 'Acción', value: 'accion' },
                 { text: 'Observación', value: 'observacion' },
             ],

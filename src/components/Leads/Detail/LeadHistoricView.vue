@@ -15,100 +15,98 @@
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
                             
-                            <v-data-table dense full-width  
-                                v-if="historial && historial.length > 0"
-                                :headers="headerHistorial" 
-                                :items="historial" 
-                                loading-text="Loading... Please wait"
-                                class="elevation-1">
-                                <template v-slot:[`item.fecha`]="{ item }">
-                                    <span v-if="item.fecha_mostrar">
-                                        {{item.fecha_mostrar | moment("DD/MM/YYYY") }}
-                                    </span>
-                                </template>
-                                <template v-slot:[`item.hora`]="{ item }">
-                                    <span v-if="item.fecha_mostrar">
-                                        {{item.fecha_mostrar | moment("HH:mm:ss") }}
-                                    </span>
-                                </template>
-                                <template v-slot:[`item.tipo`]="{ item }">
-                                    <v-icon></v-icon>
-                                    <v-icon v-if="item.tipo == 'llamada' && ver_detalles" @click="viewDetail(item)" x-small>call</v-icon>
-                                    <v-icon v-else-if="ver_detalles" x-small @click="viewDetail(item)">edit</v-icon>
-                                    <v-icon v-else-if="item.tipo == 'llamada'" x-small>call</v-icon>
-                                    <v-icon v-else x-small>edit</v-icon>
-                                </template>
-                                
-                                <template v-slot:top>
-                                    <v-toolbar flat>
-                                        <!-- <v-toolbar-title>HISTORIAL</v-toolbar-title> -->
-                                        <v-toolbar-title><v-icon>folder</v-icon></v-toolbar-title>
-                                        <v-divider class="mx-4" inset vertical></v-divider>
-                                        <v-spacer></v-spacer>
-                                        <v-btn
-                                        color="primary"
-                                        dark
-                                        class="mb-2"
-                                        @click="traerHistorial">
-                                        Actualizar
-                                        </v-btn>
-                                    </v-toolbar>
-                                </template>
-                            </v-data-table>
+                            <v-layout column style="height: 110vh">       
+                                <v-flex md6 style="overflow: auto">  
+                                    <v-data-table dense full-width  
+                                        v-if="historial && historial.length > 0"
+                                        :headers="headerHistorial" 
+                                        :items="historial" 
+                                        hide-default-footer
+                                        :items-per-page="-1"
+                                        loading-text="Loading... Please wait"
+                                        class="elevation-1">
+                                        <template v-slot:[`item.fecha`]="{ item }">
+                                            <span v-if="item.fecha_mostrar">
+                                                {{item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
+                                            </span>
+                                        </template>
+                                        <template v-slot:[`item.tipo`]="{ item }">
+                                            <v-icon></v-icon>
+                                            <v-icon v-if="item.tipo == 'llamada' && ver_detalles" @click="viewDetail(item)" x-small>call</v-icon>
+                                            <v-icon v-else-if="ver_detalles" x-small @click="viewDetail(item)">edit</v-icon>
+                                            <v-icon v-else-if="item.tipo == 'llamada'" x-small>call</v-icon>
+                                            <v-icon v-else x-small>edit</v-icon>
+                                        </template>
+                                        
+                                        <template v-slot:top>
+                                            <v-toolbar flat>
+                                                <!-- <v-toolbar-title>HISTORIAL</v-toolbar-title> -->
+                                                <v-toolbar-title><v-icon>folder</v-icon></v-toolbar-title>
+                                                <v-divider class="mx-4" inset vertical></v-divider>
+                                                <v-spacer></v-spacer>
+                                                <v-btn
+                                                color="primary"
+                                                dark
+                                                class="mb-2"
+                                                @click="traerHistorial">
+                                                Actualizar
+                                                </v-btn>
+                                            </v-toolbar>
+                                        </template>
+                                    </v-data-table>
+                                </v-flex>
+                            </v-layout>
                         </v-expansion-panel-content>
                     </v-expansion-panel>
                 </v-expansion-panels>
-
             </v-row>
-
+            
             <v-row v-else>
                 <v-col>
                     <v-row>
-
                         <v-col cols="12">
-
-                            <v-data-table dense full-width  
-                                v-if="historial && historial.length > 0"
-                                :headers="headerHistorial" 
-                                :items="historial" 
-                                loading-text="Loading... Please wait"
-                                class="elevation-1">
-                                <template v-slot:[`item.fecha`]="{ item }">
-                                    <span v-if="item.fecha_mostrar">
-                                        {{item.fecha_mostrar | moment("DD/MM/YYYY") }}
-                                    </span>
-                                </template>
-                                <template v-slot:[`item.hora`]="{ item }">
-                                    <span v-if="item.fecha_mostrar">
-                                        {{item.fecha_mostrar | moment("HH:mm:ss") }}
-                                    </span>
-                                </template>
-                                <template v-slot:[`item.tipo`]="{ item }">
-                                    <v-icon></v-icon>
-                                    <v-icon v-if="item.tipo == 'llamada' && ver_detalles" @click="viewDetail(item)" x-small>call</v-icon>
-                                    <v-icon v-else-if="item.tipo == 'cita' && ver_detalles" x-small @click="viewDetail(item)">event</v-icon>
-                                    <v-icon v-else-if="ver_detalles" x-small @click="viewDetail(item)">edit</v-icon>
-                                    <v-icon v-else-if="item.tipo == 'llamada'" x-small>call</v-icon>
-                                    <v-icon v-else-if="item.tipo == 'cita'" x-small>event</v-icon>
-                                    <v-icon v-else x-small>edit</v-icon>
-                                </template>
-                                
-                                <template v-slot:top>
-                                    <v-toolbar flat>
-                                        <v-toolbar-title>HISTORIAL</v-toolbar-title>
-                                        <v-divider class="mx-4" inset vertical></v-divider>
-                                        <v-spacer></v-spacer>
-                                        <v-btn
-                                        color="primary"
-                                        dark
-                                        class="mb-2"
-                                        @click="traerHistorial">
-                                        Actualizar
-                                        </v-btn>
-                                    </v-toolbar>
-                                </template>
-
-                            </v-data-table>
+                            <v-layout column style="height: 110vh">       
+                                <v-flex md6 style="overflow: auto">  
+                                    <v-data-table dense full-width  
+                                        v-if="historial && historial.length > 0"
+                                        :headers="headerHistorial" 
+                                        :items="historial" 
+                                        hide-default-footer
+                                        :items-per-page="-1"
+                                        loading-text="Loading... Please wait"
+                                        class="elevation-1">
+                                        <template v-slot:[`item.fecha`]="{ item }">
+                                            <span v-if="item.fecha_mostrar">
+                                                {{item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
+                                            </span>
+                                        </template>
+                                        <template v-slot:[`item.tipo`]="{ item }">
+                                            <v-icon></v-icon>
+                                            <v-icon v-if="item.tipo == 'llamada' && ver_detalles" @click="viewDetail(item)" x-small>call</v-icon>
+                                            <v-icon v-else-if="item.tipo == 'cita' && ver_detalles" x-small @click="viewDetail(item)">event</v-icon>
+                                            <v-icon v-else-if="ver_detalles" x-small @click="viewDetail(item)">edit</v-icon>
+                                            <v-icon v-else-if="item.tipo == 'llamada'" x-small>call</v-icon>
+                                            <v-icon v-else-if="item.tipo == 'cita'" x-small>event</v-icon>
+                                            <v-icon v-else x-small>edit</v-icon>
+                                        </template>
+                                        
+                                        <template v-slot:top>
+                                            <v-toolbar flat>
+                                                <v-toolbar-title>HISTORIAL</v-toolbar-title>
+                                                <v-divider class="mx-4" inset vertical></v-divider>
+                                                <v-spacer></v-spacer>
+                                                <v-btn
+                                                color="primary"
+                                                dark
+                                                class="mb-2"
+                                                @click="traerHistorial">
+                                                Actualizar
+                                                </v-btn>
+                                            </v-toolbar>
+                                        </template>
+                                    </v-data-table>
+                                </v-flex>
+                            </v-layout>
                         </v-col>
                     </v-row>
 
@@ -163,7 +161,6 @@ export default {
         headerHistorial: [
             { text: '', value: 'tipo' },
             { text: 'Fecha', value: 'fecha' },
-            { text: 'Hora', value: 'hora' },
             { text: 'Usuario', value: 'usuario.nombre' },
             { text: 'Acción', value: 'accion' },
             { text: 'Observación', value: 'observacion' },
