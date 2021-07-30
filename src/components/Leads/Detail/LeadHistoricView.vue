@@ -24,7 +24,11 @@
                                         hide-default-footer
                                         :items-per-page="-1"
                                         loading-text="Loading... Please wait"
-                                        class="elevation-1">
+                                        class="elevation-1"
+                                        item-key="index"
+                                        :single-expand="false"
+                                        :expanded.sync="expanded"
+                                        show-expand>
                                         <template v-slot:[`item.fecha`]="{ item }">
                                             <span v-if="item.fecha_mostrar">
                                                 {{item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
@@ -53,6 +57,11 @@
                                                 </v-btn>
                                             </v-toolbar>
                                         </template>
+                                        <template v-slot:expanded-item="{ headers, item }">
+                                            <td :colspan="headers.length">
+                                                {{ item.observacion }}
+                                            </td>
+                                        </template>
                                     </v-data-table>
                                 </v-flex>
                             </v-layout>
@@ -74,7 +83,12 @@
                                         hide-default-footer
                                         :items-per-page="-1"
                                         loading-text="Loading... Please wait"
-                                        class="elevation-1">
+                                        class="elevation-1"
+                                        item-key="index"
+                                        :single-expand="false"
+                                        :expanded.sync="expanded"
+                                        show-expand
+                                        >
                                         <template v-slot:[`item.fecha`]="{ item }">
                                             <span v-if="item.fecha_mostrar">
                                                 {{item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
@@ -103,6 +117,11 @@
                                                 Actualizar
                                                 </v-btn>
                                             </v-toolbar>
+                                        </template>
+                                        <template v-slot:expanded-item="{ headers, item }">
+                                            <td :colspan="headers.length">
+                                                {{ item.observacion }}
+                                            </td>
                                         </template>
                                     </v-data-table>
                                 </v-flex>
@@ -162,12 +181,15 @@ export default {
             { text: '', value: 'tipo' },
             { text: 'Fecha', value: 'fecha' },
             { text: 'Usuario', value: 'usuario.nombre' },
+            { text: 'Evento', value: 'evento' },
             { text: 'Acción', value: 'accion' },
-            { text: 'Observación', value: 'observacion' },
+            // { text: 'Observación', value: 'observacion' },
+            { text: '', value: 'data-table-expand' },
         ],
         historial: [],
         detalles: [],
         dialog: false,
+        expanded: [],
     }),
     props: {
         lead_id: String,
