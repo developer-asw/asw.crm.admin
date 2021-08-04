@@ -24,7 +24,7 @@
                                         hide-default-footer
                                         :items-per-page="-1"
                                         loading-text="Loading... Please wait"
-                                        class="elevation-1"
+                                        class="elevation-1 tabla-historial"
                                         item-key="index"
                                         :single-expand="false"
                                         
@@ -58,8 +58,8 @@
                                                 </v-btn>
                                             </v-toolbar>
                                         </template>
-                                        <template v-slot:expanded-item="{ headers, item }">
-                                            <td :colspan="headers.length">
+                                        <template v-slot:expanded-item="{ headers, item }" class="row-observacion">
+                                            <td class="observacion" :colspan="headers.length">
                                                 {{ item.observacion }}
                                             </td>
                                         </template>
@@ -84,7 +84,7 @@
                                         hide-default-footer
                                         :items-per-page="-1"
                                         loading-text="Loading... Please wait"
-                                        class="elevation-1"
+                                        class="elevation-1 tabla-historial"
                                         item-key="index"
                                         :single-expand="false"
                                         :expanded.sync="expanded"
@@ -119,8 +119,8 @@
                                                 </v-btn>
                                             </v-toolbar>
                                         </template>
-                                        <template v-slot:expanded-item="{ headers, item }">
-                                            <td :colspan="headers.length">
+                                        <template v-slot:expanded-item="{ headers, item }" class="row-observacion">
+                                            <td class="observacion" :colspan="headers.length">
                                                 {{ item.observacion }}
                                             </td>
                                         </template>
@@ -240,9 +240,25 @@ export default {
 }
 </script>
 
-<style scoped>
-.v-data-table tbody tr.v-data-table__expanded__content {
-    -webkit-box-shadow: inset 0px 4px 8px -5px rgb(205 205 205 / 75%) !important;
-    box-shadow: inset 0px 4px 8px -5px rgb(205 205 205 / 75%) !important;
+<style type="text/css">     
+
+.tabla-historial th {
+    border-bottom: solid 2px gray !important;
 }
+.tabla-historial thead {
+    background-color: #979797;
+}
+.tabla-historial thead th span {
+    color: white;
+}
+
+.tabla-historial .observacion {
+    border-bottom: solid 2px gray !important;
+    height: 30px;
+}
+.tabla-historial tr.v-data-table__expanded__content {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
 </style>
