@@ -27,6 +27,7 @@
                                         class="elevation-1"
                                         item-key="index"
                                         :single-expand="false"
+                                        
                                         :expanded.sync="expanded"
                                         show-expand>
                                         <template v-slot:[`item.fecha`]="{ item }">
@@ -189,7 +190,7 @@ export default {
         historial: [],
         detalles: [],
         dialog: false,
-        expanded: [],
+        expanded: [true, true],
     }),
     props: {
         lead_id: String,
@@ -208,6 +209,7 @@ export default {
             this.consultar({id:this.lead_id})
                 .then(result => {
                     this.historial = result.datos;
+                    this.expandAll();
                 })
                 .catch(error => {
                     console.log(error)
@@ -220,6 +222,14 @@ export default {
                 this.detalles = item.detalles;
                 this.dialog = true;
             }
+        },
+        expandAll: function() {
+            console.log("All expanded.");
+            this.$data.expanded = this.$data.historial;
+        },
+        collapseAll: function() {
+            console.log("All collapsed.");
+            this.$data.expanded = [];
         }
     },
     computed: {
@@ -229,3 +239,10 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.v-data-table tbody tr.v-data-table__expanded__content {
+    -webkit-box-shadow: inset 0px 4px 8px -5px rgb(205 205 205 / 75%) !important;
+    box-shadow: inset 0px 4px 8px -5px rgb(205 205 205 / 75%) !important;
+}
+</style>
