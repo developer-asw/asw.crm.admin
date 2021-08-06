@@ -121,7 +121,7 @@
                                         </template>
                                         <template v-slot:expanded-item="{ headers, item }" class="row-observacion">
                                             <td class="observacion" :colspan="headers.length">
-                                                {{ item.observacion }}
+                                                &raquo; {{ item.observacion }}
                                             </td>
                                         </template>
                                     </v-data-table>
