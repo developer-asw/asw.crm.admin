@@ -29,19 +29,19 @@
       class="elevation-1"
   >
       
-      <template v-slot:item.fecha_proximo_contacto="{ item }">
+      <template v-slot:[`item.fecha_proximo_contacto`]="{ item }">
         <span v-if="item.fecha_proximo_contacto">{{presentDate(item.fecha_proximo_contacto)}}</span>
       </template>
 
-      <template v-slot:item.full_name="{ item }">
+      <template v-slot:[`item.full_name`]="{ item }">
         <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
       </template>
 
-      <template v-slot:item.movil="{ item }">
+      <template v-slot:[`item.movil`]="{ item }">
         <span @click="$copyText(item.movil);setInfo(item.movil)">{{item.movil}}</span>
       </template>
 
-      <template v-slot:item.email="{ item }">
+      <template v-slot:[`item.email`]="{ item }">
         <span @click="$copyText(item.email);setInfo(item.email)">{{item.email}}</span>
       </template>
 
@@ -54,7 +54,7 @@
         
       </template> -->
 
-      <template v-slot:item.sede="{ item }">
+      <template v-slot:[`item.sede`]="{ item }">
         <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>
         <span v-else>{{item.sede}}</span>
       </template>
@@ -229,8 +229,8 @@ Vue.use(VueClipboard)
           }
         };
 
-        this.payload.download_tipo = 'csv'
-        
+        this.payload.download_tipo = 'csv';
+
         let response = await Vue.http.post("callcenter/descargar_cordinador", this.payload).finally(()=>{
           this.loading = false
         });

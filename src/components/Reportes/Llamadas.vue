@@ -144,6 +144,7 @@ Vue.use(VueClipboard)
                 { text: 'Estado', value: 'estado' },
                 { text: 'Agente', value: 'agente' },
                 { text: 'Solucion', value: 'resolucion' },
+                { text: 'Motivo', value: 'motivo' },
                 { text: 'Observacion', value: 'observacion' },
                 // { text: 'Actions', value: 'action', sortable: false }
             ],

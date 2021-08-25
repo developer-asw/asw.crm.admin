@@ -196,6 +196,10 @@ export default {
             let response = await Vue.http.post("callcenter/descargar_cordinador", payload).finally(()=>{
                 this.loading = false
             });
+            /*var w = window.open('about:blank');
+            w.document.open();
+            w.document.write(response.data);
+            w.document.close();*/
 
             let blob = new Blob([response.data], {type:response.headers.get('content-type')});
             let link = document.createElement('a');
@@ -215,7 +219,6 @@ export default {
             payload.download_tipo = 'csv'
             
             let ruta = config.ROOT_API + "callcenter/descargar_cordinador?" + this.getUrlString(payload);
-            //console.log(ruta)
 
             let newWindow = window.open(ruta, '_blank');
             newWindow.focus();
