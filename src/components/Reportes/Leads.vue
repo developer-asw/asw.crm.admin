@@ -112,11 +112,12 @@ Vue.use(VueClipboard)
                 { text: 'Nombre', value: 'full_name' },
                 { text: 'Móvil', value: 'movil' },
                 { text: 'Email', value: 'email' },
+                { text: 'Estudió otras academias', value: 'otras_academias' },
+                { text: 'Ciudad', value: 'ciudad' },
                 { text: 'Sede', value: 'sede' },
                 { text: 'Origen', value: 'origen' },
                 { text: 'Como Llego', value: 'como_llego' },
                 { text: 'Estado', value: 'estado' },
-                { text: 'Ciudad', value: 'ciudad' },
                 { text: 'Agente Asignado', value: 'agente_fecha_asignado' },
                 { text: 'Agente Nombre', value: 'agente_nombre' },
                 // { text: 'Actions', value: 'action', sortable: false }
