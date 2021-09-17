@@ -9,15 +9,14 @@
                     <v-icon>cloud_download</v-icon>
                 </v-btn> -->
                 
-                <v-btn small color="info" dark>
+                <!--<v-btn small color="info" dark>
                     <download-excel
                         :data   = "lista">
-                        <!-- Download Data -->
                         <v-icon smallclass="mr-2">
                             file_download
                         </v-icon>
                     </download-excel>
-                </v-btn>
+                </v-btn>-->
             </v-toolbar-items>
         </v-toolbar>
         <v-card>
@@ -81,6 +80,7 @@
                     </v-col>
                     <v-col cols="2">
                         <v-btn color="blue darken-1" text :disabled="loading" :loading="loading" @click="preFiltro()">Filtrar</v-btn>
+                        <v-btn color="blue darken-1" text :disabled="loading" :loading="loading" @click="descargarReporte()">Descargar</v-btn>
                     </v-col>
                 </v-row>
             </v-card-title>
@@ -90,7 +90,13 @@
                 :loading="loading"
                 :search="filtro.search"
                 loading-text="Loading... Please wait"
-                class="elevation-1">
+                class="elevation-1"
+                
+                :single-expand="singleExpand"
+                :expanded.sync="expanded"
+                item-key="index"
+                show-expand>
+
                 <template v-slot:[`item.fecha_proximo_contacto`]="{ item }">
                     <span v-if="item.fecha_proximo_contacto">{{presentDate(item.fecha_proximo_contacto)}}</span>
                 </template>
@@ -114,6 +120,11 @@
                 <template v-slot:[`item.sede`]="{ item }">
                     <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>
                     <span v-else>{{item.sede}}</span>
+                </template>
+                <template v-slot:expanded-item="{ headers, item }" class="row-observacion">
+                    <td class="observacion" :colspan="headers.length">
+                        {{ item.observacion }}
+                    </td>
                 </template>
             </v-data-table>
         </v-card>
@@ -145,7 +156,7 @@ Vue.use(VueClipboard)
                 { text: 'Agente', value: 'agente' },
                 { text: 'Solucion', value: 'resolucion' },
                 { text: 'Motivo', value: 'motivo' },
-                { text: 'Observacion', value: 'observacion' },
+                // { text: 'Observacion', value: 'observacion' },
                 // { text: 'Actions', value: 'action', sortable: false }
             ],
             dialogFilter: false,
@@ -170,7 +181,9 @@ Vue.use(VueClipboard)
             tipos: [
                 {id: 'realizado', nombre: 'Realizado'},
                 {id: 'solicitado', nombre: 'Solicitado'},
-            ]
+            ],
+            expanded: [],
+            singleExpand: true,
         }
     },
     props : {
@@ -211,6 +224,23 @@ Vue.use(VueClipboard)
             payload.FechaInicial = this.parseDate(this.filtro.FechaInicial);
             payload.FechaFinal = this.parseDate(this.filtro.FechaFinal);
             this.filtrar(payload);
+        },
+        async descargarReporte(){
+            this.loading = true
+            let payload = this.copy(this.filtro);
+            payload.FechaInicial = this.parseDate(this.filtro.FechaInicial);
+            payload.FechaFinal = this.parseDate(this.filtro.FechaFinal);
+            payload.download_tipo = 'csv'
+            
+            let response = await Vue.http.post("reportes/llamadas/descargar", payload).finally(()=>{
+                this.loading = false
+            });
+
+            let blob = new Blob([response.data], {type:response.headers.get('content-type')});
+            let link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'leads.'+payload.download_tipo;
+            link.click();
         },
         cerrarDialog(){
             this.viewDialog = false;
