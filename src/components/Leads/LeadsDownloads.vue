@@ -71,10 +71,11 @@
                         </v-checkbox>
                     </v-col>
                     <v-col cols="10">
-                        <v-radio-group label="Agente:" v-model="filtro.Agente" row>
+                        <h4 style="margin-top: 20px;">Incluir Primer Contacto en rango seleccionado</h4>
+                        <!--<v-radio-group label="Agente:" v-model="filtro.Agente" row>
                             <v-radio label="Último" value="ultimo" :disabled="!filtro.CheckAgente || loading"></v-radio>
                             <v-radio label="Primero" value="primero" :disabled="!filtro.CheckAgente || loading"></v-radio>
-                        </v-radio-group>
+                        </v-radio-group>-->
                     </v-col>
                 </v-row>
                 <v-row>
