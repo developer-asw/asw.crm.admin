@@ -4,9 +4,9 @@
         <!-- <v-toolbar-title>{{getTitle}}</v-toolbar-title> -->
         <v-spacer></v-spacer>
         <v-toolbar-items>
-            <v-btn small color="info" dark @click="consultar">
+            <!--<v-btn small color="info" dark @click="consultar">
                 <v-icon>autorenew</v-icon>
-            </v-btn>
+            </v-btn>-->
         </v-toolbar-items>
     </v-toolbar>
 
@@ -14,6 +14,40 @@
         
         <v-layout text-center wrap>
             <v-container>
+                <v-row justify="space-around">
+                    
+                    <v-col cols="12" sm="6" md="4">
+                        <v-container>
+                            <v-menu ref="menu1" :close-on-content-click="false" transition="scale-transition" offset-y :value="shown" max-width="290px" min-width="auto">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                        v-model="dateRangeText"
+                                        label="Rango de fecha"
+                                        prepend-icon="mdi-calendar"
+                                        readonly
+                                        v-bind="attrs"
+                                        v-on="on">
+                                    </v-text-field>
+                                </template>
+                                <v-icon @click="closemenu">
+                                    close
+                                </v-icon>
+                                <v-date-picker v-model="dates" no-title range @input="menu1 = false">
+                                    
+                                </v-date-picker>
+                            </v-menu>
+                        </v-container>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="6"  class="pb-5">
+                        <v-chip-group multiple active-class="primary--text">
+                            <v-chip filter v-for="tag in tags" :key="tag" @click="seleccionarTag(tag)"> {{ tag }} </v-chip>
+                        </v-chip-group>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="2" class="pb-5">
+                        <v-btn class="ma-2" color="primary darken-1" text @click="consultar"><v-icon left small>refresh</v-icon>&nbsp;Actualizar&nbsp;</v-btn>
+                    </v-col>
+                    
+                </v-row>
                 <v-row>
                     
                     <v-col
@@ -140,30 +174,6 @@
                         md="3"
                         lg="3">
                         <v-row>
-                            <v-col>
-                                <v-container>
-                                    <v-menu ref="menu1" :close-on-content-click="false" transition="scale-transition" offset-y :value="shown" max-width="290px" min-width="auto">
-                                        <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field
-                                                v-model="dateRangeText"
-                                                label="Rango de fecha"
-                                                prepend-icon="mdi-calendar"
-                                                readonly
-                                                v-bind="attrs"
-                                                v-on="on">
-                                            </v-text-field>
-                                        </template>
-                                        <v-icon @click="closemenu">
-                                            close
-                                        </v-icon>
-                                        <v-date-picker v-model="dates" no-title range @input="menu1 = false">
-                                            
-                                        </v-date-picker>
-                                    </v-menu>
-                                </v-container>
-                            </v-col>
-                        </v-row>
-                        <v-row>
                             <v-col v-if="d.general_fecha">
                                 <v-card>
                                     <v-card-title class="subheading font-weight-bold">General Por Fecha</v-card-title>
@@ -240,7 +250,9 @@ name: 'Dashboard',
             grafico_por_sede: null,
             general:null,
             general_fecha: null
-        }
+        },
+        tags: ["Digital", "Convenio", "Referido", "Renovación", "Walk-In", "Otros"],
+        tagSelected: [],
     }),
     mounted() {
         this.setDates();
@@ -336,7 +348,19 @@ name: 'Dashboard',
         
         closemenu() {
             this.shown = false;
+        },
+        verSeleccionados() {
+            console.log(this.tagSelected)
+        },
+        seleccionarTag(tag) {
+            let index = this.tagSelected.indexOf(tag);
+            if (this.tagSelected.indexOf(tag) === -1) {
+                this.tagSelected.push(tag)
+            }else {
+                this.tagSelected.splice(index, 1)
+            }
         }
+
     },
     computed:{
         ...mapState({
@@ -344,7 +368,22 @@ name: 'Dashboard',
         }),
         dateRangeText () {
             return this.dates.map(x => this.$moment(x).format("DD/MM/YYYY")).join(' ~ ')
+        },
+        allSelected () {
+            return this.selected.length === this.items.length
+        },
+        selections () {
+            const selections = []
+            for (const selection of this.selected) {
+                selections.push(selection)
+            }
+            return selections
         }
+    },
+    watch: {
+      selected () {
+        this.search = ''
+      },
     }
 };
 </script>

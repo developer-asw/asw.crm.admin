@@ -49,13 +49,7 @@
                                                 <v-toolbar-title><v-icon>folder</v-icon></v-toolbar-title>
                                                 <v-divider class="mx-4" inset vertical></v-divider>
                                                 <v-spacer></v-spacer>
-                                                <v-btn
-                                                color="primary"
-                                                dark
-                                                class="mb-2"
-                                                @click="traerHistorial">
-                                                Actualizar
-                                                </v-btn>
+                                                <v-btn class="ma-2" color="primary" text @click="traerHistorial"><v-icon left small>refresh</v-icon>&nbsp;Actualizar&nbsp;</v-btn>
                                             </v-toolbar>
                                         </template>
                                         <template v-slot:expanded-item="{ headers, item }" class="row-observacion">
@@ -110,13 +104,7 @@
                                                 <v-toolbar-title>HISTORIAL</v-toolbar-title>
                                                 <v-divider class="mx-4" inset vertical></v-divider>
                                                 <v-spacer></v-spacer>
-                                                <v-btn
-                                                color="primary"
-                                                dark
-                                                class="mb-2"
-                                                @click="traerHistorial">
-                                                Actualizar
-                                                </v-btn>
+                                                <v-btn class="ma-2" color="green darken-1" text @click="traerHistorial"><v-icon left small>refresh</v-icon>&nbsp;Actualizar&nbsp;</v-btn>
                                             </v-toolbar>
                                         </template>
                                         <template v-slot:expanded-item="{ headers, item }" class="row-observacion">
