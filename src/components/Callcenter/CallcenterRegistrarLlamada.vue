@@ -18,6 +18,32 @@
                         <v-select v-model="estado" :items="llamadas_estados" label="Estado"></v-select>
                     </v-col>
                 </v-row>
+                <v-row v-if="estado == 'matriculado'">
+                    <v-select v-model="resolucion.tipo" :items="['Presencial','Masterclass','Converso']" label="Tipo de matricula"
+                            item-text="text" item-value="id">
+                        </v-select>
+                </v-row>
+                <v-row v-if="estado == 'seguimiento'">
+                    <v-col cols="12" md="12" sm="12">
+                        <v-select v-model="resolucion.clase" @change="setTipo(resolucion.clase)" :items="['Seguimiento Matricula','Seguimiento Whatsapp']" label="Tipo de seguimiento"></v-select>
+                    </v-col>
+                    <v-col cols="12" md="12" sm="12">
+                        <v-select v-if="resolucion.clase=='Seguimiento Matricula'" v-model="resolucion.tipo" :items="['No tiene el recurso económico en su totalidad','Debe pensarlo', 'La decisión depende de un tercero','Está cotizando']" label="Tipo de seguimiento"></v-select>
+                    </v-col>
+
+                    <v-col cols="12">
+                        Próxima llamada:
+                    </v-col>
+                    <v-col cols="12" md="6" sm="6">
+                        <v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
+                    </v-col>
+                    <v-col cols="12" md="6" sm="6">
+                        <v-time-picker v-model="resolucion.hora_proxima_llamada" full-width>
+                        </v-time-picker>
+                    </v-col>
+                    <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
+                </v-row>
+
                 <v-row v-if="estado == 'agendar_cita'">
                     <v-col cols="12" md="6">
                         <v-select v-model="resolucion.sede" :items="sedes" label="Sede"
@@ -96,6 +122,17 @@
                 </v-row>
 
                 
+                <v-row v-if="estado == 'venta_telefonica'">
+                    <v-select v-model="resolucion.agente" label="Coordinador de admisiones" :items="coordinadores" item-text="primer_nombre" item-value="email" 
+                    @change="consola()">
+                        <template slot="item" slot-scope="data">
+                            {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
+                        </template>
+                        <template slot="selection" slot-scope="data">
+                            {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
+                        </template>
+                    </v-select>
+                </v-row>
                 <v-row v-if="estado == 'seguimiento_whatsapp' || estado == 'venta_telefonica'">
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
                 </v-row>
@@ -149,11 +186,15 @@
                 estudiante_motivo_otro: null,
                 errado_motivo: null,
                 forzar: false,
+                agente: null,
+                tipo: null,
+                clase:null
             },
             fechas: [],
             sedes: [],
             accion: '',
             accion_mensaje: '',
+            coordinadores:[],
         }),
 
         props: {
@@ -162,6 +203,7 @@
         mounted() {
             this.traerDisponibilidad();
             this.traerEstados();
+            this.traerOrigenes();
         },
         methods: {
             ...mapActions({
@@ -169,6 +211,7 @@
                 crear: 'leads/crearCita',
                 cerrarLlamada: 'callcenter/cerrar',
                 listarEstados: 'listado/fetchListaLlamadas',
+                listarOrigenes: 'listado/fetchListaLeads',
             }),
             ...mapMutations({
 				setInfo: 'setInfo',
@@ -187,6 +230,10 @@
                     estudiante_motivo: null,
                     estudiante_motivo_otro: null,
                     forzar: false,
+                    errado_motivo:null,
+                    agente:null,
+                    tipo:null,
+                    clase:null,
                 };
                 this.estado=null;
                 this.accion = '';
@@ -293,6 +340,25 @@
                     }).finally(() => {
 
                     });
+            },
+            traerOrigenes() {
+                this.listarOrigenes()
+                    .then(result => {
+                        this.coordinadores = result.coordinadores;
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    }).finally(() => {
+
+                    });
+            },
+            consola() {
+                console.log(this.resolucion);
+            },
+            setTipo(val){
+                if (val == 'Seguimiento Whatsapp') {
+                    this.resolucion.tipo = 'Seguimiento Whatsapp';
+                }   
             }
         },
         computed: {
@@ -328,8 +394,18 @@
 					if(this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada){
 						return true
 					}
-				}else if(this.estado=='no_contesta' || this.estado == 'venta_telefonica' || this.estado == 'seguimiento_whatsapp'){
+				}else if(this.estado=='no_contesta' || this.estado == 'seguimiento_whatsapp'){
 					return true
+				}
+                else if(this.estado == 'seguimiento'){
+                    if (this.resolucion.tipo && this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada){
+                        return true
+                    }
+				}    
+                else if(this.estado == 'venta_telefonica'){
+                    if (this.resolucion.agente){
+                        return true
+                    }
 				}else if(this.estado=='errado'){
                     if(this.resolucion.errado_motivo && this.resolucion.errado_motivo.length > 0){
                         return true    
@@ -359,6 +435,10 @@
                     }
                 } else if(this.estado == 'matricula_nueva' || this.estado == 'matricula_recaudo') {
                     return true;
+                }else if(this.estado=='matriculado'){
+                    if(this.resolucion.tipo){
+                        return true
+                    }
                 } else if(this.estado=='abonado'){
                     if(this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada && this.resolucion.observacion){
                         return true
