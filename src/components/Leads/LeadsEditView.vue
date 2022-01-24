@@ -144,10 +144,10 @@
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-select v-model="lead.como_llego" label="¿Cómo llego?" :items="listado.comoLlego" item-text="title" item-value="value" :disabled="disabled"></v-select>
+                                        <v-select v-model="lead.como_llego" label="¿Cómo llego?" :items="listado.comoLlego" item-text="title" item-value="value" :disabled="true"></v-select>
                                     </v-col>
                                     <v-col cols="1" sm="2">
-                                        <v-btn v-if="cambioComoLlego" @click="actualizarComoLlego" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
+                                        <v-btn :disabled="true" v-if="cambioComoLlego" @click="actualizarComoLlego" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
                                         <v-icon v-if="!cambioComoLlego">check</v-icon>
                                         <v-btn v-else @click="lead.como_llego = leadOriginal.como_llego" x-small dark outlined color="warning"><v-icon small>cancel</v-icon></v-btn>
                                     </v-col>
