@@ -23,32 +23,48 @@
         </v-toolbar>
         <v-card>
             <v-card-title>
-                
-                 <v-text-field
-                    v-model="filtro.search"
-                    clearable
-                    :append-outer-icon="filtro.search ? 'search' : ''"
-                    label="Search"
-                    :disabled="!lista || lista.length <= 0"
-                    single-line
-                    hide-details>
-                </v-text-field> 
+                <v-col cols="12" sm="6">
+                    <v-text-field
+                        v-model="filtro.search"
+                        clearable
+                        :append-outer-icon="filtro.search ? 'search' : ''"
+                        label="Search"
+                        :disabled="!lista || lista.length <= 0"
+                        single-line>
+                    </v-text-field>
+                </v-col>
                 
                 <v-spacer></v-spacer>
 
-                <v-row>
-                    <v-col cols="2" style="display: none;">
-                        <v-checkbox
-                            v-model="filtro.CheckFecha"
-                            :disabled="loading"
-                            :title="'Fecha de registro'"
-                            prepend-icon="event">
-                        </v-checkbox>
-                    </v-col>
-                    <v-col cols="12" lg="5">
+                <v-col cols="12" sm="6">
+                    <v-row>
+                        <v-col cols="12" sm="4">
+                            <v-select v-model="filtro.Tipo" :items="tiposCitaFecha" label="Tipo"></v-select>
+                        </v-col>
+                        <v-col cols="12" sm="3">
+                            <v-menu
+                                ref="menu1"
+                                v-model="menu1"
+                                :close-on-content-click="false"
+                                transition="scale-transition"
+                                offset-y
+                                max-width="290px"
+                                min-width="290px">
+                                <template v-slot:activator="{ on }">
+                                    <v-text-field
+                                        v-model="filtro.FechaInicial"
+                                        label="Fecha (>)"
+                                        :disabled="loading"
+                                        @blur="dateFrom = parseDate(filtro.FechaInicial)"
+                                        v-on="on">
+                                    </v-text-field>
+                                </template>
+                                <v-date-picker v-model="dateFrom" no-title @input="menu1 = false"></v-date-picker>
+                            </v-menu>
+                        </v-col>
+                        <v-col cols="12" sm="3">
                         <v-menu
-                            ref="menu1"
-                            v-model="menu1"
+                            v-model="menu2"
                             :close-on-content-click="false"
                             transition="scale-transition"
                             offset-y
@@ -56,40 +72,21 @@
                             min-width="290px">
                             <template v-slot:activator="{ on }">
                                 <v-text-field
-                                    v-model="filtro.FechaInicial"
-                                    label="Fecha (>)"
+                                    v-model="filtro.FechaFinal"
+                                    label="Fecha (<)"
                                     :disabled="loading"
-                                    @blur="dateFrom = parseDate(filtro.FechaInicial)"
+                                    @blur="dateTo = parseDate(filtro.FechaFinal)"
                                     v-on="on">
                                 </v-text-field>
                             </template>
-                            <v-date-picker v-model="dateFrom" no-title @input="menu1 = false"></v-date-picker>
+                            <v-date-picker v-model="dateTo" no-title @input="menu2 = false"></v-date-picker>
                         </v-menu>
-                    </v-col>
-                    <v-col cols="12" lg="5">
-                    <v-menu
-                        v-model="menu2"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        max-width="290px"
-                        min-width="290px">
-                        <template v-slot:activator="{ on }">
-                            <v-text-field
-                                v-model="filtro.FechaFinal"
-                                label="Fecha (<)"
-                                :disabled="loading"
-                                @blur="dateTo = parseDate(filtro.FechaFinal)"
-                                v-on="on">
-                            </v-text-field>
-                        </template>
-                        <v-date-picker v-model="dateTo" no-title @input="menu2 = false"></v-date-picker>
-                    </v-menu>
-                    </v-col>
-                    <v-col cols="2">
-                        <v-btn color="blue darken-1" text :disabled="loading" :loading="loading" @click="preFiltro()">Filtrar</v-btn>
-                    </v-col>
-                </v-row>
+                        </v-col>
+                        <v-col cols="12" sm="2">
+                            <v-btn color="blue darken-1" text :disabled="loading" :loading="loading" @click="preFiltro()">Filtrar</v-btn>
+                        </v-col>
+                    </v-row>
+                </v-col>
             </v-card-title>
             <v-data-table
                 :headers="headers"
@@ -195,12 +192,13 @@ Vue.use(VueClipboard)
                 FechaFinal: this.formatDate(new Date().toISOString().substr(0, 10)),
                 CheckFecha: true,
                 CheckSolicitado: false,
-                Tipo: 'realizado',
+                Tipo: 'Asistencia',
             },
             tipos: [
                 {id: 'realizado', nombre: 'Realizado'},
                 {id: 'solicitado', nombre: 'Solicitado'},
-            ]
+            ],
+            tiposCitaFecha: ['Agendamiento', 'Asistencia']
         }
     },
     props : {
