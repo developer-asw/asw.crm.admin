@@ -137,7 +137,7 @@ export default {
                 { text: 'Contactar en', value: 'ultima_llamada.fecha' },
                 { text: 'Nombre', value: 'full_name' },
                 { text: 'Email', value: 'email' },
-                { text: 'Movil', value: 'movil' },
+                // { text: 'Movil', value: 'movil' },
                 { text: 'Sede', value: 'sede' },
                 { text: 'Ultimo Agente', value: 'ultima_llamada.usuario' },
                 { text: 'Origen', value: 'ultimo_origen' },
