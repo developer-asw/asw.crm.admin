@@ -15,7 +15,7 @@
                         <v-select v-model="estado" :items="llamadas_estados" label="Estado"></v-select>
                     </v-col>
                 </v-row>
-                <v-row v-if="estado == 'asistido'">
+                <v-row v-if="['asistido','asiste_sede'].includes(estado)">
                     <v-col cols="12" md="6">
                         <v-select v-model="resolucion.sede" :items="sedes" label="Sede Asitencia"
                             item-text="text" item-value="id">
@@ -351,7 +351,7 @@
                         return true
                     }
                     
-                }else if(this.estado == 'asistido') {
+                }else if(['asistido','asiste_sede'].includes(this.estado)) {
                     if (this.resolucion.orientador) {
                         return true;
                     }

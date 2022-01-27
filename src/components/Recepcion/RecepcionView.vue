@@ -21,7 +21,7 @@
                         <v-spacer></v-spacer>
                         <div class="text-right">
                             <!--<v-btn class="ma-2" color="blue darken-1" text @click="consola"><v-icon left small>event</v-icon>Consola</v-btn>-->
-                            <v-btn v-if="setAsisteCita == true && lead && lead.ultima_cita && lead.ultima_cita.estado === 'pendiente'" class="ma-2" color="red darken-1" text @click="iniciarSolicitar"><v-icon left small>event</v-icon>&nbsp;Asiste a Cita&nbsp;</v-btn>
+                            <v-btn v-if="setAsisteCita == true" class="ma-2" color="red darken-1" text @click="iniciarSolicitar"><v-icon left small>event</v-icon>&nbsp;Asiste a Sede&nbsp;</v-btn>
                             <v-btn class="ma-2" color="orange darken-1" text :to="{ name: 'seguimiento_edit', params: { id: lead_id } }"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
                             <v-btn class="ma-2" color="blue darken-1" text @click="regresar"><v-icon>navigate_before</v-icon>&nbsp;Regresar&nbsp;</v-btn>
                         </div>

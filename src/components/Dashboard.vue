@@ -163,6 +163,39 @@
 
                                 </v-card>
                             </v-col>
+
+                            <v-col md="4" sm="12" cols="12" v-if="d.grafico_cumplimientoCita">
+                                <v-card
+                                    class="mx-auto text-center"
+                                    color="purple"
+                                    dark
+                                    max-width="600">
+                                    <v-card-text>
+                                        <v-sheet color="rgba(0, 0, 0, .12)">
+                                            <v-sparkline
+                                                :value="d.grafico_cumplimientoCita.data.values"
+                                                :labels="d.grafico_cumplimientoCita.data.labels"
+                                                color="white"
+                                                line-width="2"
+                                                padding="16">
+                                            <template v-slot:label="item">
+                                                {{ item.value }}
+                                            </template>
+                                            </v-sparkline>
+                                        </v-sheet>
+                                    </v-card-text>
+
+                                    <v-card-text>
+                                        <div class="display-1 font-weight-thin">
+                                            {{d.grafico_cumplimientoCita.title}}
+                                            <br>
+                                            {{d.grafico_cumplimientoCita.total}}
+                                        </div>
+                                    </v-card-text>
+
+
+                                </v-card>
+                            </v-col>
                         </v-row>
 
                     </v-col>
@@ -247,6 +280,7 @@ name: 'Dashboard',
             grafico_masterclass: null,
             grafico_presencial: null,
             grafico_matriculado: null,
+            grafico_cumplimientoCita: null,
             grafico_por_sede: null,
             general:null,
             general_fecha: null
@@ -269,6 +303,7 @@ name: 'Dashboard',
             consulta4: 'dashboard/consultarDatosPresencial',
             consulta5: 'dashboard/consultarDatosMatriculado',
             consulta6: 'dashboard/consultarDatosPorSede',
+            consulta8: 'dashboard/consultarDatosCumplimientoCita',
             usuarioLogueado: 'dashboard/usuarioLogueado'
         }),
         ...mapMutations({
@@ -277,7 +312,8 @@ name: 'Dashboard',
         }),
         consultar() {
             this.loading = true;
-            this.consulta1({desde: this.dates[0], hasta: this.dates[1]})
+            let payload = {desde: this.dates[0], hasta: this.dates[1], tipo: this.tagSelected};
+            this.consulta1(payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_por_dia = result.datos;
@@ -285,7 +321,7 @@ name: 'Dashboard',
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
             this.loading = true;
-            this.consulta2({desde: this.dates[0], hasta: this.dates[1]})
+            this.consulta2(payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.general = result.datos;
@@ -293,7 +329,7 @@ name: 'Dashboard',
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
             this.loading = true;
-            this.consulta3({desde: this.dates[0], hasta: this.dates[1]})
+            this.consulta3(payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_masterclass = result.datos;
@@ -301,7 +337,7 @@ name: 'Dashboard',
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
             this.loading = true;
-            this.consulta4({desde: this.dates[0], hasta: this.dates[1]})
+            this.consulta4(payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_presencial = result.datos;
@@ -309,7 +345,7 @@ name: 'Dashboard',
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
             this.loading = true;
-            this.consulta5({desde: this.dates[0], hasta: this.dates[1]})
+            this.consulta5(payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_matriculado = result.datos;
@@ -317,7 +353,7 @@ name: 'Dashboard',
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
             this.loading = true;
-            this.consulta6({desde: this.dates[0], hasta: this.dates[1]})
+            this.consulta6(payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_por_sede = result.datos;
@@ -326,10 +362,17 @@ name: 'Dashboard',
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; });
             
             this.loading = true;
-            this.consulta7({desde: this.dates[0], hasta: this.dates[1]})
+            this.consulta7(payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.general_fecha = result.datos;
+                    }
+                })
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
+            this.consulta8(payload)
+                .then(result => {
+                    if(result && result.datos) {
+                        this.d.grafico_cumplimientoCita = result.datos;
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
