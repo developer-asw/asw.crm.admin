@@ -112,6 +112,7 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer></v-spacer>
+            <!--<v-btn color="green darken-1" text @click="consola">Consola</v-btn>-->
             <v-btn color="gray darken-1" text @click="cerrar">Cerrar</v-btn>
             <v-btn v-if="puedeRegistrar" color="red darken-1" text @click="registrar">Registrar</v-btn>
             
@@ -242,7 +243,6 @@
             traerOrientadores() {  
                 this.fetchOrientadores(this.resolucion.sede)
                     .then(result => {
-                        console.log(result);
                         this.orientadores = result;
                     })
                     .catch(error => {
@@ -258,7 +258,13 @@
                         this.estados = result;
                         this.llamadas_estados = [];
                         if (this.estados && this.estados.llamadas) {
-                            this.llamadas_estados = this.estados.llamadas.filter(x => (x.tipo && x.tipo == 'recepcion') || !x.tipo)
+                            this.llamadas_estados = this.estados.llamadas.filter(x => (x.tipo && x.tipo == 'recepcion') || !x.tipo);
+                            if (this.lead && this.lead.ultima_cita && this.lead.ultima_cita.estado == "pendiente") {
+                                this.llamadas_estados = this.llamadas_estados.filter(x => x.value == "asistido");
+                            }else {
+                                this.llamadas_estados = this.llamadas_estados.filter(x => x.value == "asiste_sede");
+                            }
+
                         }
                     })
                     .catch(error => {
@@ -273,6 +279,9 @@
                 }else{
                     return null;
                 }
+            },
+            consola(){
+                console.log(this.lead)
             }
         },
         computed: {
