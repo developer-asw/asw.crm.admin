@@ -280,10 +280,11 @@ export default {
         actualizarListado() {
             if (this.user && this.user.data) {
                 if (this.user.data.grupo_id == 26) {
-                    this.payload.prioridad = 1;
+                    this.payload.prioridad = 5;
                     this.prioridad = [ 
                         { text: 'Tareas Pendientes', value:1 },
                         // { text: 'Datos Entrantes', value:0 },
+                        { text: 'Datos por Resolver', value:5 },
                         // { text: 'Datos Nuevos', value:4 }, 
                         { text: 'No contestan - Pendientes', value : 2 },
                         { text: 'Admisiones - Venta telefónica', value : 3 },
