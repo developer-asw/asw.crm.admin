@@ -103,10 +103,10 @@
                     <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>
                     <span v-else>{{item.sede}}</span>
                 </template>
-                <template v-slot:[`item.ciudad`]="{ item }">
+                <template v-slot:[`item.field_ciudad`]="{ item }">
                     <span v-if="item.sede_full">{{item.sede_full.ciudad}}</span>
-                    <span v-if="item.ciudad">{{item.ciudad}}</span>
-                    <span v-if="item.form_ciudad">{{item.form_ciudad}}</span>
+                    <span v-else-if="item.ciudad">{{item.ciudad}}</span>
+                    <span v-else-if="item.form_ciudad">{{item.form_ciudad}}</span>
                     <span v-else></span>
                 </template>
                 <template v-slot:[`item.ultima_llamada_estado`]="{ item }">
@@ -142,7 +142,7 @@ export default {
                 { text: '', value: 'prioridad' },
                 { text: 'Contactar en', value: 'ultima_llamada.fecha' },
                 { text: 'Nombre', value: 'full_name' },
-                { text: 'Ciudad', value: 'ciudad' },
+                { text: 'Ciudad', value: 'field_ciudad' },
                 // { text: 'Email', value: 'email' },
                 // { text: 'Movil', value: 'movil' },
                 { text: 'Sede', value: 'sede' },
