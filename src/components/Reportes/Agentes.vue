@@ -140,11 +140,11 @@ Vue.use(VueClipboard)
             headers: [
                 { text: 'Agente - Nombre', value: '_id.agente.nombre'},
                 { text: 'Agente - Email', value: '_id.agente.email'},
+                { text: 'Tareas Vencidas', value: 'tareas_vencidas' },
+                { text: 'Tareas Pendientes', value: 'tareas_pendientes' },
+                { text: 'Datos Pendientes', value: 'datos_pendientes' },
+                { text: 'En LLamada', value: 'datos_llamada' },
                 { text: 'Total', value: 'total'},
-                { text: 'Vencidos', value: 'vencidos' },
-                { text: 'Vencidos SW', value: 'vencidos_seguimiento_whatsapp' },
-                { text: 'Vencidos - Vencidos SW', value: 'vencidos_restantes' },
-                { text: 'Pendientes', value: 'pendientes' },
                 // { text: 'Actions', value: 'action', sortable: false }
             ],
             json_fields:{

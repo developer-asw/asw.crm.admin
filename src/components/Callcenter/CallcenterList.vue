@@ -308,9 +308,10 @@ export default {
                             ];
 
                         }else{
-                            this.payload.prioridad = 1;
+                            this.payload.prioridad = 5;
                             this.prioridad = [ 
-                                { text: 'Tareas Pendientes', value:1 }, 
+                                { text: 'Tareas Pendientes', value:1 },
+                                { text: 'Datos por Resolver', value:5 },
                                 { text: 'No contestan - Pendientes', value : 2 },
                                 { text: 'Admisiones - Venta telefónica', value : 3 },
                             ];
