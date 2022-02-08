@@ -13,11 +13,22 @@
                 <LeadHistoricView :key="lead_id" :lead_id="lead_id" :ver_detalles="false" :collapse="true"></LeadHistoricView>
             </v-row>
             <v-form>
+                
                 <v-row>
                     <v-col cols="12" md="12">
-                        <v-select v-model="estado" :items="llamadas_estados" label="Estado"></v-select>
+                        <v-select v-model="resolucion.tipo_contacto" :items="tipos_contactos" label="Tipo de Contacto"
+                        item-text="text" item-value="id"></v-select>
                     </v-col>
                 </v-row>
+
+                <v-row>
+                    <v-col cols="12" md="12">
+                        <v-select v-model="estado" :items="llamadas_estados" label="Estado">
+                        </v-select>
+                    </v-col>
+                </v-row>
+                
+                
                 <v-row v-if="estado == 'matriculado'">
                     <v-select v-model="resolucion.tipo" :items="['Presencial','Masterclass','Converso']" label="Tipo de matricula"
                             item-text="text" item-value="id">
@@ -170,9 +181,13 @@
             date: new Date().toISOString().substr(0, 10),
             estados: {},
             llamadas_estados: [],
+            tipos_contactos:[
+                { id:'wolkvox_llamada', text:'Wolkvox - Llamada' },{ id:'wolkvox_whatsapp', text:'Wolkvox - Whatsapp' }
+            ],
             estado: null,
             historial: [],
             resolucion: {
+                tipo_contacto: 'wolkvox_llamada',
                 sede: null,
                 id: null,
                 fecha_cita: null,
@@ -234,6 +249,7 @@
                     agente:null,
                     tipo:null,
                     clase:null,
+                    tipo_contacto: "wolkvox_llamada"
                 };
                 this.estado=null;
                 this.accion = '';
