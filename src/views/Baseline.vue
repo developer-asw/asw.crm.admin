@@ -202,7 +202,7 @@
 
                     </v-list-group>-->
 
-                    <v-list-group v-if="isLogged && (user.data.rol == 'superusuario' || user.data.rol == 'coordinador') || user.data.grupo_id == 20" no-action sub-group>
+                    <v-list-group v-if="isLogged && (user.data.rol == 'superusuario') || user.data.grupo_id == 20" no-action sub-group>
                         <template v-slot:activator>
                           <v-list-item-content>
                             <v-list-item-title>Reportes</v-list-item-title>

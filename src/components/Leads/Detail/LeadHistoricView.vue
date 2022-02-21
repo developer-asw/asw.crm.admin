@@ -9,7 +9,7 @@
 
                             <v-col>
                                 <h4>
-                                    HISTORIAL [{{historial && historial.length ? historial[0].accion+" : "+(historial[0].observacion?historial[0].observacion:'') : 'Sin historicos'}}]
+                                    HISTORIAL [{{historial && historial.length ? (historial[0].accion+" : "+(historial[0].observacion?historial[0].observacion:'')) : 'Sin historicos'}}]
                                 </h4>
                             </v-col>
                         </v-expansion-panel-header>
@@ -54,7 +54,7 @@
                                         </template>
                                         <template v-slot:expanded-item="{ headers, item }" class="row-observacion">
                                             <td class="observacion" :colspan="headers.length">
-                                                {{ item.observacion }}
+                                                {{ getObservacion(item) }}
                                             </td>
                                         </template>
                                     </v-data-table>
@@ -109,7 +109,7 @@
                                         </template>
                                         <template v-slot:expanded-item="{ headers, item }" class="row-observacion">
                                             <td class="observacion" :colspan="headers.length">
-                                                &raquo; {{ item.observacion }}
+                                                &raquo; {{ getObservacion(item) }}
                                             </td>
                                         </template>
                                     </v-data-table>
@@ -218,6 +218,12 @@ export default {
         collapseAll: function() {
             console.log("All collapsed.");
             this.$data.expanded = [];
+        },
+        getObservacion(item){
+            if (item.descartado_motivo) return item.descartado_motivo;
+            if (item.estudiante_motivo) return item.estudiante_motivo;
+            if (item.errado_motivo) return item.errado_motivo;
+            return item.observacion;
         }
     },
     computed: {
