@@ -202,7 +202,7 @@
 
                     </v-list-group>-->
 
-                    <v-list-group v-if="isLogged && (user.data.rol == 'superusuario' || user.data.rol == 'coordinador') || user.data.grupo_id == 20" no-action sub-group>
+                    <v-list-group v-if="isLogged && ((user.data.rol == 'superusuario' || user.data.rol == 'coordinador') || user.data.grupo_id == 20)" no-action sub-group>
                         <template v-slot:activator>
                           <v-list-item-content>
                             <v-list-item-title>Reportes</v-list-item-title>
@@ -216,7 +216,7 @@
                                 <v-list-item-title>Hits</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged && user.data.grupo_id != 26" link @click="dirigir('/Reportes/Citas')">
+                        <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Citas')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
