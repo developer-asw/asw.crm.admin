@@ -115,7 +115,13 @@
                     <span v-else-if="item.reingreso == 2">Reingreso</span>
                     <span v-else>{{item.ultima_llamada_estado}}</span>
                 </template>
+                
             </v-data-table>
+            <div class="text-center pt-2 pb-5">
+                <v-btn color="success" class="mr-2" @click="loadMore" :loading="loading" :disabled="loading">
+                    Cargar más
+                </v-btn>
+            </div>
         </v-card>
         <v-dialog v-model="viewDialog" persistent max-width="800px">
             <CallcenterRegistrarLlamada :key="leadIdDialog" :lead_id="leadIdDialog" @cerrar="cerrarDialog" @actualizar="actualizar" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada>
@@ -187,6 +193,7 @@ export default {
     methods:{
       ...mapActions({
             fetchLista: 'callcenter/fetchLista',
+            fetchListaPage: 'callcenter/fetchListaPage',
             solicitar: 'callcenter/solicitar',
             fetchDetalle: 'leads/fetchDetalle',
       }),
@@ -196,6 +203,7 @@ export default {
       }),
       actualizar(){
           this.loading = true;
+          this.payload.page = 1;
           this.fetchLista(this.payload)
           .finally(() => {
               this.loading = false;
@@ -329,6 +337,24 @@ export default {
                 return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.data.rol) >= 0
             }else{
                 return false;
+            }
+        },
+        loadMore() {
+            if (this.pagination.page < this.pagination.lastPage) {
+                this.loading = true;
+                this.payload.page = this.pagination.page + 1;
+                this.fetchListaPage(this.payload).then(result => {
+                    this.pagination.lastPage = result.datos.lastPage;
+                    this.pagination.page = result.datos.page;
+                    this.pagination.perPage = result.datos.perPage;
+                    this.pagination.total = result.datos.total;
+                    for(var i in result.datos.data) {
+                        this.lista.push(result.datos.data[i]);
+                    }
+                })
+                .finally(() => {
+                    this.loading = false;
+                })
             }
         }
     },
