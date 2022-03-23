@@ -154,7 +154,8 @@ Vue.use(VueClipboard)
 
                 { text: 'Sede Asiste', value: 'sede_asistencia' }, 
 
-                { text: 'Estado', value: 'estado' }
+                { text: 'Estado', value: 'estado' },
+                { text: 'Como LLego', value: 'como_llego' }
             ],
             json_fields:{
                 "Estado": "estado",
@@ -167,6 +168,7 @@ Vue.use(VueClipboard)
                 "Móvil": "movil",
                 "Agente": "agente.nombre",
                 "Sede Cita": "sede.nombre",
+                "Como Llego": "como_llego",
                 //"Orientador": "orientador.nombre",
                 //"Recepcion": "recepcion.nombre",
                 /*"Telephone 2": {
