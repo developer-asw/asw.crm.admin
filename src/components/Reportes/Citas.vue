@@ -23,7 +23,7 @@
         </v-toolbar>
         <v-card>
             <v-card-title>
-                <v-col cols="12" sm="6">
+                <v-col cols="12" sm="4">
                     <v-text-field
                         v-model="filtro.search"
                         clearable
@@ -36,10 +36,13 @@
                 
                 <v-spacer></v-spacer>
 
-                <v-col cols="12" sm="6">
+                <v-col cols="12" sm="8">
                     <v-row>
-                        <v-col cols="12" sm="4">
+                        <v-col cols="12" sm="2">
                             <v-select v-model="filtro.Tipo" :items="tiposCitaFecha" label="Tipo"></v-select>
+                        </v-col>
+                        <v-col cols="12" sm="2">
+                            <v-select v-model="filtro.TipoUsuario" :items="tiposUsuarios" label="Tipo Usuario"></v-select>
                         </v-col>
                         <v-col cols="12" sm="3">
                             <v-menu
@@ -195,12 +198,14 @@ Vue.use(VueClipboard)
                 CheckFecha: true,
                 CheckSolicitado: false,
                 Tipo: 'Asistencia',
+                TipoUsuario: 'Agente Callcenter',
             },
             tipos: [
                 {id: 'realizado', nombre: 'Realizado'},
                 {id: 'solicitado', nombre: 'Solicitado'},
             ],
-            tiposCitaFecha: ['Agendamiento', 'Asistencia']
+            tiposCitaFecha: ['Agendamiento', 'Asistencia'],
+            tiposUsuarios: [],
         }
     },
     props : {
@@ -208,12 +213,14 @@ Vue.use(VueClipboard)
     },
     
     mounted () {
+        this.consultarListados();
         this.preFiltro()
     },
     methods:{
         ...mapActions({
             fetchCitas: 'reportes/fetchCitas',
             fetchDetalle: 'leads/fetchDetalle',
+            fetchCitasParametros: 'reportes/fetchCitasParametros'
         }),
         ...mapMutations({
             setInfo: 'setInfo',
@@ -221,6 +228,15 @@ Vue.use(VueClipboard)
         filtrar(filtro){
             this.loading = true;
             this.fetchCitas(filtro)
+            .finally(()=>{
+                this.loading = false;
+            })
+        },
+        consultarListados(){
+            this.loading = true;
+            this.fetchCitasParametros().then((result) => {
+                this.tiposUsuarios = result.datos;
+            })
             .finally(()=>{
                 this.loading = false;
             })

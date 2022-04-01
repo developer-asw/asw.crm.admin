@@ -114,6 +114,22 @@ const actions = {
             })
         });
     },
+    fetchCitasParametros:({commit}, data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.get('listado/citas',data).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+
+    },
     fetchAgentes:({commit},data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
