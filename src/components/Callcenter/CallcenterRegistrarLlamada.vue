@@ -36,10 +36,10 @@
                 </v-row>
                 <v-row v-if="estado == 'seguimiento'">
                     <v-col cols="12" md="12" sm="12">
-                        <v-select v-model="resolucion.clase" @change="setTipo(resolucion.clase)" :items="['Seguimiento Matricula','Seguimiento Whatsapp']" label="Tipo de seguimiento"></v-select>
+                        <v-select v-model="resolucion.clase" @change="setTipo(resolucion.clase)" :items="['Matricula', 'Renovación', 'Whatsapp']" label="Tipo de seguimiento"></v-select>
                     </v-col>
                     <v-col cols="12" md="12" sm="12">
-                        <v-select v-if="resolucion.clase=='Seguimiento Matricula'" v-model="resolucion.tipo" :items="['No tiene el recurso económico en su totalidad','Debe pensarlo', 'La decisión depende de un tercero','Está cotizando']" label="Tipo de seguimiento"></v-select>
+                        <v-select v-if="resolucion.clase=='Matricula'" v-model="resolucion.tipo" :items="['No tiene el recurso económico en su totalidad','Debe pensarlo', 'La decisión depende de un tercero','Está cotizando']" label="Tipo de seguimiento"></v-select>
                     </v-col>
 
                     <v-col cols="12">
@@ -372,9 +372,7 @@
                 console.log(this.resolucion);
             },
             setTipo(val){
-                if (val == 'Seguimiento Whatsapp') {
-                    this.resolucion.tipo = 'Seguimiento Whatsapp';
-                }   
+                this.resolucion.tipo = val;
             }
         },
         computed: {
@@ -449,7 +447,7 @@
                             return true
                         }
                     }
-                } else if(this.estado == 'matricula_nueva' || this.estado == 'matricula_recaudo') {
+                } else if(this.estado == 'matricula_nueva' || this.estado == 'matricula_recaudo'|| this.estado == 'servicio_cliente') {
                     return true;
                 }else if(this.estado=='matriculado'){
                     if(this.resolucion.tipo){

@@ -118,6 +118,12 @@
                     <td>{{ lead.ultima_llamada_estado }}</td>
                     <td></td>
                 </tr>
+                <tr>
+                    <td><b>Estudiante: </b></td>
+                    <td>{{ lead.es_estudiante == 'SI' || lead.block_id ? "SI" : "NO" }}</td>
+                    <td></td>
+                </tr>
+                
                 <!-- <td colspan="2">
                     <v-icon @click="actualizar" right>refresh</v-icon>
                 </td> -->
@@ -224,6 +230,7 @@ export default {
             this.fetchLead({id:this.lead_id}).then((result) => {
                 if (result && result.datos) {
                     this.lead = result.datos;
+                    console.log(this.lead)
                 }
             })
             .finally(() => {
