@@ -136,6 +136,11 @@
                         <v-icon v-else @click="editarEstado()" small right>cancel</v-icon>
                     </td>
                 </tr>
+                <tr>
+                    <td><b>Estudiante: </b></td>
+                    <td>{{ lead.es_estudiante == 'SI' || lead.block_id ? "SI" : "NO" }}</td>
+                    <td></td>
+                </tr>
                 <tr v-if="!ver.estado">
                     <td colspan="3" bgColor="white">
                         <CallcenterTipificar :key="lead_id" :lead_id="lead_id" @actualizar="actualizarEstado" @copiarDatoParent="copiarDato"></CallcenterTipificar>
