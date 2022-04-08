@@ -137,8 +137,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><b>Estudiante: </b></td>
-                    <td>{{ lead.es_estudiante == 'SI' || lead.block_id ? "SI" : "NO" }}</td>
+                    <td><b>Renovación: </b></td>
+                    <td>{{ lead.cmp_renovacion ? "SI" : "NO" }}</td>
                     <td></td>
                 </tr>
                 <tr v-if="!ver.estado">
