@@ -186,7 +186,7 @@ export default {
         cambios() {
             console.log(this.filtro)
         },
-        async descargarReporte(){
+        async descargarReporteOriginal(){
             this.loading = true
             let payload = {};
             payload.filters = this.copy(this.filtro);
@@ -201,8 +201,8 @@ export default {
             w.document.open();
             w.document.write(response.data);
             w.document.close();*/
-
-            let blob = new Blob([response.data], {type:response.headers.get('content-type')});
+            console.log(response.headers.get('content-type'));// 
+            let blob = new Blob([response.data], {encoding:"UTF-8",type:"text/plain;charset=UTF-8"});
             let link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
             link.download = 'leads.'+payload.download_tipo;
@@ -211,7 +211,7 @@ export default {
             this.$emit('cerrar');
 
         },
-        async descargarReporteOriginal(){
+        async descargarReporte(){
             this.loading = true
             let payload = {};
             payload.filters = this.copy(this.filtro);
