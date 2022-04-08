@@ -143,7 +143,7 @@
                 </tr>
                 <tr v-if="!ver.estado">
                     <td colspan="3" bgColor="white">
-                        <CallcenterTipificar :key="lead_id" :lead_id="lead_id" @actualizar="actualizarEstado" @copiarDatoParent="copiarDato"></CallcenterTipificar>
+                        <CallcenterRegistrarLlamada :key="lead_id" :lead_id="lead_id" :ocultar="true" @actualizar="actualizarEstado" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada>
                     </td>
                 </tr>
                 <!-- <td colspan="2">
@@ -158,12 +158,12 @@
 
 import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';//,,
 
-import CallcenterTipificar from '@/components/Callcenter/CallcenterTipificar'
+import CallcenterRegistrarLlamada from '@/components/Callcenter/CallcenterRegistrarLlamada'
 
 export default {
     name: 'EditLead',
     components: {
-      CallcenterTipificar
+      CallcenterRegistrarLlamada
     },
     data: () => ({
         listado: [],

@@ -130,6 +130,7 @@
       <CallcenterRegistrarLlamada
         :key="leadId"
         :lead_id="leadId"
+        :ocultar="false"
         @cerrar="cerrarDialog"
         @actualizar="actualizar"
         @copiarDatoParent="copiarDato"

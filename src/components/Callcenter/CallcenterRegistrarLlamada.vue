@@ -1,15 +1,15 @@
 <template>
     <v-card>
-        <v-card-title>
+        <v-card-title v-if="!ocultar">
             <span class="headline">{{getTitle}}</span>
         </v-card-title>
         <v-card-text>
-			<v-row>
+			<v-row v-if="!ocultar">
 				<v-col cols="12" md="12">
                     <LeadInfoView :key="lead_id" :lead_id="lead_id" :setSedes="sedes"></LeadInfoView>
 				</v-col>
 			</v-row>
-            <v-row class="mt-10">
+            <v-row class="mt-10" v-if="!ocultar">
                 <LeadHistoricView :key="lead_id" :lead_id="lead_id" :ver_detalles="false" :collapse="true"></LeadHistoricView>
             </v-row>
             <v-form>
@@ -214,6 +214,7 @@
 
         props: {
             lead_id: String,
+            ocultar: Boolean,
         },
         mounted() {
             this.traerDisponibilidad();
