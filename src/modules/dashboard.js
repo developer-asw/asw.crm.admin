@@ -80,6 +80,15 @@ const state = {
             lastPage : 1,
         }
     },
+    item9: {
+        lista: [],
+        pagination:{
+            total : 0,
+            page : 1,
+            perPage : 100,
+            lastPage : 1,
+        }
+    },
     detalles: {},
     user: null,
     logged: !!window.localStorage.getItem('_token')
@@ -188,6 +197,22 @@ const actions = {
             Vue.http.post('lead/dashboard/datos_cumplimientoCitas',data).then(
                 response =>{
                     commit('setItem8',response.data.datos);
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+    consultarDatosDigitales:({ commit }, data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.post('lead/dashboard/datos_Digitales',data).then(
+                response =>{
+                    commit('setItem9',response.data.datos);
                     resolve(response.data)
                 }
             ).catch(error=>{
@@ -318,6 +343,13 @@ const mutations = {
         state.item8.pagination.page = datos.page;
         state.item8.pagination.perPage = datos.perPage;
         state.item8.pagination.lastPage = datos.lastPage;
+    },
+    setItem9: (state, datos) => {
+        state.item9.lista = datos.data;
+        state.item9.pagination.total = datos.total;
+        state.item9.pagination.page = datos.page;
+        state.item9.pagination.perPage = datos.perPage;
+        state.item9.pagination.lastPage = datos.lastPage;
     }
 };
 
