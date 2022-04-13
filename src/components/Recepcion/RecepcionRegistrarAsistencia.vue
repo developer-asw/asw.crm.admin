@@ -15,7 +15,7 @@
                         <v-select v-model="estado" :items="llamadas_estados" label="Estado"></v-select>
                     </v-col>
                 </v-row>
-                <v-row v-if="['asistido','asiste_sede'].includes(estado)">
+                <v-row v-if="['asistido','asiste_sede', 'asiste_virtual'].includes(estado)">
                     <v-col cols="12" md="6">
                         <v-select v-model="resolucion.sede" :items="sedes" label="Sede Asitencia"
                             item-text="text" item-value="id">
@@ -260,9 +260,9 @@
                         if (this.estados && this.estados.llamadas) {
                             this.llamadas_estados = this.estados.llamadas.filter(x => (x.tipo && x.tipo == 'recepcion') || !x.tipo);
                             if (this.lead && this.lead.ultima_cita && this.lead.ultima_cita.estado == "pendiente") {
-                                this.llamadas_estados = this.llamadas_estados.filter(x => x.value == "asistido");
+                                this.llamadas_estados = this.llamadas_estados.filter(x => ['asistido', 'asiste_virtual'].includes(x.value));
                             }else {
-                                this.llamadas_estados = this.llamadas_estados.filter(x => x.value == "asiste_sede");
+                                this.llamadas_estados = this.llamadas_estados.filter(x => x.value == 'asiste_sede');
                             }
 
                         }
@@ -360,7 +360,7 @@
                         return true
                     }
                     
-                }else if(['asistido','asiste_sede'].includes(this.estado)) {
+                }else if(['asistido','asiste_sede', 'asiste_virtual'].includes(this.estado)) {
                     if (this.resolucion.orientador) {
                         return true;
                     }
