@@ -104,6 +104,14 @@
                                 <v-list-item-title>Citas Ausentes</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
+                        <v-list-item v-if="isLogged" link @click="dirigir('/management/wolkvox')">
+                            <v-list-item-action>
+                                <v-icon>pending_actions</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Wolkvox</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
                     </v-list-group>
 
                     <v-list-group v-if="isLogged && (user.data.rol == 'callcenter' || user.data.rol == 'coordinador' || user.data.rol == 'superusuario')"
@@ -284,7 +292,7 @@
 
         <v-footer color="blue-grey" class="white--text text-center">
             <v-card-text>
-                American School Way &copy; 2022 - v.1.3.7
+                American School Way &copy; 2022 - v.1.3.8
             </v-card-text>
         </v-footer>
         

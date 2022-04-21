@@ -29,6 +29,7 @@ import RecepcionView from '@/components/Recepcion/RecepcionView'
 import MissedAppointments from '@/components/Management/MissedAppointments';
 import IncomingData from '@/components/Management/IncomingData';
 import Parameters from '@/components/Management/Parameters';
+import Wolkvox from '@/components/Management/Wolkvox';
 
 Vue.use(VueRouter)
 
@@ -209,7 +210,13 @@ const routes = [
     name: 'Parameters',
     component: Parameters,
     meta: { Auth: true, title: 'Management - parameters' , view: 'baseline'},
-  }
+  },
+  {
+    path: '/management/wolkvox',
+    name: 'Wolkvox',
+    component: Wolkvox,
+    meta: { Auth: true, title: 'Management - Wolkvox' , view: 'baseline'},
+  },
 ]
 
 const router = new VueRouter({
