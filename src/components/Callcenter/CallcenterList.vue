@@ -172,7 +172,7 @@ export default {
                 { text: 'Datos Entrantes', value:0 }, 
                 // { text: 'Datos Nuevos', value:4 }, 
                 { text: 'No contestan - Pendientes', value : 2 },
-                { text: 'Admisiones - Venta telefónica', value : 3 },
+                { text: 'Marcado Manual', value : 3 },
             ],
             llamadas_estados:[],
             estados: {},
@@ -295,7 +295,6 @@ export default {
                         { text: 'Datos por Resolver', value:5 },
                         // { text: 'Datos Nuevos', value:4 }, 
                         { text: 'No contestan - Pendientes', value : 2 },
-                        { text: 'Admisiones - Venta telefónica', value : 3 },
                     ];
                 }else{
                     this.payload.prioridad = 0;
@@ -303,7 +302,8 @@ export default {
                         this.prioridad = [ 
                             { text: 'Tareas Pendientes', value:1 }, 
                             { text: 'Datos Entrantes', value:0 }, 
-                            { text: 'No contestan - Pendientes', value : 2 }
+                            { text: 'No contestan - Pendientes', value : 2 },
+                            { text: 'Marcado Manual', value : 3 },
                         ];
                     } else {
                         if (this.user.data.rol == 'superusuario' || this.user.data.grupo_id == 20) {
@@ -312,7 +312,7 @@ export default {
                                 { text: 'Datos Entrantes', value:0 },  
                                 { text: 'Datos Nuevos', value:4 }, 
                                 { text: 'No contestan - Pendientes', value : 2 },
-                                { text: 'Admisiones - Venta telefónica', value : 3 },
+                                { text: 'Marcado Manual', value : 3 },
                             ];
 
                         }else{
@@ -321,7 +321,6 @@ export default {
                                 { text: 'Tareas Pendientes', value:1 },
                                 { text: 'Datos por Resolver', value:5 },
                                 { text: 'No contestan - Pendientes', value : 2 },
-                                { text: 'Admisiones - Venta telefónica', value : 3 },
                             ];
                         }
                     }
