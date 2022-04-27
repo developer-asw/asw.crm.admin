@@ -4,11 +4,14 @@
         <template v-slot:default>
             <tbody>
                 <tr>
+                    <td><b>Número: </b></td>
+                    <td>{{ lead.numero }}</td>
+                    <td></td>
+                </tr>
+                <tr>
                     <td><b>Nombre: </b></td>
                     <td>{{ lead.full_name }}</td>
-                    <td>
-                        
-                    </td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td><b>E-Mail: </b></td>

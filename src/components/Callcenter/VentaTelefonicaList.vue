@@ -158,7 +158,7 @@ export default {
                 // { text: 'Mis pendientes', value:1 }, 
                 // { text: 'Datos entrantes', value:0 }, 
                 // { text: 'No contestan - Pendientes', value : 2 },
-                { text: 'Admisiones - Venta telefónica', value : 3 },
+                { text: 'Marcado Manual', value : 3 },
             ],
             llamadas_estados:[],
             estados: {},

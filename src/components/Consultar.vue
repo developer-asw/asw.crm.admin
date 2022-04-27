@@ -19,6 +19,7 @@
                     <v-col>
                         <v-radio-group class="small-radio" v-model="payload.tipo" row >
                             <v-radio label="Teléfono" value="telefono"></v-radio>
+                            <v-radio label="Número" value="numero"></v-radio>
                             <v-radio label="E-mail" value="email"></v-radio>
                             <v-radio label="Nombre" value="nombre"></v-radio>
                         </v-radio-group>
@@ -153,11 +154,12 @@ name: 'Consultar',
             })
         },
         preFiltro(){
-            if(this.payload.search && this.payload.search.length > 4) {
+            if(this.payload.search) {
                 let filtro = this.payload;
                 filtro.CheckTelefono = false;
                 filtro.CheckEmail = false;
                 filtro.CheckNombre = false;
+                filtro.CheckNumero = false;
                 switch(filtro.tipo) {
                     case 'telefono':
                     filtro.CheckTelefono = true;
@@ -167,6 +169,9 @@ name: 'Consultar',
                     break;
                     case 'nombre':
                     filtro.CheckNombre = true;
+                    break;
+                    case 'numero':
+                    filtro.CheckNumero = true;
                     break;
                 }
                 this.filtrar(filtro);

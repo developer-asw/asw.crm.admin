@@ -107,13 +107,6 @@ export default {
                 prioridad: 1,
             },
             leadSeleccionado:null,
-            prioridad:[ 
-                // { text: 'Predeterminado', value: null }, 
-                { text: 'Tareas Pendientes', value:1 }, 
-                { text: 'Datos entrantes', value:0 }, 
-                { text: 'No contestan - Pendientes', value : 2 },
-                { text: 'Admisiones - Venta telefónica', value : 3 },
-            ],
             llamadas_estados:[],
             estados: {},
             limits:[
