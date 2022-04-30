@@ -256,14 +256,15 @@ export default {
                     this.prioridad = [ 
                         { text: 'Mis pendientes', value:1 },
                         { text: 'No contestan - Pendientes', value : 2 },
-                        { text: 'Admisiones - Venta telefónica', value : 3 },
+                        { text: 'Venta Teléfonica', value : 6 },
                     ];
                 } else {
                     if (this.user.data.rol == 'callcenter') {
                         this.prioridad = [ 
                             { text: 'Mis pendientes', value:1 }, 
                             { text: 'Datos entrantes', value:0 }, 
-                            { text: 'No contestan - Pendientes', value : 2 }
+                            { text: 'No contestan - Pendientes', value : 2 },
+                            { text: 'Marcado Manual', value : 3 },
                         ];
                     } else {
                         if (this.user.data.rol == 'superusuario' || this.user.data.grupo_id == 20) {
@@ -271,7 +272,8 @@ export default {
                                 { text: 'Mis pendientes', value:1 }, 
                                 { text: 'Datos entrantes', value:0 }, 
                                 { text: 'No contestan - Pendientes', value : 2 },
-                                { text: 'Admisiones - Venta telefónica', value : 3 },
+                                { text: 'Marcado Manual', value : 3 },
+                                { text: 'Venta Teléfonica', value : 6 },
                             ];
 
                         }else{
@@ -279,7 +281,6 @@ export default {
                             this.prioridad = [ 
                                 { text: 'Mis pendientes', value:1 }, 
                                 { text: 'No contestan - Pendientes', value : 2 },
-                                { text: 'Admisiones - Venta telefónica', value : 3 },
                             ];
                         }
                     }

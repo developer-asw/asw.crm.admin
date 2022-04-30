@@ -295,6 +295,7 @@ export default {
                         { text: 'Datos por Resolver', value:5 },
                         // { text: 'Datos Nuevos', value:4 }, 
                         { text: 'No contestan - Pendientes', value : 2 },
+                        { text: 'Venta Teléfonica', value : 6 },
                     ];
                 }else{
                     this.payload.prioridad = 0;
@@ -313,6 +314,7 @@ export default {
                                 { text: 'Datos Nuevos', value:4 }, 
                                 { text: 'No contestan - Pendientes', value : 2 },
                                 { text: 'Marcado Manual', value : 3 },
+                                { text: 'Venta Teléfonica', value : 6 },
                             ];
 
                         }else{
