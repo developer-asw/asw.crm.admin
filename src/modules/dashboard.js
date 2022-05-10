@@ -89,6 +89,15 @@ const state = {
             lastPage : 1,
         }
     },
+    item10: {
+        lista: [],
+        pagination:{
+            total : 0,
+            page : 1,
+            perPage : 100,
+            lastPage : 1,
+        }
+    },
     detalles: {},
     user: null,
     logged: !!window.localStorage.getItem('_token')
@@ -213,6 +222,22 @@ const actions = {
             Vue.http.post('lead/dashboard/datos_Digitales',data).then(
                 response =>{
                     commit('setItem9',response.data.datos);
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+    consultarDatosDigitalesMercadeo:({ commit }, data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.post('lead/dashboard/datos_DigitalesMercadeo',data).then(
+                response =>{
+                    commit('setItem10',response.data.datos);
                     resolve(response.data)
                 }
             ).catch(error=>{
@@ -350,6 +375,13 @@ const mutations = {
         state.item9.pagination.page = datos.page;
         state.item9.pagination.perPage = datos.perPage;
         state.item9.pagination.lastPage = datos.lastPage;
+    },
+    setItem10: (state, datos) => {
+        state.item10.lista = datos.data;
+        state.item10.pagination.total = datos.total;
+        state.item10.pagination.page = datos.page;
+        state.item10.pagination.perPage = datos.perPage;
+        state.item10.pagination.lastPage = datos.lastPage;
     }
 };
 

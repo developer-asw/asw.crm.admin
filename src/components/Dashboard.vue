@@ -229,6 +229,39 @@
 
                                 </v-card>
                             </v-col>
+                            
+                            <v-col md="4" sm="12" cols="12" v-if="d.grafico_datosDigitalesMercadeo">
+                                <v-card
+                                    class="mx-auto text-center"
+                                    color="blue"
+                                    dark
+                                    max-width="600">
+                                    <v-card-text>
+                                        <v-sheet color="rgba(0, 0, 0, .12)">
+                                            <v-sparkline
+                                                :value="d.grafico_datosDigitalesMercadeo.data.values"
+                                                :labels="d.grafico_datosDigitalesMercadeo.data.labels"
+                                                color="white"
+                                                line-width="2"
+                                                padding="16">
+                                            <template v-slot:label="item">
+                                                {{ item.value }}
+                                            </template>
+                                            </v-sparkline>
+                                        </v-sheet>
+                                    </v-card-text>
+
+                                    <v-card-text>
+                                        <div class="display-1 font-weight-thin">
+                                            {{d.grafico_datosDigitalesMercadeo.title}}
+                                            <br>
+                                            {{d.grafico_datosDigitalesMercadeo.total}}
+                                        </div>
+                                    </v-card-text>
+
+
+                                </v-card>
+                            </v-col>
                         </v-row>
 
                     </v-col>
@@ -315,6 +348,7 @@ name: 'Dashboard',
             grafico_matriculado: null,
             grafico_cumplimientoCita: null,
             grafico_datosDigitales: null,
+            grafico_datosDigitalesMercadeo: null,
             grafico_por_sede: null,
             general:null,
             general_fecha: null
@@ -330,15 +364,16 @@ name: 'Dashboard',
     methods: {
         ...mapActions({
             consultarDashboard: 'dashboard/consultarDashboard',
-            consulta1: 'dashboard/consultarDatosPorDia',
-            consulta2: 'dashboard/consultarDatosGeneral',
-            consulta7: 'dashboard/consultarDatosGeneralPorFecha',
-            consulta3: 'dashboard/consultarDatosMasterclass',
-            consulta4: 'dashboard/consultarDatosPresencial',
-            consulta5: 'dashboard/consultarDatosMatriculado',
-            consulta6: 'dashboard/consultarDatosPorSede',
-            consulta8: 'dashboard/consultarDatosCumplimientoCita',
-            consulta9: 'dashboard/consultarDatosDigitales',
+            consulta1:  'dashboard/consultarDatosPorDia',
+            consulta2:  'dashboard/consultarDatosGeneral',
+            consulta7:  'dashboard/consultarDatosGeneralPorFecha',
+            consulta3:  'dashboard/consultarDatosMasterclass',
+            consulta4:  'dashboard/consultarDatosPresencial',
+            consulta5:  'dashboard/consultarDatosMatriculado',
+            consulta6:  'dashboard/consultarDatosPorSede',
+            consulta8:  'dashboard/consultarDatosCumplimientoCita',
+            consulta9:  'dashboard/consultarDatosDigitales',
+            consulta10: 'dashboard/consultarDatosDigitalesMercadeo',
             usuarioLogueado: 'dashboard/usuarioLogueado'
         }),
         ...mapMutations({
@@ -415,6 +450,13 @@ name: 'Dashboard',
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_datosDigitales = result.datos;
+                    }
+                })
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
+            this.consulta10(payload)
+                .then(result => {
+                    if(result && result.datos) {
+                        this.d.grafico_datosDigitalesMercadeo = result.datos;
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
