@@ -4,7 +4,7 @@
         <template v-slot:default>
             <tbody>
                 <tr>
-                    <td><b>Número: </b></td>
+                    <td><b>ID: </b></td>
                     <td>{{ lead.numero }}</td>
                     <td></td>
                 </tr>

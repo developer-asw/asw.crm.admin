@@ -7,7 +7,7 @@
       <v-card-text>
         <v-row>
           <v-col cols="12" sm="6" md="4" lg="3">
-            <b>Número: </b> <br/> {{ lead.numero }}
+            <b>ID: </b> <br/> {{ lead.numero }}
           </v-col>
           <v-col cols="12" sm="6" md="4" lg="3">
             FECHA INGRESO: <br />

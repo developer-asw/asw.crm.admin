@@ -19,7 +19,7 @@
                     <v-col>
                         <v-radio-group class="small-radio" v-model="payload.tipo" row >
                             <v-radio label="Teléfono" value="telefono"></v-radio>
-                            <v-radio label="Número" value="numero"></v-radio>
+                            <v-radio label="ID" value="numero"></v-radio>
                             <v-radio label="E-mail" value="email"></v-radio>
                             <v-radio label="Nombre" value="nombre"></v-radio>
                         </v-radio-group>
