@@ -272,13 +272,14 @@
                         sm="6"
                         md="3"
                         lg="3">
+                        
                         <v-row>
-                            <v-col v-if="d.general_fecha">
+                            <v-col v-if="d.general">
                                 <v-card>
-                                    <v-card-title class="subheading font-weight-bold">General Por Fecha</v-card-title>
+                                    <v-card-title class="subheading font-weight-bold">{{d.general.title}}</v-card-title>
                                     <v-divider></v-divider>
                                     <v-list dense>
-                                        <v-list-item v-for="(v, k, i) in d.general_fecha.data" :key="i">
+                                        <v-list-item v-for="(v, k, i) in d.general.data" :key="i">
                                             <v-list-item-content>{{k}}:</v-list-item-content>
                                             <v-list-item-content :style="{'text-align':'right'}" class="align-end">{{ v }}</v-list-item-content>
                                         </v-list-item>
@@ -287,12 +288,12 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col v-if="d.general">
+                            <v-col v-if="d.general_fecha">
                                 <v-card>
-                                    <v-card-title class="subheading font-weight-bold">General</v-card-title>
+                                    <v-card-title class="subheading font-weight-bold">General Por Fecha</v-card-title>
                                     <v-divider></v-divider>
                                     <v-list dense>
-                                        <v-list-item v-for="(v, k, i) in d.general.data" :key="i">
+                                        <v-list-item v-for="(v, k, i) in d.general_fecha.data" :key="i">
                                             <v-list-item-content>{{k}}:</v-list-item-content>
                                             <v-list-item-content :style="{'text-align':'right'}" class="align-end">{{ v }}</v-list-item-content>
                                         </v-list-item>
