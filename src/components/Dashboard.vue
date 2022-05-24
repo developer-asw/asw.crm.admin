@@ -278,12 +278,17 @@
                                 <v-card>
                                     <v-card-title class="subheading font-weight-bold">{{d.general.title}}</v-card-title>
                                     <v-divider></v-divider>
-                                    <v-list dense>
-                                        <v-list-item v-for="(v, k, i) in d.general.data" :key="i">
-                                            <v-list-item-content>{{k}}:</v-list-item-content>
-                                            <v-list-item-content :style="{'text-align':'right'}" class="align-end">{{ v }}</v-list-item-content>
-                                        </v-list-item>
-                                    </v-list>
+
+                                    <v-data-table
+                                        :headers="[ { text: 'Titulo', align: 'start', value: 'title', }, { text: 'Total', align: 'start', value: 'value', }, { text: 'Porcentaje', align: 'start', value: 'percent', } ]"
+                                        :items="d.general.data"
+                                        hide-default-header
+                                        hide-default-footer
+                                        class="elevation-1">
+                                        <template v-slot:[`item.percent`]="{ item }">
+                                            {{ item.percent ? item.percent+'%':'' }}
+                                        </template>
+                                    </v-data-table>
                                 </v-card>
                             </v-col>
                         </v-row>
