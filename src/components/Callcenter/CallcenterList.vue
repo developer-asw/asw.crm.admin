@@ -187,7 +187,7 @@ export default {
         query: Object,
     },
     mounted() {
-        this.actualizarListado();
+        this.obtenerGrupo();
         this.actualizar();
     },
     methods:{
@@ -196,6 +196,7 @@ export default {
             fetchListaPage: 'callcenter/fetchListaPage',
             solicitar: 'callcenter/solicitar',
             fetchDetalle: 'leads/fetchDetalle',
+            getGrupo: 'auth/getGrupo'
       }),
       ...mapMutations({
           reemplazar: 'callcenter/replaceListaElement',
@@ -207,6 +208,13 @@ export default {
           this.fetchLista(this.payload)
           .finally(() => {
               this.loading = false;
+          })
+      },
+      obtenerGrupo(){
+          this.getGrupo().then((result) => {
+              this.actualizarListado(result.grupo);
+          })
+          .finally(() => {
           })
       },
       iniciarSolicitar(item){
@@ -285,7 +293,7 @@ export default {
                   this.setInfo(error)
               })
         },
-        actualizarListado() {
+        actualizarListado(grupo_usuario = '') {
             if (this.user && this.user.data) {
                 if (this.user.data.grupo_id == 26) {
                     this.payload.prioridad = 5;
@@ -314,6 +322,7 @@ export default {
                                 { text: 'Datos Nuevos', value:4 }, 
                                 { text: 'No contestan - Pendientes', value : 2 },
                                 { text: 'Marcado Manual', value : 3 },
+                                { text: 'Grupo 1', value : 7 },
                                 { text: 'Venta Teléfonica', value : 6 },
                             ];
 
@@ -331,6 +340,9 @@ export default {
             }
             else{
                 this.prioridad = [];
+            }
+            if (grupo_usuario == 'grupo_fredy'){
+                this.prioridad.push({ text: 'Grupo 1', value : 7 });
             }
         },
         esUsuario(){
