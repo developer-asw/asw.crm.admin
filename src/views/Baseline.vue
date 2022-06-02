@@ -151,7 +151,7 @@
                             </v-list-item-content>
                         </v-list-item>
                         <!-- && permiso('2BF48DCE') -->
-                        <v-list-item v-if="isLogged && (user.data.rol == 'superusuario' || user.data.grupo_id == 20)" link @click="dirigir('/callcenter_coordinator')">
+                        <v-list-item v-if="isLogged && (user.data.rol == 'superusuario' || [20,27].includes(user.data.grupo_id))" link @click="dirigir('/callcenter_coordinator')">
                             <v-list-item-action>
                                 <v-icon>supervisor_account</v-icon>
                             </v-list-item-action>
