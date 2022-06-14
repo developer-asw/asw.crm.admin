@@ -69,7 +69,15 @@
                             <v-list-item-title>Nuevo</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-                    
+                                        
+                    <v-list-item v-if="isLogged && permiso('matriculados') || user.data.rol == 'superusuario'" link @click="dirigir('/callcenter/matriculados')">
+                        <v-list-item-action>
+                            <v-icon>credit_card</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title>Apoyo Financiero</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
                     
                     <v-list-group v-if="isLogged && (user.data.rol == 'superusuario')"
                     no-action
@@ -150,6 +158,7 @@
                                 <v-list-item-title>Convenio</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
+                        
                         <!-- && permiso('2BF48DCE') -->
                         <v-list-item v-if="isLogged && (user.data.rol == 'superusuario' || [20,27].includes(user.data.grupo_id))" link @click="dirigir('/callcenter_coordinator')">
                             <v-list-item-action>

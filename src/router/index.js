@@ -30,6 +30,7 @@ import MissedAppointments from '@/components/Management/MissedAppointments';
 import IncomingData from '@/components/Management/IncomingData';
 import Parameters from '@/components/Management/Parameters';
 import Wolkvox from '@/components/Management/Wolkvox';
+import CallcenterMatriculados from '../components/Callcenter/CallcenterMatriculados';
 
 Vue.use(VueRouter)
 
@@ -112,6 +113,12 @@ const routes = [
     name: 'seguimiento',
     component: CallcenterSeguimiento,
     meta: { Auth: true, title: 'Callcenter - Tracing' , view: 'baseline'},
+  },
+  {
+    path: '/callcenter/matriculados',
+    name: 'matriculados',
+    component: CallcenterMatriculados,
+    meta: { Auth: true, title: 'Callcenter - Matriculados' , view: 'baseline'},
   },
   {
     path: '/callcenter_coordinator',

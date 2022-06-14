@@ -17,6 +17,15 @@ const state = {
         lastPage : 1,
     }
   },
+  matriculados:{
+    lista:[],
+    pagination: {
+        total : 0,
+        page : 1,
+        perPage : 100,
+        lastPage : 1,
+    }
+  },
   detalles: {}
 
 };
@@ -101,6 +110,37 @@ const actions = {
       })
     });
   },
+  fetchMatriculados:({commit},data) => {
+    commit('startProcessing', null, { root: true });
+    return new Promise((resolve, reject) => {
+      Vue.http.post('callcenter/matriculados',data).then(
+        response =>{
+          commit('setMatriculados',response.data.datos);
+          resolve(response.data)
+        }
+      ).catch(error=>{
+        commit('setError', error, { root: true });
+        reject(error)
+      }).finally(()=>{
+        commit('stopProcessing', null, { root: true });
+      })
+    });
+  },
+  fetchMatriculadosPage:({commit},data) => {
+      commit('startProcessing', null, { root: true });
+      return new Promise((resolve, reject) => {
+          Vue.http.post('callcenter/matriculados',data).then(
+              response =>{
+                  resolve(response.data)
+              }
+          ).catch(error=>{
+              commit('setError', error, { root: true });
+              reject(error)
+          }).finally(()=>{
+              commit('stopProcessing', null, { root: true });
+          })
+      });
+  },
   solicitar:({commit},data) => {
     commit('startProcessing', null, { root: true });
     return new Promise((resolve, reject) => {
@@ -156,6 +196,13 @@ const mutations = {
     state.consultas.pagination.page = datos.page;
     state.consultas.pagination.perPage = datos.perPage;
     state.consultas.pagination.lastPage = datos.lastPage;
+  },
+  setMatriculados: (state, datos) => {
+    state.matriculados.datos = datos.data;
+    state.matriculados.pagination.total = datos.total;
+    state.matriculados.pagination.page = datos.page;
+    state.matriculados.pagination.perPage = datos.perPage;
+    state.matriculados.pagination.lastPage = datos.lastPage;
   },
   replaceListaElement: (state, e) => {
     let index = state.lista.findIndex(element=>{
