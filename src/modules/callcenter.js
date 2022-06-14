@@ -198,7 +198,7 @@ const mutations = {
     state.consultas.pagination.lastPage = datos.lastPage;
   },
   setMatriculados: (state, datos) => {
-    state.matriculados.datos = datos.data;
+    state.matriculados.lista = datos.data;
     state.matriculados.pagination.total = datos.total;
     state.matriculados.pagination.page = datos.page;
     state.matriculados.pagination.perPage = datos.perPage;

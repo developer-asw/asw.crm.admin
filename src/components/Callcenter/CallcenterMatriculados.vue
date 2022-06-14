@@ -363,7 +363,7 @@ export default {
     },
     computed: {
         ...mapState({
-            lista: state => state.callcenter.matriculados.datos,
+            lista: state => state.callcenter.matriculados.lista,
             pagination: state => state.callcenter.matriculados.pagination,
             user: state => state.auth.user,   
         }),
