@@ -67,206 +67,8 @@
 
                                 </v-card>
                             </v-col>
-                            <v-col md="4" sm="12" cols="12" v-if="d.grafico_masterclass">
-                                <v-card
-                                    class="mx-auto text-center"
-                                    color="cyan"
-                                    dark
-                                    max-width="600">
-                                    <v-card-text>
-                                        <v-sheet color="rgba(0, 0, 0, .12)">
-                                            <v-sparkline
-                                                :value="d.grafico_masterclass.data.values"
-                                                :labels="d.grafico_masterclass.data.labels"
-                                                color="white"
-                                                line-width="2"
-                                                padding="16">
-                                            <template v-slot:label="item">
-                                                {{ item.value }}
-                                            </template>
-                                            </v-sparkline>
-                                        </v-sheet>
-                                    </v-card-text>
-
-                                    <v-card-text>
-                                        <div class="display-1 font-weight-thin">
-                                            {{d.grafico_masterclass.title}}
-                                            <br>
-                                            {{d.grafico_masterclass.total}}
-                                        </div>
-                                    </v-card-text>
-
-
-                                </v-card>
-                            </v-col>
-                            <v-col md="4" sm="12" cols="12" v-if="d.grafico_presencial">
-                                <v-card
-                                    class="mx-auto text-center"
-                                    color="orange"
-                                    dark
-                                    max-width="600">
-                                    <v-card-text>
-                                        <v-sheet color="rgba(0, 0, 0, .12)">
-                                            <v-sparkline
-                                                :value="d.grafico_presencial.data.values"
-                                                :labels="d.grafico_presencial.data.labels"
-                                                color="white"
-                                                line-width="2"
-                                                padding="16">
-                                            <template v-slot:label="item">
-                                                {{ item.value }}
-                                            </template>
-                                            </v-sparkline>
-                                        </v-sheet>
-                                    </v-card-text>
-
-                                    <v-card-text>
-                                        <div class="display-1 font-weight-thin">
-                                            {{d.grafico_presencial.title}}
-                                            <br>
-                                            {{d.grafico_presencial.total}}
-                                        </div>
-                                    </v-card-text>
-
-
-                                </v-card>
-                            </v-col>
-                            <v-col md="4" sm="12" cols="12" v-if="d.grafico_matriculado">
-                                <v-card
-                                    class="mx-auto text-center"
-                                    color="light-green"
-                                    dark
-                                    max-width="600">
-                                    <v-card-text>
-                                        <v-sheet color="rgba(0, 0, 0, .12)">
-                                            <v-sparkline
-                                                :value="d.grafico_matriculado.data.values"
-                                                :labels="d.grafico_matriculado.data.labels"
-                                                color="white"
-                                                line-width="2"
-                                                padding="16">
-                                            <template v-slot:label="item">
-                                                {{ item.value }}
-                                            </template>
-                                            </v-sparkline>
-                                        </v-sheet>
-                                    </v-card-text>
-
-                                    <v-card-text>
-                                        <div class="display-1 font-weight-thin">
-                                            {{d.grafico_matriculado.title}}
-                                            <br>
-                                            {{d.grafico_matriculado.total}}
-                                        </div>
-                                    </v-card-text>
-
-
-                                </v-card>
-                            </v-col>
-
-                            <v-col md="4" sm="12" cols="12" v-if="d.grafico_cumplimientoCita">
-                                <v-card
-                                    class="mx-auto text-center"
-                                    color="purple"
-                                    dark
-                                    max-width="600">
-                                    <v-card-text>
-                                        <v-sheet color="rgba(0, 0, 0, .12)">
-                                            <v-sparkline
-                                                :value="d.grafico_cumplimientoCita.data.values"
-                                                :labels="d.grafico_cumplimientoCita.data.labels"
-                                                color="white"
-                                                line-width="2"
-                                                padding="16">
-                                            <template v-slot:label="item">
-                                                {{ item.value }}
-                                            </template>
-                                            </v-sparkline>
-                                        </v-sheet>
-                                    </v-card-text>
-
-                                    <v-card-text>
-                                        <div class="display-1 font-weight-thin">
-                                            {{d.grafico_cumplimientoCita.title}}
-                                            <br>
-                                            {{d.grafico_cumplimientoCita.total}}
-                                        </div>
-                                    </v-card-text>
-
-
-                                </v-card>
-                            </v-col>
-                            
-                            <v-col md="4" sm="12" cols="12" v-if="d.grafico_datosDigitales">
-                                <v-card
-                                    class="mx-auto text-center"
-                                    color="blue"
-                                    dark
-                                    max-width="600">
-                                    <v-card-text>
-                                        <v-sheet color="rgba(0, 0, 0, .12)">
-                                            <v-sparkline
-                                                :value="d.grafico_datosDigitales.data.values"
-                                                :labels="d.grafico_datosDigitales.data.labels"
-                                                color="white"
-                                                line-width="2"
-                                                padding="16">
-                                            <template v-slot:label="item">
-                                                {{ item.value }}
-                                            </template>
-                                            </v-sparkline>
-                                        </v-sheet>
-                                    </v-card-text>
-
-                                    <v-card-text>
-                                        <div class="display-1 font-weight-thin">
-                                            {{d.grafico_datosDigitales.title}}
-                                            <br>
-                                            {{d.grafico_datosDigitales.total}}
-                                        </div>
-                                    </v-card-text>
-
-
-                                </v-card>
-                            </v-col>
-                            
-                            <v-col md="4" sm="12" cols="12" v-if="d.grafico_datosDigitalesMercadeo">
-                                <v-card
-                                    class="mx-auto text-center"
-                                    color="blue"
-                                    dark
-                                    max-width="600">
-                                    <v-card-text>
-                                        <v-sheet color="rgba(0, 0, 0, .12)">
-                                            <v-sparkline
-                                                :value="d.grafico_datosDigitalesMercadeo.data.values"
-                                                :labels="d.grafico_datosDigitalesMercadeo.data.labels"
-                                                color="white"
-                                                line-width="2"
-                                                padding="16">
-                                            <template v-slot:label="item">
-                                                {{ item.value }}
-                                            </template>
-                                            </v-sparkline>
-                                        </v-sheet>
-                                    </v-card-text>
-
-                                    <v-card-text>
-                                        <div class="display-1 font-weight-thin">
-                                            {{d.grafico_datosDigitalesMercadeo.title}}
-                                            <br>
-                                            {{d.grafico_datosDigitalesMercadeo.total}}
-                                        </div>
-                                    </v-card-text>
-
-
-                                </v-card>
-                            </v-col>
                         </v-row>
-
                     </v-col>
-                    
-                    
                     <v-col
                         cols="12"
                         sm="6"
@@ -292,7 +94,7 @@
                                 </v-card>
                             </v-col>
                         </v-row>
-                        <v-row>
+                        <!--<v-row>
                             <v-col v-if="d.general_fecha">
                                 <v-card>
                                     <v-card-title class="subheading font-weight-bold">General Por Fecha</v-card-title>
@@ -305,19 +107,246 @@
                                     </v-list>
                                 </v-card>
                             </v-col>
-                        </v-row>
+                        </v-row>-->
+                    </v-col>
+                    <v-col v-if="d.grafico_presencial_vs_master" md="4" sm="12" cols="12">            
+                        <v-card
+                            class="mx-auto text-center">
+                            <v-card-text>
+                                <apexchart type="bar" height="350" :options="d.grafico_presencial_vs_master.data.barOptions" :series="d.grafico_presencial_vs_master.data.series"></apexchart>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                    <v-col v-if="d.grafico_digital_vs_citas" md="4" sm="12" cols="12">
+                        
+                        <v-card
+                            class="mx-auto text-center"
+                            >
+                            <v-card-text>
+                                <apexchart type="bar" height="350" :options="d.grafico_digital_vs_citas.data.barOptions" :series="d.grafico_digital_vs_citas.data.series"></apexchart>
+                            </v-card-text>
+
+                        </v-card>
+                    </v-col>
+                    <v-col v-if="d.grafico_otros_vs_citas" md="4" sm="12" cols="12">
+                        
+                        <v-card
+                            class="mx-auto text-center"
+                            >
+                            <v-card-text>
+                                <apexchart type="bar" height="350" :options="d.grafico_otros_vs_citas.data.barOptions" :series="d.grafico_otros_vs_citas.data.series"></apexchart>
+                            </v-card-text>
+
+                        </v-card>
+                    </v-col>
+                        
+                            
+                    <v-col md="4" sm="12" cols="12" v-if="d.grafico_masterclass">
+                        <v-card
+                            class="mx-auto text-center"
+                            color="cyan"
+                            dark
+                            max-width="600">
+                            <v-card-text>
+                                <v-sheet color="rgba(0, 0, 0, .12)">
+                                    <v-sparkline
+                                        :value="d.grafico_masterclass.data.values"
+                                        :labels="d.grafico_masterclass.data.labels"
+                                        color="white"
+                                        line-width="2"
+                                        padding="16">
+                                    <template v-slot:label="item">
+                                        {{ item.value }}
+                                    </template>
+                                    </v-sparkline>
+                                </v-sheet>
+                            </v-card-text>
+
+                            <v-card-text>
+                                <div class="display-1 font-weight-thin">
+                                    <small>{{d.grafico_masterclass.title}}</small>
+                                    <br>
+                                    {{d.grafico_masterclass.total}}
+                                </div>
+                            </v-card-text>
+
+
+                        </v-card>
+                    </v-col>
+
+                    <v-col md="4" sm="12" cols="12" v-if="d.grafico_presencial">
+                        <v-card
+                            class="mx-auto text-center"
+                            color="orange"
+                            dark
+                            max-width="600">
+                            <v-card-text>
+                                <v-sheet color="rgba(0, 0, 0, .12)">
+                                    <v-sparkline
+                                        :value="d.grafico_presencial.data.values"
+                                        :labels="d.grafico_presencial.data.labels"
+                                        color="white"
+                                        line-width="2"
+                                        padding="16">
+                                    <template v-slot:label="item">
+                                        {{ item.value }}
+                                    </template>
+                                    </v-sparkline>
+                                </v-sheet>
+                            </v-card-text>
+
+                            <v-card-text>
+                                <div class="display-1 font-weight-thin">
+                                    <small>{{d.grafico_presencial.title}}</small>
+                                    <br>
+                                    {{d.grafico_presencial.total}}
+                                </div>
+                            </v-card-text>
+
+
+                        </v-card>
+                    </v-col>
+
+                    <v-col md="4" sm="12" cols="12" v-if="d.grafico_matriculado">
+                        <v-card
+                            class="mx-auto text-center"
+                            color="light-green"
+                            dark
+                            max-width="600">
+                            <v-card-text>
+                                <v-sheet color="rgba(0, 0, 0, .12)">
+                                    <v-sparkline
+                                        :value="d.grafico_matriculado.data.values"
+                                        :labels="d.grafico_matriculado.data.labels"
+                                        color="white"
+                                        line-width="2"
+                                        padding="16">
+                                    <template v-slot:label="item">
+                                        {{ item.value }}
+                                    </template>
+                                    </v-sparkline>
+                                </v-sheet>
+                            </v-card-text>
+
+                            <v-card-text>
+                                <div class="display-1 font-weight-thin">
+                                    <small>{{d.grafico_matriculado.title}}</small>
+                                    <br>
+                                    {{d.grafico_matriculado.total}}
+                                </div>
+                            </v-card-text>
+
+
+                        </v-card>
+                    </v-col>
+
+                    <v-col md="4" sm="12" cols="12" v-if="d.grafico_cumplimientoCita">
+                        <v-card
+                            class="mx-auto text-center"
+                            color="purple"
+                            dark
+                            max-width="600">
+                            <v-card-text>
+                                <v-sheet color="rgba(0, 0, 0, .12)">
+                                    <v-sparkline
+                                        :value="d.grafico_cumplimientoCita.data.values"
+                                        :labels="d.grafico_cumplimientoCita.data.labels"
+                                        color="white"
+                                        line-width="2"
+                                        padding="16">
+                                    <template v-slot:label="item">
+                                        {{ item.value }}
+                                    </template>
+                                    </v-sparkline>
+                                </v-sheet>
+                            </v-card-text>
+
+                            <v-card-text>
+                                <div class="display-1 font-weight-thin">
+                                    <small>{{d.grafico_cumplimientoCita.title}}</small>
+                                    <br>
+                                    {{d.grafico_cumplimientoCita.total}}
+                                </div>
+                            </v-card-text>
+
+
+                        </v-card>
+                    </v-col>
+                    
+                    <v-col md="4" sm="12" cols="12" v-if="d.grafico_datosDigitales">
+                        <v-card
+                            class="mx-auto text-center"
+                            color="blue"
+                            dark
+                            max-width="600">
+                            <v-card-text>
+                                <v-sheet color="rgba(0, 0, 0, .12)">
+                                    <v-sparkline
+                                        :value="d.grafico_datosDigitales.data.values"
+                                        :labels="d.grafico_datosDigitales.data.labels"
+                                        color="white"
+                                        line-width="2"
+                                        padding="16">
+                                    <template v-slot:label="item">
+                                        {{ item.value }}
+                                    </template>
+                                    </v-sparkline>
+                                </v-sheet>
+                            </v-card-text>
+
+                            <v-card-text>
+                                <div class="display-1 font-weight-thin">
+                                    <small>{{d.grafico_datosDigitales.title}}</small>
+                                    <br>
+                                    {{d.grafico_datosDigitales.total}}
+                                </div>
+                            </v-card-text>
+
+
+                        </v-card>
+                    </v-col>
+                    
+                    <v-col md="4" sm="12" cols="12" v-if="d.grafico_datosDigitalesMercadeo">
+                        <v-card
+                            class="mx-auto text-center"
+                            color="blue"
+                            dark
+                            max-width="600">
+                            <v-card-text>
+                                <v-sheet color="rgba(0, 0, 0, .12)">
+                                    <v-sparkline
+                                        :value="d.grafico_datosDigitalesMercadeo.data.values"
+                                        :labels="d.grafico_datosDigitalesMercadeo.data.labels"
+                                        color="white"
+                                        line-width="2"
+                                        padding="16">
+                                    <template v-slot:label="item">
+                                        {{ item.value }}
+                                    </template>
+                                    </v-sparkline>
+                                </v-sheet>
+                            </v-card-text>
+
+                            <v-card-text>
+                                <div class="display-1 font-weight-thin">
+                                    <small>{{d.grafico_datosDigitalesMercadeo.title}}</small>
+                                    <br>
+                                    {{d.grafico_datosDigitalesMercadeo.total}}
+                                </div>
+                            </v-card-text>
+
+
+                        </v-card>
                     </v-col>
 
                     <v-col lg="12" md="12" sm="12" cols="12" v-if="d.grafico_por_sede">
                         <v-card class="mx-auto text-center">
-                                    <v-card-text>
-                                        <apexchart type="bar" height="350" :options="d.grafico_por_sede.data.chartOptions" :series="d.grafico_por_sede.data.series"></apexchart>
-                                    </v-card-text>
+                            <v-card-text>
+                                <apexchart type="bar" height="350" :options="d.grafico_por_sede.data.chartOptions" :series="d.grafico_por_sede.data.series"></apexchart>
+                            </v-card-text>
 
-                                </v-card>
+                        </v-card>
                     </v-col>
-                    
-                    
                 </v-row>
             </v-container>
         </v-layout>
@@ -357,7 +386,10 @@ name: 'Dashboard',
             grafico_datosDigitalesMercadeo: null,
             grafico_por_sede: null,
             general:null,
-            general_fecha: null
+            general_fecha: null,
+            grafico_presencial_vs_master:null,
+            grafico_digital_vs_citas:null,
+            grafico_otros_vs_citas:null,
         },
         tags: ["Digital", "Convenio", "Referido", "Renovación", "Walk-In", "Otros"],
         tagSelected: [],
@@ -380,7 +412,10 @@ name: 'Dashboard',
             consulta8:  'dashboard/consultarDatosCumplimientoCita',
             consulta9:  'dashboard/consultarDatosDigitales',
             consulta10: 'dashboard/consultarDatosDigitalesMercadeo',
-            usuarioLogueado: 'dashboard/usuarioLogueado'
+            consulta11: 'dashboard/consultarDatosPresencialVsMaster',
+            consulta12: 'dashboard/consultarDatosDigitalVsCitas',
+            consulta13: 'dashboard/consultarDatosOtrosVsCitas',
+            usuarioLogueado: 'dashboard/usuarioLogueado',
         }),
         ...mapMutations({
             setInfo: 'setInfo',
@@ -463,6 +498,27 @@ name: 'Dashboard',
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_datosDigitalesMercadeo = result.datos;
+                    }
+                })
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
+            this.consulta11(payload)
+                .then(result => {
+                    if(result && result.datos) {
+                        this.d.grafico_presencial_vs_master = result.datos;
+                    }
+                })
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
+            this.consulta12(payload)
+                .then(result => {
+                    if(result && result.datos) {
+                        this.d.grafico_digital_vs_citas = result.datos;
+                    }
+                })
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
+            this.consulta13(payload)
+                .then(result => {
+                    if(result && result.datos) {
+                        this.d.grafico_otros_vs_citas = result.datos;
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
