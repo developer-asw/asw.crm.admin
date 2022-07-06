@@ -38,11 +38,11 @@
                             </v-menu>
                         </v-container>
                     </v-col>
-                    <v-col cols="12" sm="6" md="6"  class="pb-5">
+                    <!--<v-col cols="12" sm="6" md="6"  class="pb-5">
                         <v-chip-group multiple active-class="primary--text">
                             <v-chip filter v-for="tag in tags" :key="tag" @click="seleccionarTag(tag)"> {{ tag }} </v-chip>
                         </v-chip-group>
-                    </v-col>
+                    </v-col>-->
                     <v-col cols="12" sm="6" md="2" class="pb-5">
                         <v-btn class="ma-2" color="primary darken-1" text @click="consultar"><v-icon left small>refresh</v-icon>&nbsp;Actualizar&nbsp;</v-btn>
                     </v-col>
