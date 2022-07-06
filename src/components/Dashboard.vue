@@ -109,7 +109,7 @@
                             </v-col>
                         </v-row>-->
                     </v-col>
-                    <v-col v-if="d.grafico_presencial_vs_master" md="4" sm="12" cols="12">            
+                    <v-col v-if="d.grafico_presencial_vs_master" md="6" sm="6" cols="12">            
                         <v-card
                             class="mx-auto text-center">
                             <v-card-text>
@@ -117,7 +117,7 @@
                             </v-card-text>
                         </v-card>
                     </v-col>
-                    <v-col v-if="d.grafico_digital_vs_citas" md="4" sm="12" cols="12">
+                    <v-col v-if="d.grafico_digital_vs_citas" md="6" sm="6" cols="12">
                         
                         <v-card
                             class="mx-auto text-center"
@@ -128,7 +128,7 @@
 
                         </v-card>
                     </v-col>
-                    <v-col v-if="d.grafico_otros_vs_citas" md="4" sm="12" cols="12">
+                    <v-col v-if="d.grafico_otros_vs_citas" md="6" sm="6" cols="12">
                         
                         <v-card
                             class="mx-auto text-center"
@@ -139,9 +139,19 @@
 
                         </v-card>
                     </v-col>
+                    <v-col v-if="d.grafico_agendadas_vs_asistidas" md="6" sm="6" cols="12">
                         
+                        <v-card
+                            class="mx-auto text-center"
+                            >
+                            <v-card-text>
+                                <apexchart type="bar" height="350" :options="d.grafico_agendadas_vs_asistidas.data.barOptions" :series="d.grafico_agendadas_vs_asistidas.data.series"></apexchart>
+                            </v-card-text>
+
+                        </v-card>
+                    </v-col>
                             
-                    <v-col md="4" sm="12" cols="12" v-if="d.grafico_masterclass">
+                    <v-col md="4" sm="6" cols="12" v-if="d.grafico_masterclass">
                         <v-card
                             class="mx-auto text-center"
                             color="cyan"
@@ -174,7 +184,7 @@
                         </v-card>
                     </v-col>
 
-                    <v-col md="4" sm="12" cols="12" v-if="d.grafico_presencial">
+                    <v-col md="4" sm="6" cols="12" v-if="d.grafico_presencial">
                         <v-card
                             class="mx-auto text-center"
                             color="orange"
@@ -207,7 +217,7 @@
                         </v-card>
                     </v-col>
 
-                    <v-col md="4" sm="12" cols="12" v-if="d.grafico_matriculado">
+                    <v-col md="4" sm="6" cols="12" v-if="d.grafico_matriculado">
                         <v-card
                             class="mx-auto text-center"
                             color="light-green"
@@ -240,7 +250,7 @@
                         </v-card>
                     </v-col>
 
-                    <v-col md="4" sm="12" cols="12" v-if="d.grafico_cumplimientoCita">
+                    <v-col md="4" sm="6" cols="12" v-if="d.grafico_cumplimientoCita">
                         <v-card
                             class="mx-auto text-center"
                             color="purple"
@@ -273,7 +283,7 @@
                         </v-card>
                     </v-col>
                     
-                    <v-col md="4" sm="12" cols="12" v-if="d.grafico_datosDigitales">
+                    <v-col md="4" sm="6" cols="12" v-if="d.grafico_datosDigitales">
                         <v-card
                             class="mx-auto text-center"
                             color="blue"
@@ -306,7 +316,7 @@
                         </v-card>
                     </v-col>
                     
-                    <v-col md="4" sm="12" cols="12" v-if="d.grafico_datosDigitalesMercadeo">
+                    <v-col md="4" sm="6" cols="12" v-if="d.grafico_datosDigitalesMercadeo">
                         <v-card
                             class="mx-auto text-center"
                             color="blue"
@@ -390,6 +400,7 @@ name: 'Dashboard',
             grafico_presencial_vs_master:null,
             grafico_digital_vs_citas:null,
             grafico_otros_vs_citas:null,
+            grafico_agendadas_vs_asistidas: null,
         },
         tags: ["Digital", "Convenio", "Referido", "Renovación", "Walk-In", "Otros"],
         tagSelected: [],
@@ -415,6 +426,7 @@ name: 'Dashboard',
             consulta11: 'dashboard/consultarDatosPresencialVsMaster',
             consulta12: 'dashboard/consultarDatosDigitalVsCitas',
             consulta13: 'dashboard/consultarDatosOtrosVsCitas',
+            consulta14: 'dashboard/consultarDatosAgendadasVsAsistidas',
             usuarioLogueado: 'dashboard/usuarioLogueado',
         }),
         ...mapMutations({
@@ -519,6 +531,13 @@ name: 'Dashboard',
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_otros_vs_citas = result.datos;
+                    }
+                })
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
+            this.consulta14(payload)
+                .then(result => {
+                    if(result && result.datos) {
+                        this.d.grafico_agendadas_vs_asistidas = result.datos;
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
