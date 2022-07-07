@@ -109,15 +109,16 @@
                             </v-col>
                         </v-row>-->
                     </v-col>
-                    <v-col v-if="d.grafico_presencial_vs_master" md="6" sm="6" cols="12">            
+                    <!--<v-col v-if="d.grafico_presencial_vs_master" md="6" sm="6" cols="12">            
                         <v-card
                             class="mx-auto text-center">
                             <v-card-text>
                                 <apexchart type="bar" height="350" :options="d.grafico_presencial_vs_master.data.barOptions" :series="d.grafico_presencial_vs_master.data.series"></apexchart>
                             </v-card-text>
                         </v-card>
-                    </v-col>
-                    <v-col v-if="d.grafico_digital_vs_citas" md="6" sm="6" cols="12">
+                    </v-col>-->
+                    <v-col md="12" sm="12" cols="12"><h3>Efectividad Por fuente de Dato</h3></v-col>
+                    <v-col v-if="d.grafico_digital_vs_citas" md="4" sm="6" cols="12">
                         
                         <v-card
                             class="mx-auto text-center"
@@ -128,7 +129,7 @@
 
                         </v-card>
                     </v-col>
-                    <v-col v-if="d.grafico_otros_vs_citas" md="6" sm="6" cols="12">
+                    <v-col v-if="d.grafico_otros_vs_citas" md="4" sm="6" cols="12">
                         
                         <v-card
                             class="mx-auto text-center"
@@ -139,7 +140,7 @@
 
                         </v-card>
                     </v-col>
-                    <v-col v-if="d.grafico_agendadas_vs_asistidas" md="6" sm="6" cols="12">
+                    <v-col v-if="d.grafico_agendadas_vs_asistidas" md="4" sm="6" cols="12">
                         
                         <v-card
                             class="mx-auto text-center"
@@ -250,7 +251,7 @@
                         </v-card>
                     </v-col>
 
-                    <v-col md="4" sm="6" cols="12" v-if="d.grafico_cumplimientoCita">
+                    <!--<v-col md="4" sm="6" cols="12" v-if="d.grafico_cumplimientoCita">
                         <v-card
                             class="mx-auto text-center"
                             color="purple"
@@ -347,7 +348,7 @@
 
 
                         </v-card>
-                    </v-col>
+                    </v-col>-->
 
                     <v-col lg="12" md="12" sm="12" cols="12" v-if="d.grafico_por_sede">
                         <v-card class="mx-auto text-center">
@@ -492,7 +493,7 @@ name: 'Dashboard',
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            this.consulta8(payload)
+            /*this.consulta8(payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_cumplimientoCita = result.datos;
@@ -512,14 +513,14 @@ name: 'Dashboard',
                         this.d.grafico_datosDigitalesMercadeo = result.datos;
                     }
                 })
-                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            this.consulta11(payload)
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })*/
+            /*this.consulta11(payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_presencial_vs_master = result.datos;
                     }
                 })
-                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })*/
             this.consulta12(payload)
                 .then(result => {
                     if(result && result.datos) {
