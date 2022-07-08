@@ -350,6 +350,15 @@
                         </v-card>
                     </v-col>-->
 
+                    <v-col lg="12" md="12" sm="12" cols="12" v-if="d.grafico_matriculas_sede">
+                        <v-card class="mx-auto text-center">
+                            <v-card-text>
+                                <apexchart type="bar" height="350" :options="d.grafico_matriculas_sede.data.chartOptions" :series="d.grafico_matriculas_sede.data.series"></apexchart>
+                            </v-card-text>
+
+                        </v-card>
+                    </v-col>
+
                     <v-col lg="12" md="12" sm="12" cols="12" v-if="d.grafico_por_sede">
                         <v-card class="mx-auto text-center">
                             <v-card-text>
@@ -402,6 +411,7 @@ name: 'Dashboard',
             grafico_digital_vs_citas:null,
             grafico_otros_vs_citas:null,
             grafico_agendadas_vs_asistidas: null,
+            grafico_matriculas_sede: null
         },
         tags: ["Digital", "Convenio", "Referido", "Renovación", "Walk-In", "Otros"],
         tagSelected: [],
@@ -416,18 +426,15 @@ name: 'Dashboard',
             consultarDashboard: 'dashboard/consultarDashboard',
             consulta1:  'dashboard/consultarDatosPorDia',
             consulta2:  'dashboard/consultarDatosGeneral',
-            consulta7:  'dashboard/consultarDatosGeneralPorFecha',
             consulta3:  'dashboard/consultarDatosMasterclass',
             consulta4:  'dashboard/consultarDatosPresencial',
             consulta5:  'dashboard/consultarDatosMatriculado',
             consulta6:  'dashboard/consultarDatosPorSede',
-            consulta8:  'dashboard/consultarDatosCumplimientoCita',
-            consulta9:  'dashboard/consultarDatosDigitales',
-            consulta10: 'dashboard/consultarDatosDigitalesMercadeo',
-            consulta11: 'dashboard/consultarDatosPresencialVsMaster',
-            consulta12: 'dashboard/consultarDatosDigitalVsCitas',
-            consulta13: 'dashboard/consultarDatosOtrosVsCitas',
-            consulta14: 'dashboard/consultarDatosAgendadasVsAsistidas',
+            consulta7:  'dashboard/consultarDatosGeneralPorFecha',
+            consulta8: 'dashboard/consultarDatosDigitalVsCitas',
+            consulta9: 'dashboard/consultarDatosOtrosVsCitas',
+            consulta10: 'dashboard/consultarDatosAgendadasVsAsistidas',
+            consulta11:  'dashboard/consultarMatriculasPorSede',
             usuarioLogueado: 'dashboard/usuarioLogueado',
         }),
         ...mapMutations({
@@ -493,52 +500,31 @@ name: 'Dashboard',
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            /*this.consulta8(payload)
-                .then(result => {
-                    if(result && result.datos) {
-                        this.d.grafico_cumplimientoCita = result.datos;
-                    }
-                })
-                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            this.consulta9(payload)
-                .then(result => {
-                    if(result && result.datos) {
-                        this.d.grafico_datosDigitales = result.datos;
-                    }
-                })
-                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            this.consulta10(payload)
-                .then(result => {
-                    if(result && result.datos) {
-                        this.d.grafico_datosDigitalesMercadeo = result.datos;
-                    }
-                })
-                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })*/
-            /*this.consulta11(payload)
-                .then(result => {
-                    if(result && result.datos) {
-                        this.d.grafico_presencial_vs_master = result.datos;
-                    }
-                })
-                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })*/
-            this.consulta12(payload)
+            this.consulta8(payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_digital_vs_citas = result.datos;
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            this.consulta13(payload)
+            this.consulta9(payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_otros_vs_citas = result.datos;
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            this.consulta14(payload)
+            this.consulta10(payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_agendadas_vs_asistidas = result.datos;
+                    }
+                })
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
+            this.consulta11(payload)
+                .then(result => {
+                    if(result && result.datos) {
+                        this.d.grafico_matriculas_sede = result.datos;
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })

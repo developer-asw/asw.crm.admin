@@ -240,6 +240,21 @@ const actions = {
             })
         });
     },
+    consultarMatriculasPorSede:({ commit }, data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.post('lead/dashboard/matriculas_por_sede',data).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
     usuarioLogueado:({ commit }) => {
         commit('getUser');
     }
