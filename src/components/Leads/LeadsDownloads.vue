@@ -202,7 +202,6 @@ export default {
             w.document.open();
             w.document.write(response.data);
             w.document.close();*/
-            console.log(response.headers.get('content-type'));// 
             let blob = new Blob([response.data], {encoding:"UTF-8",type:"text/plain;charset=UTF-8"});
             let link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
