@@ -36,7 +36,7 @@
                                     v-on="on">
                                 </v-text-field>
                             </template>
-                            <v-date-picker v-model="dateFrom" no-title @input="menu1 = false"></v-date-picker>
+                            <v-date-picker :min="fechaMinima" v-model="dateFrom" no-title @input="menu1 = false"></v-date-picker>
                         </v-menu>
                         <!-- <p>Date in ISO format: <strong>{{ dateFrom }}</strong></p> -->
                     </v-col>
@@ -57,7 +57,7 @@
                                 v-on="on">
                             </v-text-field>
                         </template>
-                        <v-date-picker v-model="dateTo" no-title @input="menu2 = false"></v-date-picker>
+                        <v-date-picker :min="fechaMinima" v-model="dateTo" no-title @input="menu2 = false"></v-date-picker>
                     </v-menu>
                     <!-- <p>Date in ISO format: <strong>{{ dateTo }}</strong></p> -->
                     </v-col>
@@ -143,6 +143,7 @@ export default {
     data() {
         return {
             loading: false,
+            fechaMinima: null,
             dateFrom:null,
             dateTo:null, 
             date2From:null,
@@ -303,6 +304,9 @@ export default {
                 this.llamadas_estados = [];
                 if (this.estados && this.estados.llamadas) {
                     this.llamadas_estados = this.estados.llamadas;
+                }
+                if (result.fecha_minima) {
+                    this.fechaMinima = result.fecha_minima;
                 }
             })
             .catch(error => {
