@@ -188,7 +188,6 @@ export default {
     },
     mounted() {
         this.obtenerGrupo();
-        this.actualizar();
     },
     methods:{
       ...mapActions({
@@ -344,6 +343,7 @@ export default {
             if (grupo_usuario == 'grupo_fredy'){
                 this.prioridad.push({ text: 'Grupo 1', value : 7 });
             }
+            this.actualizar();
         },
         esUsuario(){
             if(this.user && this.user.data) {

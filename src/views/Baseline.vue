@@ -88,6 +88,15 @@
                                 <v-list-item-title>Administración</v-list-item-title>
                             </v-list-item-content>
                         </template>
+                        
+                        <v-list-item v-if="isLogged" link @click="dirigir('/management/user')">
+                            <v-list-item-action>
+                                <v-icon>group</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Usuarios</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
                         <v-list-item v-if="isLogged" link @click="dirigir('/management/parameters')">
                             <v-list-item-action>
                                 <v-icon>settings</v-icon>
@@ -114,7 +123,7 @@
                         </v-list-item>
                         <v-list-item v-if="isLogged" link @click="dirigir('/management/wolkvox')">
                             <v-list-item-action>
-                                <v-icon>pending_actions</v-icon>
+                                <v-icon>headphones</v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
                                 <v-list-item-title>Wolkvox</v-list-item-title>
@@ -162,7 +171,7 @@
                         <!-- && permiso('2BF48DCE') -->
                         <v-list-item v-if="isLogged && (user.data.rol == 'superusuario' || [20,27].includes(user.data.grupo_id))" link @click="dirigir('/callcenter_coordinator')">
                             <v-list-item-action>
-                                <v-icon>supervisor_account</v-icon>
+                                <v-icon>archive</v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
                                 <v-list-item-title>Coordinator</v-list-item-title>
@@ -267,6 +276,16 @@
                         </v-list-item>
                     </v-list-group>
 
+                    
+                    <v-list-item v-if="isLogged" link @click="dirigir('/profile/user')">
+                        <v-list-item-action>
+                            <v-icon>person</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title>Usuario</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+
                 </v-list-item-group>
 
                 <v-divider></v-divider>
@@ -292,6 +311,7 @@
         dark
         >
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+
             <v-toolbar-title>Automatic Lead Attention</v-toolbar-title>
         </v-app-bar>
 

@@ -113,7 +113,7 @@ import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 
 export default {
-    name: 'IncomingData',
+    name: 'Parameters',
     components: {
       
     },
@@ -253,14 +253,7 @@ export default {
             return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
         },
         getTitle(){
-            return 'Llamadas Entrantes'
-        },
-        leadIdDialog(){
-            if(this.leadSeleccionado){
-                return this.leadSeleccionado._id
-            }else{
-                return null
-            }
+            return 'Parámetros'
         }
     },
     watch: {

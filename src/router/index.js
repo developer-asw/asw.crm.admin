@@ -30,6 +30,8 @@ import MissedAppointments from '@/components/Management/MissedAppointments';
 import IncomingData from '@/components/Management/IncomingData';
 import Parameters from '@/components/Management/Parameters';
 import Wolkvox from '@/components/Management/Wolkvox';
+import ManagementUser from '@/components/Management/User';
+import ProfileUser from '@/components/Profile/User';
 import CallcenterMatriculados from '../components/Callcenter/CallcenterMatriculados';
 
 Vue.use(VueRouter)
@@ -223,6 +225,18 @@ const routes = [
     name: 'Wolkvox',
     component: Wolkvox,
     meta: { Auth: true, title: 'Management - Wolkvox' , view: 'baseline'},
+  },
+  {
+    path: '/management/user',
+    name: 'ManagementUser',
+    component: ManagementUser,
+    meta: { Auth: true, title: 'Management - User' , view: 'baseline'},
+  },
+  {
+    path: '/profile/user',
+    name: 'ProfileUser',
+    component: ProfileUser,
+    meta: { Auth: true, title: 'Profile - User' , view: 'baseline'},
   },
 ]
 
