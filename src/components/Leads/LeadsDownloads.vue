@@ -132,7 +132,7 @@
 
 <script>
 
-import { mapActions, mapMutations } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 import Vue from 'vue'
 import config from '@/modules/config'
 
@@ -215,6 +215,7 @@ export default {
             this.loading = true
             let payload = {};
             payload.filters = this.copy(this.filtro);
+            payload.filters.usuario_email = this.userEmail;
             payload.filters.FechaInicial = this.parseDate(this.filtro.FechaInicial);
             payload.filters.FechaFinal = this.parseDate(this.filtro.FechaFinal);
             payload.download_tipo = 'csv'
@@ -299,7 +300,6 @@ export default {
             this.listarEstados()
             .then(result => {
                 this.estados = result;
-                console.log(this.estados)
                 this.llamadas_estados = [];
                 if (this.estados && this.estados.llamadas) {
                     this.llamadas_estados = this.estados.llamadas;
@@ -310,6 +310,14 @@ export default {
             }).finally(() => {
 
             });
+        }
+    },
+    computed:{
+        ...mapState({
+            user: state => state.auth.user,  
+        }),
+        userEmail() {
+            return this.user && this.user.data ? this.user.data.email : null
         }
     },
     mounted() {
