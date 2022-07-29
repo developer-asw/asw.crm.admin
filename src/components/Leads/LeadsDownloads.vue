@@ -170,7 +170,7 @@ export default {
             },
             estados:{},
             llamadas_estados: [],
-            categorias: ['Convenio', 'Digital', 'Examen', 'Referido', 'Walk-In']
+            categorias:[],
         }
     },
     methods: {
@@ -304,6 +304,7 @@ export default {
                 if (this.estados && this.estados.llamadas) {
                     this.llamadas_estados = this.estados.llamadas;
                 }
+                this.categorias = this.estados.categorias;
                 if (result.fecha_minima) {
                     this.fechaMinima = result.fecha_minima;
                 }
