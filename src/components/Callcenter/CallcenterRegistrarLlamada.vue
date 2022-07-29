@@ -406,10 +406,11 @@
 						return true
 					}
 				}else if(this.estado=='agendar_llamada'){
+
 					if(this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada){
 						return true
 					}
-				}else if(this.estado=='no_contesta' || this.estado == 'seguimiento_whatsapp'){
+				}else if(this.estado=='no_contesta' || this.estado == 'seguimiento_whatsapp' || this.estado == 'convocatoria_talento_humano'){
 					return true
 				}
                 else if(this.estado == 'seguimiento'){

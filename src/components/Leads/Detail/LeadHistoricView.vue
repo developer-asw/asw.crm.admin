@@ -212,11 +212,9 @@ export default {
             }
         },
         expandAll: function() {
-            console.log("All expanded.");
             this.$data.expanded = this.$data.historial;
         },
         collapseAll: function() {
-            console.log("All collapsed.");
             this.$data.expanded = [];
         },
         getObservacion(item){
