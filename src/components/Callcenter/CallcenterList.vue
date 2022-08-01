@@ -5,9 +5,9 @@
             <v-spacer></v-spacer>
             <v-toolbar-items>
                 <v-subheader>{{pagination.total}} registros</v-subheader>
-                <!-- <v-btn v-if="lista.length>0" flat small color="info" dark @click="descargarReporte">
+                <v-btn v-if="puedeDescargar" small color="info" dark @click="descargar">
                   <v-icon>cloud_download</v-icon>
-                </v-btn> -->
+                </v-btn>
                 <v-btn small color="info" dark @click="actualizar">
                     <v-icon>autorenew</v-icon>
                 </v-btn>
@@ -134,6 +134,7 @@ import {mapState, mapActions, mapMutations} from 'vuex';
 import CallcenterRegistrarLlamada from '@/components/Callcenter/CallcenterRegistrarLlamada'
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
+import config from '@/modules/config'
 
 Vue.use(VueClipboard)
 
@@ -190,107 +191,120 @@ export default {
         this.obtenerGrupo();
     },
     methods:{
-      ...mapActions({
-            fetchLista: 'callcenter/fetchLista',
-            fetchListaPage: 'callcenter/fetchListaPage',
-            solicitar: 'callcenter/solicitar',
-            fetchDetalle: 'leads/fetchDetalle',
-            getGrupo: 'auth/getGrupo'
-      }),
-      ...mapMutations({
-          reemplazar: 'callcenter/replaceListaElement',
-          setInfo: 'setInfo',
-      }),
-      actualizar(){
-          this.loading = true;
-          this.payload.page = 1;
-          this.fetchLista(this.payload)
-          .finally(() => {
-              this.loading = false;
-          })
-      },
-      obtenerGrupo(){
-          this.getGrupo().then((result) => {
-              this.actualizarListado(result.grupo);
-          })
-          .finally(() => {
-          })
-      },
-      iniciarSolicitar(item){
-          this.loading = true;
-          this.solicitar({id_lead:item._id})
-          .then((result) => {
-              if(result.result == 'ok') {
-                  this.leadSeleccionado = item
-                  this.viewItem(item)
-              }
-              if(result.result == 'llamando'){
-                  this.setInfo('Ya fue asignado')
-              }            
-          })
-          .finally(()=>{
-            this.loading = false;
-          })
-      },
-      iniciarCerrar(item){
-          this.leadSeleccionado = item;
-          this.viewItem(item)
-      },
-      viewItem(item) {
-        this.loading = true;
-        this.fetchDetalle({id:item._id}).then((result) => {
-            if(result.datos && result.datos.uid){
-                let phoneCopy = result.datos.uid
-                if(phoneCopy) {
-                    if(phoneCopy.startsWith('57')){
-                      phoneCopy = phoneCopy.substring(2)
-                    }
-                    if(phoneCopy.length==10){
-                      phoneCopy = '9'+phoneCopy
-                    }
-                    this.$copyText(phoneCopy).then(() => {
-                        this.setInfo('Autorizado y Copiado')
-                    })
-                    .catch(error=>{
-                        console.log(error)
-                    })
+        ...mapActions({
+                fetchLista: 'callcenter/fetchLista',
+                fetchListaPage: 'callcenter/fetchListaPage',
+                solicitar: 'callcenter/solicitar',
+                fetchDetalle: 'leads/fetchDetalle',
+                getGrupo: 'auth/getGrupo'
+        }),
+        ...mapMutations({
+            reemplazar: 'callcenter/replaceListaElement',
+            setInfo: 'setInfo',
+        }),
+        actualizar(){
+            this.loading = true;
+            this.payload.page = 1;
+            this.fetchLista(this.payload)
+            .finally(() => {
+                this.loading = false;
+            })
+        },
+        async descargar(){
+            this.loading = true
+            let payload = {...this.payload};
+            payload.usuario_email = this.userEmail;
+            payload.download_tipo = 'csv'
+            
+            let ruta = config.ROOT_API + "callcenter/descargar_datos?" + this.getUrlString(payload);
+
+            let newWindow = window.open(ruta, '_blank');
+            newWindow.focus();
+            newWindow.onblur = function() { newWindow.close(); };
+            this.loading = false
+            this.$emit('cerrar');
+        },
+        obtenerGrupo(){
+            this.getGrupo().then((result) => {
+                this.actualizarListado(result.grupo);
+            })
+            .finally(() => {
+            })
+        },
+        iniciarSolicitar(item){
+            this.loading = true;
+            this.solicitar({id_lead:item._id})
+            .then((result) => {
+                if(result.result == 'ok') {
+                    this.leadSeleccionado = item
+                    this.viewItem(item)
                 }
+                if(result.result == 'llamando'){
+                    this.setInfo('Ya fue asignado')
+                }            
+            })
+            .finally(()=>{
+                this.loading = false;
+            })
+        },
+        iniciarCerrar(item){
+            this.leadSeleccionado = item;
+            this.viewItem(item)
+        },
+        viewItem(item) {
+            this.loading = true;
+            this.fetchDetalle({id:item._id}).then((result) => {
+                if(result.datos && result.datos.uid){
+                    let phoneCopy = result.datos.uid
+                    if(phoneCopy) {
+                        if(phoneCopy.startsWith('57')){
+                        phoneCopy = phoneCopy.substring(2)
+                        }
+                        if(phoneCopy.length==10){
+                        phoneCopy = '9'+phoneCopy
+                        }
+                        this.$copyText(phoneCopy).then(() => {
+                            this.setInfo('Autorizado y Copiado')
+                        })
+                        .catch(error=>{
+                            console.log(error)
+                        })
+                    }
+                }
+                this.leadSeleccionado = item
+                this.viewDialog = true
+            })
+            .finally(() => {
+                this.loading = false;
+            })  
+        },
+        cerrarDialog(){
+            this.viewDialog = false;
+            this.leadSeleccionado = null
+        },
+        presentDate(value){
+            return this.$moment(value).format('DD-MM-YYYY h:mm a')
+        },
+        puedeSolicitar(item){
+            if(item.ultima_llamada && item.ultima_llamada.estado == 'pendiente'){
+                return true
             }
-            this.leadSeleccionado = item
-            this.viewDialog = true
-        })
-        .finally(() => {
-            this.loading = false;
-        })  
-      },
-      cerrarDialog(){
-          this.viewDialog = false;
-          this.leadSeleccionado = null
-      },
-      presentDate(value){
-          return this.$moment(value).format('DD-MM-YYYY h:mm a')
-      },
-      puedeSolicitar(item){
-          if(item.ultima_llamada && item.ultima_llamada.estado == 'pendiente'){
-              return true
-          }
-          return false
-      },
-      estaAsignado(item) {
-          if(item.ultima_llamada && item.ultima_llamada.estado == 'llamando' && item.ultima_llamada.agente && item.ultima_llamada.agente.email == this.user.data.email){
-              return true
-          }
-          return false
-      },
-      copiarDato(value) {
-          this.$copyText(value).then(
-              () => {
-                  this.setInfo('Copiado en list:' + value)
-              })
-              .catch(error => {
-                  console.log(error)
-                  this.setInfo(error)
-              })
+            return false
+        },
+        estaAsignado(item) {
+            if(item.ultima_llamada && item.ultima_llamada.estado == 'llamando' && item.ultima_llamada.agente && item.ultima_llamada.agente.email == this.user.data.email){
+                return true
+            }
+            return false
+        },
+        copiarDato(value) {
+            this.$copyText(value).then(() => {
+                this.setInfo('Copiado en list:' + value)
+            })
+            .catch(error => {
+                console.log(error)
+                this.setInfo(error)
+            });
         },
         actualizarListado(grupo_usuario = '') {
             if (this.user && this.user.data) {
@@ -369,6 +383,36 @@ export default {
                     this.loading = false;
                 })
             }
+        },
+        getUrlString (params, keys = [], isArray = false) {
+            const p = Object.keys(params).map(key => {
+                let val = params[key]
+
+                if ("[object Object]" === Object.prototype.toString.call(val) || Array.isArray(val)) {
+                if (Array.isArray(params)) {
+                    keys.push("")
+                } else {
+                    keys.push(key)
+                }
+                return this.getUrlString(val, keys, Array.isArray(val))
+                } else {
+                let tKey = key
+
+                if (keys.length > 0) {
+                    const tKeys = isArray ? keys : [...keys, key]
+                    tKey = tKeys.reduce((str, k) => { return "" === str ? k : `${str}[${k}]` }, "")
+                }
+                if (isArray) {
+                    return `${ tKey }[]=${ val }`
+                } else {
+                    return `${ tKey }=${ val }`
+                }
+
+                }
+            }).join('&')
+
+            keys.pop()
+            return p
         }
     },
     computed: {
@@ -386,6 +430,12 @@ export default {
             }else{
                 return null
             }
+        },
+        userEmail() {
+            return this.user && this.user.data ? this.user.data.email : null
+        },
+        puedeDescargar() {
+            return this.user && this.user.data && this.user.data.rol == 'superusuario'
         }
     }
 }
