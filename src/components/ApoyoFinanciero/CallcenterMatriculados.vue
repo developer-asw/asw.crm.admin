@@ -99,7 +99,8 @@
                     </v-icon>
                 </template>
                 <template v-slot:[`item.sede`]="{ item }">
-                    <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>
+                    <span v-if="item.sede_matricula">{{item.sede_matricula}}</span>
+                    <span v-else-if="item.sede_full">{{item.sede_full.nombre}}</span>
                     <span v-else>{{item.sede}}</span>
                 </template>
                 <template v-slot:[`item.field_ciudad`]="{ item }">
@@ -123,14 +124,14 @@
             </div>
         </v-card>
         <v-dialog v-model="viewDialog" persistent max-width="800px">
-            <CallcenterRegistrarLlamada :key="leadIdDialog" :lead_id="leadIdDialog" :ocultar="false" @cerrar="cerrarDialog" @actualizar="actualizar" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada>
+            <RegistrarLlamada :key="leadIdDialog" :lead_id="leadIdDialog" :ocultar="false" @cerrar="cerrarDialog" @actualizar="actualizar" @copiarDatoParent="copiarDato"></RegistrarLlamada>
         </v-dialog>
     </div>
 </template>
 
 <script>
 import {mapState, mapActions, mapMutations} from 'vuex';
-import CallcenterRegistrarLlamada from '@/components/Callcenter/CallcenterRegistrarLlamada'
+import RegistrarLlamada from '@/components/ApoyoFinanciero/RegistrarLlamada'
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
 
@@ -139,7 +140,7 @@ Vue.use(VueClipboard)
 export default {
     name: 'CallcenterMatriculados',
     components: {
-      CallcenterRegistrarLlamada
+      RegistrarLlamada
     },
     data () {
         return {
@@ -152,14 +153,14 @@ export default {
                 { text: 'Email', value: 'email' },
                 { text: 'Movil', value: 'movil' },
                 { text: 'Sede', value: 'sede' },
-                { text: 'titular', value: 'titular' },
-                { text: 'Movil', value: 'titular_movil' },
-                { text: 'Email', value: 'titular_email' },
+                // { text: 'titular', value: 'titular' },
+                // { text: 'Movil', value: 'titular_movil' },
+                // { text: 'Email', value: 'titular_email' },
                 // { text: 'Ultimo Agente', value: 'ultima_llamada.usuario' },
                 // { text: 'Origen', value: 'ultimo_origen' },
                 // { text: 'Gestión', value: 'gestion' },
                 // { text: 'Estado', value: 'ultima_llamada_estado' },
-                // { text: 'Actions', value: 'action', sortable: false }
+                { text: 'Actions', value: 'action', sortable: false }
             ],
             viewDialog : false,
             loading: false,
@@ -262,7 +263,7 @@ export default {
           return this.$moment(value).format('DD-MM-YYYY h:mm a')
       },
       puedeSolicitar(item){
-          if(item.ultima_llamada && item.ultima_llamada.estado == 'pendiente'){
+          if((item.ultima_llamada && ['pendiente','terminado'].includes(item.ultima_llamada.estado)) || (!item.ultima_llamada)){
               return true
           }
           return false

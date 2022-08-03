@@ -72,79 +72,8 @@
                             item-text="text" item-value="id"></v-select>
                     </v-col>
                 </v-row>
-                <v-row v-if="estado == 'errado'">
-                    <v-col cols="12" md="12">
-                        <v-select v-model="resolucion.errado_motivo" :items="estados.errados" label="Opciones"></v-select>
-                    </v-col>
-                    <v-col cols="12" md="12">
-                        <v-textarea v-if="resolucion.errado_motivo === 'Otro'" label="Observación" v-model="resolucion.observacion"></v-textarea>
-                    </v-col>
-                </v-row>
-                <v-row v-if="estado == 'agendar_llamada'">
-                    <v-col cols="12" md="6" sm="6">
-						<v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
-                    </v-col>
-                    <v-col cols="12" md="6"  sm="6"> 
-						<v-time-picker v-model="resolucion.hora_proxima_llamada" full-width>
-						</v-time-picker>
-                    </v-col>
-                </v-row>
-
-                <v-row v-if="estado == 'descartado'">
-                    <v-col cols="12" md="12">
-                        <v-select  v-model="resolucion.descartado_motivo" :items="estados.descartados" label="Motivo para descartalo"
-                            item-text="text" item-value="value"></v-select>
-                        <v-textarea v-if="resolucion.descartado_motivo=='otro'" label="Otro motivo" v-model="resolucion.descartado_motivo_otro" :required="resolucion.descartado_motivo=='otro'"></v-textarea>
-                    </v-col>
-                </v-row>
-
-                <v-row v-if="estado == 'estudiante'">
-                    <v-col cols="12" md="12">
-                        <v-select  v-model="resolucion.estudiante_motivo" :items="estados.estudiantes" label="Motivo de la llamada"
-                            item-text="text" item-value="value"></v-select>
-                        <v-textarea v-if="resolucion.estudiante_motivo=='otro'" label="Otro motivo" v-model="resolucion.estudiante_motivo_otro" :required="resolucion.estudiante_motivo=='otro'"></v-textarea>
-                    </v-col>
-                </v-row>
-
-                <v-row v-if="estado == 'abonado'">
-                    <v-col cols="12">
-                        Próxima llamada:
-                    </v-col>
-                    <v-col cols="12" md="6" sm="6">
-                        <v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
-                    </v-col>
-                    <v-col cols="12" md="6" sm="6">
-                        <v-time-picker v-model="resolucion.hora_proxima_llamada" full-width>
-                        </v-time-picker>
-                    </v-col>
-
-                    <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
-                </v-row>
-
-                <v-row v-if="estado == 'pago_pendiente'">
-                    <v-col cols="12" md="6" sm="6">
-                        <v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
-                    </v-col>
-                    <v-col cols="12" md="6" sm="6">
-                        <v-time-picker v-model="resolucion.hora_proxima_llamada" full-width></v-time-picker>
-                    </v-col>
-
-                    <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
-                </v-row>
-
                 
-                <v-row v-if="estado == 'venta_telefonica'">
-                    <v-select v-model="resolucion.agente" label="Coordinador de admisiones" :items="coordinadores" item-text="primer_nombre" item-value="email" 
-                    @change="consola()">
-                        <template slot="item" slot-scope="data">
-                            {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
-                        </template>
-                        <template slot="selection" slot-scope="data">
-                            {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
-                        </template>
-                    </v-select>
-                </v-row>
-                <v-row v-if="estado == 'seguimiento_whatsapp' || estado == 'venta_telefonica'">
+                <v-row v-if="['saldo_pronto_pago','acuerdo_pago','no_contacto','desiste_proceso','no_interesado'].includes(estado)">
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
                 </v-row>
 
@@ -168,11 +97,11 @@
 </template>
 <script>
     import {mapState,mapGetters,mapActions,mapMutations} from 'vuex';
-    import LeadInfoView from '@/components/Leads/Detail/LeadInfoView'
+    import LeadInfoView from '@/components/Leads/Detail/MatriculadoInfoView'
     import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
 
     export default {
-        name: 'CallcenterRegistrarLlamada',
+        name: 'RegistrarLlamada',
         components:{
             LeadInfoView,
             LeadHistoricView
@@ -195,10 +124,6 @@
                 fecha_proxima_llamada: null,
                 hora_proxima_llamada: null,
                 observacion: null,
-                descartado_motivo: null,
-                descartado_motivo_otro: null,
-                estudiante_motivo: null,
-                estudiante_motivo_otro: null,
                 errado_motivo: null,
                 forzar: false,
                 agente: null,
@@ -241,10 +166,6 @@
 					fecha_proxima_llamada: null,
 					hora_proxima_llamada: null,
 					observacion: null,
-                    descartado_motivo: null,
-                    descartado_motivo_otro: null,
-                    estudiante_motivo: null,
-                    estudiante_motivo_otro: null,
                     forzar: false,
                     errado_motivo:null,
                     agente:null,
@@ -349,7 +270,7 @@
                         this.estados = result;
                         this.llamadas_estados = [];
                         if (this.estados && this.estados.llamadas) {
-                            this.llamadas_estados = this.estados.llamadas.filter(x => x.tipo && x.tipo.includes('call'))
+                            this.llamadas_estados = this.estados.llamadas.filter(x => x.tipo && x.tipo.includes('apoyo_financiero'))
                         }
                     })
                     .catch(error => {
@@ -405,68 +326,20 @@
 					if(this.resolucion.fecha_cita && this.resolucion.hora_cita && this.resolucion.sede){
 						return true
 					}
-				}else if(this.estado=='agendar_llamada'){
-
-					if(this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada){
-						return true
-					}
-				}else if(this.estado=='no_contesta' || this.estado == 'seguimiento_whatsapp' || this.estado == 'convocatoria_talento_humano'){
-					return true
 				}
                 else if(this.estado == 'seguimiento'){
                     if (this.resolucion.tipo && this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada){
                         return true
                     }
-				}    
-                else if(this.estado == 'venta_telefonica'){
-                    if (this.resolucion.agente){
-                        return true
+				} else if(['saldo_pronto_pago','acuerdo_pago','no_contacto','desiste_proceso','no_interesado'].includes(this.estado)) {
+                    if (this.resolucion.observacion){
+                        return true;
                     }
-				}else if(this.estado=='errado'){
-                    if(this.resolucion.errado_motivo && this.resolucion.errado_motivo.length > 0){
-                        return true    
-                    }
-                    if(this.resolucion.observacion && this.resolucion.errado_motivo === 'Otro'){
-                        return true    
-                    }
-				}else if(this.estado=='descartado'){
-                    if(this.resolucion.descartado_motivo){
-                        if(this.resolucion.descartado_motivo=='otro'){
-                            if(this.resolucion.descartado_motivo_otro){
-                                return true
-                            }
-                        }else{
-                            return true
-                        }
-                    }
-                }else if(this.estado=='estudiante'){
-                    if(this.resolucion.estudiante_motivo){
-                        if(this.resolucion.estudiante_motivo=='otro'){
-                            if(this.resolucion.estudiante_motivo_otro){
-                                return true
-                            }
-                        }else{
-                            return true
-                        }
-                    }
-                } else if(this.estado == 'matricula_nueva' || this.estado == 'matricula_recaudo'|| this.estado == 'servicio_cliente') {
-                    return true;
                 }else if(this.estado=='matriculado'){
                     if(this.resolucion.tipo){
                         return true
                     }
-                } else if(this.estado=='abonado'){
-                    if(this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada && this.resolucion.observacion){
-                        return true
-                    }
-                    
-                }else if(this.estado=='pago_pendiente'){
-                    if(this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada && this.resolucion.observacion){
-                        return true
-                    }
-                    
                 }
-
 				return false;
             }
 

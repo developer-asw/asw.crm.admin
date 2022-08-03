@@ -32,7 +32,7 @@ import Parameters from '@/components/Management/Parameters';
 import Wolkvox from '@/components/Management/Wolkvox';
 import ManagementUser from '@/components/Management/User';
 import ProfileUser from '@/components/Profile/User';
-import CallcenterMatriculados from '../components/Callcenter/CallcenterMatriculados';
+import CallcenterMatriculados from '../components/ApoyoFinanciero/CallcenterMatriculados';
 
 Vue.use(VueRouter)
 

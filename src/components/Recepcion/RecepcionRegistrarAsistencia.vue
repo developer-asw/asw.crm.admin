@@ -258,7 +258,7 @@
                         this.estados = result;
                         this.llamadas_estados = [];
                         if (this.estados && this.estados.llamadas) {
-                            this.llamadas_estados = this.estados.llamadas.filter(x => (x.tipo && x.tipo == 'recepcion') || !x.tipo);
+                            this.llamadas_estados = this.estados.llamadas.filter(x => x.tipo && x.tipo.includes('recepcion'));
                             if (this.lead && this.lead.ultima_cita && this.lead.ultima_cita.estado == "pendiente") {
                                 this.llamadas_estados = this.llamadas_estados.filter(x => ['asistido', 'asiste_virtual'].includes(x.value));
                             }else {

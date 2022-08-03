@@ -285,7 +285,7 @@
                         this.estados = result;
                         this.llamadas_estados = [];
                         if (this.estados && this.estados.llamadas) {
-                            this.llamadas_estados = this.estados.llamadas.filter(x => (x.tipo && x.tipo == 'call') || !x.tipo)
+                            this.llamadas_estados = this.estados.llamadas.filter(x => x.tipo && x.tipo.includes('call'))
                         }
                     })
                     .catch(error => {
