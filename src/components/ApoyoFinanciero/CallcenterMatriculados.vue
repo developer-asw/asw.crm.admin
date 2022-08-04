@@ -210,11 +210,13 @@ export default {
       },
       iniciarSolicitar(item){
           this.loading = true;
-          this.solicitar({id_lead:item._id})
+          this.leadSeleccionado = item
+          this.viewItem(item)
+
+          /*this.solicitar({id_lead:item._id})
           .then((result) => {
               if(result.result == 'ok') {
-                  this.leadSeleccionado = item
-                  this.viewItem(item)
+                  
               }
               if(result.result == 'llamando'){
                   this.setInfo('Ya fue asignado')
@@ -222,7 +224,7 @@ export default {
           })
           .finally(()=>{
             this.loading = false;
-          })
+          })*/
       },
       iniciarCerrar(item){
           this.leadSeleccionado = item;

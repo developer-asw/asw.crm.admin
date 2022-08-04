@@ -87,6 +87,7 @@
         <v-card-actions v-if="!accion">
             <v-spacer></v-spacer>
             <v-btn v-if="puedeRegistrar" color="red darken-1" text @click="registrar">Registrar</v-btn>
+            <v-btn color="gray darken-1" text @click="cerrar">Cerrar</v-btn>
         </v-card-actions>
         <v-card-actions v-else>
             <v-spacer></v-spacer>
