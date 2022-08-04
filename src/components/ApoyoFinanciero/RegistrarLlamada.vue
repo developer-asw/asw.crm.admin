@@ -28,19 +28,8 @@
                     </v-col>
                 </v-row>
                 
-                
-                <v-row v-if="estado == 'matriculado'">
-                    <v-select v-model="resolucion.tipo" :items="['Presencial','Masterclass','Converso']" label="Tipo de matricula"
-                            item-text="text" item-value="id">
-                        </v-select>
-                </v-row>
+            
                 <v-row v-if="estado == 'seguimiento'">
-                    <v-col cols="12" md="12" sm="12">
-                        <v-select v-model="resolucion.clase" @change="setTipo(resolucion.clase)" :items="['Matricula', 'Renovación', 'Cita']" label="Tipo de seguimiento"></v-select>
-                    </v-col>
-                    <v-col cols="12" md="12" sm="12">
-                        <v-select v-if="resolucion.clase=='Matricula'" v-model="resolucion.tipo" :items="['No tiene el recurso económico en su totalidad','Debe pensarlo', 'La decisión depende de un tercero','Está cotizando']" label="Tipo de seguimiento"></v-select>
-                    </v-col>
 
                     <v-col cols="12">
                         Próxima llamada:
@@ -127,9 +116,7 @@
                 observacion: null,
                 errado_motivo: null,
                 forzar: false,
-                agente: null,
-                tipo: null,
-                clase:null
+                agente: null
             },
             fechas: [],
             sedes: [],
@@ -170,8 +157,6 @@
                     forzar: false,
                     errado_motivo:null,
                     agente:null,
-                    tipo:null,
-                    clase:null,
                     tipo_contacto: "wolkvox_llamada"
                 };
                 this.estado=null;
@@ -293,9 +278,6 @@
             },
             consola() {
                 console.log(this.resolucion);
-            },
-            setTipo(val){
-                this.resolucion.tipo = val;
             }
         },
         computed: {
@@ -329,7 +311,7 @@
 					}
 				}
                 else if(this.estado == 'seguimiento'){
-                    if (this.resolucion.tipo && this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada){
+                    if (this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada){
                         return true
                     }
 				} else if(['saldo_pronto_pago','acuerdo_pago','no_contacto','desiste_proceso','no_interesado'].includes(this.estado)) {
@@ -337,9 +319,7 @@
                         return true;
                     }
                 }else if(this.estado=='matriculado'){
-                    if(this.resolucion.tipo){
-                        return true
-                    }
+                    return true
                 }
 				return false;
             }
