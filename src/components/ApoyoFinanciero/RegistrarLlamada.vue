@@ -32,7 +32,7 @@
                         item-text="text" item-value="id">
                     </v-select>
                 </v-row>
-                <v-row v-if="estado == 'seguimiento'">
+                <v-row v-if="['seguimiento','no_contacto'].includes(estado)">
                     <v-col cols="12">
                         Próxima llamada:
                     </v-col>
@@ -64,7 +64,7 @@
                     </v-col>
                 </v-row>
                 
-                <v-row v-if="['saldo_pronto_pago','acuerdo_pago','no_contacto','desiste_proceso','no_interesado', 'converso_realizado'].includes(estado)">
+                <v-row v-if="['saldo_pronto_pago','acuerdo_pago','desiste_proceso','no_interesado', 'converso_realizado'].includes(estado)">
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
                 </v-row>
 
@@ -327,11 +327,11 @@
 						return true
 					}
 				}
-                else if(this.estado == 'seguimiento'){
+                else if(['seguimiento','no_contacto'].includes(this.estado)){
                     if (this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada){
                         return true
                     }
-				} else if(['saldo_pronto_pago','acuerdo_pago','no_contacto','desiste_proceso','no_interesado'].includes(this.estado)) {
+				} else if(['saldo_pronto_pago','acuerdo_pago','desiste_proceso','no_interesado'].includes(this.estado)) {
                     if (this.resolucion.observacion){
                         return true;
                     }
