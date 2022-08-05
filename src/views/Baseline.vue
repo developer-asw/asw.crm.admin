@@ -61,7 +61,7 @@
                         </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-item v-if="isLogged && (user.data.rol == 'recepcion' || user.data.rol == 'coordinador' || user.data.rol == 'superusuario'|| user.data.rol == 'callcenter')" link @click="dirigir('/callcenter_admisiones')">
+                    <v-list-item v-if="isLogged && !permiso('matriculados') && (user.data.rol == 'recepcion' || user.data.rol == 'coordinador' || user.data.rol == 'superusuario'|| user.data.rol == 'callcenter')" link @click="dirigir('/callcenter_admisiones')">
                         <v-list-item-action>
                             <v-icon>add</v-icon>
                         </v-list-item-action>
@@ -131,7 +131,7 @@
                         </v-list-item>
                     </v-list-group>
 
-                    <v-list-group v-if="isLogged && (user.data.rol == 'callcenter' || user.data.rol == 'coordinador' || user.data.rol == 'superusuario')"
+                    <v-list-group v-if="isLogged && !permiso('matriculados') && (user.data.rol == 'callcenter' || user.data.rol == 'coordinador' || user.data.rol == 'superusuario')"
                     no-action
                     sub-group
                     value="true"

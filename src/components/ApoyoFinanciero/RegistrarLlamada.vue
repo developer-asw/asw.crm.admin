@@ -27,10 +27,12 @@
                         </v-select>
                     </v-col>
                 </v-row>
-                
-            
+                <v-row v-if="estado == 'converso_realizado'">
+                    <v-select v-model="resolucion.tipo" :items="['Completo','Saldo pronto pago','Reliquidación','Reestructuración','Retracto']" label="Tipo converso"
+                        item-text="text" item-value="id">
+                    </v-select>
+                </v-row>
                 <v-row v-if="estado == 'seguimiento'">
-
                     <v-col cols="12">
                         Próxima llamada:
                     </v-col>
@@ -62,7 +64,7 @@
                     </v-col>
                 </v-row>
                 
-                <v-row v-if="['saldo_pronto_pago','acuerdo_pago','no_contacto','desiste_proceso','no_interesado'].includes(estado)">
+                <v-row v-if="['saldo_pronto_pago','acuerdo_pago','no_contacto','desiste_proceso','no_interesado', 'converso_realizado'].includes(estado)">
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
                 </v-row>
 
@@ -138,6 +140,7 @@
             ...mapActions({
                 fetchDisponibilidad: 'agenda/fetchDisponibilidad',
                 crear: 'leads/crearCita',
+                solicitar: 'callcenter/solicitar',
                 cerrarLlamada: 'callcenter/cerrar',
                 listarEstados: 'listado/fetchListaLlamadas',
                 listarOrigenes: 'listado/fetchListaLeads',
@@ -164,16 +167,30 @@
                 this.accion_mensaje = '';
             },
             registrar() {
+                this.solicitar({id_lead:this.lead_id})
+                .then((result) => {
+                    if(result.result == 'ok') {
+                        this.registrarLlamada();
+                    }
+                    if(result.result == 'llamando'){
+                        this.setInfo('Ya fue asignado')
+                    }            
+                })
+                .finally(()=>{
+                    this.loading = false;
+                })
+            },
+            registrarLlamada() {
                 this.procesando = true;
                 this.resolucion.id = this.lead_id;
                 this.resolucion.solucion = this.estado;
                 this.cerrarLlamada(this.resolucion)
                 .then((result)=>{
                     this.accion = "";
-					if(result.result=='ok'){
-						this.setInfo('Proceso exitoso.')
-					}
-				}).catch(error => {
+                    if(result.result=='ok'){
+                        this.setInfo('Proceso exitoso.')
+                    }
+                }).catch(error => {
                     this.accion = "";
                     if (error.body.error) {
                         let result = error.body.error.split("@");
@@ -318,7 +335,7 @@
                     if (this.resolucion.observacion){
                         return true;
                     }
-                }else if(this.estado=='matriculado'){
+                }else if(this.estado=='converso_realizado'){
                     return true
                 }
 				return false;

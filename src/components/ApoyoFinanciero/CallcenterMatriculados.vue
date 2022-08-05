@@ -185,7 +185,6 @@ export default {
       ...mapActions({
             fetchLista: 'callcenter/fetchMatriculados',
             fetchListaPage: 'callcenter/fetchMatriculadosPage',
-            solicitar: 'callcenter/solicitar',
             fetchDetalle: 'leads/fetchDetalle',
             getGrupo: 'auth/getGrupo'
       }),
@@ -212,19 +211,6 @@ export default {
           this.loading = true;
           this.leadSeleccionado = item
           this.viewItem(item)
-
-          /*this.solicitar({id_lead:item._id})
-          .then((result) => {
-              if(result.result == 'ok') {
-                  
-              }
-              if(result.result == 'llamando'){
-                  this.setInfo('Ya fue asignado')
-              }            
-          })
-          .finally(()=>{
-            this.loading = false;
-          })*/
       },
       iniciarCerrar(item){
           this.leadSeleccionado = item;
