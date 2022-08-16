@@ -87,7 +87,8 @@
                         </v-checkbox>
                     </v-col>
                     <v-col cols="10">
-                        <v-select v-model="filtro.Sede" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="!filtro.CheckSede || loading">
+                        <v-select v-model="filtro.Sede" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="!filtro.CheckSede || loading"
+                        multiple chips>
                         </v-select>
                     </v-col>
                 </v-row>
