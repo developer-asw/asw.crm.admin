@@ -153,6 +153,7 @@ Vue.use(VueClipboard)
                 { text: 'Email', value: 'email' },
                 
                 { text: 'Agente', value: 'agente.nombre' },
+                {text:"Perfil", value:"agente.perfil"},
                 { text: 'Atendido Por', value: 'orientador.nombre' },
                 { text: 'Sede Cita', value: 'sede' },
 
@@ -171,6 +172,7 @@ Vue.use(VueClipboard)
                 "Email": "email",
                 "Móvil": "movil",
                 "Agente": "agente.nombre",
+                "Perfil": "agente.perfil",
                 "Atendido Por": "orientador.nombre",
                 "Sede Cita": "sede.nombre",
                 "Como Llego": "como_llego",
