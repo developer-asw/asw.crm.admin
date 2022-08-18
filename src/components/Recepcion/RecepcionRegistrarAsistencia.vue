@@ -252,6 +252,19 @@
 
                     })
             },
+            getDaysBetweenDates(d0, d1) {
+                var msPerDay = 8.64e7;
+                // Copy dates so don't mess them up
+                var x0 = new Date(d0);
+                var x1 = new Date(d1);
+
+                // Set to noon - avoid DST errors
+                x0.setHours(12,0,0);
+                x1.setHours(12,0,0);
+
+                // Round to remove daylight saving errors
+                return Math.round( (x1 - x0) / msPerDay );
+            },
             traerEstados() {
                 this.listarEstados()
                     .then(result => {
@@ -261,6 +274,9 @@
                             this.llamadas_estados = this.estados.llamadas.filter(x => x.tipo && x.tipo.includes('recepcion'));
                             if (this.lead && this.lead.ultima_cita && this.lead.ultima_cita.estado == "pendiente") {
                                 this.llamadas_estados = this.llamadas_estados.filter(x => ['asistido', 'asiste_virtual'].includes(x.value));
+                                if (this.getDaysBetweenDates(this.lead.ultima_cita.fecha_cita, new Date()) > 3) {
+                                    this.llamadas_estados = this.llamadas_estados.filter(x => x.value == 'asiste_sede');
+                                }
                             }else {
                                 this.llamadas_estados = this.llamadas_estados.filter(x => x.value == 'asiste_sede');
                             }
