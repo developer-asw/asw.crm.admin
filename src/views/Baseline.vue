@@ -177,6 +177,14 @@
                                 <v-list-item-title>Coordinator</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
+                        <v-list-item v-if="isLogged && (['superusuario'].includes(user.data.rol)  || [20,27,26].includes(user.data.grupo_id))" link @click="dirigir('/coordinador/orientadores')">
+                            <v-list-item-action>
+                                <v-icon>account_circle</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Orientadores</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
                     </v-list-group>
 
                     <v-list-group v-if="isLogged && esUsuario"  no-action sub-group >

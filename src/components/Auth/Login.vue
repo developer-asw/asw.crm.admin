@@ -84,6 +84,7 @@
             }, 1000);
           },
           error => {
+            console.log(error)
             if(error.data) {
               if(error.data.error) {
                 this.dialog.message = error.data.error;
@@ -91,6 +92,14 @@
               }else{
                 this.dialog.message = error.data;
                 this.setInfo(error.data);
+              }
+            } else if(error.body) {
+              if(error.body.error) {
+                this.dialog.message = error.body.error;
+                this.setInfo(error.body.error);
+              }else{
+                this.dialog.message = error.body;
+                this.setInfo(error.body);
               }
             }
             setTimeout(() => {

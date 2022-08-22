@@ -33,6 +33,8 @@ import Wolkvox from '@/components/Management/Wolkvox';
 import ManagementUser from '@/components/Management/User';
 import ProfileUser from '@/components/Profile/User';
 import CallcenterMatriculados from '../components/ApoyoFinanciero/CallcenterMatriculados';
+import OrientadorList from '@/components/Coordinador/OrientadorList';
+import OrientadorDatosList from '@/components/Coordinador/OrientadorDatosList';
 
 Vue.use(VueRouter)
 
@@ -75,7 +77,7 @@ const routes = [
     meta: { Auth: true, title: 'Templates - List' , view: 'baseline'},
   },
   {
-    path: '/orientadores',
+    path: '/orientadores/consulta',
     name: 'orientadores',
     component: OrientadoresList,
     meta: { Auth: true, title: 'Guidance - List' , view: 'baseline'},
@@ -127,6 +129,18 @@ const routes = [
     name: 'callcenter_coordinator',
     component: CallcenterCoordinatorList,
     meta: { Auth: true, title: 'Callcenter - Coordinator' , view: 'baseline'},
+  },
+  {
+    path: '/coordinador/orientadores',
+    name: 'Orientadores',
+    component: OrientadorList,
+    meta: { Auth: true, title: 'Orientadores - Coordinator' , view: 'baseline'},
+  },
+  {
+    path: '/coordinador/orientadores/:id/datos',
+    name: 'Orientadores_datos',
+    component: OrientadorDatosList,
+    meta: { Auth: true, title: 'Datos - Orientadores - Coordinator' , view: 'baseline'},
   },
   {
     path: '/callcenter_admisiones',

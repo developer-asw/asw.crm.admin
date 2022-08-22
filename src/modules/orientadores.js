@@ -2,7 +2,14 @@ import Vue from 'vue';
 
 const state = {
   lista: [],
-  detalles: {}
+  datos: [],
+  detalles: {},
+  pagination:{
+    total : 0,
+    page : 1,
+    perPage : 100,
+    lastPage : 1,
+  }
 };
 
 const actions = {
@@ -83,6 +90,68 @@ const actions = {
       })
     });
   },
+  getOrientadores:({commit},data) => {
+    commit('startProcessing', null, { root: true });
+    return new Promise((resolve, reject) => {
+        Vue.http.get('orientador/orientadores',data).then(
+            response =>{
+              commit('setLista',response.data.datos);
+              resolve(response.data)
+            }
+        ).catch(error=>{
+            commit('setError', error, { root: true });
+            reject(error)
+        }).finally(()=>{
+            commit('stopProcessing', null, { root: true });
+        })
+    });
+  },
+  getDatosOrientadores:({commit},data) => {
+    commit('startProcessing', null, { root: true });
+    return new Promise((resolve, reject) => {
+        Vue.http.get(`orientador/${data.id}/datos`,data).then(
+            response =>{
+              commit('setDatos',response.data.datos);
+              resolve(response.data)
+            }
+        ).catch(error=>{
+            commit('setError', error, { root: true });
+            reject(error)
+        }).finally(()=>{
+            commit('stopProcessing', null, { root: true });
+        })
+    });
+  },
+  fetchUserDetalle:({commit},data) => {
+    commit('startProcessing', null, { root: true });
+    return new Promise((resolve, reject) => {
+      Vue.http.get(`orientador/${data.id}/detalle`,data).then(
+        response =>{
+          resolve(response.data.datos)
+        }
+      ).catch(error=>{
+        commit('setError', error, { root: true });
+        reject(error)
+      }).finally(()=>{
+        commit('stopProcessing', null, { root: true });
+      })
+    });
+  },
+  transferir:({commit},data) => {
+    commit('startProcessing', null, { root: true });
+    return new Promise((resolve, reject) => {
+      Vue.http.post('orientador/transferir',data).then(
+        response =>{
+          resolve(response.data)
+        }
+      ).catch(error=>{
+        commit('setError', error, { root: true });
+        reject(error)
+      }).finally(()=>{
+        commit('stopProcessing', null, { root: true });
+      })
+    });
+  },
   
 };
 
@@ -101,6 +170,13 @@ const getters = {
 const mutations = {
   setLista: (state, lista) => {
     state.lista = lista;
+  },
+  setDatos: (state, datos) => {
+    state.datos = datos;
+    state.pagination.total = datos.length;
+    state.pagination.page = 1;
+    state.pagination.perPage = 1;
+    state.pagination.lastPage = 1;
   },
   setDetalle: (state, detalle) => {
     state.detalles[detalle.id] = detalle
