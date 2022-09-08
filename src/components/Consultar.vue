@@ -96,6 +96,7 @@ name: 'Consultar',
         headers: [
           { text: 'Próximo contacto', value: 'ultima_llamada.fecha_solicitado' },
           //{ text: 'Primer contacto', value: 'inicia_callcenter' },
+          { text: 'Número', value: 'numero' },
           { text: 'Nombre', value: 'full_name' },
           { text: 'Móvil', value: 'movil' },
           { text: 'Email', value: 'email' },
