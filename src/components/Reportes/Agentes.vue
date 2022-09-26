@@ -25,12 +25,21 @@
             <v-card-title>
                 List
                 <v-spacer></v-spacer>
+
+                <v-text-field
+                    v-model="filtro.search"
+                    clearable
+                    :append-outer-icon="filtro.search ? 'search' : ''"
+                    label="Search"
+                    :disabled="!lista || lista.length <= 0"
+                    single-line>
+                </v-text-field>
                 
                 <v-select v-if="false" hidden v-model="filtro.Tipo" :items="tipos" label="Estado" item-text="nombre" item-value="id" :disabled="loading" v-on:change="seleccionarTipo()">
                 </v-select>
                 <v-spacer></v-spacer>
 
-                <v-row>
+                <v-row v-if="false">
                     <v-col cols="2" style="display: none;">
                         <v-checkbox
                             v-model="filtro.CheckFecha"
@@ -140,9 +149,10 @@ Vue.use(VueClipboard)
             headers: [
                 { text: 'Agente - Nombre', value: '_id.agente.nombre'},
                 { text: 'Agente - Email', value: '_id.agente.email'},
+                { text: 'Agente - Perfil', value: '_id.agente.perfil'},
                 { text: 'Tareas Vencidas', value: 'tareas_vencidas' },
                 { text: 'Tareas Pendientes', value: 'tareas_pendientes' },
-                { text: 'Datos Pendientes', value: 'datos_pendientes' },
+                { text: 'Total Tareas', value: 'datos_pendientes' },
                 { text: 'En LLamada', value: 'datos_llamada' },
                 { text: 'Total', value: 'total'},
                 // { text: 'Actions', value: 'action', sortable: false }
@@ -150,10 +160,12 @@ Vue.use(VueClipboard)
             json_fields:{
                 "Agente - Nombre": "_id.agente.nombre",
                 "Agente - Email": "_id.agente.email",
+                "Agente - Perfil": "_id.agente.perfil",
+                "Tareas Vencidas": "tareas_vencidas",
+                "Tareas Pendientes": "tareas_pendientes",
+                "Total Tareas": "datos_pendientes",
+                "En LLamada": "datos_llamada",
                 "Total": "total",
-                "Tareas Vencidas": "vencidos",
-                "Tareas Vencidas - Seguimiento Whatsapp": "vencidos_seguimiento_whatsapp",
-                "Tareas Pendientes": "pendientes",
             },
             dialogFilter: false,
             viewDialogHistorico: false,
