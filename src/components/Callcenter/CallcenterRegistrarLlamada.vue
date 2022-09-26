@@ -144,6 +144,14 @@
                         </template>
                     </v-select>
                 </v-row>
+                
+                <v-row v-if="estado == 'apoyo_financiero'">
+                    <v-col cols="12">
+                        <v-select v-model="resolucion.sede" :items="sedes" label="Sede"
+                            item-text="text" item-value="id">
+                        </v-select>
+                    </v-col>
+                </v-row>
                 <v-row v-if="estado == 'seguimiento_whatsapp' || estado == 'venta_telefonica'">
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
                 </v-row>
@@ -420,6 +428,11 @@
 				}    
                 else if(this.estado == 'venta_telefonica'){
                     if (this.resolucion.agente){
+                        return true
+                    }
+				}    
+                else if(this.estado == 'apoyo_financiero'){
+                    if (this.resolucion.sede){
                         return true
                     }
 				}else if(this.estado=='errado'){

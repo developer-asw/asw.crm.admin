@@ -151,6 +151,18 @@
 
                         </v-card>
                     </v-col>
+                    <v-col v-if="d.grafico_origenes_masterclass" md="4" sm="6" cols="12">
+                        
+                        <v-card
+                            class="mx-auto text-center"
+                            >
+                            <v-card-text>
+                                <apexchart type="bar" height="350" :options="d.grafico_origenes_masterclass.data.barOptions" :series="d.grafico_origenes_masterclass.data.series"></apexchart>
+                            </v-card-text>
+
+                        </v-card>
+                    </v-col>
+                    
                             
                     <v-col md="4" sm="6" cols="12" v-if="d.grafico_masterclass">
                         <v-card
@@ -411,7 +423,8 @@ name: 'Dashboard',
             grafico_digital_vs_citas:null,
             grafico_otros_vs_citas:null,
             grafico_agendadas_vs_asistidas: null,
-            grafico_matriculas_sede: null
+            grafico_matriculas_sede: null,
+            grafico_origenes_masterclass: null
         },
         tags: ["Digital", "Convenio", "Referido", "Renovación", "Walk-In", "Otros"],
         tagSelected: [],
@@ -435,6 +448,7 @@ name: 'Dashboard',
             consulta9: 'dashboard/consultarDatosOtrosVsCitas',
             consulta10: 'dashboard/consultarDatosAgendadasVsAsistidas',
             consulta11:  'dashboard/consultarMatriculasPorSede',
+            consulta12: 'dashboard/consultarOrigenesMasterclass',
             usuarioLogueado: 'dashboard/usuarioLogueado',
         }),
         ...mapMutations({
@@ -525,6 +539,13 @@ name: 'Dashboard',
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_matriculas_sede = result.datos;
+                    }
+                })
+                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
+            this.consulta12(payload)
+                .then(result => {
+                    if(result && result.datos) {
+                        this.d.grafico_origenes_masterclass = result.datos;
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
