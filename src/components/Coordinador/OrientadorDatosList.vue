@@ -19,6 +19,16 @@
     <v-btn  small color="info" dark @click="transferir">
         <v-icon>sync_alt</v-icon>
     </v-btn>
+    
+    <v-btn small color="info" dark>
+        <download-excel
+            :data   = "lista"
+            :fields = "json_fields">
+            <v-icon smallclass="mr-2">
+                file_download
+            </v-icon>
+        </download-excel>
+    </v-btn>
     <v-btn  small color="info" dark @click="actualizar">
         <v-icon>autorenew</v-icon>
     </v-btn>
@@ -76,16 +86,26 @@
         data () {
         return {
             headers: [
-            { text: 'ID', value: 'numero' },
-            { text: 'Nombre', value: 'full_name' },
-            { text: 'email', value: 'email' },
-            { text: 'Móvil', value: 'movil' },
-            { text: 'Sede', value: 'sede_full.nombre' },
-            { text: 'Fecha Llamar', value: 'ultima_llamada.fecha_solicitado' },
-            { text: 'Estado Llamada', value: 'ultima_llamada.estado' },
-            { text: '', value: 'checkbox' },
-
+                { text: 'ID', value: 'numero' },
+                { text: 'Nombre', value: 'full_name' },
+                { text: 'Email', value: 'email' },
+                { text: 'Móvil', value: 'movil' },
+                { text: 'Sede', value: 'sede_full.nombre' },
+                { text: 'Fecha Llamar', value: 'ultima_llamada.fecha_solicitado' },
+                { text: 'Estado Llamada', value: 'ultima_llamada.estado' },
+                { text: '', value: 'checkbox' },
             ],
+            json_fields:{
+                "ID": "numero",
+                "Nombre": "full_name",
+                "Email": "email",
+                "Móvil": "movil",
+                "Sede": "sede_full.nombre",
+                "Fecha Llamar": "ultima_llamada.fecha_solicitado",
+                "Estado Llamada": "ultima_llamada.estado",
+                "Ultimo Estado": "ultima_llamada_estado",
+                "Perfil": "ultima_llamada.agente.perfil",
+            },
             orientadorId:null,
             seleccionados:[],
             newDialog : false,
