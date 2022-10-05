@@ -162,8 +162,9 @@
 
                         </v-card>
                     </v-col>
+                    <v-col md="8" sm="12" cols="12"></v-col>
                     
-                            
+
                     <v-col md="4" sm="6" cols="12" v-if="d.grafico_masterclass">
                         <v-card
                             class="mx-auto text-center"
@@ -262,105 +263,6 @@
 
                         </v-card>
                     </v-col>
-
-                    <!--<v-col md="4" sm="6" cols="12" v-if="d.grafico_cumplimientoCita">
-                        <v-card
-                            class="mx-auto text-center"
-                            color="purple"
-                            dark
-                            max-width="600">
-                            <v-card-text>
-                                <v-sheet color="rgba(0, 0, 0, .12)">
-                                    <v-sparkline
-                                        :value="d.grafico_cumplimientoCita.data.values"
-                                        :labels="d.grafico_cumplimientoCita.data.labels"
-                                        color="white"
-                                        line-width="2"
-                                        padding="16">
-                                    <template v-slot:label="item">
-                                        {{ item.value }}
-                                    </template>
-                                    </v-sparkline>
-                                </v-sheet>
-                            </v-card-text>
-
-                            <v-card-text>
-                                <div class="display-1 font-weight-thin">
-                                    <small>{{d.grafico_cumplimientoCita.title}}</small>
-                                    <br>
-                                    {{d.grafico_cumplimientoCita.total}}
-                                </div>
-                            </v-card-text>
-
-
-                        </v-card>
-                    </v-col>
-                    
-                    <v-col md="4" sm="6" cols="12" v-if="d.grafico_datosDigitales">
-                        <v-card
-                            class="mx-auto text-center"
-                            color="blue"
-                            dark
-                            max-width="600">
-                            <v-card-text>
-                                <v-sheet color="rgba(0, 0, 0, .12)">
-                                    <v-sparkline
-                                        :value="d.grafico_datosDigitales.data.values"
-                                        :labels="d.grafico_datosDigitales.data.labels"
-                                        color="white"
-                                        line-width="2"
-                                        padding="16">
-                                    <template v-slot:label="item">
-                                        {{ item.value }}
-                                    </template>
-                                    </v-sparkline>
-                                </v-sheet>
-                            </v-card-text>
-
-                            <v-card-text>
-                                <div class="display-1 font-weight-thin">
-                                    <small>{{d.grafico_datosDigitales.title}}</small>
-                                    <br>
-                                    {{d.grafico_datosDigitales.total}}
-                                </div>
-                            </v-card-text>
-
-
-                        </v-card>
-                    </v-col>
-                    
-                    <v-col md="4" sm="6" cols="12" v-if="d.grafico_datosDigitalesMercadeo">
-                        <v-card
-                            class="mx-auto text-center"
-                            color="blue"
-                            dark
-                            max-width="600">
-                            <v-card-text>
-                                <v-sheet color="rgba(0, 0, 0, .12)">
-                                    <v-sparkline
-                                        :value="d.grafico_datosDigitalesMercadeo.data.values"
-                                        :labels="d.grafico_datosDigitalesMercadeo.data.labels"
-                                        color="white"
-                                        line-width="2"
-                                        padding="16">
-                                    <template v-slot:label="item">
-                                        {{ item.value }}
-                                    </template>
-                                    </v-sparkline>
-                                </v-sheet>
-                            </v-card-text>
-
-                            <v-card-text>
-                                <div class="display-1 font-weight-thin">
-                                    <small>{{d.grafico_datosDigitalesMercadeo.title}}</small>
-                                    <br>
-                                    {{d.grafico_datosDigitalesMercadeo.total}}
-                                </div>
-                            </v-card-text>
-
-
-                        </v-card>
-                    </v-col>-->
 
                     <v-col lg="12" md="12" sm="12" cols="12" v-if="d.grafico_matriculas_sede">
                         <v-card class="mx-auto text-center">
