@@ -279,7 +279,7 @@
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
-                                <v-list-item-title>Agentes</v-list-item-title>
+                                <v-list-item-title>Tareas</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list-group>
@@ -320,7 +320,7 @@
         >
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
 
-            <v-toolbar-title>Automatic Lead Attention</v-toolbar-title>
+            <v-toolbar-title>{{titulo}}</v-toolbar-title>
         </v-app-bar>
 
         <v-content>  
@@ -392,6 +392,7 @@
               info: state => state.info,
               isInfoShowed: state => state.isInfoShowed,
               reportedVersion: state => state.version,
+              titulo: state => state.titulo ? state.titulo : "Automatic Lead Attention"
           }),
           ...mapGetters({
               permiso: 'auth/permiso', 

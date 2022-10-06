@@ -32,6 +32,7 @@ const store = new Vuex.Store({
     isInfoShowed: false,
     isErrorShowed: false,
     version: null,
+    titulo:null
     
   },
   getters:{
@@ -76,6 +77,9 @@ const store = new Vuex.Store({
     setVersion:  (state, response) => {
       state.version = response.version
     },
+    setTitulo:  (state, titulo) => {
+      state.titulo = titulo
+    },
     showError:  (state) => {
       state.isErrorShowed = true
     },
@@ -108,6 +112,9 @@ const store = new Vuex.Store({
           resolve()
         }, 2000)
       })
+    },
+    setTituloVentana ({state}, value) {
+      state.titulo = value
     },
     fetchVersion: ({commit}) => {
       return new Promise((resolve, reject) => {

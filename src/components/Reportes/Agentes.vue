@@ -1,12 +1,13 @@
 <template>
     <div>
         <v-toolbar flat light dense color="blue lighten-5">
-            <v-toolbar-title>{{getTitle}}</v-toolbar-title>
+            <!--<v-toolbar-title>{{getTitle}}</v-toolbar-title>-->
+            <v-toolbar-title></v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items >
                 <v-subheader>{{lista && lista.length ? lista.length : 0}} registros</v-subheader>
                 
-                <v-btn small color="info" dark title="Descargar datos de tabla">
+                <v-btn small color="info" dark title="Descargar resumen de tareas">
                     <download-excel
                         :data   = "lista"
                         :fields = "json_fields">
@@ -16,7 +17,7 @@
                         </v-icon>
                     </download-excel>
                 </v-btn>
-                <v-btn small color="info" dark @click="descargar()" :disabled="deshabilitar" title="Descargar tareas">
+                <v-btn small color="info" dark @click="descargar()" :disabled="deshabilitar" title="Descargar detalle de tareas">
                     <v-icon smallclass="mr-2">
                         file_download
                     </v-icon>
@@ -94,7 +95,7 @@ Vue.use(VueClipboard)
                 { text: 'Agente - Email', value: '_id.agente.email'},
                 { text: 'Tareas Vencidas', value: 'tareas_vencidas' },
                 { text: 'Tareas Pendientes', value: 'tareas_pendientes' },
-                { text: 'Total Tareas', value: 'datos_pendientes' },
+                // { text: 'Total Tareas', value: 'datos_pendientes' },
                 { text: 'En LLamada', value: 'datos_llamada' },
                 { text: 'Total', value: 'total'},
                 // { text: 'Actions', value: 'action', sortable: false }
@@ -104,7 +105,7 @@ Vue.use(VueClipboard)
                 "Agente - Email": "_id.agente.email",
                 "Tareas Vencidas": "tareas_vencidas",
                 "Tareas Pendientes": "tareas_pendientes",
-                "Total Tareas": "datos_pendientes",
+                // "Total Tareas": "datos_pendientes",
                 "En LLamada": "datos_llamada",
                 "Total": "total",
             },
@@ -140,12 +141,14 @@ Vue.use(VueClipboard)
     },
     
     mounted () {
-        this.preFiltro()
+        this.setTituloVentana(this.getTitle);
+        this.preFiltro();
     },
     methods:{
         ...mapActions({
             fetchAgentes: 'reportes/fetchAgentes',
             fetchDetalle: 'leads/fetchDetalle',
+            setTituloVentana: 'setTituloVentana',
         }),
         ...mapMutations({
             setInfo: 'setInfo',
@@ -207,6 +210,9 @@ Vue.use(VueClipboard)
             let payload = {...this.payload};
             payload.usuario_email = this.userEmail;
             payload.emails = this.lista.filter(x => x.checkbox).map(x => x._id.agente.email);
+            if (payload.emails.length == 0) {
+                payload.emails = this.lista.map(x => x._id.agente.email);
+            }
             payload.download_tipo = 'csv'
             let ruta = config.ROOT_API + "callcenter/descargar_datos_agentes?" + this.util.getUrlString(payload);
 
@@ -227,7 +233,7 @@ Vue.use(VueClipboard)
             user: state => state.auth.user,   
         }),
         getTitle(){
-            return 'Reportes - Agentes'
+            return 'Reporte de tareas'
         },
         leadIdDialog(){
             if(this.leadSeleccionado){
