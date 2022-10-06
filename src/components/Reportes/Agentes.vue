@@ -5,11 +5,8 @@
             <v-spacer></v-spacer>
             <v-toolbar-items >
                 <v-subheader>{{lista && lista.length ? lista.length : 0}} registros</v-subheader>
-                <!-- <v-btn v-if="lista.length>0" flat small color="info" dark @click="descargarReporte">
-                    <v-icon>cloud_download</v-icon>
-                </v-btn> -->
                 
-                <v-btn small color="info" dark>
+                <v-btn small color="info" dark title="Descargar datos de tabla">
                     <download-excel
                         :data   = "lista"
                         :fields = "json_fields">
@@ -19,11 +16,17 @@
                         </v-icon>
                     </download-excel>
                 </v-btn>
+                <v-btn small color="info" dark @click="descargar()" :disabled="deshabilitar" title="Descargar tareas">
+                    <v-icon smallclass="mr-2">
+                        file_download
+                    </v-icon>
+                </v-btn>
             </v-toolbar-items>
         </v-toolbar>
         <v-card>
             <v-card-title>
-                List
+                <v-checkbox v-model="todos" @change="aplicarTodos()"></v-checkbox>
+                Agentes
                 <v-spacer></v-spacer>
 
                 <v-text-field
@@ -35,64 +38,6 @@
                     single-line>
                 </v-text-field>
                 
-                <v-select v-if="false" hidden v-model="filtro.Tipo" :items="tipos" label="Estado" item-text="nombre" item-value="id" :disabled="loading" v-on:change="seleccionarTipo()">
-                </v-select>
-                <v-spacer></v-spacer>
-
-                <v-row v-if="false">
-                    <v-col cols="2" style="display: none;">
-                        <v-checkbox
-                            v-model="filtro.CheckFecha"
-                            :disabled="loading"
-                            :title="'Fecha de registro'"
-                            prepend-icon="event">
-                        </v-checkbox>
-                    </v-col>
-                    <v-col cols="12" lg="5">
-                        <v-menu
-                            ref="menu1"
-                            v-model="menu1"
-                            :close-on-content-click="false"
-                            transition="scale-transition"
-                            offset-y
-                            max-width="290px"
-                            min-width="290px">
-                            <template v-slot:activator="{ on }">
-                                <v-text-field
-                                    v-model="filtro.FechaInicial"
-                                    label="Fecha (>)"
-                                    :disabled="loading"
-                                    @blur="dateFrom = parseDate(filtro.FechaInicial)"
-                                    v-on="on">
-                                </v-text-field>
-                            </template>
-                            <v-date-picker v-model="dateFrom" no-title @input="menu1 = false"></v-date-picker>
-                        </v-menu>
-                    </v-col>
-                    <v-col cols="12" lg="5">
-                    <v-menu
-                        v-model="menu2"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        max-width="290px"
-                        min-width="290px">
-                        <template v-slot:activator="{ on }">
-                            <v-text-field
-                                v-model="filtro.FechaFinal"
-                                label="Fecha (<)"
-                                :disabled="loading"
-                                @blur="dateTo = parseDate(filtro.FechaFinal)"
-                                v-on="on">
-                            </v-text-field>
-                        </template>
-                        <v-date-picker v-model="dateTo" no-title @input="menu2 = false"></v-date-picker>
-                    </v-menu>
-                    </v-col>
-                    <v-col cols="2">
-                        <v-btn color="blue darken-1" text :disabled="loading" :loading="loading" @click="preFiltro()">Filtrar</v-btn>
-                    </v-col>
-                </v-row>
             </v-card-title>
             <v-data-table
                 :headers="headers"
@@ -113,20 +58,15 @@
                 <template v-slot:[`item.email`]="{ item }">
                     <span @click="$copyText(item.email);setInfo(item.email)">{{item.email}}</span>
                 </template>
-                <!-- <template v-slot:[`item.action`]="{ item }">
-                    <v-icon smallclass="mr-2" @click="viewItem(item)">
-                      remove_red_eye
-                    </v-icon>
-                    <v-icon smallclass="mr-2" @click="viewHistory(item)">
-                      info
-                  </v-icon> 
-                </template>-->
                 <template v-slot:[`item.sede`]="{ item }">
                     <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>
                     <span v-else>{{item.sede}}</span>
                 </template>
                 <template v-slot:[`item.vencidos_restantes`]="{ item }">
                     <span>{{item.vencidos - item.vencidos_seguimiento_whatsapp}}</span>
+                </template>
+                <template v-slot:[`item.checkbox`]="{ item }">
+                    <v-checkbox v-model="item.checkbox"></v-checkbox>
                 </template>
             </v-data-table>
         </v-card>
@@ -137,6 +77,8 @@
 import {mapState, mapActions, mapMutations} from 'vuex';
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
+import util from "../../utility/util";
+import config from '@/modules/config'
  
 Vue.use(VueClipboard)
   export default {
@@ -147,9 +89,9 @@ Vue.use(VueClipboard)
     data () {
         return {
             headers: [
+                { text: '', value: 'checkbox' },
                 { text: 'Agente - Nombre', value: '_id.agente.nombre'},
                 { text: 'Agente - Email', value: '_id.agente.email'},
-                { text: 'Agente - Perfil', value: '_id.agente.perfil'},
                 { text: 'Tareas Vencidas', value: 'tareas_vencidas' },
                 { text: 'Tareas Pendientes', value: 'tareas_pendientes' },
                 { text: 'Total Tareas', value: 'datos_pendientes' },
@@ -160,7 +102,6 @@ Vue.use(VueClipboard)
             json_fields:{
                 "Agente - Nombre": "_id.agente.nombre",
                 "Agente - Email": "_id.agente.email",
-                "Agente - Perfil": "_id.agente.perfil",
                 "Tareas Vencidas": "tareas_vencidas",
                 "Tareas Pendientes": "tareas_pendientes",
                 "Total Tareas": "datos_pendientes",
@@ -175,8 +116,10 @@ Vue.use(VueClipboard)
             leadSeleccionado:null,
             dateFrom:null,
             dateTo:null, 
+            deshabilitar: true,
             menu1: false,
             menu2: false,
+            todos: false,
             filtro: {
                 search:'',
                 FechaInicial: this.formatDate(new Date().toISOString().substr(0, 10)), 
@@ -188,7 +131,8 @@ Vue.use(VueClipboard)
             tipos: [
                 {id: 'realizado', nombre: 'Realizado'},
                 {id: 'solicitado', nombre: 'Solicitado'},
-            ]
+            ],
+            util:util
         }
     },
     props : {
@@ -257,15 +201,33 @@ Vue.use(VueClipboard)
                     break;
 
             }
+        },
+        async descargar(){
+            this.loading = true
+            let payload = {...this.payload};
+            payload.usuario_email = this.userEmail;
+            payload.emails = this.lista.filter(x => x.checkbox).map(x => x._id.agente.email);
+            payload.download_tipo = 'csv'
+            let ruta = config.ROOT_API + "callcenter/descargar_datos_agentes?" + this.util.getUrlString(payload);
+
+            let newWindow = window.open(ruta, '_blank');
+            newWindow.focus();
+            newWindow.onblur = function() { newWindow.close(); };
+            this.loading = false;
+        },
+        aplicarTodos() {
+            this.deshabilitar = !this.todos;
+            this.lista.forEach(x => x.checkbox = this.todos);
         }
     },
     computed: {
         ...mapState({
             lista: state => state.reportes.agentes.lista,
             pagination: state => state.reportes.agentes.pagination,
+            user: state => state.auth.user,   
         }),
         getTitle(){
-            return 'Reportes - Llamadas'
+            return 'Reportes - Agentes'
         },
         leadIdDialog(){
             if(this.leadSeleccionado){
@@ -273,6 +235,9 @@ Vue.use(VueClipboard)
             }else{
                 return null
             }
+        },
+        userEmail() {
+            return this.user && this.user.data ? this.user.data.email : null
         },
       
     },
@@ -283,6 +248,18 @@ Vue.use(VueClipboard)
         dateTo (val) {
             this.filtro.FechaFinal = this.formatDate(val)
         },
+        lista:{
+            handler:function(after, before) {
+                var vm = this;
+                const total = before.filter(x => x.checkbox == true).length;
+                if (total > 0) {
+                    vm.deshabilitar = false;
+                } else {
+                    vm.deshabilitar = true;
+                }
+            },
+            deep: true
+        }
     },
   }
   

@@ -140,17 +140,6 @@
 
                         </v-card>
                     </v-col>
-                    <v-col v-if="d.grafico_agendadas_vs_asistidas" md="4" sm="6" cols="12">
-                        
-                        <v-card
-                            class="mx-auto text-center"
-                            >
-                            <v-card-text>
-                                <apexchart type="bar" height="350" :options="d.grafico_agendadas_vs_asistidas.data.barOptions" :series="d.grafico_agendadas_vs_asistidas.data.series"></apexchart>
-                            </v-card-text>
-
-                        </v-card>
-                    </v-col>
                     <v-col v-if="d.grafico_origenes_masterclass" md="4" sm="6" cols="12">
                         
                         <v-card
@@ -162,8 +151,18 @@
 
                         </v-card>
                     </v-col>
-                    <v-col md="8" sm="12" cols="12"></v-col>
-                    
+                    <v-col md="4" sm="6" cols="12"></v-col>
+                    <v-col v-if="d.grafico_agendadas_vs_asistidas" md="4" sm="6" cols="12">
+                        <v-card
+                            class="mx-auto text-center"
+                            >
+                            <v-card-text>
+                                <apexchart type="bar" height="350" :options="d.grafico_agendadas_vs_asistidas.data.barOptions" :series="d.grafico_agendadas_vs_asistidas.data.series"></apexchart>
+                            </v-card-text>
+
+                        </v-card>
+                    </v-col>
+                    <v-col md="4" sm="6" cols="12"></v-col>
 
                     <v-col md="4" sm="6" cols="12" v-if="d.grafico_masterclass">
                         <v-card

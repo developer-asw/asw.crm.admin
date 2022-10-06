@@ -33,18 +33,15 @@
   >
 
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        details
+      <v-icon small class="mr-2" @click="editItem(item)">
+        open_in_new
       </v-icon>
+      
       
     </template>
     <template v-slot:expanded-item="{ item, headers }">
       <td :colspan="headers.length">
-<OrientadoresDisponibilidad v-if="detallesOpened.includes(item.id)" :item="item"></OrientadoresDisponibilidad>
+        <OrientadoresDisponibilidad v-if="detallesOpened.includes(item.id)" :item="item"></OrientadoresDisponibilidad>
       </td>
     </template>
 
@@ -139,14 +136,7 @@
             this.orientadorSeleccionado = null
         },
         editItem(item){
-            console.log(item)
             this.$router.push(`/coordinador/orientadores/${item.id}/datos`);
-            /*this.fetchDetalle({id:item._id})
-            .then(()=>{
-            this.orientadorSeleccionado = item
-            this.newDialog = true  
-            })*/
-            
         },
         expand({ item, value}){
             console.log(value)

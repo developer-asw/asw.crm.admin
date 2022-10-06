@@ -47,20 +47,12 @@
   >
 
     <template v-slot:[`item.action`]="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        edit
-      </v-icon>
-      
+        <v-icon small class="mr-2" @click="editItem(item)">
+            edit
+        </v-icon>
     </template>
     <template v-slot:[`item.checkbox`]="{ item }">
-      <v-checkbox
-      v-model="item.check"
-      ></v-checkbox>
-      
+        <v-checkbox v-model="item.check"></v-checkbox>
     </template>
     <template v-slot:[`item.ultima_llamada.fecha_solicitado`]="{ item }">
         <span>{{presentDate(item.ultima_llamada.fecha_solicitado)}}</span>
