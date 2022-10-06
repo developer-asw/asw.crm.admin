@@ -134,7 +134,8 @@ import {mapState, mapActions, mapMutations} from 'vuex';
 import CallcenterRegistrarLlamada from '@/components/Callcenter/CallcenterRegistrarLlamada'
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
-import config from '@/modules/config'
+import config from '@/modules/config';
+import util from "../../utility/util";
 
 Vue.use(VueClipboard)
 
@@ -181,7 +182,8 @@ export default {
                 { text: '100', value: 100 }, 
                 { text: '1000', value: 1000 }, 
                 { text: '10000', value : 10000 } 
-            ]
+            ],
+            util:util
         }
     },
     props : {
@@ -216,7 +218,7 @@ export default {
             payload.usuario_email = this.userEmail;
             payload.download_tipo = 'csv'
             
-            let ruta = config.ROOT_API + "callcenter/descargar_datos?" + this.getUrlString(payload);
+            let ruta = config.ROOT_API + "callcenter/descargar_datos?" + this.util.getUrlString(payload);
 
             let newWindow = window.open(ruta, '_blank');
             newWindow.focus();

@@ -136,6 +136,7 @@
 import { mapActions, mapMutations, mapState } from 'vuex';
 import Vue from 'vue'
 import config from '@/modules/config'
+import util from "../../utility/util";
 
 export default {
     
@@ -172,6 +173,7 @@ export default {
             estados:{},
             llamadas_estados: [],
             categorias:[],
+            util:util
         }
     },
     methods: {
@@ -221,7 +223,7 @@ export default {
             payload.filters.FechaFinal = this.parseDate(this.filtro.FechaFinal);
             payload.download_tipo = 'csv'
             
-            let ruta = config.ROOT_API + "callcenter/descargar_cordinador?" + this.getUrlString(payload);
+            let ruta = config.ROOT_API + "callcenter/descargar_cordinador?" + this.util.getUrlString(payload);
 
             let newWindow = window.open(ruta, '_blank');
             newWindow.focus();
@@ -229,37 +231,7 @@ export default {
             this.loading = false
             this.$emit('cerrar');
         },
-        getUrlString (params, keys = [], isArray = false) {
-            const p = Object.keys(params).map(key => {
-                let val = params[key]
-
-                if ("[object Object]" === Object.prototype.toString.call(val) || Array.isArray(val)) {
-                if (Array.isArray(params)) {
-                    keys.push("")
-                } else {
-                    keys.push(key)
-                }
-                return this.getUrlString(val, keys, Array.isArray(val))
-                } else {
-                let tKey = key
-
-                if (keys.length > 0) {
-                    const tKeys = isArray ? keys : [...keys, key]
-                    tKey = tKeys.reduce((str, k) => { return "" === str ? k : `${str}[${k}]` }, "")
-                }
-                if (isArray) {
-                    return `${ tKey }[]=${ val }`
-                } else {
-                    return `${ tKey }=${ val }`
-                }
-
-                }
-            }).join('&')
-
-            keys.pop()
-            return p
-        }
-        ,formatDate (date) {
+        formatDate (date) {
             if (!date) return null
             const [year, month, day] = date.split('-')
             return `${day}/${month}/${year}`
