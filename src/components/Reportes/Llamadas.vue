@@ -239,7 +239,7 @@ Vue.use(VueClipboard)
             let blob = new Blob([response.data], {type:response.headers.get('content-type')});
             let link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
-            link.download = 'leads.'+payload.download_tipo;
+            link.download = 'llamadas.'+payload.download_tipo;
             link.click();
         },
         cerrarDialog(){

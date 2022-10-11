@@ -72,6 +72,19 @@
                             item-text="text" item-value="id"></v-select>
                     </v-col>
                 </v-row>
+
+                <v-row v-if="estado == 'agendar_cita_virtual'">
+                    <v-col cols="12" md="6">
+                        <v-select v-model="resolucion.fecha_cita" :items="fechas" label="Fecha"
+                            item-text="text" item-value="id">
+                        </v-select>
+
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-select  v-if="resolucion.fecha_cita" v-model="resolucion.hora_cita" :items="horas" label="Hora"
+                            item-text="text" item-value="id"></v-select>
+                    </v-col>
+                </v-row>
                 <v-row v-if="estado == 'errado'">
                     <v-col cols="12" md="12">
                         <v-select v-model="resolucion.errado_motivo" :items="estados.errados" label="Opciones"></v-select>
@@ -411,6 +424,10 @@
             puedeRegistrar(){
 				if(this.estado=='agendar_cita'){
 					if(this.resolucion.fecha_cita && this.resolucion.hora_cita && this.resolucion.sede){
+						return true
+					}
+				}else if(this.estado=='agendar_cita_virtual'){
+					if(this.resolucion.fecha_cita && this.resolucion.hora_cita){
 						return true
 					}
 				}else if(this.estado=='agendar_llamada'){
