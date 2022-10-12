@@ -57,10 +57,10 @@
                 </v-row>
                 <v-row v-if="estado == 'agendar_llamada'">
                     <v-col cols="12" md="6">
-						<v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
+						<v-date-picker v-model="resolucion.fecha_proxima_llamada" :min="fechaMinima" @click:date="traerDisponibilidadLlamadas"></v-date-picker>
                     </v-col>
                     <v-col cols="12" md="6">
-						<v-time-picker v-model="resolucion.hora_proxima_llamada" full-width>
+						<v-time-picker v-model="resolucion.hora_proxima_llamada" :min="horaMinima" :max="horaMaxima" full-width>
 						</v-time-picker>
                     </v-col>
                 </v-row>
@@ -86,10 +86,10 @@
                         Próxima llamada:
                     </v-col>
                     <v-col cols="12" md="6">
-                        <v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
+                        <v-date-picker v-model="resolucion.fecha_proxima_llamada" :min="fechaMinima" @click:date="traerDisponibilidadLlamadas"></v-date-picker>
                     </v-col>
                     <v-col cols="12" md="6">
-                        <v-time-picker v-model="resolucion.hora_proxima_llamada" full-width>
+                        <v-time-picker v-model="resolucion.hora_proxima_llamada" :min="horaMinima" :max="horaMaxima" full-width>
                         </v-time-picker>
                     </v-col>
 
@@ -98,10 +98,10 @@
 
                 <v-row v-if="estado == 'pago_pendiente'">
                     <v-col cols="12" md="6">
-                        <v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
+                        <v-date-picker v-model="resolucion.fecha_proxima_llamada" :min="fechaMinima" @click:date="traerDisponibilidadLlamadas"></v-date-picker>
                     </v-col>
                     <v-col cols="12" md="6">
-                        <v-time-picker v-model="resolucion.hora_proxima_llamada" full-width>
+                        <v-time-picker v-model="resolucion.hora_proxima_llamada" :min="horaMinima" :max="horaMaxima" full-width>
                         </v-time-picker>
                     </v-col>
 
@@ -151,6 +151,9 @@
             fechas: [],
             sedes: [],
             orientadores: [],
+            fechaMinima:null,
+            horaMinima:null,
+            horaMaxima:null,
         }),
 
         props: {
@@ -158,6 +161,7 @@
             sede_id: Number
         },
         mounted() {
+            this.fechaMinima = this.$moment().format('YYYY-MM-DD');
             this.usuarioLogueado();
             this.traerDisponibilidad();
             this.traerEstados();
@@ -168,6 +172,7 @@
             ...mapActions({
                 usuarioLogueado: 'consultar/usuarioLogueado',
                 fetchDisponibilidad: 'agenda/fetchDisponibilidad',
+                fetchDisponibilidadLlamadas: 'agenda/fetchDisponibilidadLlamadas',
                 fetchOrientadores: 'admisiones/fetchLista',
                 crear: 'leads/crearCita',
                 cerrarCita: 'recepcionista/cerrar',
@@ -232,6 +237,20 @@
                         this.fechas = result.resultSet.fechas
                         this.sedes = result.resultSet.sedes
                         // this.orientadores = result.resultSet.orientadores
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        this.setError(error)
+                    }).finally(() => {
+
+                    })
+            },
+            traerDisponibilidadLlamadas() {
+                let payload = { fecha: this.resolucion.fecha_proxima_llamada };
+                this.fetchDisponibilidadLlamadas(payload)
+                    .then(result => {
+                        this.horaMaxima = result.horaMaxima;
+                        this.horaMinima = result.horaMinima;
                     })
                     .catch(error => {
                         console.log(error)

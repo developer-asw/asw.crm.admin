@@ -37,11 +37,29 @@
                         Próxima llamada:
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                        <v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
+                        <v-date-picker v-model="resolucion.fecha_proxima_llamada" :min="fechaMinima" @click:date="traerDisponibilidadLlamadas"></v-date-picker>
+                        <div class="v-text-field__details" v-if="!resolucion.fecha_proxima_llamada">
+                            <div class="v-messages theme--light error--text" role="alert">
+                                <div class="v-messages__wrapper">
+                                    <div class="v-messages__message">
+                                        {{ 'Complete el campo fecha' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                        <v-time-picker v-model="resolucion.hora_proxima_llamada" full-width>
+                        <v-time-picker v-model="resolucion.hora_proxima_llamada" :min="horaMinima" :max="horaMaxima" full-width>
                         </v-time-picker>
+                        <div class="v-text-field__details" v-if="!resolucion.hora_proxima_llamada">
+                            <div class="v-messages theme--light error--text" role="alert">
+                                <div class="v-messages__wrapper">
+                                    <div class="v-messages__message">
+                                        {{ 'Complete el campo hora' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </v-col>
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
                 </v-row>
@@ -138,6 +156,9 @@
             accion: '',
             accion_mensaje: '',
             coordinadores:[],
+            fechaMinima:null,
+            horaMinima:null,
+            horaMaxima:null,
         }),
 
         props: {
@@ -145,6 +166,7 @@
             ocultar: Boolean,
         },
         mounted() {
+            this.fechaMinima = this.$moment().format('YYYY-MM-DD');
             this.traerDisponibilidad();
             this.traerEstados();
             this.traerOrigenes();
@@ -152,6 +174,7 @@
         methods: {
             ...mapActions({
                 fetchDisponibilidad: 'agenda/fetchDisponibilidad',
+                fetchDisponibilidadLlamadas: 'agenda/fetchDisponibilidadLlamadas',
                 crear: 'leads/crearCita',
                 solicitar: 'callcenter/solicitar',
                 cerrarLlamada: 'callcenter/cerrar',
@@ -272,6 +295,20 @@
                     .then(result => {
                         this.fechas = result.resultSet.fechas
                         this.sedes = result.resultSet.sedes
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        this.setError(error)
+                    }).finally(() => {
+
+                    })
+            },
+            traerDisponibilidadLlamadas() {
+                let payload = { fecha: this.resolucion.fecha_proxima_llamada };
+                this.fetchDisponibilidadLlamadas(payload)
+                    .then(result => {
+                        this.horaMaxima = result.horaMaxima;
+                        this.horaMinima = result.horaMinima;
                     })
                     .catch(error => {
                         console.log(error)

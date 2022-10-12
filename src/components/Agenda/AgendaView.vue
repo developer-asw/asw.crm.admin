@@ -43,11 +43,10 @@
                                 <v-text-field v-model="date" label="Fecha proxima llamada" prepend-icon="event"
                                     v-on="on"></v-text-field>
                             </template>
-                            <v-date-picker v-model="nueva_cita.fecha_proxima_llamada" no-title scrollable>
+                            <v-date-picker v-model="nueva_cita.fecha_proxima_llamada" :min="fechaMinima" @click:date="traerDisponibilidadLlamadas" no-title scrollable>
                                 <v-spacer></v-spacer>
                                 <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-                                <v-btn text color="primary" @click="$refs.menu.save(nueva_cita.fecha_proxima_llamada)">
-                                    OK</v-btn>
+                                <v-btn text color="primary" @click="$refs.menu.save(nueva_cita.fecha_proxima_llamada)">OK</v-btn>
                             </v-date-picker>
                         </v-menu>
                     </v-col>
@@ -59,7 +58,7 @@
                                 <v-text-field v-model="time" label="Hora proxima llamada" prepend-icon="access_time" readonly
                                     v-on="on"></v-text-field>
                             </template>
-                            <v-time-picker v-if="menu2" v-model="nueva_cita.hora_proxima_llamada" full-width @click:minute="$refs.menu.save(nueva_cita.hora_proxima_llamada)">
+                            <v-time-picker v-if="menu2" v-model="nueva_cita.hora_proxima_llamada" :min="horaMinima" :max="horaMaxima" full-width @click:minute="$refs.menu.save(nueva_cita.hora_proxima_llamada)">
                             </v-time-picker>
                         </v-menu>
                     </v-col>
@@ -102,17 +101,22 @@
             },
             fechas: [],
             sedes: [],
+            fechaMinima:null,
+            horaMinima:null,
+            horaMaxima:null,
         }),
 
         props: {
             lead_id: String,
         },
         mounted() {
+            this.fechaMinima = this.$moment().format('YYYY-MM-DD');
             this.traerDisponibilidad()
         },
         methods: {
             ...mapActions({
                 fetchDisponibilidad: 'agenda/fetchDisponibilidad',
+                fetchDisponibilidadLlamadas: 'agenda/fetchDisponibilidadLlamadas',
                 crear: 'leads/crearCita',
             }),
             ...mapMutations({}),
@@ -156,6 +160,20 @@
                     .then(result => {
                         this.fechas = result.resultSet.fechas
                         this.sedes = result.resultSet.sedes
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        this.setError(error)
+                    }).finally(() => {
+
+                    })
+            },
+            traerDisponibilidadLlamadas() {
+                let payload = { fecha: this.nueva_cita.fecha_proxima_llamada };
+                this.fetchDisponibilidadLlamadas(payload)
+                    .then(result => {
+                        this.horaMaxima = result.horaMaxima;
+                        this.horaMinima = result.horaMinima;
                     })
                     .catch(error => {
                         console.log(error)

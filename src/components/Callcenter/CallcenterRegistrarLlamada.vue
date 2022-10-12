@@ -23,7 +23,7 @@
 
                 <v-row>
                     <v-col cols="12" md="12">
-                        <v-select v-model="estado" :items="llamadas_estados" label="Estado">
+                        <v-select v-model="estado" :items="llamadas_estados" label="Estado" :error-messages=" !estado ? 'Debe seleccionar una opción': ''">
                         </v-select>
                     </v-col>
                 </v-row>
@@ -31,26 +31,44 @@
                 
                 <v-row v-if="estado == 'matriculado'">
                     <v-select v-model="resolucion.tipo" :items="['Presencial','Masterclass','Converso']" label="Tipo de matricula"
-                            item-text="text" item-value="id">
-                        </v-select>
+                        item-text="text" item-value="id" :error-messages=" !resolucion.tipo ? 'Debe seleccionar una opción': ''">
+                    </v-select>
                 </v-row>
                 <v-row v-if="estado == 'seguimiento'">
                     <v-col cols="12" md="12" sm="12">
-                        <v-select v-model="resolucion.clase" @change="setTipo(resolucion.clase)" :items="['Matricula', 'Renovación', 'Cita']" label="Tipo de seguimiento"></v-select>
+                        <v-select v-model="resolucion.clase" @change="setTipo(resolucion.clase)" :items="['Matricula', 'Renovación', 'Cita']" label="Tipo de seguimiento"  :error-messages=" !resolucion.clase ? 'Debe seleccionar una opción': ''"></v-select>
                     </v-col>
                     <v-col cols="12" md="12" sm="12">
-                        <v-select v-if="resolucion.clase=='Matricula'" v-model="resolucion.tipo" :items="['No tiene el recurso económico en su totalidad','Debe pensarlo', 'La decisión depende de un tercero','Está cotizando']" label="Tipo de seguimiento"></v-select>
+                        <v-select v-if="resolucion.clase=='Matricula'" v-model="resolucion.tipo" :items="['No tiene el recurso económico en su totalidad','Debe pensarlo', 'La decisión depende de un tercero','Está cotizando']" label="Tipo de seguimiento" :error-messages=" !resolucion.tipo ? 'Debe seleccionar una opción': ''"></v-select>
                     </v-col>
 
                     <v-col cols="12">
                         Próxima llamada:
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                        <v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
+                        <v-date-picker v-model="resolucion.fecha_proxima_llamada" :min="fechaMinima" @click:date="traerDisponibilidadLlamadas"></v-date-picker>
+                        <div class="v-text-field__details" v-if="!resolucion.fecha_proxima_llamada">
+                            <div class="v-messages theme--light error--text" role="alert">
+                                <div class="v-messages__wrapper">
+                                    <div class="v-messages__message">
+                                        {{ 'Complete el campo fecha' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                        <v-time-picker v-model="resolucion.hora_proxima_llamada" full-width>
+                        <v-time-picker v-model="resolucion.hora_proxima_llamada" :min="horaMinima" :max="horaMaxima" full-width>
                         </v-time-picker>
+                        <div class="v-text-field__details" v-if="!resolucion.hora_proxima_llamada">
+                            <div class="v-messages theme--light error--text" role="alert">
+                                <div class="v-messages__wrapper">
+                                    <div class="v-messages__message">
+                                        {{ 'Complete el campo hora' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </v-col>
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
                 </v-row>
@@ -95,11 +113,29 @@
                 </v-row>
                 <v-row v-if="estado == 'agendar_llamada'">
                     <v-col cols="12" md="6" sm="6">
-						<v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
+						<v-date-picker v-model="resolucion.fecha_proxima_llamada" :min="fechaMinima" @click:date="traerDisponibilidadLlamadas"></v-date-picker>
+                        <div class="v-text-field__details" v-if="!resolucion.fecha_proxima_llamada">
+                            <div class="v-messages theme--light error--text" role="alert">
+                                <div class="v-messages__wrapper">
+                                    <div class="v-messages__message">
+                                        {{ 'Complete el campo fecha' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </v-col>
                     <v-col cols="12" md="6"  sm="6"> 
-						<v-time-picker v-model="resolucion.hora_proxima_llamada" full-width>
+						<v-time-picker v-model="resolucion.hora_proxima_llamada" :min="horaMinima" :max="horaMaxima" full-width>
 						</v-time-picker>
+                        <div class="v-text-field__details" v-if="!resolucion.hora_proxima_llamada">
+                            <div class="v-messages theme--light error--text" role="alert">
+                                <div class="v-messages__wrapper">
+                                    <div class="v-messages__message">
+                                        {{ 'Complete el campo hora' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </v-col>
                 </v-row>
 
@@ -124,11 +160,29 @@
                         Próxima llamada:
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                        <v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
+                        <v-date-picker v-model="resolucion.fecha_proxima_llamada" :min="fechaMinima" @click:date="traerDisponibilidadLlamadas"></v-date-picker>
+                        <div class="v-text-field__details" v-if="!resolucion.fecha_proxima_llamada">
+                            <div class="v-messages theme--light error--text" role="alert">
+                                <div class="v-messages__wrapper">
+                                    <div class="v-messages__message">
+                                        {{ 'Complete el campo fecha' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                        <v-time-picker v-model="resolucion.hora_proxima_llamada" full-width>
+                        <v-time-picker v-model="resolucion.hora_proxima_llamada" :min="horaMinima" :max="horaMaxima" full-width>
                         </v-time-picker>
+                        <div class="v-text-field__details" v-if="!resolucion.hora_proxima_llamada">
+                            <div class="v-messages theme--light error--text" role="alert">
+                                <div class="v-messages__wrapper">
+                                    <div class="v-messages__message">
+                                        {{ 'Complete el campo hora' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </v-col>
 
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
@@ -136,10 +190,28 @@
 
                 <v-row v-if="estado == 'pago_pendiente'">
                     <v-col cols="12" md="6" sm="6">
-                        <v-date-picker v-model="resolucion.fecha_proxima_llamada"></v-date-picker>
+                        <v-date-picker v-model="resolucion.fecha_proxima_llamada" :min="fechaMinima" @click:date="traerDisponibilidadLlamadas"></v-date-picker>
+                        <div class="v-text-field__details" v-if="!resolucion.fecha_proxima_llamada">
+                            <div class="v-messages theme--light error--text" role="alert">
+                                <div class="v-messages__wrapper">
+                                    <div class="v-messages__message">
+                                        {{ 'Complete el campo fecha' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                        <v-time-picker v-model="resolucion.hora_proxima_llamada" full-width></v-time-picker>
+                        <v-time-picker v-model="resolucion.hora_proxima_llamada" :min="horaMinima" :max="horaMaxima" full-width></v-time-picker>
+                        <div class="v-text-field__details" v-if="!resolucion.hora_proxima_llamada">
+                            <div class="v-messages theme--light error--text" role="alert">
+                                <div class="v-messages__wrapper">
+                                    <div class="v-messages__message">
+                                        {{ 'Complete el campo hora' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </v-col>
 
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
@@ -231,6 +303,9 @@
             accion: '',
             accion_mensaje: '',
             coordinadores:[],
+            fechaMinima:null,
+            horaMinima:null,
+            horaMaxima:null,
         }),
 
         props: {
@@ -238,6 +313,7 @@
             ocultar: Boolean,
         },
         mounted() {
+            this.fechaMinima = this.$moment().format('YYYY-MM-DD');
             this.traerDisponibilidad();
             this.traerEstados();
             this.traerOrigenes();
@@ -245,6 +321,7 @@
         methods: {
             ...mapActions({
                 fetchDisponibilidad: 'agenda/fetchDisponibilidad',
+                fetchDisponibilidadLlamadas: 'agenda/fetchDisponibilidadLlamadas',
                 crear: 'leads/crearCita',
                 cerrarLlamada: 'callcenter/cerrar',
                 listarEstados: 'listado/fetchListaLlamadas',
@@ -356,6 +433,20 @@
                     .then(result => {
                         this.fechas = result.resultSet.fechas
                         this.sedes = result.resultSet.sedes
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        this.setError(error)
+                    }).finally(() => {
+
+                    })
+            },
+            traerDisponibilidadLlamadas() {
+                let payload = { fecha: this.resolucion.fecha_proxima_llamada };
+                this.fetchDisponibilidadLlamadas(payload)
+                    .then(result => {
+                        this.horaMaxima = result.horaMaxima;
+                        this.horaMinima = result.horaMinima;
                     })
                     .catch(error => {
                         console.log(error)

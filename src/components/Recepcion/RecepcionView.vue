@@ -82,8 +82,12 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             sedes: [],
             fechas: [],
             sede: null,
+            fechaMinima:null,
+            horaMinima:null,
+            horaMaxima:null,
         }),
         mounted() {
+            this.fechaMinima = this.$moment().format('YYYY-MM-DD');
             this.viewItem();
             this.traerSedesYFechas();
         },
@@ -93,6 +97,7 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
                 fetchDetalle: 'leads/fetchDetalle',
                 solicitar: 'recepcionista/solicitar',
                 fetchDisponibilidad: 'agenda/fetchDisponibilidad',
+                fetchDisponibilidadLlamadas: 'agenda/fetchDisponibilidadLlamadas',
                 cambiarEstado: 'agenda/confirmarAsistencia',
             }),
             ...mapMutations({
