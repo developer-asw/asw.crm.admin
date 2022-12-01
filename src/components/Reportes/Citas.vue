@@ -197,8 +197,8 @@ Vue.use(VueClipboard)
             menu2: false,
             filtro: {
                 search:'',
-                FechaInicial: this.formatDate(new Date().toISOString().substr(0, 10)), 
-                FechaFinal: this.formatDate(new Date().toISOString().substr(0, 10)),
+                FechaInicial: this.formatDate(new Date().toISOString().substring(0, 10)), 
+                FechaFinal: this.formatDate(new Date().toISOString().substring(0, 10)),
                 CheckFecha: true,
                 CheckSolicitado: false,
                 Tipo: 'Asistencia',

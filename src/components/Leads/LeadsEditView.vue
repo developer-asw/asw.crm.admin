@@ -345,12 +345,12 @@
             consultando: { buscando: false, objeto: ''},
             disabled: false,
             time: {
-                date: new Date().toISOString().substr(0, 10),
+                date: new Date().toISOString().substring(0, 10),
                 menu: false,
                 modal: false
             },
             date: {
-                date: new Date().toISOString().substr(0, 10),
+                date: new Date().toISOString().substring(0, 10),
                 menu: false,
                 modal: false
             },
@@ -398,8 +398,8 @@
             }),
             check() {
                 if(this.lead.contactar) {
-                    this.lead.fecha_contacto= new Date().toISOString().substr(0, 10);
-                    let [shora, minuto] = new Date().toISOString().substr(11,5).split(':');
+                    this.lead.fecha_contacto= new Date().toISOString().substring(0, 10);
+                    let [shora, minuto] = new Date().toISOString().substring(11,5).split(':');
                     let hora = parseInt(shora);
                     hora = hora - 5;
                     this.lead.hora_contacto= `${(hora+'').padStart(2, '0')}:${minuto.padStart(2, '0')}`

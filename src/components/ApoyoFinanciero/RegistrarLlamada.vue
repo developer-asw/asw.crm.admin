@@ -130,7 +130,7 @@
             LeadHistoricView
         },
         data: () => ({
-            date: new Date().toISOString().substr(0, 10),
+            date: new Date().toISOString().substring(0, 10),
             estados: {},
             llamadas_estados: [],
             tipos_contactos:[

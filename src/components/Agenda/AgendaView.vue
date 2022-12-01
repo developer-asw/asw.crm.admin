@@ -86,7 +86,7 @@
         data: () => ({
             menu: false,
             menu2: false,
-            date: new Date().toISOString().substr(0, 10),
+            date: new Date().toISOString().substring(0, 10),
             time: null,
             estados: ['Agendar Cita', 'Agendar Llamada', 'No contesta', 'Dato errado'],
             estado: null,

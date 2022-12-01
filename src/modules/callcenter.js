@@ -157,10 +157,44 @@ const actions = {
       })
     });
   },
+  solicitarAF:({commit},data) => {
+    commit('startProcessing', null, { root: true });
+    return new Promise((resolve, reject) => {
+      Vue.http.post('apoyofinanciero/solicitar',data).then(
+        response =>{
+          commit('replaceListaElement',response.data.lead);
+          resolve(response.data)
+        }
+      ).catch(error=>{
+        commit('setError', error, { root: true });
+        reject(error)
+      }).finally(()=>{
+        commit('stopProcessing', null, { root: true });
+      })
+    });
+  },
   cerrar:({commit},data) => {
     commit('startProcessing', null, { root: true });
     return new Promise((resolve, reject) => {
       Vue.http.post('callcenter/cerrar',data).then(
+        response =>{
+          if(response.data.lead){
+            commit('replaceListaElement',response.data.lead);  
+          }
+          resolve(response.data)
+        }
+      ).catch(error=>{
+        commit('setError', error, { root: true });
+        reject(error)
+      }).finally(()=>{
+        commit('stopProcessing', null, { root: true });
+      })
+    });
+  },
+  cerrarAF:({commit},data) => {
+    commit('startProcessing', null, { root: true });
+    return new Promise((resolve, reject) => {
+      Vue.http.post('apoyofinanciero/cerrar',data).then(
         response =>{
           if(response.data.lead){
             commit('replaceListaElement',response.data.lead);  

@@ -42,12 +42,12 @@
                 loading-text="Loading... Please wait"
                 class="elevation-1">
                 <template v-slot:[`item.fecha_registro_matricula`]="{ item }">
-                    <!-- <span title="Asignado" v-if="item.ultima_llamada && item.ultima_llamada.fecha_asignado">{{presentDate(item.ultima_llamada.fecha_asignado)}}</span> -->
-                    <span title="Solicitado" v-if="item.ultima_llamada && item.fecha_registro_matricula">{{presentDate(item.fecha_registro_matricula)}}</span>
+                    <!-- <span title="Asignado" v-if="item.af_ultima_llamada && item.af_ultima_llamada.fecha_asignado">{{presentDate(item.af_ultima_llamada.fecha_asignado)}}</span> -->
+                    <span title="Solicitado" v-if="item.af_ultima_llamada && item.fecha_registro_matricula">{{presentDate(item.fecha_registro_matricula)}}</span>
                 </template>
-                <template v-slot:[`item.ultima_llamada.usuario`]="{ item }">
-                    <span v-if="item.ultima_llamada && item.ultima_llamada.agente">{{item.ultima_llamada.agente.nombre}}</span>
-                    <span v-else-if="item.ultima_llamada && item.ultima_llamada.solicitante">{{item.ultima_llamada.solicitante.nombre}}</span>
+                <template v-slot:[`item.af_ultima_llamada.usuario`]="{ item }">
+                    <span v-if="item.af_ultima_llamada && item.af_ultima_llamada.agente">{{item.af_ultima_llamada.agente.nombre}}</span>
+                    <span v-else-if="item.af_ultima_llamada && item.af_ultima_llamada.solicitante">{{item.af_ultima_llamada.solicitante.nombre}}</span>
                 </template>
                 <template v-slot:[`item.full_name`]="{ item }">
                     <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
@@ -156,10 +156,10 @@ export default {
                 // { text: 'titular', value: 'titular' },
                 // { text: 'Movil', value: 'titular_movil' },
                 // { text: 'Email', value: 'titular_email' },
-                // { text: 'Ultimo Agente', value: 'ultima_llamada.usuario' },
+                // { text: 'Ultimo Agente', value: 'af_ultima_llamada.usuario' },
                 // { text: 'Origen', value: 'ultimo_origen' },
                 // { text: 'Gestión', value: 'gestion' },
-                // { text: 'Estado', value: 'ultima_llamada_estado' },
+                // { text: 'Estado', value: 'af_ultima_llamada_estado' },
                 { text: 'Actions', value: 'action', sortable: false }
             ],
             viewDialog : false,
@@ -251,13 +251,13 @@ export default {
           return this.$moment(value).format('DD-MM-YYYY h:mm a')
       },
       puedeSolicitar(item){
-          if((item.ultima_llamada && ['pendiente','terminado'].includes(item.ultima_llamada.estado)) || (!item.ultima_llamada)){
+          if((item.af_ultima_llamada && ['pendiente','terminado'].includes(item.af_ultima_llamada.estado)) || (!item.af_ultima_llamada)){
               return true
           }
           return false
       },
       estaAsignado(item) {
-          if(item.ultima_llamada && item.ultima_llamada.estado == 'llamando' && item.ultima_llamada.agente && item.ultima_llamada.agente.email == this.user.data.email){
+          if(item.af_ultima_llamada && item.af_ultima_llamada.estado == 'llamando' && item.af_ultima_llamada.agente && item.af_ultima_llamada.agente.email == this.user.data.email){
               return true
           }
           return false
