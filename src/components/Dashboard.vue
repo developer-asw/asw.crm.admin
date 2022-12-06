@@ -15,8 +15,14 @@
         <v-layout text-center wrap>
             <v-container>
                 <v-row justify="space-around">
+                    <v-col cols="12" sm="4" md="3">
+                        
+                        <v-select v-model="sede" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="loading"
+                        multiple chips>
+                        </v-select>
+                    </v-col>
                     
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="12" sm="4" md="5">
                         <v-container>
                             <v-menu ref="menu1" :close-on-content-click="false" transition="scale-transition" offset-y :value="shown" max-width="290px" min-width="auto">
                                 <template v-slot:activator="{ on, attrs }">
@@ -94,29 +100,7 @@
                                 </v-card>
                             </v-col>
                         </v-row>
-                        <!--<v-row>
-                            <v-col v-if="d.general_fecha">
-                                <v-card>
-                                    <v-card-title class="subheading font-weight-bold">General Por Fecha</v-card-title>
-                                    <v-divider></v-divider>
-                                    <v-list dense>
-                                        <v-list-item v-for="(v, k, i) in d.general_fecha.data" :key="i">
-                                            <v-list-item-content>{{k}}:</v-list-item-content>
-                                            <v-list-item-content :style="{'text-align':'right'}" class="align-end">{{ v }}</v-list-item-content>
-                                        </v-list-item>
-                                    </v-list>
-                                </v-card>
-                            </v-col>
-                        </v-row>-->
                     </v-col>
-                    <!--<v-col v-if="d.grafico_presencial_vs_master" md="6" sm="6" cols="12">            
-                        <v-card
-                            class="mx-auto text-center">
-                            <v-card-text>
-                                <apexchart type="bar" height="350" :options="d.grafico_presencial_vs_master.data.barOptions" :series="d.grafico_presencial_vs_master.data.series"></apexchart>
-                            </v-card-text>
-                        </v-card>
-                    </v-col>-->
                     <v-col md="12" sm="12" cols="12"><h3>Efectividad Por fuente de Dato</h3></v-col>
                     <v-col v-if="d.grafico_digital_vs_citas" md="4" sm="6" cols="12">
                         
@@ -319,8 +303,6 @@ name: 'Dashboard',
             grafico_datosDigitalesMercadeo: null,
             grafico_por_sede: null,
             general:null,
-            general_fecha: null,
-            grafico_presencial_vs_master:null,
             grafico_digital_vs_citas:null,
             grafico_otros_vs_citas:null,
             grafico_agendadas_vs_asistidas: null,
@@ -329,10 +311,14 @@ name: 'Dashboard',
         },
         tags: ["Digital", "Convenio", "Referido", "Renovación", "Walk-In", "Otros"],
         tagSelected: [],
+        sedes:[],
+        sede:null,
+        loading:false,
     }),
     mounted() {
         this.setDates();
         this.usuarioLogueado();
+        this.traerSedes();
         this.consultar();
     },
     methods: {
@@ -344,13 +330,13 @@ name: 'Dashboard',
             consulta4:  'dashboard/consultarDatosPresencial',
             consulta5:  'dashboard/consultarDatosMatriculado',
             consulta6:  'dashboard/consultarDatosPorSede',
-            consulta7:  'dashboard/consultarDatosGeneralPorFecha',
             consulta8: 'dashboard/consultarDatosDigitalVsCitas',
             consulta9: 'dashboard/consultarDatosOtrosVsCitas',
             consulta10: 'dashboard/consultarDatosAgendadasVsAsistidas',
             consulta11:  'dashboard/consultarMatriculasPorSede',
             consulta12: 'dashboard/consultarOrigenesMasterclass',
             usuarioLogueado: 'dashboard/usuarioLogueado',
+            listarSedes: 'sedes/fetchLista',
         }),
         ...mapMutations({
             setInfo: 'setInfo',
@@ -358,7 +344,7 @@ name: 'Dashboard',
         }),
         consultar() {
             this.loading = true;
-            let payload = {desde: this.dates[0], hasta: this.dates[1], tipo: this.tagSelected};
+            let payload = {desde: this.dates[0], hasta: this.dates[1], sede:this.sede, tipo: this.tagSelected};
             this.consulta1(payload)
                 .then(result => {
                     if(result && result.datos) {
@@ -408,13 +394,6 @@ name: 'Dashboard',
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; });
             
             this.loading = true;
-            this.consulta7(payload)
-                .then(result => {
-                    if(result && result.datos) {
-                        this.d.general_fecha = result.datos;
-                    }
-                })
-                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
             this.consulta8(payload)
                 .then(result => {
                     if(result && result.datos) {
@@ -477,6 +456,17 @@ name: 'Dashboard',
             }else {
                 this.tagSelected.splice(index, 1)
             }
+        },
+        traerSedes() {
+            this.listarSedes()
+            .then(result => {
+                this.sedes = result;
+            })
+            .catch(error => {
+                console.log(error)
+            }).finally(() => {
+
+            });
         }
 
     },

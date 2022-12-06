@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import router from '../router';
 import auth from '@/modules/auth';
 import leads from '@/modules/leads';
 import plantillas from '@/modules/plantillas';
@@ -53,14 +54,14 @@ const store = new Vuex.Store({
             if(data.error.name && data.error.name=='InvalidJwtToken'){
               state.error = 'Acceso no autorizado';
               this.dispatch('auth/logout')
-              this.$router.push('/login')
+              router.push('/login')
             }
             state.error = data.error.message;
           }else{
             state.error = data.error;
             if(data.salir) {
               this.dispatch('auth/logout')
-              this.$router.push('/login')
+              router.push('/login')
             }
           }  
         }else{
