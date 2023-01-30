@@ -250,12 +250,12 @@
         </v-card-text>
         <v-card-actions v-if="!accion">
             <v-spacer></v-spacer>
-            <v-btn v-if="puedeRegistrar" color="red darken-1" text @click="registrar">Registrar</v-btn>
+            <v-btn :disabled="procesando" v-if="puedeRegistrar" color="red darken-1" text @click="registrar">Registrar</v-btn>
         </v-card-actions>
         <v-card-actions v-else>
             <v-spacer></v-spacer>
-            <v-btn color="gray darken-1" text @click="cerrar">No</v-btn>
-            <v-btn color="red darken-1" text @click="registrarForzado">Si</v-btn>
+            <v-btn :disabled="procesando" color="gray darken-1" text @click="cerrar">No</v-btn>
+            <v-btn :disabled="procesando" color="red darken-1" text @click="registrarForzado">Si</v-btn>
         </v-card-actions>
     </v-card>
 </template>
@@ -305,7 +305,7 @@
             coordinadores:[],
             fechaMinima:null,
             horaMinima:null,
-            horaMaxima:null,
+            horaMaxima:null
         }),
 
         props: {

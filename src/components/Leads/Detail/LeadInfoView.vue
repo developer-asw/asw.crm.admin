@@ -4,8 +4,18 @@
         <template v-slot:default>
             <tbody>
                 <tr>
+                    <td><b>Tipo: </b></td>
+                    <td>{{ lead.categoria_lead }}</td>
+                    <td></td>
+                </tr>
+                <tr>
                     <td><b>ID: </b></td>
                     <td>{{ lead.numero }}</td>
+                    <td></td>
+                </tr>
+                <tr v-if="lead.empresa">
+                    <td><b>Empresa: </b></td>
+                    <td>{{ lead.empresa }}</td>
                     <td></td>
                 </tr>
                 <tr>

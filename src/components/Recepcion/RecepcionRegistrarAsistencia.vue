@@ -12,12 +12,12 @@
             <v-form>
                 <v-row>
                     <v-col cols="12" md="12">
-                        <v-select v-model="estado" :items="llamadas_estados" label="Estado"></v-select>
+                        <v-select v-model="estado" @change="consola" :items="llamadas_estados" label="Estado"></v-select>
                     </v-col>
                 </v-row>
-                <v-row v-if="['asistido','asiste_sede', 'asiste_virtual'].includes(estado)">
-                    <v-col cols="12" md="6">
-                        <v-select v-model="resolucion.sede" :items="sedes" label="Sede Asitencia"
+                <v-row>
+                    <v-col cols="12" md="12" v-if="['asistido','asiste_sede', 'asiste_virtual'].includes(estado)">
+                        <v-select :disabled="resolucion.sede !=  null" v-model="resolucion.sede" :items="sedes" label="Sede Asitencia"
                             item-text="text" item-value="id">
                         </v-select>
                         <v-select v-model="resolucion.orientador" :items="orientadores" label="Orientador Asignado" item-text="primer_nombre" item-value="email">
@@ -29,24 +29,23 @@
                             </template>
                         </v-select>
                     </v-col>
-                </v-row>
-                <v-row v-if="estado == 'agendar_cita'">
-                    <v-col cols="12" md="6">
+                    <v-col cols="12" md="6" v-if="estado == 'agendar_cita'">
                         <v-select v-model="resolucion.sede" :items="sedes" label="Sede"
                             item-text="text" item-value="id">
                         </v-select>
                     </v-col>
-                    <v-col cols="12" md="6">
+                    <v-col cols="12" md="6" v-if="estado == 'agendar_cita'">
                         <v-select v-model="resolucion.fecha_cita" :items="fechas" label="Fecha"
                             item-text="text" item-value="id">
                         </v-select>
 
                     </v-col>
-                    <v-col cols="12" md="6">
+                    <v-col cols="12" md="6" v-if="estado == 'agendar_cita'">
                         <v-select  v-if="resolucion.fecha_cita" v-model="resolucion.hora_cita" :items="horas" label="Hora"
                             item-text="text" item-value="id"></v-select>
                     </v-col>
                 </v-row>
+
                 <v-row v-if="estado == 'errado'">
                     <v-col cols="12" md="12">
                         <v-select v-model="resolucion.errado_motivo" :items="estados.errados" label="Opciones"></v-select>
@@ -154,6 +153,7 @@
             fechaMinima:null,
             horaMinima:null,
             horaMaxima:null,
+            user:null,
         }),
 
         props: {
@@ -162,7 +162,7 @@
         },
         mounted() {
             this.fechaMinima = this.$moment().format('YYYY-MM-DD');
-            this.usuarioLogueado();
+            this.consultarUsuario();
             this.traerDisponibilidad();
             this.traerEstados();
             this.reiniciar();
@@ -170,7 +170,7 @@
         },
         methods: {
             ...mapActions({
-                usuarioLogueado: 'consultar/usuarioLogueado',
+                getUsuario: 'auth/getUsuario',
                 fetchDisponibilidad: 'agenda/fetchDisponibilidad',
                 fetchDisponibilidadLlamadas: 'agenda/fetchDisponibilidadLlamadas',
                 fetchOrientadores: 'admisiones/fetchLista',
@@ -309,19 +309,25 @@
                     });
             },
             getSedeUsuario(){
-                if(this.user && this.user.data) {
-                    return this.user.data.sede_id;
+                console.log(this.user)
+                if(this.user && this.user.sede_id) {
+                    return this.user.sede_id;
                 }else{
                     return null;
                 }
             },
             consola(){
+                console.log(this.user)
                 console.log(this.lead)
+            },
+            consultarUsuario(){
+                this.getUsuario(this.payload).then((result) => {
+                    this.user = result;
+                })
             }
         },
         computed: {
             ...mapState({
-                user: state => state.consultar.user,  
                 error: state => state.error,
             }),
             ...mapGetters({
@@ -345,7 +351,6 @@
                 return this.detalle(this.lead_id)
             },
             puedeRegistrar(){
-                console.log(this.estado)
 				if(this.estado=='agendar_cita'){
 					if(this.resolucion.fecha_cita && this.resolucion.hora_cita && this.resolucion.sede){
 						return true

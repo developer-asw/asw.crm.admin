@@ -124,7 +124,7 @@ export default {
                 { text: 'Email', value: 'email' },
                 { text: 'Movil', value: 'movil' },
                 { text: 'Sede', value: 'sede' },
-                { text: 'Ultimo Agente', value: 'ultima_llamada.solicitante.nombre' },
+                { text: 'Ultimo Agente', value: 'ultima_llamada.agente.nombre' },
                 // { text: 'Agente Actual', value: 'ultima_llamada.agente.nombre' },
                 { text: 'Origen', value: 'ultimo_origen' },
                 { text: 'Gestión', value: 'gestion' },

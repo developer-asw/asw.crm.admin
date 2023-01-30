@@ -46,10 +46,6 @@ const actions = {
             })
         });
     },
-    usuarioLogueado:({ commit }) => {
-        commit('getUser');
-    }
-
 };
 
 const getters = {

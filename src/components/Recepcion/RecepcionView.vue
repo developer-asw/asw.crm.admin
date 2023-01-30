@@ -14,10 +14,10 @@
                 </v-row>
 
                 <v-row>
-                    <v-col cols="12" sm="3" md="2"></v-col>
+                    <v-col cols="12" sm="2" md="1"></v-col>
 
-                    <v-col cols="12" sm="6" md="8">
-                        <v-select v-model="sede" :items="sedes" label="Sede" item-text="text" item-value="id"></v-select>
+                    <v-col cols="12" sm="8" md="10">
+                        <v-select v-model="sede" :disabled="sede !=  null" :items="sedes" label="Sede" item-text="text" item-value="id"></v-select>
                         <v-spacer></v-spacer>
                         <div class="text-right">
                             <!--<v-btn class="ma-2" color="blue darken-1" text @click="consola"><v-icon left small>event</v-icon>Consola</v-btn>-->
@@ -85,15 +85,17 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             fechaMinima:null,
             horaMinima:null,
             horaMaxima:null,
+            user:null
         }),
         mounted() {
             this.fechaMinima = this.$moment().format('YYYY-MM-DD');
+            this.consultarUsuario();
             this.viewItem();
             this.traerSedesYFechas();
         },
         methods: {
             ...mapActions({
-                usuarioLogueado: 'consultar/usuarioLogueado',
+                getUsuario: 'auth/getUsuario',
                 fetchDetalle: 'leads/fetchDetalle',
                 solicitar: 'recepcionista/solicitar',
                 fetchDisponibilidad: 'agenda/fetchDisponibilidad',
@@ -174,19 +176,23 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
                 console.log(this.lead)
             },
             getSedeUsuario(){
-                if(this.user && this.user.data) {
-                    return this.user.data.sede_id;
+                if(this.user && this.user.sede_id) {
+                    return this.user.sede_id;
                 }else{
                     return null;
                 }
             },
             actualizarHistorial() {
 
+            },
+            consultarUsuario(){
+                this.getUsuario(this.payload).then((result) => {
+                    this.user = result;
+                })
             }
         },
         computed: {
             ...mapState({
-                user: state => state.consultar.user,  
                 error: state => state.error,
             }),
             ...mapGetters({
@@ -205,14 +211,12 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
                 detalle: 'leads/getDetalle',
             }),
             setAsisteCita(){
-                if(this.user && this.user.data) {
-                    // 'callcenter', 'coordinador',
-                    // return this.user.data.rol;
-                    return ['superusuario', 'recepcion'].indexOf(this.user.data.rol) >= 0
-                }else{
-                    if (this.user && this.user.data && this.user.data.grupo_id == 20) return true;
-                    return false;
+                if(this.user && this.user.rol && ['superusuario', 'recepcion'].indexOf(this.user.rol) >= 0) {
+                    return true;
+                }else if (this.user && this.user.grupo_id == 20){
+                    return true;
                 }
+                return false;
             }
         }
     };

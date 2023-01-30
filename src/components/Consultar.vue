@@ -103,15 +103,15 @@ name: 'Consultar',
           { text: 'Sede', value: 'sede' },
           { text: 'Agente', value: 'ultima_llamada.agente.nombre' },
           { text: 'Actions', value: 'action', sortable: false }
-        ]
-
+        ],
+        user: null,
     }),
     mounted() {
-        this.usuarioLogueado();
+        this.consultarUsuario();
     },
     methods: {
         ...mapActions({
-            usuarioLogueado: 'consultar/usuarioLogueado',
+            getUsuario: 'auth/getUsuario',
             filtro: 'consultar/filtro',
             fetchDetalle: 'leads/fetchDetalle',
         }),
@@ -120,16 +120,16 @@ name: 'Consultar',
             setError: 'setError',
         }),
         esUsuario(){
-            if(this.user && this.user.data) {
+            if(this.user && this.user.rol) {
                 // 'callcenter'
-                return ['recepcion', 'coordinador', 'superusuario'].indexOf(this.user.data.rol) >= 0
+                return ['recepcion', 'coordinador', 'superusuario'].indexOf(this.user.rol) >= 0
             }else{
                 return false;
             }
         },
         getSedeUsuario(){
-            if(this.user && this.user.data) {
-                return this.user.data.sede_id;
+            if(this.user && this.user.sede_id) {
+                return this.user.sede_id;
             }else{
                 return null;
             }
@@ -182,11 +182,15 @@ name: 'Consultar',
         },
         presentDate(value){
             return this.$moment(value).format('DD-MM-YYYY h:mm a')
+        },
+        consultarUsuario(){
+            this.getUsuario(this.payload).then((result) => {
+                this.user = result;
+            })
         }
     },
     computed:{
         ...mapState({
-            user: state => state.consultar.user,  
             lista: state => state.consultar.lista,
             pagination: state => state.consultar.pagination,
         }) 

@@ -4,8 +4,18 @@
         <template v-slot:default>
             <tbody>
                 <tr>
+                    <td><b>Tipo: </b></td>
+                    <td>{{ lead.categoria_lead }}</td>
+                    <td></td>
+                </tr>
+                <tr>
                     <td><b>ID: </b></td>
                     <td>{{ lead.numero }}</td>
+                    <td></td>
+                </tr>
+                <tr v-if="lead.empresa">
+                    <td><b>Empresa: </b></td>
+                    <td>{{ lead.empresa }}</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -18,6 +28,7 @@
                     <td>
                         <span v-if="ver.email">{{lead.email}}</span>
                         <input type="email" v-else v-model="lead.email" />
+                    </td>
                     <td class="text-right">
                         <v-icon v-if="!ver.email" @click="actualizarEmail()" small right>save</v-icon>
                         <v-icon v-if="ver.email" @click="editarEmail()" small right>autorenew</v-icon>
