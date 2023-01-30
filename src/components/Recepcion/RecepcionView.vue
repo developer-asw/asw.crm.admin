@@ -91,7 +91,6 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             this.fechaMinima = this.$moment().format('YYYY-MM-DD');
             this.consultarUsuario();
             this.viewItem();
-            this.traerSedesYFechas();
         },
         methods: {
             ...mapActions({
@@ -188,6 +187,7 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             consultarUsuario(){
                 this.getUsuario(this.payload).then((result) => {
                     this.user = result;
+                    this.traerSedesYFechas();
                 })
             }
         },
