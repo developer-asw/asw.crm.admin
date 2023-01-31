@@ -406,7 +406,7 @@ export default {
             return this.user && this.user ? this.user.email : null
         },
         puedeDescargar() {
-            return this.user && this.user && (this.user.rol == 'superusuario' || this.user.grupo_id == 20)
+            return this.user && (this.user.rol == 'superusuario' || this.user.grupo_id == 20)
         }
     }
 }
