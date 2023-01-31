@@ -8,7 +8,7 @@
 				<v-col cols="12" md="12">
                     <LeadInfoView :key="lead_id" :lead_id="lead_id" :setSedes="sedes"></LeadInfoView>
 				</v-col>
-                <v-col cols="12" md="12" v-if="lead.ultima_cita.estado == 'pendiente'" class="text-center">
+                <v-col cols="12" md="12" v-if="lead.ultima_cita && lead.ultima_cita.estado == 'pendiente'" class="text-center">
                     <b> {{ lead.ultima_cita.sede ? 'SEDE: '+lead.ultima_cita.sede.nombre+' - ' : ''}} FECHA: {{ lead.ultima_cita.fecha_texto}} HORA: {{ lead.ultima_cita.hora_texto}} </b>
                 </v-col>
 			</v-row>
