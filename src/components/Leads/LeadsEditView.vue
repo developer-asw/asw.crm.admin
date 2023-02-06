@@ -15,7 +15,7 @@
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-select v-model="lead.sede_id" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="disabled">
+                                        <v-select v-model="lead.sede_id" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="disabled || lead.sede_id">
                                             <template slot="item" slot-scope="data">
                                                 {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.nombre }}
                                             </template>
@@ -95,7 +95,7 @@
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-text-field v-model="lead.email" label="Email" :disabled="disabled" :rules="rules.email" @blur="buscarEmail()"></v-text-field>
+                                        <v-text-field v-model="lead.email" label="Email" :disabled="disabled || lead.email" :rules="rules.email" @blur="buscarEmail()"></v-text-field>
                                     </v-col>
                                     <v-col cols="1" sm="2">
                                         <v-btn v-if="cambioEmail" @click="actualizarEmail" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
@@ -107,7 +107,7 @@
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-text-field v-model="lead.movil" label="Teléfono" :disabled="disabled" :rules="rules.telefono" @blur="buscarTelefono()"></v-text-field>
+                                        <v-text-field v-model="lead.movil" label="Teléfono" :disabled="disabled || lead.movil" :rules="rules.telefono" @blur="buscarTelefono()"></v-text-field>
                                     </v-col>
                                     <v-col cols="1" sm="2">
                                         <v-btn v-if="cambioMovil" @click="actualizarMovil" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
@@ -144,7 +144,7 @@
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-select v-model="lead.como_llego" label="¿Cómo llego?" :items="listado.comoLlego" item-text="title" item-value="value"></v-select>
+                                        <v-select v-model="lead.como_llego" :disabled="lead.como_llego || disabled" label="¿Cómo llego?" :items="listado.comoLlego" item-text="title" item-value="value"></v-select>
                                     </v-col>
                                     <v-col cols="1" sm="2">
                                         <v-btn  v-if="cambioComoLlego" @click="actualizarComoLlego" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
