@@ -15,7 +15,7 @@
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-select v-model="lead.sede_id" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="disabled || lead.sede_id">
+                                        <v-select v-model="lead.sede_id" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="disabled || lead.sede_id != null">
                                             <template slot="item" slot-scope="data">
                                                 {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.nombre }}
                                             </template>
@@ -107,7 +107,7 @@
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-text-field v-model="lead.movil" label="Teléfono" :disabled="disabled || lead.movil" :rules="rules.telefono" @blur="buscarTelefono()"></v-text-field>
+                                        <v-text-field v-model="lead.movil" label="Teléfono" :disabled="disabled || (user && user.rol != 'callcenter' ? true :  false)" :rules="rules.telefono" @blur="buscarTelefono()"></v-text-field>
                                     </v-col>
                                     <v-col cols="1" sm="2">
                                         <v-btn v-if="cambioMovil" @click="actualizarMovil" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
@@ -144,7 +144,7 @@
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-select v-model="lead.como_llego" :disabled="lead.como_llego || disabled" label="¿Cómo llego?" :items="listado.comoLlego" item-text="title" item-value="value"></v-select>
+                                        <v-select v-model="lead.como_llego" :disabled="lead.como_llego != null || disabled" label="¿Cómo llego?" :items="listado.comoLlego" item-text="title" item-value="value"></v-select>
                                     </v-col>
                                     <v-col cols="1" sm="2">
                                         <v-btn  v-if="cambioComoLlego" @click="actualizarComoLlego" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
@@ -362,11 +362,13 @@
                 {'value':'callcenter','title':'Agente Call center'},
                 {'value':'coordinador','title':'Coordinador de admisiones'}
             ],
+            user:null,
         }),
         mounted() {
             this.traerLead();
             this.traerSedes();
             this.traerOrigenes();
+            this.consultarUsuario();
         },
         methods: {
             ...mapActions({
@@ -391,6 +393,7 @@
                 comoSeEnteroUpdate: 'leads/actualizarComoSeEntero',
                 agenteUpdate: 'leads/actualizarAgente',
                 contactarUpdate: 'leads/actualizarContactar',
+                getUsuario: 'auth/getUsuario',
             }),
             ...mapMutations({
                 setInfo: 'setInfo',
@@ -956,12 +959,16 @@
                     }).finally(() => {
                         this.procesando = false;
                     });
+            },
+            consultarUsuario(){
+                this.getUsuario(this.payload).then((result) => {
+                    this.user = result;
+                })
             }
         },
         computed: {
             ...mapState({
-                error: state => state.error,
-                user: state => state.auth.user,   
+                error: state => state.error,  
             }),
             ...mapGetters({
                 detalle: 'leads/getDetalle',
@@ -971,13 +978,13 @@
                 return 'Editar Leads'
             },
             userCanEdit() {
-                return this.user && this.user.data && (this.user.data.rol == 'coordinador' || this.user.data.rol == 'recepcion' || this.user.data.rol == 'superusuario')
+                return this.user && (this.user.rol == 'coordinador' || this.user.rol == 'recepcion' || this.user.rol == 'superusuario')
             },
             userAdmin() {
-                return this.user && this.user.data && (this.user.data.rol == 'superusuario')
+                return this.user && (this.user.rol == 'superusuario')
             },
             userChangeCall() {
-                return this.user && this.user.data && (this.permiso('cambiar_agente') === 'cambiar_agente')
+                return this.user && this.user && (this.permiso('cambiar_agente') === 'cambiar_agente')
             },
             cambioSede() {
                 return this.lead.sede_id != this.leadOriginal.sede_id;
