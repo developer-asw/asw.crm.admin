@@ -15,7 +15,7 @@
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-select v-model="lead.sede_id" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="disabled || lead.sede_id != null">
+                                        <v-select v-model="lead.sede_id" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="disabled || !puedeActualizarSede">
                                             <template slot="item" slot-scope="data">
                                                 {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.nombre }}
                                             </template>
@@ -361,14 +361,12 @@
             tipos_usuarios:[
                 {'value':'callcenter','title':'Agente Call center'},
                 {'value':'coordinador','title':'Coordinador de admisiones'}
-            ],
-            user:null,
+            ]
         }),
         mounted() {
             this.traerLead();
             this.traerSedes();
             this.traerOrigenes();
-            this.consultarUsuario();
         },
         methods: {
             ...mapActions({
@@ -393,7 +391,6 @@
                 comoSeEnteroUpdate: 'leads/actualizarComoSeEntero',
                 agenteUpdate: 'leads/actualizarAgente',
                 contactarUpdate: 'leads/actualizarContactar',
-                getUsuario: 'auth/getUsuario',
             }),
             ...mapMutations({
                 setInfo: 'setInfo',
@@ -959,16 +956,12 @@
                     }).finally(() => {
                         this.procesando = false;
                     });
-            },
-            consultarUsuario(){
-                this.getUsuario(this.payload).then((result) => {
-                    this.user = result;
-                })
             }
         },
         computed: {
             ...mapState({
-                error: state => state.error,  
+                error: state => state.error,
+                user: state => state.auth.user_info,
             }),
             ...mapGetters({
                 detalle: 'leads/getDetalle',
@@ -982,6 +975,10 @@
             },
             userAdmin() {
                 return this.user && (this.user.rol == 'superusuario')
+            },
+            puedeActualizarSede() {
+                console.log(this.user.rol)
+                return this.user && (['superusuario','callcenter'].includes(this.user.rol))
             },
             userChangeCall() {
                 return this.user && this.user && (this.permiso('cambiar_agente') === 'cambiar_agente')

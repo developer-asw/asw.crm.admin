@@ -84,17 +84,15 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             sede: null,
             fechaMinima:null,
             horaMinima:null,
-            horaMaxima:null,
-            user:null
+            horaMaxima:null
         }),
         mounted() {
             this.fechaMinima = this.$moment().format('YYYY-MM-DD');
-            this.consultarUsuario();
+            this.traerSedesYFechas();
             this.viewItem();
         },
         methods: {
             ...mapActions({
-                getUsuario: 'auth/getUsuario',
                 fetchDetalle: 'leads/fetchDetalle',
                 solicitar: 'recepcionista/solicitar',
                 fetchDisponibilidad: 'agenda/fetchDisponibilidad',
@@ -184,16 +182,11 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             actualizarHistorial() {
 
             },
-            consultarUsuario(){
-                this.getUsuario(this.payload).then((result) => {
-                    this.user = result;
-                    this.traerSedesYFechas();
-                })
-            }
         },
         computed: {
             ...mapState({
                 error: state => state.error,
+                user: state => state.auth.user_info,
             }),
             ...mapGetters({
                 

@@ -31,38 +31,38 @@
                         <v-list-item two-line>
                             <v-list-item-content>
                                 <v-list-item-title>DOCUMENTO</v-list-item-title>
-                                <v-list-item-subtitle class="texto">{{user.tipo_documento}} {{user.numero_documento}}</v-list-item-subtitle>
+                                <v-list-item-subtitle class="texto">{{user && user.tipo_documento ? user.tipo_documento : ""}} {{user && user.numero_documento ? user.numero_documento : ""}}</v-list-item-subtitle>
                             </v-list-item-content>
                         </v-list-item>
                         <v-list-item two-line>
                             <v-list-item-content>
                                 <v-list-item-title>NOMBRE</v-list-item-title>
-                                <v-list-item-subtitle class="texto">{{user.primer_nombre}} {{user.segundo_nombre}} {{user.primer_apellido}} {{user.segundo_apellido}}</v-list-item-subtitle>
+                                <v-list-item-subtitle class="texto">{{user && user.primer_nombre ? user.primer_nombre : ""}} {{user && user.segundo_nombre ? user.segundo_nombre : ""}} {{user && user.primer_apellido ? user.primer_apellido : ""}} {{user && user.segundo_apellido ? user.segundo_apellido : ""}}</v-list-item-subtitle>
                             </v-list-item-content>
                         </v-list-item>
                         <v-list-item two-line>
                             <v-list-item-content>
                                 <v-list-item-title>CORREO ELECTRÓNICO</v-list-item-title>
-                                <v-list-item-subtitle class="texto">{{user.email}}</v-list-item-subtitle>
+                                <v-list-item-subtitle class="texto">{{user && user.email ? user.email : ""}}</v-list-item-subtitle>
                             </v-list-item-content>
                         </v-list-item>
                         <v-list-item two-line>
                             <v-list-item-content>
                                 <v-list-item-title>PERFIL</v-list-item-title>
-                                <v-list-item-subtitle class="texto">{{user.grupo ? user.grupo.nombre : ''}}</v-list-item-subtitle>
+                                <v-list-item-subtitle class="texto">{{user && user.grupo ? user.grupo.nombre : ''}}</v-list-item-subtitle>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item two-line v-if="user.grupo_callcenter">
+                        <v-list-item two-line v-if="user && user.grupo_callcenter">
                             <v-list-item-content>
                                 <v-list-item-title>GRUPO</v-list-item-title>
-                                <v-list-item-subtitle class="texto">{{user.grupo_callcenter.descripcion}}</v-list-item-subtitle>
+                                <v-list-item-subtitle class="texto">{{user && user.grupo_callcenter && user.grupo_callcenter.descripcion ? user.grupo_callcenter.descripcion : ""}}</v-list-item-subtitle>
                             </v-list-item-content>
                         </v-list-item>
                         <v-list-item two-line>
                             <v-list-item-content>
                                 <v-list-item-title>SEDES PERMITIDAS</v-list-item-title>
                                 <v-list-item-subtitle class="texto">
-                                    <v-row justify="center" align="center">                                        
+                                    <v-row justify="center" align="center" v-if="user && user.sedes">                                        
                                         <v-chip v-for="(item) in user.sedes" :key="item.id">
                                             {{item.nombre}}
                                         </v-chip>
@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations} from 'vuex';
+import { mapState, mapMutations} from 'vuex';
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
 
@@ -104,7 +104,6 @@ export default {
     },
     data () {
         return {
-            user: {},
             loading: false,
             search: '',
             //// Edits elementes
@@ -115,29 +114,21 @@ export default {
         query: Object,
     },
     mounted() {
-        this.consultarUsuario();
+        
     },
     methods:{
-      ...mapActions({
-            getUsuario: 'auth/getUsuario'
-      }),
       ...mapMutations({
           setInfo: 'setInfo',
       }),
-      consultarUsuario(){
-          this.loading = true;
-          this.getUsuario(this.payload).then((result) => {
-              this.user = result;
-          })
-          .finally(() => {
-              this.loading = false;
-          })
-      },
       actualizar() {
-          this.consultarUsuario();
+        
       }
     },
     computed: {
+        ...mapState({
+            error: state => state.error,
+            user: state => state.auth.user_info,
+        }),
         formTitle () {
             return 'Mi información'
         },

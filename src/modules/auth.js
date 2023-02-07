@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 const state = {
   user: null,
+  user_info:null,
   logged: !!window.localStorage.getItem('_token')
 };
 
@@ -44,7 +45,8 @@ const actions = {
     return new Promise((resolve, reject) => {
         Vue.http.get('usuario/informacion',data).then(
             response =>{
-                resolve(response.data)
+              commit('setUserInfo', response.data);
+              resolve(response.data)
             }
         ).catch(error=>{
             commit('setError', error, { root: true });
@@ -67,7 +69,11 @@ const actions = {
 
 const getters = {
   permiso: (state) => (permiso) => {
-    if(state.user.data.permisos) {
+    if(state.user_info && state.user_info.permisos) {
+      return state.user_info.permisos.find((element)=>{
+        return element == permiso
+      })
+    }else if(state.user && state.user.data && state.user.data.permisos) {
       return state.user.data.permisos.find((element)=>{
         return element == permiso
       })
@@ -85,13 +91,15 @@ const mutations = {
       const token = window.localStorage.getItem('_token');
       const jwtDecode = require('jwt-decode');
       state.user = jwtDecode(token);
-      //state.user.permisos = JSON.parse(state.user.data.permisos)
       state.logged = true;
     } else {
       state.logged = false;
       state.user = null;
 
     }
+  },
+  setUserInfo: (state, user) => {
+    state.user_info = user;
   },
   //establecemos el estado del usuario
   setLogged: (state, logged) => {

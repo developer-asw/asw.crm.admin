@@ -10,8 +10,7 @@
         </v-toolbar-items>
     </v-toolbar>
 
-    <v-container v-if="esUsuario()">
-        
+    <v-container v-if="esUsuario">
         <v-layout text-center wrap>
             <v-container>
                 <v-row justify="space-around">
@@ -313,11 +312,10 @@ name: 'Dashboard',
         tagSelected: [],
         sedes:[],
         sede:null,
-        loading:false,
+        loading:false
     }),
     mounted() {
         this.setDates();
-        this.usuarioLogueado();
         this.traerSedes();
         this.consultar();
     },
@@ -335,7 +333,6 @@ name: 'Dashboard',
             consulta10: 'dashboard/consultarDatosAgendadasVsAsistidas',
             consulta11:  'dashboard/consultarMatriculasPorSede',
             consulta12: 'dashboard/consultarOrigenesMasterclass',
-            usuarioLogueado: 'dashboard/usuarioLogueado',
             listarSedes: 'sedes/fetchLista',
         }),
         ...mapMutations({
@@ -431,13 +428,6 @@ name: 'Dashboard',
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
                 
         },
-        esUsuario(){
-            if(this.user && this.user.data) {
-                return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.data.rol) >= 0
-            }else{
-                return false;
-            }
-        },
         setDates() {
             this.dates[0] = this.$moment().format('YYYY-MM-01');
             this.dates[1] = this.$moment().format('YYYY-MM-DD');
@@ -463,7 +453,7 @@ name: 'Dashboard',
                 this.sedes = result;
             })
             .catch(error => {
-                console.log(error)
+                console.error(error)
             }).finally(() => {
 
             });
@@ -472,7 +462,7 @@ name: 'Dashboard',
     },
     computed:{
         ...mapState({
-            user: state => state.dashboard.user,  
+            user: state => state.auth.user_info,
         }),
         dateRangeText () {
             return this.dates.map(x => this.$moment(x).format("DD/MM/YYYY")).join(' ~ ')
@@ -486,6 +476,13 @@ name: 'Dashboard',
                 selections.push(selection)
             }
             return selections
+        },
+        esUsuario(){
+            if(this.user) {
+                return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.rol) >= 0
+            }else{
+                return false;
+            }
         }
     },
     watch: {

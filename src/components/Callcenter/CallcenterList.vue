@@ -183,23 +183,24 @@ export default {
                 { text: '1000', value: 1000 }, 
                 { text: '10000', value : 10000 } 
             ],
-            util:util,
-            user:null
+            util:util
         }
     },
     props : {
         query: Object,
     },
     mounted() {
-        this.consultarUsuario();
+        this.getGrupo().then(result => {
+            this.actualizarListado(result && result.grupo ? result.grupo : null);
+        })
     },
     methods:{
         ...mapActions({
-                getUsuario: 'auth/getUsuario',
                 fetchLista: 'callcenter/fetchLista',
                 fetchListaPage: 'callcenter/fetchListaPage',
                 solicitar: 'callcenter/solicitar',
                 fetchDetalle: 'leads/fetchDetalle',
+                getGrupo: 'auth/getGrupo',
         }),
         ...mapMutations({
             reemplazar: 'callcenter/replaceListaElement',
@@ -379,18 +380,13 @@ export default {
                     this.loading = false;
                 })
             }
-        },
-        consultarUsuario(){
-            this.getUsuario(this.payload).then((result) => {
-                this.user = result;
-                this.actualizarListado(result.grupo_callcenter ? result.grupo_callcenter.codigo : null);
-            })
         }
     },
     computed: {
         ...mapState({
             lista: state => state.callcenter.lista,
             pagination: state => state.callcenter.pagination,
+            user: state => state.auth.user_info,
         }),
         getTitle(){
             return 'Callcenter Agent'

@@ -431,7 +431,7 @@
         computed: {
             ...mapState({
                 error: state => state.error,
-                user: state => state.auth.user,   
+                user: state => state.auth.user_info, 
             }),
             ...mapGetters({
                 detalle: 'leads/getDetalle',
@@ -440,7 +440,7 @@
                 return 'Nuevo Leads'
             },
             userCanEdit() {
-                return this.user && this.user.data ? this.user.data.disponibilidad : false
+                return this.user ? this.user.disponibilidad : false
             },
             rules(){
                 const _rules = {}

@@ -234,7 +234,7 @@ export default {
           return false
       },
       estaAsignado(item) {
-          if(item.ultima_llamada && item.ultima_llamada.estado == 'llamando' && item.ultima_llamada.agente && item.ultima_llamada.agente.email == this.user.data.email){
+          if(item.ultima_llamada && item.ultima_llamada.estado == 'llamando' && item.ultima_llamada.agente && item.ultima_llamada.agente.email == this.user.email){
               return true
           }
           return false
@@ -250,8 +250,8 @@ export default {
               })
         },
         actualizarListado() {
-            if (this.user && this.user.data) {
-                if (this.user.data.grupo_id == 26) {
+            if (this.user && this.user) {
+                if (this.user.grupo_id == 26) {
                     this.payload.prioridad = 1;
                     this.prioridad = [ 
                         { text: 'Mis pendientes', value:1 },
@@ -259,7 +259,7 @@ export default {
                         { text: 'Venta Teléfonica', value : 6 },
                     ];
                 } else {
-                    if (this.user.data.rol == 'callcenter') {
+                    if (this.user.rol == 'callcenter') {
                         this.prioridad = [ 
                             { text: 'Mis pendientes', value:1 }, 
                             { text: 'Datos entrantes', value:0 }, 
@@ -267,7 +267,7 @@ export default {
                             { text: 'Marcado Manual', value : 3 },
                         ];
                     } else {
-                        if (this.user.data.rol == 'superusuario' || this.user.data.grupo_id == 20) {
+                        if (this.user.rol == 'superusuario' || this.user.grupo_id == 20) {
                             this.prioridad = [ 
                                 { text: 'Mis pendientes', value:1 }, 
                                 { text: 'Datos entrantes', value:0 }, 
@@ -296,7 +296,7 @@ export default {
         ...mapState({
             lista: state => state.callcenter.consultas.lista,
             pagination: state => state.callcenter.consultas.pagination,
-            user: state => state.auth.user,   
+            user: state => state.auth.user_info,   
         }),
         getTitle(){
             return 'Callcenter Agent'

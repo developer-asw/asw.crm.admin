@@ -171,7 +171,7 @@ export default {
             },
             leadSeleccionado:null,
             llamadas_estados:[],
-            estados: {},
+            estados: {}
         }
     },
     props : {
@@ -186,7 +186,7 @@ export default {
             fetchLista: 'callcenter/fetchMatriculados',
             fetchListaPage: 'callcenter/fetchMatriculadosPage',
             fetchDetalle: 'leads/fetchDetalle',
-            getGrupo: 'auth/getGrupo'
+            getGrupo: 'auth/getGrupo',
       }),
       ...mapMutations({
           reemplazar: 'callcenter/replaceListaElement',
@@ -257,7 +257,7 @@ export default {
           return false
       },
       estaAsignado(item) {
-          if(item.af_ultima_llamada && item.af_ultima_llamada.estado == 'llamando' && item.af_ultima_llamada.agente && item.af_ultima_llamada.agente.email == this.user.data.email){
+          if(item.af_ultima_llamada && item.af_ultima_llamada.estado == 'llamando' && item.af_ultima_llamada.agente && item.af_ultima_llamada.agente.email == this.user.email){
               return true
           }
           return false
@@ -273,8 +273,8 @@ export default {
               })
         },
         actualizarListado(grupo_usuario = '') {
-            if (this.user && this.user.data) {
-                if (this.user.data.grupo_id == 26) {
+            if (this.user && this.user) {
+                if (this.user.grupo_id == 26) {
                     this.payload.prioridad = 5;
                     this.prioridad = [ 
                         { text: 'Tareas Pendientes', value:1 },
@@ -286,7 +286,7 @@ export default {
                     ];
                 }else{
                     this.payload.prioridad = 0;
-                    if (this.user.data.rol == 'callcenter') {
+                    if (this.user.rol == 'callcenter') {
                         this.prioridad = [ 
                             { text: 'Tareas Pendientes', value:1 }, 
                             { text: 'Datos Entrantes', value:0 }, 
@@ -294,7 +294,7 @@ export default {
                             { text: 'Marcado Manual', value : 3 },
                         ];
                     } else {
-                        if (this.user.data.rol == 'superusuario' || this.user.data.grupo_id == 20) {
+                        if (this.user.rol == 'superusuario' || this.user.grupo_id == 20) {
                             this.prioridad = [ 
                                 { text: 'Tareas Pendientes', value:1 }, 
                                 { text: 'Datos Entrantes', value:0 },  
@@ -325,8 +325,8 @@ export default {
             }
         },
         esUsuario(){
-            if(this.user && this.user.data) {
-                return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.data.rol) >= 0
+            if(this.user && this.user) {
+                return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.rol) >= 0
             }else{
                 return false;
             }
@@ -354,7 +354,7 @@ export default {
         ...mapState({
             lista: state => state.callcenter.matriculados.lista,
             pagination: state => state.callcenter.matriculados.pagination,
-            user: state => state.auth.user,   
+            user: state => state.auth.user_info,
         }),
         getTitle(){
             return 'Matriculados Agent'

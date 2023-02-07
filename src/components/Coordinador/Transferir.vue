@@ -157,10 +157,10 @@ export default {
     },
     computed:{
         ...mapState({
-            user: state => state.auth.user,  
+            user: state => state.auth.user_info,
         }),
         userEmail() {
-            return this.user && this.user.data ? this.user.data.email : null
+            return this.user && this.user ? this.user.email : null
         },
         likesAllFruit () {
             return this.payload.orientadores.length === this.orientadores.length

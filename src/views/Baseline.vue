@@ -26,7 +26,7 @@
 
                 <v-list-item-group v-model="model">
 
-                    <v-list-item v-if="isLogged" link @click="dirigir('/')">
+                    <v-list-item v-if="isLogged && user" link @click="dirigir('/')">
                         <v-list-item-action>
                             <v-icon>home</v-icon>
                         </v-list-item-action>
@@ -34,7 +34,7 @@
                             <v-list-item-title>Inicio</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-list-item v-if="isLogged && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario')" link @click="dirigir('/dashboard')">
+                    <v-list-item v-if="isLogged && user && (user.rol == 'coordinador' || user.rol == 'superusuario')" link @click="dirigir('/dashboard')">
                         <v-list-item-action>
                             <v-icon>dashboard</v-icon>
                         </v-list-item-action>
@@ -43,7 +43,7 @@
                         </v-list-item-content>
                     </v-list-item>
 <!-- 
-                    <v-list-item v-if="isLogged && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario') && permiso('EF995E25')" link @click="dirigir('/leads')">
+                    <v-list-item v-if="isLogged && user && (user.rol == 'coordinador' || user.rol == 'superusuario') && permiso('EF995E25')" link @click="dirigir('/leads')">
                         <v-list-item-action>
                             <v-icon>contact_mail</v-icon>
                         </v-list-item-action>
@@ -52,7 +52,7 @@
                         </v-list-item-content>
                     </v-list-item> -->
 
-                    <v-list-item v-if="isLogged && (user.data.rol == 'superusuario')" link @click="dirigir('/plantillas')">
+                    <v-list-item v-if="isLogged && user && (user.rol == 'superusuario')" link @click="dirigir('/plantillas')">
                         <v-list-item-action>
                             <v-icon>perm_media</v-icon>
                         </v-list-item-action>
@@ -61,7 +61,7 @@
                         </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-item v-if="isLogged && !permiso('matriculados') && (user.data.rol == 'recepcion' || user.data.rol == 'coordinador' || user.data.rol == 'superusuario'|| user.data.rol == 'callcenter')" link @click="dirigir('/callcenter_admisiones')">
+                    <v-list-item v-if="isLogged && user && !permiso('matriculados') && (user.rol == 'recepcion' || user.rol == 'coordinador' || user.rol == 'superusuario'|| user.rol == 'callcenter')" link @click="dirigir('/callcenter_admisiones')">
                         <v-list-item-action>
                             <v-icon>add</v-icon>
                         </v-list-item-action>
@@ -70,7 +70,7 @@
                         </v-list-item-content>
                     </v-list-item>
                                         
-                    <v-list-item v-if="isLogged && permiso('matriculados') || user.data.rol == 'superusuario'" link @click="dirigir('/callcenter/matriculados')">
+                    <v-list-item v-if="isLogged && permiso('matriculados') || (user && user.rol == 'superusuario')" link @click="dirigir('/callcenter/matriculados')">
                         <v-list-item-action>
                             <v-icon>credit_card</v-icon>
                         </v-list-item-action>
@@ -79,7 +79,7 @@
                         </v-list-item-content>
                     </v-list-item>
                     
-                    <v-list-group v-if="isLogged && (user.data.rol == 'superusuario')"
+                    <v-list-group v-if="isLogged && user && (user.rol == 'superusuario')"
                     no-action
                     sub-group
                     >
@@ -89,7 +89,7 @@
                             </v-list-item-content>
                         </template>
                         
-                        <v-list-item v-if="isLogged" link @click="dirigir('/management/user')">
+                        <v-list-item v-if="isLogged && user" link @click="dirigir('/management/user')">
                             <v-list-item-action>
                                 <v-icon>group</v-icon>
                             </v-list-item-action>
@@ -97,7 +97,7 @@
                                 <v-list-item-title>Usuarios</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged" link @click="dirigir('/management/parameters')">
+                        <v-list-item v-if="isLogged && user" link @click="dirigir('/management/parameters')">
                             <v-list-item-action>
                                 <v-icon>settings</v-icon>
                             </v-list-item-action>
@@ -105,7 +105,7 @@
                                 <v-list-item-title>Parámetros</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged" link @click="dirigir('/management/incoming_data')">
+                        <v-list-item v-if="isLogged && user" link @click="dirigir('/management/incoming_data')">
                             <v-list-item-action>
                                 <v-icon>update</v-icon>
                             </v-list-item-action>
@@ -113,7 +113,7 @@
                                 <v-list-item-title>Datos Entrantes</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged" link @click="dirigir('/management/missed_appointments')">
+                        <v-list-item v-if="isLogged && user" link @click="dirigir('/management/missed_appointments')">
                             <v-list-item-action>
                                 <v-icon>pending_actions</v-icon>
                             </v-list-item-action>
@@ -121,7 +121,7 @@
                                 <v-list-item-title>Citas Ausentes</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged" link @click="dirigir('/management/wolkvox')">
+                        <v-list-item v-if="isLogged && user" link @click="dirigir('/management/wolkvox')">
                             <v-list-item-action>
                                 <v-icon>headphones</v-icon>
                             </v-list-item-action>
@@ -131,19 +131,19 @@
                         </v-list-item>
                     </v-list-group>
 
-                    <v-list-group v-if="isLogged && !permiso('matriculados') && (user.data.rol == 'callcenter' || user.data.rol == 'coordinador' || user.data.rol == 'superusuario')"
+                    <v-list-group v-if="isLogged && !permiso('matriculados') && (user && user.rol != 'recepcion')"
                     no-action
                     sub-group
                     value="true"
                     >
                         <template v-slot:activator>
                             <v-list-item-content>
-                                <v-list-item-title v-if="user.data.rol == 'callcenter'">Callcenter</v-list-item-title>
+                                <v-list-item-title v-if="user.rol == 'callcenter'">Callcenter</v-list-item-title>
                                 <v-list-item-title v-else>Coordinador</v-list-item-title>
                             </v-list-item-content>
                         </template>
                         <!-- && permiso('A8229B00') -->
-                        <v-list-item v-if="isLogged" link @click="dirigir('/callcenter')">
+                        <v-list-item v-if="isLogged && user" link @click="dirigir('/callcenter')">
                             <v-list-item-action>
                                 <v-icon>call</v-icon>
                             </v-list-item-action>
@@ -151,7 +151,7 @@
                                 <v-list-item-title>Agente</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <!--<v-list-item v-if="isLogged && user.data.rol == 'coordinador'" link @click="dirigir('/venta_telefonica')">
+                        <!--<v-list-item v-if="isLogged && user && user.rol == 'coordinador'" link @click="dirigir('/venta_telefonica')">
                             <v-list-item-action>
                                 <v-icon>call</v-icon>
                             </v-list-item-action>
@@ -159,7 +159,7 @@
                                 <v-list-item-title>Venta Teléfonica</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>-->
-                        <v-list-item v-if="isLogged && permiso('convenio') || user.data.rol == 'callcenter'" link @click="dirigir('/consultar')">
+                        <v-list-item v-if="isLogged && permiso('convenio') || (user && user.rol == 'callcenter')" link @click="dirigir('/consultar')">
                             <v-list-item-action>
                                 <v-icon>thumb_up</v-icon>
                             </v-list-item-action>
@@ -169,7 +169,7 @@
                         </v-list-item>
                         
                         <!-- && permiso('2BF48DCE') -->
-                        <v-list-item v-if="isLogged && (['superusuario','coordinador'].includes(user.data.rol)  || [20,27].includes(user.data.grupo_id))" link @click="dirigir('/callcenter_coordinator')">
+                        <v-list-item v-if="isLogged && user && (['superusuario','coordinador'].includes(user.rol)  || [20,27].includes(user.grupo_id))" link @click="dirigir('/callcenter_coordinator')">
                             <v-list-item-action>
                                 <v-icon>archive</v-icon>
                             </v-list-item-action>
@@ -177,7 +177,7 @@
                                 <v-list-item-title>Coordinator</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged && (['superusuario'].includes(user.data.rol)  || [20,27,26].includes(user.data.grupo_id))" link @click="dirigir('/coordinador/orientadores')">
+                        <v-list-item v-if="isLogged && user && (['superusuario'].includes(user.rol)  || [20,27,26].includes(user.grupo_id))" link @click="dirigir('/coordinador/orientadores')">
                             <v-list-item-action>
                                 <v-icon>account_circle</v-icon>
                             </v-list-item-action>
@@ -204,7 +204,7 @@
                     </v-list-group>
                     
                     <!--<v-list-group 
-                    v-if="isLogged  && (user.data.rol == 'superusuario')" 
+                    v-if="isLogged  && (user.rol == 'superusuario')" 
                     no-action 
                     sub-group
                     >
@@ -215,7 +215,7 @@
                         </template>
 
                         <v-list-item 
-                        v-if="isLogged  && (user.data.rol == 'coordinador' || user.data.rol == 'superusuario')" 
+                        v-if="isLogged && user && (user.rol == 'coordinador' || user.rol == 'superusuario')" 
                         link 
                         @click="dirigir('/CRM/Importar')">
                             <v-list-item-action>
@@ -236,13 +236,13 @@
 
                     </v-list-group>-->
 
-                    <v-list-group v-if="isLogged && ((user.data.rol == 'superusuario' || user.data.rol == 'coordinador') || [20,27].includes(user.data.grupo_id))" no-action sub-group>
+                    <v-list-group v-if="isLogged && user && ((user.rol == 'superusuario' || user.rol == 'coordinador') || [20,27].includes(user.grupo_id))" no-action sub-group>
                         <template v-slot:activator>
                           <v-list-item-content>
                             <v-list-item-title>Reportes</v-list-item-title>
                           </v-list-item-content>
                         </template>
-                        <v-list-item v-if="isLogged && (user.data.rol == 'superusuario') || user.data.grupo_id == 20" link @click="dirigir('/Reportes/Hits')">
+                        <v-list-item v-if="isLogged && user && (user.rol == 'superusuario') || user.grupo_id == 20" link @click="dirigir('/Reportes/Hits')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
@@ -250,7 +250,7 @@
                                 <v-list-item-title>Hits</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Citas')">
+                        <v-list-item v-if="isLogged && user" link @click="dirigir('/Reportes/Citas')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
@@ -258,7 +258,7 @@
                                 <v-list-item-title>Citas</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <!--<v-list-item v-if="isLogged" link @click="dirigir('/Reportes/Leads')">
+                        <!--<v-list-item v-if="isLogged && user" link @click="dirigir('/Reportes/Leads')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
@@ -266,7 +266,7 @@
                                 <v-list-item-title>Leads</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>-->
-                        <v-list-item v-if="isLogged && (user.data.rol == 'superusuario') || user.data.grupo_id == 20" link @click="dirigir('/Reportes/Llamadas')">
+                        <v-list-item v-if="isLogged && user && (user.rol == 'superusuario') || user.grupo_id == 20" link @click="dirigir('/Reportes/Llamadas')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
@@ -274,7 +274,7 @@
                                 <v-list-item-title>Llamadas</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged && (user.data.rol == 'superusuario' || user.data.rol == 'coordinador')" link @click="dirigir('/Reportes/Agentes')">
+                        <v-list-item v-if="isLogged && user && (user.rol == 'superusuario' || user.rol == 'coordinador')" link @click="dirigir('/Reportes/Agentes')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
@@ -285,7 +285,7 @@
                     </v-list-group>
 
                     
-                    <v-list-item v-if="isLogged" link @click="dirigir('/profile/user')">
+                    <v-list-item v-if="isLogged && user" link @click="dirigir('/profile/user')">
                         <v-list-item-action>
                             <v-icon>person</v-icon>
                         </v-list-item-action>
@@ -298,7 +298,7 @@
 
                 <v-divider></v-divider>
 
-                <v-list-item v-if="isLogged" link @click.prevent="processLogout()">
+                <v-list-item v-if="isLogged && user" link @click.prevent="processLogout()">
                     <v-list-item-action>
                         <v-icon>exit_to_app</v-icon>
                     </v-list-item-action>
@@ -351,91 +351,100 @@
 
 <script>
 
-  import {mapState,mapGetters,mapActions,mapMutations} from 'vuex';
+import {mapState,mapGetters,mapActions,mapMutations} from 'vuex';
 
-  export default {
-      data: () => ({
-          drawer: null,
-          model: 0
-      }),
-      props: {
-          //source: String
-      },
-      methods:{
-          ...mapActions({
-              logout: 'auth/logout',
-          }),
-          ...mapMutations({
-              hideError: 'hideError',
-              showError: 'showError',
-              hideInfo: 'hideInfo',
-              showInfo: 'showInfo',
-              setInfo: 'setInfo',
-          }),
-          dirigir(value){
-              this.$router.push(value)
-          },
-          processLogout () {
-              this.logout().then(
-                  this.$router.push('/login')
-              )
-          }
-      },
-      computed: {
-          ...mapState({
-              isLogged: state => state.auth.logged,
-              user: state => state.auth.user,   
-              processing: state => state.processing,
-              error: state => state.error,
-              isErrorShowed: state => state.isErrorShowed,
-              warning: state => state.warning,
-              info: state => state.info,
-              isInfoShowed: state => state.isInfoShowed,
-              reportedVersion: state => state.version,
-              titulo: state => state.titulo ? state.titulo : "Automatic Lead Attention"
-          }),
-          ...mapGetters({
-              permiso: 'auth/permiso', 
-          }),
-          getNombres(){
-              if(this.user){
-                  return this.user.data.primer_nombre+' '+this.user.data.primer_apellido
-              }
-              return ''
-          },
-          esUsuario(){
-              if(this.user && this.user.data) {
-                  return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.data.rol) >= 0
-              }else{
-                  return false;
-              }
-          },
-          isErrorDialogShowed:{
-              get(){
-                  return this.isErrorShowed
-              },
-              set(value){
-                  if(value){
-                      this.showError()
-                  }else{
-                      this.hideError()
-                  }
-              }
-          },
-          isInfoDialogShowed:{
-              get(){
-                  return this.isInfoShowed
-              },
-              set(value){
-                  if(value){
-                      this.showInfo()
-                  }else{
-                      this.hideInfo()
-                  }
-              }
-          },
-      }
-  }
+export default {
+    data: () => ({
+        drawer: null,
+        model: 0,
+        user:null
+    }),
+    props: {
+        //source: String
+    },
+    mounted() {
+        this.consultarUsuario();
+    },
+    methods:{
+        ...mapActions({
+            logout: 'auth/logout',
+            getUsuario: 'auth/getUsuario',
+        }),
+        ...mapMutations({
+            hideError: 'hideError',
+            showError: 'showError',
+            hideInfo: 'hideInfo',
+            showInfo: 'showInfo',
+            setInfo: 'setInfo',
+        }),
+        dirigir(value){
+            this.$router.push(value)
+        },
+        processLogout () {
+            this.logout().then(
+                this.$router.push('/login')
+            )
+        },
+        consultarUsuario(){
+            this.getUsuario().then((result) => {
+                this.user = result;
+            })
+        }
+    },
+    computed: {
+        ...mapState({
+            isLogged: state => state.auth.logged,
+            processing: state => state.processing,
+            error: state => state.error,
+            isErrorShowed: state => state.isErrorShowed,
+            warning: state => state.warning,
+            info: state => state.info,
+            isInfoShowed: state => state.isInfoShowed,
+            reportedVersion: state => state.version,
+            titulo: state => state.titulo ? state.titulo : "Automatic Lead Attention",
+        }),
+        ...mapGetters({
+            permiso: 'auth/permiso', 
+        }),
+        getNombres(){
+            if(this.user){
+                return this.user.primer_nombre+' '+this.user.primer_apellido
+            }
+            return ''
+        },
+        esUsuario(){
+            if(this.user && this.user) {
+                return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.rol) >= 0
+            }else{
+                return false;
+            }
+        },
+        isErrorDialogShowed:{
+            get(){
+                return this.isErrorShowed
+            },
+            set(value){
+                if(value){
+                    this.showError()
+                }else{
+                    this.hideError()
+                }
+            }
+        },
+        isInfoDialogShowed:{
+            get(){
+                return this.isInfoShowed
+            },
+            set(value){
+                if(value){
+                    this.showInfo()
+                }else{
+                    this.hideInfo()
+                }
+            }
+        },
+    }
+}
 </script>
 
 <style>

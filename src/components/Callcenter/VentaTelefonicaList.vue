@@ -253,7 +253,7 @@ export default {
           return false
       },
       estaAsignado(item) {
-          if(item.ultima_llamada && item.ultima_llamada.estado == 'llamando' && item.ultima_llamada.agente && item.ultima_llamada.agente.email == this.user.data.email){
+          if(item.ultima_llamada && item.ultima_llamada.estado == 'llamando' && item.ultima_llamada.agente && item.ultima_llamada.agente.email == this.user.email){
               return true
           }
           return false
@@ -269,8 +269,8 @@ export default {
               })
         },
         esUsuario(){
-            if(this.user && this.user.data) {
-                return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.data.rol) >= 0
+            if(this.user && this.user) {
+                return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.rol) >= 0
             }else{
                 return false;
             }
@@ -280,7 +280,7 @@ export default {
         ...mapState({
             lista: state => state.callcenter.lista,
             pagination: state => state.callcenter.pagination,
-            user: state => state.auth.user,   
+            user: state => state.auth.user_info,
         }),
         getTitle(){
             return 'Callcenter Agent'

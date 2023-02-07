@@ -104,14 +104,12 @@ name: 'Consultar',
           { text: 'Agente', value: 'ultima_llamada.agente.nombre' },
           { text: 'Actions', value: 'action', sortable: false }
         ],
-        user: null,
     }),
     mounted() {
-        this.consultarUsuario();
+        
     },
     methods: {
         ...mapActions({
-            getUsuario: 'auth/getUsuario',
             filtro: 'consultar/filtro',
             fetchDetalle: 'leads/fetchDetalle',
         }),
@@ -121,8 +119,7 @@ name: 'Consultar',
         }),
         esUsuario(){
             if(this.user && this.user.rol) {
-                // 'callcenter'
-                return ['recepcion', 'coordinador', 'superusuario'].indexOf(this.user.rol) >= 0
+                return ['recepcion', 'coordinador', 'superusuario','callcenter'].indexOf(this.user.rol) >= 0
             }else{
                 return false;
             }
@@ -182,17 +179,13 @@ name: 'Consultar',
         },
         presentDate(value){
             return this.$moment(value).format('DD-MM-YYYY h:mm a')
-        },
-        consultarUsuario(){
-            this.getUsuario(this.payload).then((result) => {
-                this.user = result;
-            })
         }
     },
     computed:{
         ...mapState({
             lista: state => state.consultar.lista,
             pagination: state => state.consultar.pagination,
+            user: state => state.auth.user_info,
         }) 
     }
 };

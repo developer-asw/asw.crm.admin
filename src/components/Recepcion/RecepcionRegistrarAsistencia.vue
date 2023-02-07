@@ -156,8 +156,7 @@
             orientadores: [],
             fechaMinima:null,
             horaMinima:null,
-            horaMaxima:null,
-            user:null,
+            horaMaxima:null
         }),
 
         props: {
@@ -166,7 +165,6 @@
         },
         mounted() {
             this.fechaMinima = this.$moment().format('YYYY-MM-DD');
-            this.consultarUsuario();
             this.traerDisponibilidad();
             this.traerEstados();
             this.reiniciar();
@@ -174,7 +172,6 @@
         },
         methods: {
             ...mapActions({
-                getUsuario: 'auth/getUsuario',
                 fetchDisponibilidad: 'agenda/fetchDisponibilidad',
                 fetchDisponibilidadLlamadas: 'agenda/fetchDisponibilidadLlamadas',
                 fetchOrientadores: 'admisiones/fetchLista',
@@ -314,7 +311,6 @@
                     });
             },
             getSedeUsuario(){
-                console.log(this.user)
                 if(this.user && this.user.sede_id) {
                     return this.user.sede_id;
                 }else{
@@ -324,16 +320,12 @@
             consola(){
                 console.log(this.user)
                 console.log(this.lead)
-            },
-            consultarUsuario(){
-                this.getUsuario(this.payload).then((result) => {
-                    this.user = result;
-                })
             }
         },
         computed: {
             ...mapState({
                 error: state => state.error,
+                user: state => state.auth.user_info,
             }),
             ...mapGetters({
                 detalle: 'leads/getDetalle',

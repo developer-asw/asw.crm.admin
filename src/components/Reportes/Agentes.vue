@@ -230,7 +230,7 @@ Vue.use(VueClipboard)
         ...mapState({
             lista: state => state.reportes.agentes.lista,
             pagination: state => state.reportes.agentes.pagination,
-            user: state => state.auth.user,   
+            user: state => state.auth.user_info,
         }),
         getTitle(){
             return 'Reporte de tareas'
@@ -243,7 +243,7 @@ Vue.use(VueClipboard)
             }
         },
         userEmail() {
-            return this.user && this.user.data ? this.user.data.email : null
+            return this.user ? this.user.email : null
         },
       
     },
