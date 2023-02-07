@@ -107,7 +107,8 @@
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-text-field v-model="lead.movil" label="Teléfono" :disabled="disabled || (user && user.rol != 'callcenter' ? true :  false)" :rules="rules.telefono" @blur="buscarTelefono()"></v-text-field>
+                                        <!-- || (user && user.rol != 'callcenter' ? true :  false) -->
+                                        <v-text-field v-model="lead.movil" label="Teléfono" :disabled="disabled" :rules="rules.telefono" @blur="buscarTelefono()"></v-text-field>
                                     </v-col>
                                     <v-col cols="1" sm="2">
                                         <v-btn v-if="cambioMovil" @click="actualizarMovil" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
