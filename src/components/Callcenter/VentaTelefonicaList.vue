@@ -264,7 +264,7 @@ export default {
                   this.setInfo('Copiado en list:' + value)
               })
               .catch(error => {
-                  console.log(error)
+                  console.error(error)
                   this.setInfo(error)
               })
         },

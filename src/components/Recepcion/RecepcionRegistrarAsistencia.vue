@@ -8,7 +8,7 @@
 				<v-col cols="12" md="12">
                     <LeadInfoView :key="lead_id" :lead_id="lead_id" :setSedes="sedes"></LeadInfoView>
 				</v-col>
-                <v-col cols="12" md="12" v-if="lead.ultima_cita && lead.ultima_cita.estado == 'pendiente'" class="text-center">
+                <v-col cols="12" md="12" v-if="lead.ultima_cita && ['pendiente','ausencia'].includes(lead.ultima_cita.estado)" class="text-center">
                     <b> {{ lead.ultima_cita.sede ? 'SEDE: '+lead.ultima_cita.sede.nombre+' - ' : ''}} FECHA: {{ lead.ultima_cita.fecha_texto}} HORA: {{ lead.ultima_cita.hora_texto}} </b>
                 </v-col>
 			</v-row>
@@ -232,7 +232,6 @@
                 return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
             },
             traerDisponibilidad() {
-
                 this.fetchDisponibilidad()
                     .then(result => {
                         this.fechas = result.resultSet.fechas
@@ -292,7 +291,7 @@
                         this.llamadas_estados = [];
                         if (this.estados && this.estados.llamadas) {
                             this.llamadas_estados = this.estados.llamadas.filter(x => x.tipo && x.tipo.includes('recepcion'));
-                            if (this.lead && this.lead.ultima_cita && this.lead.ultima_cita.estado == "pendiente") {
+                            if (this.lead && this.lead.ultima_cita && ["pendiente","ausencia"].includes(this.lead.ultima_cita.estado)) {
                                 if (this.getDaysBetweenDates(this.lead.ultima_cita.fecha_cita, new Date()) > 3) {
                                     this.llamadas_estados = this.llamadas_estados.filter(x => x.value == 'asiste_sede');
                                 } else {
