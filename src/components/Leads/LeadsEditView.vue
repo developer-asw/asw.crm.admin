@@ -978,7 +978,6 @@
                 return this.user && (this.user.rol == 'superusuario')
             },
             puedeActualizarSede() {
-                console.log(this.user.rol)
                 return this.user && (['superusuario','callcenter'].includes(this.user.rol))
             },
             userChangeCall() {
