@@ -107,7 +107,6 @@
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <!-- || (user && user.rol != 'callcenter' ? true :  false) -->
                                         <v-text-field v-model="lead.movil" label="Teléfono" :disabled="disabled" :rules="rules.telefono" @blur="buscarTelefono()"></v-text-field>
                                     </v-col>
                                     <v-col cols="1" sm="2">
@@ -365,9 +364,13 @@
             ]
         }),
         mounted() {
-            this.traerLead();
-            this.traerSedes();
-            this.traerOrigenes();
+            if (!this.permiso('OP_LEAD_EDITAR')) {
+                this.$router.push('/')
+            } else {
+                this.traerLead();
+                this.traerSedes();
+                this.traerOrigenes();
+            }
         },
         methods: {
             ...mapActions({
@@ -550,7 +553,7 @@
                 this.dialog.show = false;
                 let id = this.dialog.resultados.length > 0 ? this.dialog.resultados[0]._id: null;
                 if(id) {
-                    this.$router.push(`/seguimiento/${id}/detail`);
+                    this.$router.push(`/lead/${id}/detail`);
                 }
             },
             separarNombre() {
@@ -917,7 +920,6 @@
                 const dato = { id: this.lead._id, valor:this.lead.agente };
                 this.agenteUpdate(dato)
                     .then(result => {
-                        console.log(result)
                         if (result && result.codigo == 1) {
                             this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                             this.lead.agente = result.dato.valor;
@@ -972,16 +974,16 @@
                 return 'Editar Leads'
             },
             userCanEdit() {
-                return this.user && (this.user.rol == 'coordinador' || this.user.rol == 'recepcion' || this.user.rol == 'superusuario')
+                return this.permiso('OP_LEAD_EDITAR')
             },
             userAdmin() {
-                return this.user && (this.user.rol == 'superusuario')
+                return this.permiso('OP_LEAD_EDITAR_AGENTE')
             },
             puedeActualizarSede() {
-                return this.user && (['superusuario','callcenter'].includes(this.user.rol))
+                return this.permiso('OP_LEAD_EDITAR_SEDE')
             },
             userChangeCall() {
-                return this.user && this.user && (this.permiso('cambiar_agente') === 'cambiar_agente')
+                return this.permiso('OP_LEAD_EDITAR_AGENTE')
             },
             cambioSede() {
                 return this.lead.sede_id != this.leadOriginal.sede_id;

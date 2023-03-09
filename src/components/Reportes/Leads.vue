@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import {mapState, mapActions, mapMutations} from 'vuex';
+import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
  
@@ -145,7 +145,11 @@ Vue.use(VueClipboard)
     },
     
     mounted () {
-        this.preFiltro()
+        if (!this.permiso('OP_REPORTE_LEADS')) {
+            this.$router.push(this.url_no_permitida)
+        } else {
+            this.preFiltro();
+        }
     },
     methods:{
         ...mapActions({
@@ -200,7 +204,11 @@ Vue.use(VueClipboard)
     computed: {
         ...mapState({
             lista: state => state.reportes.leads.lista,
+            url_no_permitida: state => state.auth.url_no_permitida,
             pagination: state => state.reportes.leads.pagination,
+        }),
+        ...mapGetters({
+            permiso: 'auth/permiso',
         }),
         getTitle(){
             return 'Reportes - Leads'

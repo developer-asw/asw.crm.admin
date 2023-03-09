@@ -10,14 +10,35 @@ const state = {
     },
 };
 const actions = {
-    fetchLista: ({
-        commit
-    }, data) => {
+    fetchLista: ({ commit }, data) => {
         commit('startProcessing', null, {
             root: true
         });
         return new Promise((resolve, reject) => {
             Vue.http.post('sedes/lista', data).then(
+                response => {
+                    commit('setLista', response.data.datos);
+                    resolve(response.data)
+                }
+
+            ).catch(error => {
+                commit('setError', error, {
+                    root: true
+                });
+                reject(error)
+            }).finally(() => {
+                commit('stopProcessing', null, {
+                    root: true
+                });
+            })
+        });
+    },
+    fetch: ({ commit }, data) => {
+        commit('startProcessing', null, {
+            root: true
+        });
+        return new Promise((resolve, reject) => {
+            Vue.http.get('sedes', data).then(
                 response => {
                     commit('setLista', response.data.datos);
                     resolve(response.data)

@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import {mapState, mapActions, mapMutations} from 'vuex';
+import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
 import CallcenterRegistrarLlamada from '@/components/Callcenter/CallcenterRegistrarLlamada'
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
@@ -173,7 +173,11 @@ export default {
         query: Object,
     },
     mounted() {
-        this.actualizar();
+        if (!this.permiso('OP_VENTA_TELEFONICA')) {
+            this.$router.push('/')
+        } else {
+            this.actualizar();
+        }
     },
     methods:{
       ...mapActions({
@@ -267,13 +271,6 @@ export default {
                   console.error(error)
                   this.setInfo(error)
               })
-        },
-        esUsuario(){
-            if(this.user && this.user) {
-                return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.rol) >= 0
-            }else{
-                return false;
-            }
         }
     },
     computed: {
@@ -281,6 +278,9 @@ export default {
             lista: state => state.callcenter.lista,
             pagination: state => state.callcenter.pagination,
             user: state => state.auth.user_info,
+        }),
+        ...mapGetters({
+            permiso: 'auth/permiso', 
         }),
         getTitle(){
             return 'Callcenter Agent'

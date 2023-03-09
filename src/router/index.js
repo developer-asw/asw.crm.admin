@@ -26,10 +26,11 @@ import ReportesCitas from '../components/Reportes/Citas'
 import ReportesAgentes from '../components/Reportes/Agentes'
 import RecepcionView from '@/components/Recepcion/RecepcionView'
 
-import MissedAppointments from '@/components/Management/MissedAppointments';
-import IncomingData from '@/components/Management/IncomingData';
-import Parameters from '@/components/Management/Parameters';
-import Wolkvox from '@/components/Management/Wolkvox';
+import MissedAppointments from '@/components/Settings/MissedAppointments';
+import IncomingData from '@/components/Settings/IncomingData';
+import Parameters from '@/components/Settings/Parameters';
+import Wolkvox from '@/components/Settings/Wolkvox';
+
 import ManagementUser from '@/components/Management/User';
 import ProfileUser from '@/components/Profile/User';
 import CallcenterMatriculados from '../components/ApoyoFinanciero/CallcenterMatriculados';
@@ -113,7 +114,7 @@ const routes = [
     meta: { Auth: true, title: 'Contact' , view: 'baseline'},
   },
   {
-    path: '/callcenter/seguimientos',
+    path: '/consultas/seguimientos',
     name: 'seguimiento',
     component: CallcenterSeguimiento,
     meta: { Auth: true, title: 'Callcenter - Tracing' , view: 'baseline'},
@@ -143,20 +144,20 @@ const routes = [
     meta: { Auth: true, title: 'Datos - Orientadores - Coordinator' , view: 'baseline'},
   },
   {
-    path: '/callcenter_admisiones',
-    name: 'callcenter_admisiones',
+    path: '/lead/new',
+    name: 'lead_new',
     component: LeadsNewView,
     meta: { Auth: true, title: 'Nuevo' , view: 'baseline'},
   },
   {
-    path: '/seguimiento/:id/edit',
-    name: 'seguimiento_edit',
+    path: '/lead/:id/edit',
+    name: 'lead_edit',
     component: LeadsEditView,
     meta: { Auth: true, title: 'Editar' , view: 'baseline'},
   },
   {
-    path: '/seguimiento/:id/detail',
-    name: 'seguimiento_detail',
+    path: '/lead/:id/detail',
+    name: 'lead_detail',
     component: LeadsDetailView,
     meta: { Auth: true, title: 'Detalle' , view: 'baseline'},
   },
@@ -217,28 +218,28 @@ const routes = [
     meta: { Auth: true, title: 'Recepcion' , view: 'baseline'},
   },
   {
-    path: '/management/missed_appointments',
+    path: '/setting/missed_appointments',
     name: 'MissedAppointments',
     component: MissedAppointments,
-    meta: { Auth: true, title: 'Management - missed_appointments' , view: 'baseline'},
+    meta: { Auth: true, title: 'Settings - missed_appointments' , view: 'baseline'},
   },
   {
-    path: '/management/incoming_data',
+    path: '/setting/incoming_data',
     name: 'IncomingData',
     component: IncomingData,
-    meta: { Auth: true, title: 'Management - incoming_data' , view: 'baseline'},
+    meta: { Auth: true, title: 'Settings - incoming_data' , view: 'baseline'},
   },
   {
-    path: '/management/parameters',
+    path: '/setting/parameters',
     name: 'Parameters',
     component: Parameters,
-    meta: { Auth: true, title: 'Management - parameters' , view: 'baseline'},
+    meta: { Auth: true, title: 'Settings - parameters' , view: 'baseline'},
   },
   {
-    path: '/management/wolkvox',
+    path: '/setting/wolkvox',
     name: 'Wolkvox',
     component: Wolkvox,
-    meta: { Auth: true, title: 'Management - Wolkvox' , view: 'baseline'},
+    meta: { Auth: true, title: 'Settings - Wolkvox' , view: 'baseline'},
   },
   {
     path: '/management/user',

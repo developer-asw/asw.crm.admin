@@ -133,7 +133,7 @@
 </template>
 
 <script>
-import {mapState, mapActions, mapMutations} from 'vuex';
+import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
  
@@ -217,8 +217,12 @@ Vue.use(VueClipboard)
     },
     
     mounted () {
-        this.consultarListados();
-        this.preFiltro()
+        if (!this.permiso('OP_REPORTE_CITAS')) {
+            this.$router.push(this.url_no_permitida)
+        } else {            
+            this.consultarListados();
+            this.preFiltro()
+        }
     },
     methods:{
         ...mapActions({
@@ -294,7 +298,11 @@ Vue.use(VueClipboard)
     computed: {
         ...mapState({
             lista: state => state.reportes.citas.lista,
+            url_no_permitida: state => state.auth.url_no_permitida,
             pagination: state => state.reportes.citas.pagination,
+        }),
+        ...mapGetters({
+            permiso: 'auth/permiso',
         }),
         getTitle(){
             return 'Reportes - Citas'

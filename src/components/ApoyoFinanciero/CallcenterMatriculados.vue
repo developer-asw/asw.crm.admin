@@ -130,7 +130,7 @@
 </template>
 
 <script>
-import {mapState, mapActions, mapMutations} from 'vuex';
+import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
 import RegistrarLlamada from '@/components/ApoyoFinanciero/RegistrarLlamada'
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
@@ -273,62 +273,44 @@ export default {
               })
         },
         actualizarListado(grupo_usuario = '') {
-            if (this.user && this.user) {
-                if (this.user.grupo_id == 26) {
-                    this.payload.prioridad = 5;
-                    this.prioridad = [ 
-                        { text: 'Tareas Pendientes', value:1 },
-                        // { text: 'Datos Entrantes', value:0 },
-                        { text: 'Datos por Resolver', value:5 },
-                        // { text: 'Datos Nuevos', value:4 }, 
-                        { text: 'No contestan - Pendientes', value : 2 },
-                        { text: 'Venta Teléfonica', value : 6 },
-                    ];
-                }else{
-                    this.payload.prioridad = 0;
-                    if (this.user.rol == 'callcenter') {
-                        this.prioridad = [ 
-                            { text: 'Tareas Pendientes', value:1 }, 
-                            { text: 'Datos Entrantes', value:0 }, 
-                            { text: 'No contestan - Pendientes', value : 2 },
-                            { text: 'Marcado Manual', value : 3 },
-                        ];
-                    } else {
-                        if (this.user.rol == 'superusuario' || this.user.grupo_id == 20) {
-                            this.prioridad = [ 
-                                { text: 'Tareas Pendientes', value:1 }, 
-                                { text: 'Datos Entrantes', value:0 },  
-                                { text: 'Datos Nuevos', value:4 }, 
-                                { text: 'No contestan - Pendientes', value : 2 },
-                                { text: 'Marcado Manual', value : 3 },
-                                { text: 'Grupo 1', value : 7 },
-                                { text: 'Venta Teléfonica', value : 6 },
-                            ];
+            this.prioridad = [];
+            if (this.permiso('OP_CALL_TAREAS_PENDIENTES')) {
+                this.prioridad.push({ text: 'Tareas Pendientes', value:1 })
+            }
+            if (this.permiso('OP_CALL_RESOLVER_DATOS')) {
+                this.payload.prioridad = 5;
+                this.prioridad.push({ text: 'Datos por Resolver', value:5 })
+            }
+            if (this.permiso('OP_CALL_DATOS_ENTRANTES')) {
+                this.payload.prioridad = 0;
+                this.prioridad.push({ text: 'Datos Entrantes', value:0 })
+            }
+            if (this.permiso('OP_CALL_DATOS_NUEVOS')) {
+                this.prioridad.push({ text: 'Datos Nuevos', value:4 })
+            }
+            if (this.permiso('OP_CALL_MARCADO_MANUAL')) {
+                this.prioridad.push({ text: 'Marcado Manual', value : 3 })
+            }
+            if (this.permiso('OP_CALL_NO_CONTESTA')) {
+                this.prioridad.push({ text: 'No contestan - Pendientes', value : 2 })
+            }
+            if (this.permiso('OP_CALL_GRUPO_1')) {
+                this.prioridad.push({ text: 'Grupo 1', value : 7 })
+            }
+            if (this.permiso('OP_CALL_VENTA_TELEFONICA')) {
+                this.prioridad.push({ text: 'Venta Teléfonica', value : 6 })
+            }
 
-                        }else{
-                            this.payload.prioridad = 5;
-                            this.prioridad = [ 
-                                { text: 'Tareas Pendientes', value:1 },
-                                { text: 'Datos por Resolver', value:5 },
-                                { text: 'No contestan - Pendientes', value : 2 },
-                            ];
-                        }
-                    }
+            /**
+             * { text: 'Tareas Pendientes', value:1 },
+             * { text: 'Datos por Resolver', value:5 },
+             * { text: 'No contestan - Pendientes', value : 2 },
+             */
+            
+            if (grupo_usuario == 'grupo_fredy' || this.permiso('OP_CALL_GRUPO_1')){
+                if (!this.prioridad.find(x => x.text == 'Grupo 1')) {
+                    this.prioridad.push({ text: 'Grupo 1', value : 7 })
                 }
-
-            }
-            else{
-                this.prioridad = [];
-            }
-            if (grupo_usuario == 'grupo_fredy'){
-                this.prioridad.push({ text: 'Grupo 1', value : 7 });
-            }
-        },
-        esUsuario(){
-            if(this.user && this.user) {
-                return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.rol) >= 0
-            }else{
-                return false;
             }
         },
         loadMore() {
@@ -355,6 +337,9 @@ export default {
             lista: state => state.callcenter.matriculados.lista,
             pagination: state => state.callcenter.matriculados.pagination,
             user: state => state.auth.user_info,
+        }),
+        ...mapGetters({
+            permiso: 'auth/permiso', 
         }),
         getTitle(){
             return 'Matriculados Agent'

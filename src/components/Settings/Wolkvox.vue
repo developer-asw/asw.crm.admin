@@ -126,7 +126,7 @@
 </template>
 
 <script>
-    import {mapState, mapActions, mapMutations} from 'vuex';
+    import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
     import Vue from 'vue'
     import VueClipboard from 'vue-clipboard2'
 
@@ -190,7 +190,11 @@
             query: Object,
         },
         mounted() {
-            this.actualizar();
+            if (!this.permiso('OP_CONF_WOLKVOX')) {
+                this.$router.push(this.url_no_permitida)
+            } else {
+                this.actualizar();
+            }
         },
         methods:{
             ...mapActions({
@@ -265,9 +269,13 @@
         },
         computed: {
             ...mapState({
+                url_no_permitida: state => state.auth.url_no_permitida,
                 lista: state => state.management.missed_appointments,
                 pagination: state => state.callcenter.pagination,
-                user: state => state.auth.user,   
+                user: state => state.auth.user_info,   
+            }),
+            ...mapGetters({
+                permiso: 'auth/permiso', 
             }),
             getTitle(){
                 return 'Wolkvox'

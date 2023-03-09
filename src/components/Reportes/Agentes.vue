@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import {mapState, mapActions, mapMutations} from 'vuex';
+import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
 import util from "../../utility/util";
@@ -141,8 +141,12 @@ Vue.use(VueClipboard)
     },
     
     mounted () {
-        this.setTituloVentana(this.getTitle);
-        this.preFiltro();
+        if (!this.permiso('OP_REPORTE_TAREAS')) {
+            this.$router.push(this.url_no_permitida)
+        } else {
+            this.setTituloVentana(this.getTitle);
+            this.preFiltro();
+        }
     },
     methods:{
         ...mapActions({
@@ -231,6 +235,10 @@ Vue.use(VueClipboard)
             lista: state => state.reportes.agentes.lista,
             pagination: state => state.reportes.agentes.pagination,
             user: state => state.auth.user_info,
+            url_no_permitida: state => state.auth.url_no_permitida,
+        }),
+        ...mapGetters({
+            permiso: 'auth/permiso',
         }),
         getTitle(){
             return 'Reporte de tareas'

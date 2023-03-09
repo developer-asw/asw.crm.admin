@@ -41,7 +41,7 @@
                 </template>-->
                 <template v-slot:top>
                     <v-toolbar flat>
-                        <v-toolbar-title>My CRUD</v-toolbar-title>
+                        <v-toolbar-title>Listado</v-toolbar-title>
                         <v-divider class="mx-4" inset vertical></v-divider>
                         <v-spacer></v-spacer>
                         <v-dialog v-model="dialog" max-width="500px">
@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import {mapState, mapActions, mapMutations} from 'vuex';
+import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
 
@@ -143,7 +143,11 @@ export default {
         query: Object,
     },
     mounted() {
-        this.actualizar();
+        if (!this.permiso('OP_CONF_PARAMETROS')) {
+            this.$router.push(this.url_no_permitida)
+        } else {
+            this.actualizar();
+        }
     },
     methods:{
       ...mapActions({
@@ -169,13 +173,6 @@ export default {
                   console.log(error)
                   this.setInfo(error)
               })
-        },
-        esUsuario(){
-            if(this.user) {
-                return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.rol) >= 0
-            }else{
-                return false;
-            }
         },
         presentDate(value){
             return this.$moment(value).format('DD-MM-YYYY h:mm a')
@@ -239,7 +236,11 @@ export default {
         ...mapState({
             lista: state => state.management.parameters,
             pagination: state => state.callcenter.pagination,
-            user: state => state.auth.user,   
+            url_no_permitida: state => state.auth.url_no_permitida,
+            user: state => state.auth.user_info,   
+        }),
+        ...mapGetters({
+            permiso: 'auth/permiso',
         }),
         getValoresValidos() {
             let result = [];
@@ -250,7 +251,7 @@ export default {
             return result;
         },
         formTitle () {
-            return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+            return this.editedIndex === -1 ? 'Nuevo' : 'Editar'
         },
         getTitle(){
             return 'Parámetros'

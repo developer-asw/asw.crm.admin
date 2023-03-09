@@ -82,7 +82,7 @@
             class="ma-2"
             color="red darken-1"
             text
-            :to="{ name: 'seguimiento_edit', params: { id: leadId } }"
+            :to="{ name: 'lead_edit', params: { id: leadId } }"
             ><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
 
           <v-btn

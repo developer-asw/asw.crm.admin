@@ -22,7 +22,7 @@
                         <div class="text-right">
                             <!--<v-btn class="ma-2" color="blue darken-1" text @click="consola"><v-icon left small>event</v-icon>Consola</v-btn>-->
                             <v-btn v-if="setAsisteCita == true" class="ma-2" color="red darken-1" text @click="iniciarSolicitar"><v-icon left small>event</v-icon>&nbsp;Asiste&nbsp;</v-btn>
-                            <v-btn class="ma-2" color="orange darken-1" text :to="{ name: 'seguimiento_edit', params: { id: lead_id } }"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
+                            <v-btn class="ma-2" color="orange darken-1" text :to="{ name: 'lead_edit', params: { id: lead_id } }"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
                             <v-btn class="ma-2" color="blue darken-1" text @click="regresar"><v-icon>navigate_before</v-icon>&nbsp;Regresar&nbsp;</v-btn>
                         </div>
                     </v-col>
@@ -202,14 +202,10 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             },
             ...mapGetters({
                 detalle: 'leads/getDetalle',
+                permiso: 'auth/permiso', 
             }),
             setAsisteCita(){
-                if(this.user && this.user.rol && ['superusuario', 'recepcion'].indexOf(this.user.rol) >= 0) {
-                    return true;
-                }else if (this.user && this.user.grupo_id == 20){
-                    return true;
-                }
-                return false;
+                return this.permiso('OP_ASISTIR_CITA')
             }
         }
     };

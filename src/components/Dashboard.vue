@@ -478,8 +478,8 @@ name: 'Dashboard',
             return selections
         },
         esUsuario(){
-            if(this.user) {
-                return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.rol) >= 0
+            if(this.user && this.user.activo) {
+                return true;
             }else{
                 return false;
             }

@@ -76,7 +76,6 @@
         this.login(this.user).then(
           user => {
             console.log('logged:'+user)
-            console.log(user)
             setTimeout(() => {
               this.dialog.message = "Logueado, por favor espere un momento"
               this.dialog.show = false;

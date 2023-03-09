@@ -1,9 +1,15 @@
 <template>
     <v-app id="inspire">
+        
+
         <v-navigation-drawer
         v-model="drawer"
-        app dark class="blue-grey"
+        app dark
+        class="blue-grey overflow-y-auto theme--light light"
         >
+            <v-overlay :value="overlay" class="align-center justify-center">
+                <v-progress-circular color="primary" indeterminate size="64"></v-progress-circular>
+            </v-overlay>
             <v-list dense>
 
                 <!-- <img src="https://www.americanschoolway.edu.co/wp-content/uploads/2020/02/logo_header_Asw_18a.jpg"/> -->
@@ -34,7 +40,7 @@
                             <v-list-item-title>Inicio</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-list-item v-if="isLogged && user && (user.rol == 'coordinador' || user.rol == 'superusuario')" link @click="dirigir('/dashboard')">
+                    <v-list-item v-if="isLogged && permiso('OP_PANEL')" link @click="dirigir('/dashboard')">
                         <v-list-item-action>
                             <v-icon>dashboard</v-icon>
                         </v-list-item-action>
@@ -42,8 +48,7 @@
                             <v-list-item-title>Dashboard</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-<!-- 
-                    <v-list-item v-if="isLogged && user && (user.rol == 'coordinador' || user.rol == 'superusuario') && permiso('EF995E25')" link @click="dirigir('/leads')">
+                    <!-- <v-list-item v-if="isLogged && user && (user.rol == 'coordinador' || user.rol == 'superusuario') && permiso('EF995E25')" link @click="dirigir('/leads')">
                         <v-list-item-action>
                             <v-icon>contact_mail</v-icon>
                         </v-list-item-action>
@@ -52,7 +57,7 @@
                         </v-list-item-content>
                     </v-list-item> -->
 
-                    <v-list-item v-if="isLogged && user && (user.rol == 'superusuario')" link @click="dirigir('/plantillas')">
+                    <v-list-item v-if="isLogged && permiso('OP_PLANTILLAS')" link @click="dirigir('/plantillas')">
                         <v-list-item-action>
                             <v-icon>perm_media</v-icon>
                         </v-list-item-action>
@@ -61,94 +66,58 @@
                         </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-item v-if="isLogged && user && !permiso('matriculados') && (user.rol == 'recepcion' || user.rol == 'coordinador' || user.rol == 'superusuario'|| user.rol == 'callcenter')" link @click="dirigir('/callcenter_admisiones')">
-                        <v-list-item-action>
-                            <v-icon>add</v-icon>
-                        </v-list-item-action>
-                        <v-list-item-content>
-                            <v-list-item-title>Nuevo</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                                        
-                    <v-list-item v-if="isLogged && permiso('matriculados') || (user && user.rol == 'superusuario')" link @click="dirigir('/callcenter/matriculados')">
-                        <v-list-item-action>
-                            <v-icon>credit_card</v-icon>
-                        </v-list-item-action>
-                        <v-list-item-content>
-                            <v-list-item-title>Apoyo Financiero</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                    
-                    <v-list-group v-if="isLogged && user && (user.rol == 'superusuario')"
-                    no-action
-                    sub-group
-                    >
+                    <v-list-group v-if="isLogged && permiso('OP_LEAD')" no-action sub-group>
                         <template v-slot:activator>
                             <v-list-item-content>
-                                <v-list-item-title>Administración</v-list-item-title>
+                                <v-list-item-title>Leads</v-list-item-title>
                             </v-list-item-content>
                         </template>
-                        
-                        <v-list-item v-if="isLogged && user" link @click="dirigir('/management/user')">
+
+                        <v-list-item v-if="isLogged && permiso('OP_LEAD_NUEVO')" link @click="dirigir('/lead/new')">
                             <v-list-item-action>
-                                <v-icon>group</v-icon>
+                                <v-icon>add</v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
-                                <v-list-item-title>Usuarios</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item v-if="isLogged && user" link @click="dirigir('/management/parameters')">
-                            <v-list-item-action>
-                                <v-icon>settings</v-icon>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                                <v-list-item-title>Parámetros</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item v-if="isLogged && user" link @click="dirigir('/management/incoming_data')">
-                            <v-list-item-action>
-                                <v-icon>update</v-icon>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                                <v-list-item-title>Datos Entrantes</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item v-if="isLogged && user" link @click="dirigir('/management/missed_appointments')">
-                            <v-list-item-action>
-                                <v-icon>pending_actions</v-icon>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                                <v-list-item-title>Citas Ausentes</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item v-if="isLogged && user" link @click="dirigir('/management/wolkvox')">
-                            <v-list-item-action>
-                                <v-icon>headphones</v-icon>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                                <v-list-item-title>Wolkvox</v-list-item-title>
+                                <v-list-item-title>Nuevo</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list-group>
 
-                    <v-list-group v-if="isLogged && !permiso('matriculados') && (user && user.rol != 'recepcion')"
+                    <v-list-group v-if="isLogged && permiso('OP_CALLCENTER')"
                     no-action
                     sub-group
                     value="true"
                     >
                         <template v-slot:activator>
                             <v-list-item-content>
-                                <v-list-item-title v-if="user.rol == 'callcenter'">Callcenter</v-list-item-title>
-                                <v-list-item-title v-else>Coordinador</v-list-item-title>
+                                <!--<v-list-item-title v-if="user.rol == 'callcenter'">Callcenter</v-list-item-title>
+                                <v-list-item-title v-else>Coordinador</v-list-item-title>-->
+                                <v-list-item-title>Gestión</v-list-item-title>
                             </v-list-item-content>
                         </template>
                         <!-- && permiso('A8229B00') -->
-                        <v-list-item v-if="isLogged && user" link @click="dirigir('/callcenter')">
+                        <v-list-item v-if="isLogged && permiso('OP_AGENTE')" link @click="dirigir('/callcenter')">
                             <v-list-item-action>
                                 <v-icon>call</v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
                                 <v-list-item-title>Agente</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item v-if="isLogged && permiso('OP_CONSULTA_SEGUIMIENTO')" link @click="dirigir('/consultas/seguimientos')">
+                            <v-list-item-action>
+                                <v-icon>calendar_today</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Mis seguimientos</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item v-if="isLogged && permiso('OP_APOYO_FINANCIERO')" link @click="dirigir('/callcenter/matriculados')">
+                            <v-list-item-action>
+                                <v-icon>credit_card</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Apoyo Financiero</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                         <!--<v-list-item v-if="isLogged && user && user.rol == 'coordinador'" link @click="dirigir('/venta_telefonica')">
@@ -159,7 +128,7 @@
                                 <v-list-item-title>Venta Teléfonica</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>-->
-                        <v-list-item v-if="isLogged && permiso('convenio') || (user && user.rol == 'callcenter')" link @click="dirigir('/consultar')">
+                        <v-list-item v-if="isLogged && permiso('OP_CONVENIO')" link @click="dirigir('/consultar')">
                             <v-list-item-action>
                                 <v-icon>thumb_up</v-icon>
                             </v-list-item-action>
@@ -169,7 +138,7 @@
                         </v-list-item>
                         
                         <!-- && permiso('2BF48DCE') -->
-                        <v-list-item v-if="isLogged && user && (['superusuario','coordinador'].includes(user.rol)  || [20,27].includes(user.grupo_id))" link @click="dirigir('/callcenter_coordinator')">
+                        <v-list-item v-if="isLogged && permiso('OP_COORDINADOR')" link @click="dirigir('/callcenter_coordinator')">
                             <v-list-item-action>
                                 <v-icon>archive</v-icon>
                             </v-list-item-action>
@@ -177,28 +146,12 @@
                                 <v-list-item-title>Coordinator</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged && user && (['superusuario'].includes(user.rol)  || [20,27,26].includes(user.grupo_id))" link @click="dirigir('/coordinador/orientadores')">
+                        <v-list-item v-if="isLogged && permiso('OP_ORIENTADORES')" link @click="dirigir('/coordinador/orientadores')">
                             <v-list-item-action>
                                 <v-icon>account_circle</v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
                                 <v-list-item-title>Orientadores</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list-group>
-
-                    <v-list-group v-if="isLogged && esUsuario"  no-action sub-group >
-                        <template v-slot:activator>
-                            <v-list-item-content>
-                                <v-list-item-title>Consultas</v-list-item-title>
-                            </v-list-item-content>
-                        </template>
-                        <v-list-item link @click="dirigir('/callcenter/seguimientos')">
-                            <v-list-item-action>
-                                <v-icon>calendar_today</v-icon>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                                <v-list-item-title>Mis seguimientos</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list-group>
@@ -236,13 +189,13 @@
 
                     </v-list-group>-->
 
-                    <v-list-group v-if="isLogged && user && ((user.rol == 'superusuario' || user.rol == 'coordinador') || [20,27].includes(user.grupo_id))" no-action sub-group>
+                    <v-list-group v-if="isLogged && permiso('OP_REPORTE')" no-action sub-group>
                         <template v-slot:activator>
                           <v-list-item-content>
                             <v-list-item-title>Reportes</v-list-item-title>
                           </v-list-item-content>
                         </template>
-                        <v-list-item v-if="isLogged && user && (user.rol == 'superusuario') || user.grupo_id == 20" link @click="dirigir('/Reportes/Hits')">
+                        <v-list-item v-if="isLogged && permiso('OP_REPORTE_HITS')" link @click="dirigir('/Reportes/Hits')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
@@ -250,7 +203,7 @@
                                 <v-list-item-title>Hits</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged && user" link @click="dirigir('/Reportes/Citas')">
+                        <v-list-item v-if="isLogged && permiso('OP_REPORTE_CITAS')" link @click="dirigir('/Reportes/Citas')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
@@ -266,7 +219,7 @@
                                 <v-list-item-title>Leads</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>-->
-                        <v-list-item v-if="isLogged && user && (user.rol == 'superusuario') || user.grupo_id == 20" link @click="dirigir('/Reportes/Llamadas')">
+                        <v-list-item v-if="isLogged && permiso('OP_REPORTE_LLAMADAS')" link @click="dirigir('/Reportes/Llamadas')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
@@ -274,7 +227,7 @@
                                 <v-list-item-title>Llamadas</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged && user && (user.rol == 'superusuario' || user.rol == 'coordinador')" link @click="dirigir('/Reportes/Agentes')">
+                        <v-list-item v-if="isLogged && permiso('OP_REPORTE_TAREAS')" link @click="dirigir('/Reportes/Agentes')">
                             <v-list-item-action>
                                 <v-icon>filter_list</v-icon>
                             </v-list-item-action>
@@ -283,14 +236,73 @@
                             </v-list-item-content>
                         </v-list-item>
                     </v-list-group>
+                    
+                                        
+                    <v-list-group v-if="isLogged && permiso('OP_ADM')" no-action sub-group>
+                        <template v-slot:activator>
+                            <v-list-item-content>
+                                <v-list-item-title>Administración</v-list-item-title>
+                            </v-list-item-content>
+                        </template>
+                        
+                        <v-list-item v-if="isLogged && permiso('OP_ADM_USUARIOS')" link @click="dirigir('/management/user')">
+                            <v-list-item-action>
+                                <v-icon>group</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Usuarios</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list-group>
+
+                    <v-list-group v-if="isLogged && permiso('OP_CONF')" no-action sub-group>
+                        <template v-slot:activator>
+                            <v-list-item-content>
+                                <v-list-item-title>Configuración</v-list-item-title>
+                            </v-list-item-content>
+                        </template>
+                        
+                        <v-list-item v-if="isLogged && permiso('OP_CONF_PARAMETROS')" link @click="dirigir('/setting/parameters')">
+                            <v-list-item-action>
+                                <v-icon>settings</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Parámetros</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item v-if="isLogged && permiso('OP_CONF_DATOS')" link @click="dirigir('/setting/incoming_data')">
+                            <v-list-item-action>
+                                <v-icon>update</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Datos Entrantes</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item v-if="isLogged && permiso('OP_CONF_CITAS')" link @click="dirigir('/setting/missed_appointments')">
+                            <v-list-item-action>
+                                <v-icon>pending_actions</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Citas Ausentes</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item v-if="isLogged && permiso('OP_CONF_WOLKVOX')" link @click="dirigir('/setting/wolkvox')">
+                            <v-list-item-action>
+                                <v-icon>headphones</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Wolkvox</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list-group>
 
                     
-                    <v-list-item v-if="isLogged && user" link @click="dirigir('/profile/user')">
+                    <v-list-item v-if="isLogged" link @click="dirigir('/profile/user')">
                         <v-list-item-action>
                             <v-icon>person</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title>Usuario</v-list-item-title>
+                            <v-list-item-title>Mi perfil</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
 
@@ -298,7 +310,7 @@
 
                 <v-divider></v-divider>
 
-                <v-list-item v-if="isLogged && user" link @click.prevent="processLogout()">
+                <v-list-item v-if="isLogged" link @click.prevent="processLogout()">
                     <v-list-item-action>
                         <v-icon>exit_to_app</v-icon>
                     </v-list-item-action>
@@ -323,9 +335,12 @@
             <v-toolbar-title>{{titulo}}</v-toolbar-title>
         </v-app-bar>
 
+
         <v-content>  
             <router-view></router-view>
         </v-content>
+
+        
 
         <v-footer color="blue-grey" class="white--text text-center">
             <v-card-text>
@@ -357,12 +372,13 @@ export default {
     data: () => ({
         drawer: null,
         model: 0,
-        user:null
+        user:null,
+        overlay:false,
     }),
     props: {
         //source: String
     },
-    mounted() {
+    beforeMount() {
         this.consultarUsuario();
     },
     methods:{
@@ -386,8 +402,12 @@ export default {
             )
         },
         consultarUsuario(){
+            this.overlay = true;
             this.getUsuario().then((result) => {
                 this.user = result;
+                this.overlay = false;
+            }).finally(() =>  {
+                this.overlay = false;
             })
         }
     },
@@ -413,8 +433,8 @@ export default {
             return ''
         },
         esUsuario(){
-            if(this.user && this.user) {
-                return ['callcenter', 'coordinador', 'superusuario', 'recepcion'].indexOf(this.user.rol) >= 0
+            if(this.user && this.user.activo == 1) {
+                return true;
             }else{
                 return false;
             }
@@ -455,5 +475,42 @@ export default {
 .v-list-item .v-application .primary--text {
     color: white !important;
     caret-color: #fff !important;
+}
+.light::-webkit-scrollbar {
+  width: 15px;
+}
+
+.light::-webkit-scrollbar-track {
+  background: #e6e6e6;
+  border-left: 1px solid #dadada;
+}
+
+.light::-webkit-scrollbar-thumb {
+  background: #b0b0b0;
+  border: solid 3px #e6e6e6;
+  border-radius: 7px;
+}
+
+.light::-webkit-scrollbar-thumb:hover {
+  background: black;
+}
+
+.dark::-webkit-scrollbar {
+  width: 15px;
+}
+
+.dark::-webkit-scrollbar-track {
+  background: #202020;
+  border-left: 1px solid #2c2c2c;
+}
+
+.dark::-webkit-scrollbar-thumb {
+  background: #3e3e3e;
+  border: solid 3px #202020;
+  border-radius: 7px;
+}
+
+.dark::-webkit-scrollbar-thumb:hover {
+  background: white;
 }
 </style>

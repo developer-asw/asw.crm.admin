@@ -40,7 +40,7 @@ users:{
 	primer_apellido:,
 	segundo_apellido:,
 	sede_id:,
-	grupo_id:,[vendedor|administrador]
+	perfil_id:,[vendedor|administrador]
 }
 
 leads:{

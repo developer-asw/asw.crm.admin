@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import {mapState, mapActions, mapMutations} from 'vuex';
+import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
 import LeadsDownloads from '@/components/Leads/LeadsDownloads'
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
@@ -118,8 +118,8 @@ Vue.use(VueClipboard)
         loading: false,
         rowsPerPage : [100],
         menu: [
-            { title: 'Ver', url:'/seguimiento/',path:'/detail' },
-            { title: 'Editar', url:'/seguimiento/', path:'/edit' },
+            { title: 'Ver', url:'/lead/',path:'/detail' },
+            { title: 'Editar', url:'/lead/', path:'/edit' },
         ],
         payload: {
           search:'',
@@ -135,7 +135,11 @@ Vue.use(VueClipboard)
     },
     
     mounted () {
-      this.actualizar();
+      if (!this.permiso('OP_COORDINADOR')) {
+            this.$router.push('/')
+        } else {
+          this.actualizar();
+        }
     },
     methods:{
       ...mapActions({
@@ -199,6 +203,9 @@ Vue.use(VueClipboard)
       ...mapState({
         lista: state => state.callcenter_coordinator.lista,
         pagination: state => state.callcenter_coordinator.pagination,
+      }),
+      ...mapGetters({
+          permiso: 'auth/permiso', 
       }),
       getTitle(){
         return 'Callcenter Coordinator'

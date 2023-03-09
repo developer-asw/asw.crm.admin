@@ -30,6 +30,13 @@
 
                         <v-list-item two-line>
                             <v-list-item-content>
+                                <v-list-item-title>GESTIÓN</v-list-item-title>
+                                <v-list-item-subtitle class="texto">{{user && user.gestion ? user.gestion.nombre : ""}}</v-list-item-subtitle>
+                            </v-list-item-content>
+                        </v-list-item>
+
+                        <v-list-item two-line>
+                            <v-list-item-content>
                                 <v-list-item-title>DOCUMENTO</v-list-item-title>
                                 <v-list-item-subtitle class="texto">{{user && user.tipo_documento ? user.tipo_documento : ""}} {{user && user.numero_documento ? user.numero_documento : ""}}</v-list-item-subtitle>
                             </v-list-item-content>
@@ -49,7 +56,7 @@
                         <v-list-item two-line>
                             <v-list-item-content>
                                 <v-list-item-title>PERFIL</v-list-item-title>
-                                <v-list-item-subtitle class="texto">{{user && user.grupo ? user.grupo.nombre : ''}}</v-list-item-subtitle>
+                                <v-list-item-subtitle class="texto">{{user && user.perfil ? user.perfil.nombre : ''}}</v-list-item-subtitle>
                             </v-list-item-content>
                         </v-list-item>
                         <v-list-item two-line v-if="user && user.grupo_callcenter">
@@ -62,8 +69,8 @@
                             <v-list-item-content>
                                 <v-list-item-title>SEDES PERMITIDAS</v-list-item-title>
                                 <v-list-item-subtitle class="texto">
-                                    <v-row justify="center" align="center" v-if="user && user.sedes">                                        
-                                        <v-chip v-for="(item) in user.sedes" :key="item.id">
+                                    <v-row justify="center" align="center" v-if="user && user.sedes_permitidas">                                        
+                                        <v-chip v-for="(item) in user.sedes_permitidas" :key="item.id" class="ma-1" color="primary" variant="outlined">
                                             {{item.nombre}}
                                         </v-chip>
                                     </v-row>
@@ -114,6 +121,7 @@ export default {
         query: Object,
     },
     mounted() {
+        console.log(this.user)
         
     },
     methods:{

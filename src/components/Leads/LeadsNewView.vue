@@ -362,7 +362,7 @@
                 this.dialog.show = false;
                 let id = this.dialog.resultados.length > 0 ? this.dialog.resultados[0]._id: null;
                 if(id) {
-                    this.$router.push(`/seguimiento/${id}/detail`);
+                    this.$router.push(`/lead/${id}/detail`);
                 }
             },
             submitHandler(){

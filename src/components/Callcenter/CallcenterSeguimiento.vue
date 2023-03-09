@@ -117,8 +117,8 @@ export default {
             search: '',
             leadSeleccionado:null,
             menu: [
-                { title: 'Ver', url:'/seguimiento/',path:'/detail' },
-                { title: 'Editar', url:'/seguimiento/', path:'/edit' },
+                { title: 'Ver', url:'/lead/',path:'/detail' },
+                { title: 'Editar', url:'/lead/', path:'/edit' },
             ],
             payload: {
                 search:'',
@@ -204,7 +204,7 @@ export default {
         ...mapState({
             lista: state => state.callcenter.lista,
             pagination: state => state.callcenter.pagination,
-            user: state => state.auth.user,   
+            user: state => state.auth.user_info,   
         }),
         getTitle(){
             return 'Seguimiento'

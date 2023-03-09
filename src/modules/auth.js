@@ -1,8 +1,9 @@
 import Vue from 'vue';
 
 const state = {
-  user: null,
-  user_info:null,
+  user: undefined,
+  user_info:undefined,
+  url_no_permitida:'/',
   logged: !!window.localStorage.getItem('_token')
 };
 
@@ -69,18 +70,30 @@ const actions = {
 
 const getters = {
   permiso: (state) => (permiso) => {
-    if(state.user_info && state.user_info.permisos) {
-      return state.user_info.permisos.find((element)=>{
-        return element == permiso
+    if (state.user_info && state.user_info.perfil && state.user_info.perfil.nombre == "Superusuario") return true;
+    else if(state.user_info && state.user_info.perfil && state.user_info.perfil.permisos) {
+      return state.user_info.perfil.permisos.find((element)=>{
+        return element.codigo == permiso
       })
-    }else if(state.user && state.user.data && state.user.data.permisos) {
-      return state.user.data.permisos.find((element)=>{
-        return element == permiso
-      })
-    }else{
+    } else {
+      let user = null;
+      if(window.localStorage.getItem('_token')) {
+        const token = window.localStorage.getItem('_token');
+        const jwtDecode = require('jwt-decode');
+        user = jwtDecode(token);
+      }
+      if (user && user.data && user.data.perfil_id == 1) {
+        return true;
+      }
+      let permisos = JSON.parse(window.localStorage.getItem('_permissions'));
+      console.log(permisos)
+      if (permisos && permisos) {
+        return permisos.find((element)=>{
+          return element == permiso
+        })
+      }
       return false;
     }
-    
   },
 };
 
@@ -95,11 +108,13 @@ const mutations = {
     } else {
       state.logged = false;
       state.user = null;
-
     }
   },
   setUserInfo: (state, user) => {
     state.user_info = user;
+    if (user.perfil && user.perfil.permisos) {
+      window.localStorage.setItem('_permissions', JSON.stringify(user.perfil.permisos.map(x => x.codigo)));
+    }
   },
   //establecemos el estado del usuario
   setLogged: (state, logged) => {

@@ -20,6 +20,7 @@ import consultar from '@/modules/consultar';
 import coordinador from '@/modules/coordinador';
 import admisiones from '@/modules/admisiones';
 import management from '@/modules/management';
+import user from '@/modules/user';
 
 Vue.use(Vuex)
 
@@ -151,6 +152,7 @@ const store = new Vuex.Store({
     coordinador,
     admisiones,
     management,
+    user,
   }
 })
 
