@@ -160,10 +160,7 @@ export default {
                 prioridad: 1,
             },
             leadSeleccionado:null,
-            prioridad:[ 
-                { text: 'Tareas Pendientes', value:1 }, 
-                { text: 'No contestan - Pendientes', value : 2 },
-            ],
+            prioridad:[],
             llamadas_estados:[],
             estados: {},
             limits:[
