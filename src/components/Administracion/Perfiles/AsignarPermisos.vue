@@ -62,7 +62,7 @@
 <script>
 import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
 import Vue from 'vue'
-import { ref } from 'vue'
+// import { ref } from 'vue'
 import VueClipboard from 'vue-clipboard2'
 
 Vue.use(VueClipboard)
@@ -241,7 +241,7 @@ export default {
             if (encontrado > -1 && this.permisos_padres[encontrado].hijos && this.permisos_padres[encontrado].hijos.length > 0) {
                 this.permisos_padres[encontrado].hijos.forEach(x => x.seleccionado = item.seleccionado);
             }
-            this.permisos_padres = ref(this.permisos_padres);
+            // this.permisos_padres = ref(this.permisos_padres);
         },
         consola() {
             console.log(this.permisos_padres)

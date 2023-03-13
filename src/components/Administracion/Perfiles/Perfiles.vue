@@ -9,6 +9,9 @@
                 <v-btn small color="info" dark @click="init" :disabled="loading">
                     <v-icon>autorenew</v-icon>
                 </v-btn>
+                <v-btn small color="info" dark @click="consola" :disabled="loading">
+                    <v-icon>info</v-icon>
+                </v-btn>
             </v-toolbar-items>
         </v-toolbar>
         <v-card>
@@ -108,7 +111,7 @@
 <script>
 import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
 import Vue from 'vue'
-import { reactive } from 'vue'
+// import { reactive } from 'vue'
 import VueClipboard from 'vue-clipboard2'
 
 Vue.use(VueClipboard)
@@ -204,7 +207,7 @@ export default {
         editRecord (item) {
             this.reiniciar();
             let registro = {... item}
-            this.registro = reactive(registro);
+            this.registro = registro;
             this.dialog = true
         },
         deleteRecord (item) {
@@ -306,7 +309,10 @@ export default {
             if (this.$refs.formEdit) {
                 this.$refs.formEdit.resetValidation()
             }
-        }
+        },
+        consola() {
+            console.log(this.registro)
+        },
     },
     computed: {
         ...mapState({

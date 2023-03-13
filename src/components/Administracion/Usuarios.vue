@@ -9,6 +9,9 @@
                 <v-btn small color="info" dark @click="init" :disabled="loading">
                     <v-icon>autorenew</v-icon>
                 </v-btn>
+                <v-btn small color="info" dark @click="consola" :disabled="loading">
+                    <v-icon>info</v-icon>
+                </v-btn>
             </v-toolbar-items>
         </v-toolbar>
         <v-card>
@@ -175,7 +178,7 @@
 <script>
 import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
 import Vue from 'vue'
-import { reactive } from 'vue'
+// import { reactive } from 'vue'
 import VueClipboard from 'vue-clipboard2'
 
 Vue.use(VueClipboard)
@@ -326,7 +329,7 @@ export default {
             let usuario = {... item}
             // Object.assign(this.usuario, item)
             usuario.sedes = item.sedes_permitidas && item.sedes_permitidas.length ? item.sedes_permitidas.map(x => x.id) : [];
-            this.usuario = reactive(usuario);
+            this.usuario = usuario;
             this.dialog = true
         },
         editPassword(item) {
@@ -432,7 +435,10 @@ export default {
             if (this.$refs.formPass) {
                 this.$refs.formPass.resetValidation()
             }
-        }
+        },
+        consola() {
+            console.log(this.usuario)
+        },
     },
     computed: {
         ...mapState({
