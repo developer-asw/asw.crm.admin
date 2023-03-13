@@ -90,7 +90,7 @@
                     >
                         <template v-slot:activator>
                             <v-list-item-content>
-                                <v-list-item-title v-if="[8,10,11].includes(user.perfil_id)">Callcenter</v-list-item-title>
+                                <v-list-item-title v-if="user && [8,10,11].includes(user.perfil_id)">Callcenter</v-list-item-title>
                                 <v-list-item-title v-else>Coordinador</v-list-item-title>
                                 <!--<v-list-item-title>Gestión</v-list-item-title>-->
                             </v-list-item-content>

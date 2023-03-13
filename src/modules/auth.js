@@ -82,6 +82,7 @@ const getters = {
         const jwtDecode = require('jwt-decode');
         user = jwtDecode(token);
       }
+      console.log(user);
       if (user && user.data && user.data.perfil_id == 1) {
         return true;
       }
