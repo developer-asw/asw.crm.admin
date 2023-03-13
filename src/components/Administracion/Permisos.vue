@@ -31,7 +31,7 @@
 
             </v-card-title>
             <v-data-table
-                dense
+                
                 :headers="headers"
                 :items="lista"
                 :search="payload.search"
