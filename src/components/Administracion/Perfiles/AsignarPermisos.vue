@@ -40,7 +40,7 @@
                             <v-list-item-title v-text="item.nombre"></v-list-item-title>
                         </v-list-item-content>
                         <v-list-item-action>
-                            <v-checkbox  v-model="item.seleccionado" :value="item.seleccionado" @click.prevent="" @change="check(item)"></v-checkbox>
+                            <v-checkbox  v-model="item.seleccionado" :value="item.seleccionado" @change="check(item)"></v-checkbox>
                         </v-list-item-action>
                     </template>
                     <v-list-item-group class="pl-10">
@@ -49,7 +49,7 @@
                                 <v-list-item-title v-text="child.nombre"></v-list-item-title>
                             </v-list-item-content>
                             <v-list-item-action>
-                                <v-checkbox  v-model="child.seleccionado" :value="child.seleccionado" @click.prevent="" @change="check(child)"></v-checkbox>
+                                <v-checkbox  v-model="child.seleccionado" :value="child.seleccionado" @change="check(child)"></v-checkbox>
                             </v-list-item-action>
                         </v-list-item>
                     </v-list-item-group>
