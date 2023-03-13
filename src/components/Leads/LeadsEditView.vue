@@ -180,7 +180,7 @@
                                 </v-row>
                             </v-col>
 
-                            <v-col cols="12" sm="6" md="4" lg="3" v-if="userChangeCall == true">
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="userChangeCall">
                                 <v-row>
                                     <v-col cols="11" sm="10">
                                         <v-select v-model="lead.tipo_ususario" label="Tipo de Usuario" :items="tipos_usuarios" item-text="title" item-value="value" :disabled="disabled"></v-select>
