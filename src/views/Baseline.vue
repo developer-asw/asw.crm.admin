@@ -361,7 +361,7 @@
 
         <v-footer color="blue-grey" class="white--text text-center">
             <v-card-text>
-                American School Way &copy; 2022 - v.1.3.8
+                American School Way &copy; 2023 - v.1.4.0
             </v-card-text>
         </v-footer>
         
