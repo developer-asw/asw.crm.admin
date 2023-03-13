@@ -24,6 +24,9 @@ Vue.http.interceptors.push((request, next) => {
 
 //moment
 import VueMoment from 'vue-moment'
+import { ref, reactive } from 'vue'
+Vue.use(ref);
+Vue.use(reactive);
  
 Vue.use(VueMoment)
 

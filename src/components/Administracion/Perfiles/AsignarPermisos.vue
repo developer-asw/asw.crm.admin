@@ -32,7 +32,7 @@
                 </v-text-field> -->
 
             </v-card-title>
-            <v-list permanent :close-on-content-click="false">
+            <v-list>
                 <v-subheader>Permisos</v-subheader> 
                 <v-list-group v-for="item in permisos_padres" :key="item.id" :value="true" permanent :prepend-icon="item.action" no-action sub-group>
                     <template v-slot:activator>                       
