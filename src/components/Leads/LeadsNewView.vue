@@ -215,7 +215,7 @@
         },
         methods: {
             ...mapActions({
-                listarSedes: 'sedes/fetchLista',
+                listarSedes: 'sedes/fetch',
                 generarLeads: 'leads/crearLeads',
                 listarOrigenes: 'listado/fetchListaLeads',
                 buscarEmailLead: 'leads/buscarEmail',
