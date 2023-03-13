@@ -10,11 +10,30 @@ const state = {
     }
 };
 
-const actions = {
+const actions = { 
+    fetchListadoGrupos: ({ commit }, data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.get('users/perfiles/grupos', data).then(
+                response => {
+                    resolve(response.data)
+                }
+            ).catch(error => {
+                commit('setError', error, {
+                    root: true
+                });
+                reject(error)
+            }).finally(() => {
+                commit('stopProcessing', null, {
+                    root: true
+                });
+            })
+        });
+    },
     fetchListado: ({ commit }, data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-            Vue.http.get('users', data).then(
+            Vue.http.get('users/perfiles', data).then(
                 response => {
                     commit('setLista', response.data);
                     resolve(response.data)
@@ -31,10 +50,10 @@ const actions = {
             })
         });
     },
-    saveUser: ({ commit }, data) => {
+    saveRecord: ({ commit }, data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-            Vue.http.post('users', data).then(
+            Vue.http.post('users/perfiles', data).then(
                 response => {
                     resolve(response.data)
                 }
@@ -50,10 +69,10 @@ const actions = {
             })
         });
     },
-    updateUser: ({ commit }, data) => {
+    updateRecord: ({ commit }, data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-            Vue.http.post(`users/${data.id}`, data).then(
+            Vue.http.post(`users/perfiles/${data.id}`, data).then(
                 response => {
                     resolve(response.data)
                 }
@@ -69,10 +88,10 @@ const actions = {
             })
         });
     },
-    updatePassword: ({ commit }, data) => {
+    deleteRecord: ({ commit }, data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-            Vue.http.patch(`users/${data.id}/password`, data).then(
+            Vue.http.post(`users/perfiles/${data.id}/eliminar`, data).then(
                 response => {
                     resolve(response.data)
                 }
@@ -88,10 +107,10 @@ const actions = {
             })
         });
     },
-    fetchListadoGrupos: ({ commit }, data) => {
+    fetchPermisos: ({ commit }, data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-            Vue.http.get('users/grupos', data).then(
+            Vue.http.get(`users/perfiles/${data.id}/permisos`, data).then(
                 response => {
                     resolve(response.data)
                 }
@@ -107,10 +126,10 @@ const actions = {
             })
         });
     },
-    fetchListadoGestion: ({ commit }, data) => {
+    fetchPerfil: ({ commit }, data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-            Vue.http.get('users/gestiones', data).then(
+            Vue.http.get(`users/perfiles/${data.id}`, data).then(
                 response => {
                     resolve(response.data)
                 }
@@ -126,29 +145,10 @@ const actions = {
             })
         });
     },
-    fetchListadoPerfiles: ({ commit }, data) => {
+    updatePermisos: ({ commit }, data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
-            Vue.http.get('users/perfiles', data).then(
-                response => {
-                    resolve(response.data)
-                }
-            ).catch(error => {
-                commit('setError', error, {
-                    root: true
-                });
-                reject(error)
-            }).finally(() => {
-                commit('stopProcessing', null, {
-                    root: true
-                });
-            })
-        });
-    },
-    fetchListadoTiposDocumentos: ({ commit }, data) => {
-        commit('startProcessing', null, { root: true });
-        return new Promise((resolve, reject) => {
-            Vue.http.get('users/tipos_documentos', data).then(
+            Vue.http.post(`users/perfiles/${data.perfil_id}/permisos`, data).then(
                 response => {
                     resolve(response.data)
                 }

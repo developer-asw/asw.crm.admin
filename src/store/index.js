@@ -21,6 +21,8 @@ import coordinador from '@/modules/coordinador';
 import admisiones from '@/modules/admisiones';
 import management from '@/modules/management';
 import user from '@/modules/user';
+import perfiles from '@/modules/perfiles';
+import permisos from '@/modules/permisos';
 
 Vue.use(Vuex)
 
@@ -153,6 +155,8 @@ const store = new Vuex.Store({
     admisiones,
     management,
     user,
+    perfiles,
+    permisos
   }
 })
 

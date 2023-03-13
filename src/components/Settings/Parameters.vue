@@ -56,14 +56,14 @@
                                     <v-container>
                                         <v-row>
                                             <v-col cols="12">
-                                                <v-text-field v-model="editedItem.clave" label="Nombre" :disabled="true"></v-text-field>
+                                                <v-text-field v-model="registro.clave" label="Nombre" :disabled="true"></v-text-field>
                                             </v-col>
                                             <v-col cols="12">
-                                                <v-text-field v-model="editedItem.descripcion" label="Descripción"></v-text-field>
+                                                <v-text-field v-model="registro.descripcion" label="Descripción"></v-text-field>
                                             </v-col>
                                             <v-col cols="12">
-                                                <v-select v-if="editedItem.valores_validos && getValoresValidos.length > 0" v-model="editedItem.valor" label="valor" :items="getValoresValidos"></v-select>
-                                                <v-text-field v-else v-model="editedItem.valor" label="valor"></v-text-field>
+                                                <v-select v-if="registro.valores_validos && getValoresValidos.length > 0" v-model="registro.valor" label="valor" :items="getValoresValidos"></v-select>
+                                                <v-text-field v-else v-model="registro.valor" label="valor"></v-text-field>
                                             </v-col>
                                         </v-row>
                                     </v-container>
@@ -81,10 +81,10 @@
                         </v-dialog>
                         <v-dialog v-model="dialogDelete" max-width="500px">
                             <v-card>
-                                <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+                                <v-card-title class="text-h5">¿Estás seguro de que quieres eliminar este parametro '{{registro.clave}}'?</v-card-title>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+                                        <v-btn color="blue darken-1" text @click="closeDelete">Cancelar</v-btn>
                                         <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
                                         <v-spacer></v-spacer>
                                     </v-card-actions>
@@ -136,7 +136,7 @@ export default {
             editedIndex: -1,
             dialog: false,
             dialogDelete: false,
-            editedItem: {},
+            registro: {},
         }
     },
     props : {
@@ -191,13 +191,13 @@ export default {
         ////////////////
         editItem (item) {
             this.editedIndex = this.lista.indexOf(item)
-            this.editedItem = Object.assign({}, item)
+            this.registro = Object.assign({}, item)
             this.dialog = true
         },
 
         deleteItem (item) {
             this.editedIndex = this.lista.indexOf(item)
-            this.editedItem = Object.assign({}, item)
+            this.registro = Object.assign({}, item)
             this.dialogDelete = true
         },
 
@@ -209,7 +209,7 @@ export default {
         close () {
             this.dialog = false
             this.$nextTick(() => {
-            this.editedItem = Object.assign({}, this.defaultItem)
+            this.registro = Object.assign({}, this.defaultItem)
             this.editedIndex = -1
             })
         },
@@ -217,18 +217,18 @@ export default {
         closeDelete () {
             this.dialogDelete = false
             this.$nextTick(() => {
-            this.editedItem = Object.assign({}, this.defaultItem)
+            this.registro = Object.assign({}, this.defaultItem)
             this.editedIndex = -1
             })
         },
 
         save () {
             if (this.editedIndex > -1) {
-                Object.assign(this.lista[this.editedIndex], this.editedItem)
+                Object.assign(this.lista[this.editedIndex], this.registro)
             } else {
-                this.lista.push(this.editedItem)
+                this.lista.push(this.registro)
             }
-            this.saveParametro(this.editedItem);
+            this.saveParametro(this.registro);
             this.close()
         }
     },
@@ -244,8 +244,8 @@ export default {
         }),
         getValoresValidos() {
             let result = [];
-            if(this.editedItem.valores_validos) {
-                result = this.editedItem.valores_validos.split(",");
+            if(this.registro.valores_validos) {
+                result = this.registro.valores_validos.split(",");
                 return result;
             }
             return result;

@@ -39,12 +39,12 @@
                 </v-row>
             </v-card-title>
             <v-data-table
-                v-if="lista && lista.length"
                 :headers="headers"
                 :items="lista"
                 :loading="loading"
                 :search="payload.search"
                 loading-text="Loading... Please wait"
+                no-data-text="Registro no encontrado"
                 class="elevation-1">
                 <template v-slot:[`item.ultima_llamada.fecha_solicitado`]="{ item }">
                     <span v-if="item.ultima_llamada && item.ultima_llamada.fecha_solicitado">{{presentDate(item.ultima_llamada.fecha_solicitado)}}</span>
@@ -66,6 +66,9 @@
                 <template v-slot:[`item.sede`]="{ item }">
                     <span v-if="item.sede_full">{{item.sede_full.nombre}}</span>
                     <span v-else>{{item.sede}}</span>
+                </template>
+                <template>
+                    
                 </template>
             </v-data-table>
         </v-card>

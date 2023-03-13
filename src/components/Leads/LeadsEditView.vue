@@ -239,7 +239,7 @@
                                     </template>
                                     <v-date-picker v-model="lead.fecha_contacto" scrollable>
                                         <v-spacer></v-spacer>
-                                        <v-btn text color="primary" @click="date.modal = false">Cancel</v-btn>
+                                        <v-btn text color="primary" @click="date.modal = false">Cancelar</v-btn>
                                         <v-btn text color="primary" @click="$refs.date.save(lead.fecha_contacto)">OK</v-btn>
                                     </v-date-picker>
                                 </v-dialog>
@@ -253,7 +253,7 @@
                                     </template>
                                     <v-time-picker v-model="lead.hora_contacto" scrollable full-width :disabled="disabled">
                                         <v-spacer></v-spacer> 
-                                        <v-btn text color="primary" @click="time.modal = false">Cancel</v-btn>
+                                        <v-btn text color="primary" @click="time.modal = false">Cancelar</v-btn>
                                         <v-btn text color="primary" @click="$refs.time.save(lead.hora_contacto)">OK</v-btn>
                                     </v-time-picker>
                                 </v-dialog>

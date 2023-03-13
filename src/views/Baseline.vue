@@ -245,12 +245,29 @@
                             </v-list-item-content>
                         </template>
                         
-                        <v-list-item v-if="isLogged && permiso('OP_ADM_USUARIOS')" link @click="dirigir('/management/user')">
+                        <v-list-item v-if="isLogged && permiso('OP_ADM_USUARIOS')" link @click="dirigir('/administracion/usuarios')">
                             <v-list-item-action>
                                 <v-icon>group</v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
                                 <v-list-item-title>Usuarios</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+
+                        <v-list-item v-if="isLogged && permiso('OP_ADM_PERFILES')" link @click="dirigir('/administracion/perfiles')">
+                            <v-list-item-action>
+                                <v-icon>group</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Perfiles</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item v-if="isLogged && permiso('OP_ADM_PERMISOS')" link @click="dirigir('/administracion/permisos')">
+                            <v-list-item-action>
+                                <v-icon>group</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Permisos</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list-group>

@@ -86,7 +86,6 @@ const getters = {
         return true;
       }
       let permisos = JSON.parse(window.localStorage.getItem('_permissions'));
-      console.log(permisos)
       if (permisos && permisos) {
         return permisos.find((element)=>{
           return element == permiso

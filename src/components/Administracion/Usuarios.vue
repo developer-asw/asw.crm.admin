@@ -102,17 +102,17 @@
                                                         <v-checkbox v-model="usuario.todas_sedes" :disabled="loading" label="Todas las sedes"></v-checkbox>
                                                     </v-col>
                                                     <v-col cols="12" sm="6">
-                                                        <v-select v-model="usuario.sedes" :disabled="loading || usuario.todas_sedes" :items="sedes" label="Sedes" item-text="nombre" item-value="id" multiple :rules="rules.sedes" @change="seleccionarSede()"></v-select>
-                                                    </v-col>
-                                                    <v-col cols="12" sm="6">
                                                         <v-select v-model="usuario.sede_id" :disabled="loading" :items="sedesSeleccionadas" label="Sede principal" item-text="nombre" item-value="id" :rules="rules.sede_principal"></v-select>
+                                                    </v-col>
+                                                    <v-col cols="12" sm="12">
+                                                        <v-select v-model="usuario.sedes" :disabled="loading || usuario.todas_sedes" :items="sedes" label="Sedes" item-text="nombre" item-value="id" multiple :rules="rules.sedes" @change="seleccionarSede()"></v-select>
                                                     </v-col>
                                                 </v-row>
                                         </v-container>
                                     </v-card-text>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn color="blue darken-1" :disabled="loading" text @click="close"> Cancel</v-btn>
+                                        <v-btn color="blue darken-1" :disabled="loading" text @click="close"> Cancelar</v-btn>
                                         <v-btn color="red darken-1" :disabled="loading" text type="submit">Guardar</v-btn>
                                     </v-card-actions>
                                 </v-form>
@@ -120,10 +120,10 @@
                         </v-dialog>
                         <v-dialog v-model="dialogDelete" max-width="500px">
                             <v-card>
-                                <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+                                <v-card-title class="text-h5">¿Estás seguro de que quieres eliminar este usuario '{{usuario.primer_nombre}} {{usuario.primer_apellido}}'?</v-card-title>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+                                        <v-btn color="blue darken-1" text @click="closeDelete">Cancelar</v-btn>
                                         <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
                                         <v-spacer></v-spacer>
                                     </v-card-actions>
@@ -175,12 +175,13 @@
 <script>
 import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
 import Vue from 'vue'
+import { reactive } from 'vue'
 import VueClipboard from 'vue-clipboard2'
 
 Vue.use(VueClipboard)
 
 export default {
-    name: 'User',
+    name: 'Usuarios',
     components: {
       
     },
@@ -230,7 +231,7 @@ export default {
             fetchLista: 'user/fetchListado',
             fetchListaGrupos: 'user/fetchListadoGrupos',
             fetchListaGestion: 'user/fetchListadoGestion',
-            fetchListaPerfiles: 'user/fetchListadoPerfiles',
+            fetchListaPerfiles: 'perfiles/fetchListado',
             fetchListaSedes: 'sedes/fetch',
             fetchListaTiposDocumentos: 'user/fetchListadoTiposDocumentos',
             saveRecord: 'user/saveUser',
@@ -321,13 +322,11 @@ export default {
         },
 
         editUser (item) {
-            console.log(item)
             this.reiniciar();
-            
-            this.usuario = {... item}
+            let usuario = {... item}
             // Object.assign(this.usuario, item)
-            console.log(this.usuario)
-            this.usuario.sedes = item.sedes_permitidas && item.sedes_permitidas.length ? item.sedes_permitidas.map(x => x.id) : [];
+            usuario.sedes = item.sedes_permitidas && item.sedes_permitidas.length ? item.sedes_permitidas.map(x => x.id) : [];
+            this.usuario = reactive(usuario);
             this.dialog = true
         },
         editPassword(item) {

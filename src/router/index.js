@@ -31,7 +31,10 @@ import IncomingData from '@/components/Settings/IncomingData';
 import Parameters from '@/components/Settings/Parameters';
 import Wolkvox from '@/components/Settings/Wolkvox';
 
-import ManagementUser from '@/components/Management/User';
+import ADMUsuario from '@/components/Administracion/Usuarios';
+import ADMPerfiles from '@/components/Administracion/Perfiles/Perfiles';
+import ADMPermisos from '@/components/Administracion/Permisos';
+import ADMAsignarPermisos from '@/components/Administracion/Perfiles/AsignarPermisos';
 import ProfileUser from '@/components/Profile/User';
 import CallcenterMatriculados from '../components/ApoyoFinanciero/CallcenterMatriculados';
 import OrientadorList from '@/components/Coordinador/OrientadorList';
@@ -242,10 +245,28 @@ const routes = [
     meta: { Auth: true, title: 'Settings - Wolkvox' , view: 'baseline'},
   },
   {
-    path: '/management/user',
-    name: 'ManagementUser',
-    component: ManagementUser,
-    meta: { Auth: true, title: 'Management - User' , view: 'baseline'},
+    path: '/administracion/usuarios',
+    name: 'ADMUsuario',
+    component: ADMUsuario,
+    meta: { Auth: true, title: 'Administración - Usuarios' , view: 'baseline'},
+  },
+  {
+    path: '/administracion/perfiles',
+    name: 'ADMPerfiles',
+    component: ADMPerfiles,
+    meta: { Auth: true, title: 'Administración - Perfiles' , view: 'baseline'},
+  },
+  {
+    path: '/administracion/permisos',
+    name: 'ADMPermisos',
+    component: ADMPermisos,
+    meta: { Auth: true, title: 'Administración - Perfiles' , view: 'baseline'},
+  },
+  {
+    path: '/administracion/perfiles/:id/permisos',
+    name: 'ADMAsignarPermisos',
+    component: ADMAsignarPermisos,
+    meta: { Auth: true, title: 'Administración - Perfiles - Permisos' , view: 'baseline'},
   },
   {
     path: '/profile/user',
