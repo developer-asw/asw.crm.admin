@@ -374,7 +374,7 @@
         },
         methods: {
             ...mapActions({
-                listarSedes: 'sedes/fetchLista',
+                listarSedes: 'sedes/fetch',
                 actualizarLeads: 'leads/actualizarLeads',
                 consultar: 'leads/fetchDetalle',
                 listarOrigenes: 'listado/fetchListaLeads',
