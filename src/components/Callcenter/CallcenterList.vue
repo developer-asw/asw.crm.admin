@@ -161,12 +161,8 @@ export default {
             },
             leadSeleccionado:null,
             prioridad:[ 
-                // { text: 'Predeterminado', value: null }, 
                 { text: 'Tareas Pendientes', value:1 }, 
-                { text: 'Datos Entrantes', value:0 }, 
-                // { text: 'Datos Nuevos', value:4 }, 
                 { text: 'No contestan - Pendientes', value : 2 },
-                { text: 'Marcado Manual', value : 3 },
             ],
             llamadas_estados:[],
             estados: {},
