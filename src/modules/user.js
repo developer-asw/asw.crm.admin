@@ -13,9 +13,8 @@ const state = {
 const actions = {
     fetchListado: ({ commit }, data) => {
         commit('startProcessing', null, { root: true });
-        console.log(data)
         return new Promise((resolve, reject) => {
-            Vue.http.get('users', data).then(
+            Vue.http.get('users', {params: data}).then(
                 response => {
                     commit('setLista', response.data);
                     resolve(response.data)

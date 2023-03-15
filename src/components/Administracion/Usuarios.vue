@@ -107,7 +107,7 @@
                                                         <v-select v-model="usuario.sede_id" :disabled="loading" :items="sedesSeleccionadas" label="Sede principal" item-text="nombre" item-value="id" :rules="rules.sede_principal"></v-select>
                                                     </v-col>
                                                     <v-col cols="12" sm="12">
-                                                        <v-select v-model="usuario.sedes" :disabled="loading || usuario.todas_sedes" :items="sedes" label="Sedes" item-text="nombre" item-value="id" multiple :rules="rules.sedes" @change="seleccionarSede()"></v-select>
+                                                        <v-select v-model="usuario.sedes" :disabled="loading || (usuario.todas_sedes ? true : false)" :items="sedes" label="Sedes" item-text="nombre" item-value="id" multiple :rules="rules.sedes" @change="seleccionarSede()"></v-select>
                                                     </v-col>
                                                     <v-col cols="12" sm="6" v-if="usuario.id" >
                                                         <v-select v-model="usuario.activo" :disabled="loading" :items="estados" label="Estado" item-text="valor" item-value="clave"></v-select>
@@ -257,8 +257,8 @@ export default {
         },
         getUsers() {
             this.loading = true;
-            console.log(this.payload)
-            this.fetchLista(this.payload)
+            let payload = {activo:this.payload.activo};
+            this.fetchLista(payload)
             .finally(() => {
                 this.loading = false;
             })
@@ -331,7 +331,7 @@ export default {
         editUser (item) {
             this.reiniciar();
             let usuario = {... item}
-            // Object.assign(this.usuario, item)
+            console.log(item);
             usuario.sedes = item.sedes_permitidas && item.sedes_permitidas.length ? item.sedes_permitidas.map(x => x.id) : [];
             this.usuario = usuario;
             this.dialog = true
