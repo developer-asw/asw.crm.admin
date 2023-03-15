@@ -86,7 +86,7 @@
                                                         <v-text-field v-model="usuario.email" :disabled="loading" label="Correo Electronico" :rules="rules.email"></v-text-field>
                                                     </v-col>
                                                     <v-col cols="12" sm="6">
-                                                        <v-text-field v-model="usuario.movil" :disabled="loading" label="Celular" :rules="rules.movil"></v-text-field>
+                                                        <v-text-field v-model="usuario.movil" :disabled="loading" label="Celular"></v-text-field>
                                                     </v-col>
                                                     <v-col cols="12" sm="6">
                                                         <v-text-field v-model="usuario.telefono" :disabled="loading" label="Teléfono"></v-text-field>
@@ -361,6 +361,7 @@ export default {
                 if (result.code == 1) {
                     this.getUsers();
                     this.setInfo(result.mensaje);
+                    this.reiniciar();
                     this.dialog = false;
                 }
                 else {
@@ -380,6 +381,7 @@ export default {
                 if (result.code == 1) {
                     this.getUsers();
                     this.setInfo(result.mensaje);
+                    this.reiniciar();
                     this.dialog = false;
                 }
                 else {
@@ -466,9 +468,6 @@ export default {
         },
         rules(){
             const _rules = {}
-            _rules.movil= [
-                v => !!v || 'El campo Celular es necesario'
-            ];
             _rules.email= [
                 v => !!v || 'El campo E-mail es necesario',
                 v => /.+@.+\..+/.test(v) || 'El E-mail debe ser válido',
