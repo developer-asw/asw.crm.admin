@@ -46,6 +46,7 @@ const actions = {
     return new Promise((resolve, reject) => {
         Vue.http.get('usuario/informacion',data).then(
             response =>{
+              window.localStorage.setItem('_usr', JSON.stringify(response.data));
               commit('setUserInfo', response.data);
               resolve(response.data)
             }
@@ -76,14 +77,15 @@ const getters = {
         return element.codigo == permiso
       })
     } else {
-      let user = null;
-      if(window.localStorage.getItem('_token')) {
-        const token = window.localStorage.getItem('_token');
-        const jwtDecode = require('jwt-decode');
-        user = jwtDecode(token);
-      }
-      if (user && user.data && user.data.perfil_id == 1) {
-        return true;
+      let user = JSON.parse(window.localStorage.getItem('_usr'));
+      if (user) {
+        if (user.perfil_id == 1) {
+          return true;
+        } else if(user.perfil && user.perfil.permisos) {
+          return user.perfil.permisos.find((element)=>{
+            return element.codigo == permiso
+          })
+        }
       }
       let permisos = JSON.parse(window.localStorage.getItem('_permissions'));
       if (permisos && permisos) {

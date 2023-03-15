@@ -13,6 +13,7 @@ const state = {
 const actions = {
     fetchListado: ({ commit }, data) => {
         commit('startProcessing', null, { root: true });
+        console.log(data)
         return new Promise((resolve, reject) => {
             Vue.http.get('users', data).then(
                 response => {

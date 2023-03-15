@@ -16,7 +16,7 @@
         </v-toolbar>
         <v-card>
             <v-card-title>
-                <!--<v-select v-model="payload.prioridad" :items="prioridad" label="Prioridad" item-text="text" item-value="value" :disabled="loading" @change="init"></v-select>-->
+                <v-select v-model="payload.activo" :items="estados" label="Activos" item-text="valor" item-value="clave" :disabled="loading" @change="getUsers"></v-select>
 
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -108,6 +108,9 @@
                                                     </v-col>
                                                     <v-col cols="12" sm="12">
                                                         <v-select v-model="usuario.sedes" :disabled="loading || usuario.todas_sedes" :items="sedes" label="Sedes" item-text="nombre" item-value="id" multiple :rules="rules.sedes" @change="seleccionarSede()"></v-select>
+                                                    </v-col>
+                                                    <v-col cols="12" sm="6" v-if="usuario.id" >
+                                                        <v-select v-model="usuario.activo" :disabled="loading" :items="estados" label="Estado" item-text="valor" item-value="clave"></v-select>
                                                     </v-col>
                                                 </v-row>
                                         </v-container>
@@ -202,6 +205,8 @@ export default {
             search: '',
             payload: {
                 prioridad: 1,
+                activo:1,
+                search:null,
             },
             //// Edits elementes
             editedIndex: -1,
@@ -213,7 +218,8 @@ export default {
             grupos:[],
             perfiles:[],
             sedes:[],
-            tipos_documentos:[]
+            tipos_documentos:[],
+            estados:[{clave:1, valor:"Activo"}, {clave:0, valor:"No activo"}]
         }
     },
     props : {
@@ -251,6 +257,7 @@ export default {
         },
         getUsers() {
             this.loading = true;
+            console.log(this.payload)
             this.fetchLista(this.payload)
             .finally(() => {
                 this.loading = false;
