@@ -305,7 +305,8 @@
             coordinadores:[],
             fechaMinima:null,
             horaMinima:null,
-            horaMaxima:null
+            horaMaxima:null,
+            procesando:false,
         }),
 
         props: {

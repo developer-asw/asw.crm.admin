@@ -92,13 +92,16 @@
                                                         <v-text-field v-model="usuario.telefono" :disabled="loading" label="Teléfono"></v-text-field>
                                                     </v-col>
                                                     <v-col cols="12" sm="6">
+                                                        <v-select v-model="usuario.gestion_id" :disabled="loading" :items="gestiones" label="Gestión" item-text="nombre" item-value="id" :rules="rules.gestion" @change="cambiarGestion()"></v-select>
+                                                    </v-col>
+                                                    <v-col cols="12" sm="6">
+                                                        <v-select v-model="usuario.grupo_usuario_id" :disabled="loading" :items="gruposUsuarios" label="Grupo" item-text="codigo" item-value="id"></v-select>
+                                                    </v-col>
+                                                    <v-col cols="12" sm="6">
                                                         <v-select v-model="usuario.perfil_id" :disabled="loading" :items="perfiles" label="Perfiles" item-text="nombre" item-value="id" :rules="rules.pefil"></v-select>
                                                     </v-col>
                                                     <v-col cols="12" sm="6">
-                                                        <v-select v-model="usuario.gestion_id" :disabled="loading" :items="gestiones" label="Gestión" item-text="nombre" item-value="id" :rules="rules.gestion"></v-select>
-                                                    </v-col>
-                                                    <v-col cols="12" sm="6">
-                                                        <v-select v-model="usuario.grupo_id" :disabled="loading" :items="grupos" label="Grupo" item-text="codigo" item-value="id"></v-select>
+                                                        <v-select v-model="usuario.grupo_call_id" :disabled="loading" :items="gruposCall" label="Grupo Call" item-text="codigo" item-value="id"></v-select>
                                                     </v-col>
                                                     <v-col cols="12" sm="6">
                                                         <v-checkbox v-model="usuario.todas_sedes" :disabled="loading" label="Todas las sedes"></v-checkbox>
@@ -162,10 +165,10 @@
                     </v-toolbar>
                 </template>
                 <template v-slot:[`item.actions`]="{ item }">
-                    <v-icon small @click="editUser(item)">
+                    <v-icon @click="editUser(item)">
                         edit
                     </v-icon>
-                    <v-icon small @click="editPassword(item)">
+                    <v-icon @click="editPassword(item)">
                         key
                     </v-icon>
                     <!--<v-icon small @click="deleteItem(item)">
@@ -215,7 +218,8 @@ export default {
             dialogDelete: false,
             usuario: {},
             gestiones:[],
-            grupos:[],
+            gruposCall:[],
+            gruposUsuarios:[],
             perfiles:[],
             sedes:[],
             tipos_documentos:[],
@@ -236,6 +240,7 @@ export default {
         ...mapActions({
             fetchLista: 'user/fetchListado',
             fetchListaGrupos: 'user/fetchListadoGrupos',
+            fetchListaGruposCall: 'user/fetchListadoGruposCall',
             fetchListaGestion: 'user/fetchListadoGestion',
             fetchListaPerfiles: 'perfiles/fetchListado',
             fetchListaSedes: 'sedes/fetch',
@@ -250,6 +255,7 @@ export default {
         init(){
             this.getGestiones();
             this.getGrupos();
+            this.getGruposCall();
             this.getPerfiles();
             this.getSedes();
             this.getTiposDocumentos();
@@ -275,8 +281,18 @@ export default {
         getGrupos() {
             this.loading = true;
             this.fetchListaGrupos(this.payload).then(result =>  {
-                this.grupos = result;
-                this.grupos.unshift({id:null,codigo:""});
+                this.gruposUsuarios = result;
+                this.gruposUsuarios.unshift({id:null,codigo:""});
+            })
+            .finally(() => {
+                this.loading = false;
+            })
+        },
+        getGruposCall() {
+            this.loading = true;
+            this.fetchListaGruposCall(this.payload).then(result =>  {
+                this.gruposCall = result;
+                this.gruposCall.unshift({id:null,codigo:""});
             })
             .finally(() => {
                 this.loading = false;
@@ -330,8 +346,7 @@ export default {
 
         editUser (item) {
             this.reiniciar();
-            let usuario = {... item}
-            console.log(item);
+            let usuario = {... item};
             usuario.sedes = item.sedes_permitidas && item.sedes_permitidas.length ? item.sedes_permitidas.map(x => x.id) : [];
             this.usuario = usuario;
             this.dialog = true
@@ -442,15 +457,25 @@ export default {
                 this.$refs.formPass.resetValidation()
             }
         },
+        cambiarGestion() {
+            if (this.usuario.gestion_id == 4) {
+                this.usuario.grupo_usuario_id = 5;
+            } else if (this.usuario.gestion_id == 2) {
+                this.usuario.grupo_usuario_id = 3;
+            } else {
+                // this.usuario.grupo_usuario_id = null;
+            }
+        },
         consola() {
             console.log(this.usuario)
+            console.log(this._user.data)
         },
     },
     computed: {
         ...mapState({
             lista: state => state.user.lista,
             pagination: state => state.user.pagination,
-            user: state => state.auth.user_info,   
+            user: state => state.auth.user_info,
         }),
         ...mapGetters({
             permiso: 'auth/permiso', 

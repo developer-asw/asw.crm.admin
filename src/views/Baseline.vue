@@ -353,9 +353,9 @@
         </v-app-bar>
 
 
-        <v-content>  
+        <v-main>  
             <router-view></router-view>
-        </v-content>
+        </v-main>
 
         
 
@@ -398,6 +398,13 @@ export default {
     beforeMount() {
         this.consultarUsuario();
     },
+    mounted() {
+        if (this.user_logged.data && this.user_logged.data.nombre_perfil) {
+            // console.log("Ok")
+        } else {
+            this.processLogout();
+        }
+    },
     methods:{
         ...mapActions({
             logout: 'auth/logout',
@@ -431,6 +438,7 @@ export default {
     computed: {
         ...mapState({
             isLogged: state => state.auth.logged,
+            user_logged: state => state.auth.user,
             processing: state => state.processing,
             error: state => state.error,
             isErrorShowed: state => state.isErrorShowed,
