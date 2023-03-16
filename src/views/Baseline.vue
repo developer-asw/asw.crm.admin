@@ -353,9 +353,9 @@
         </v-app-bar>
 
 
-        <v-main>  
+        <v-content>  
             <router-view></router-view>
-        </v-main>
+        </v-content>
 
         
 

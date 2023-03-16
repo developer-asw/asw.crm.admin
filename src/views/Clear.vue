@@ -1,8 +1,8 @@
 <template>
     <v-app id="inspire">
-        <v-main>
+        <v-content>
             <router-view></router-view>
-        </v-main>
+        </v-content>
     </v-app>
 </template>
 <script>
