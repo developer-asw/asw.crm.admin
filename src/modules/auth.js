@@ -96,6 +96,28 @@ const getters = {
       return false;
     }
   },
+  permisoOnly: (state) => (permiso) => {
+    if(state.user_info && state.user_info.perfil && state.user_info.perfil.permisos) {
+      return state.user_info.perfil.permisos.find((element)=>{
+        return element.codigo == permiso
+      })
+    }
+    let user = JSON.parse(window.localStorage.getItem('_usr'));
+    if (user) {
+      if(user.perfil && user.perfil.permisos) {
+        return user.perfil.permisos.find((element)=>{
+          return element.codigo == permiso
+        })
+      }
+    }
+    let permisos = JSON.parse(window.localStorage.getItem('_permissions'));
+      if (permisos && permisos) {
+        return permisos.find((element)=>{
+          return element == permiso
+        })
+      }
+      return false;
+  }
 };
 
 const mutations = {

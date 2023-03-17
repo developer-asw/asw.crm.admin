@@ -146,7 +146,7 @@ export default {
           setInfo: 'setInfo',
       }),
       dirigir(value, ruta){
-          console.log(value);
+          console.log(`${ruta.url}${value._id}${ruta.path}`);
         this.$router.push(`${ruta.url}${value._id}${ruta.path}`)
       },
       actualizar(){

@@ -129,7 +129,6 @@
       </v-card-text>
     </v-card>
     <v-dialog v-model="llamada.show" max-width="800px">
-      <!-- <CallcenterRegistrarLlamada :lead_id="leadId" @cerrar="cerrarDialog" @actualizar="actualizar" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada> -->
       <CallcenterRegistrarLlamada
         :key="leadId"
         :lead_id="leadId"
@@ -139,17 +138,29 @@
         @copiarDatoParent="copiarDato"
       ></CallcenterRegistrarLlamada>
     </v-dialog>
+    <v-dialog v-model="llamadaApoyoFinanciero.show" max-width="800px">
+      <RegistrarLlamadaApoyoFinanciero
+        :key="leadId"
+        :lead_id="leadId"
+        :ocultar="false"
+        @cerrar="cerrarDialog"
+        @actualizar="actualizar"
+        @copiarDatoParent="copiarDato"
+      ></RegistrarLlamadaApoyoFinanciero>
+    </v-dialog>
   </div>
 </template>
 <script>
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 
 import CallcenterRegistrarLlamada from "@/components/Callcenter/CallcenterRegistrarLlamada";
+import RegistrarLlamadaApoyoFinanciero from "@/components/ApoyoFinanciero/RegistrarLlamada";
 import LeadHistoricView from "@/components/Leads/Detail/LeadHistoricView";
 
 export default {
   name: "LeadsDetailView",
   components: {
+    RegistrarLlamadaApoyoFinanciero,
     CallcenterRegistrarLlamada,
     LeadHistoricView,
   },
@@ -177,6 +188,9 @@ export default {
     ],
     detalles: [],
     llamada: {
+      show: false,
+    },
+    llamadaApoyoFinanciero: {
       show: false,
     },
     estados: {},
@@ -211,7 +225,11 @@ export default {
       this.$router.back();
     },
     cerrarDialog() {
-      this.llamada.show = false;
+      if (this.permisoOnly('OP_AF_REGISTRAR_LLAMADA')) {
+        this.llamadaApoyoFinanciero.show = false;
+      } else {
+        this.llamada.show = false;
+      }
     },
     actualizar() {
       this.traerLead();
@@ -270,11 +288,17 @@ export default {
     },
     historyOnly() {
       this.setInfo("Ya lo llamaron");
-      this.llamada.show = true;
-      this.llamada.llamada = false;
+      if (this.permisoOnly('OP_AF_REGISTRAR_LLAMADA')) {
+        this.llamadaApoyoFinanciero.show = true;
+        this.llamadaApoyoFinanciero.llamada = false;
+      } else {
+        this.llamada.show = true;
+        this.llamada.llamada = false;
+      }
     },
     viewItem() {
       this.loading = true;
+      console.log(this.permisoOnly('OP_AF_REGISTRAR_LLAMADA'));
       this.fetchDetalle({ id: this.leadId })
         .then((result) => {
           if (result.datos && result.datos.uid) {
@@ -296,8 +320,13 @@ export default {
             }
           }
           //this.viewDialog = true
-          this.llamada.show = true;
-          this.llamada.llamada = true;
+          if (this.permisoOnly('OP_AF_REGISTRAR_LLAMADA')) {
+            this.llamadaApoyoFinanciero.show = true;
+            this.llamadaApoyoFinanciero.llamada = true;
+          } else {
+            this.llamada.show = true;
+            this.llamada.llamada = true;
+          }
         })
         .finally(() => {
           this.loading = false;
@@ -339,7 +368,9 @@ export default {
     ...mapState({
       error: (state) => state.error,
     }),
-    ...mapGetters({}),
+    ...mapGetters({
+      permisoOnly: 'auth/permisoOnly', 
+    }),
     getTitle() {
       return "Leads";
     },

@@ -159,6 +159,7 @@
             fechaMinima:null,
             horaMinima:null,
             horaMaxima:null,
+            procesando:false,
         }),
 
         props: {
