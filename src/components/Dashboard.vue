@@ -13,6 +13,7 @@
     <v-container v-if="esUsuario">
         <v-layout text-center wrap>
             <v-container>
+
                 <v-row justify="space-around">
                     <v-col cols="12" sm="4" md="3">
                         
@@ -277,7 +278,9 @@
 <script>
 
 import { mapState, mapActions, mapMutations } from 'vuex';
-import VueApexCharts from 'vue-apexcharts'
+import VueApexCharts from 'vue-apexcharts';
+import config from '@/modules/config';
+import util from "@/utility/util";
 
 export default {
 name: 'Dashboard',
@@ -312,7 +315,8 @@ name: 'Dashboard',
         tagSelected: [],
         sedes:[],
         sede:null,
-        loading:false
+        loading:false,
+        util:util
     }),
     mounted() {
         this.setDates();
@@ -322,16 +326,16 @@ name: 'Dashboard',
     methods: {
         ...mapActions({
             consultarDashboard: 'dashboard/consultarDashboard',
-            consulta1:  'dashboard/consultarDatosPorDia',
-            consulta2:  'dashboard/consultarDatosGeneral',
-            consulta3:  'dashboard/consultarDatosMasterclass',
-            consulta4:  'dashboard/consultarDatosPresencial',
-            consulta5:  'dashboard/consultarDatosMatriculado',
-            consulta6:  'dashboard/consultarDatosPorSede',
+            consulta1: 'dashboard/consultarDatosPorDia',
+            consulta2: 'dashboard/consultarDatosGeneral',
+            consulta3: 'dashboard/consultarDatosMasterclass',
+            consulta4: 'dashboard/consultarDatosPresencial',
+            consulta5: 'dashboard/consultarDatosMatriculado',
+            consulta6: 'dashboard/consultarDatosPorSede',
             consulta8: 'dashboard/consultarDatosDigitalVsCitas',
             consulta9: 'dashboard/consultarDatosOtrosVsCitas',
             consulta10: 'dashboard/consultarDatosAgendadasVsAsistidas',
-            consulta11:  'dashboard/consultarMatriculasPorSede',
+            consulta11: 'dashboard/consultarMatriculasPorSede',
             consulta12: 'dashboard/consultarOrigenesMasterclass',
             listarSedes: 'sedes/fetchLista',
         }),
@@ -341,16 +345,40 @@ name: 'Dashboard',
         }),
         consultar() {
             this.loading = true;
-            let payload = {desde: this.dates[0], hasta: this.dates[1], sede:this.sede, tipo: this.tagSelected};
-            this.consulta1(payload)
+            this.payload = {desde: this.dates[0], hasta: this.dates[1], sede:this.sede, tipo: this.tagSelected};
+            this.consulta1(this.payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_por_dia = result.datos;
+                        if (this.d.grafico_por_dia.data && this.d.grafico_por_dia.data.chartOptions && this.d.grafico_por_dia.data.chartOptions.chart) {
+                            this.d.grafico_por_dia.data.chartOptions.chart = {selection: { enabled: true }};
+                            var $this = this;
+                            this.d.grafico_por_dia.data.chartOptions.chart.toolbar= {
+                                tools: {
+                                    download: false,
+                                    selection: false,
+                                    zoom: false,
+                                    zoomin: false,
+                                    zoomout: false,
+                                    pan: false,
+                                    reset: false | '<img src="/img/download-icon.png" width="20">',
+                                    customIcons: [{
+                                        icon: '<img src="/img/download-icon.png" width="20">',
+                                        title: 'Descargar datos.',
+                                        click: function () {
+                                            $this.descargar('datos_por_dia');
+                                        },
+                                        appendTo: 'top' // left / top means the button will be appended to the left most or right most position
+                                    }]
+                                }
+                            };
+                        }
+                        console.log(this.d.grafico_por_dia)
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
             this.loading = true;
-            this.consulta2(payload)
+            this.consulta2(this.payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.general = result.datos;
@@ -358,7 +386,7 @@ name: 'Dashboard',
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
             this.loading = true;
-            this.consulta3(payload)
+            this.consulta3(this.payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_masterclass = result.datos;
@@ -366,7 +394,7 @@ name: 'Dashboard',
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
             this.loading = true;
-            this.consulta4(payload)
+            this.consulta4(this.payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_presencial = result.datos;
@@ -374,7 +402,7 @@ name: 'Dashboard',
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
             this.loading = true;
-            this.consulta5(payload)
+            this.consulta5(this.payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_matriculado = result.datos;
@@ -382,7 +410,7 @@ name: 'Dashboard',
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
             this.loading = true;
-            this.consulta6(payload)
+            this.consulta6(this.payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_por_sede = result.datos;
@@ -391,35 +419,35 @@ name: 'Dashboard',
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; });
             
             this.loading = true;
-            this.consulta8(payload)
+            this.consulta8(this.payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_digital_vs_citas = result.datos;
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            this.consulta9(payload)
+            this.consulta9(this.payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_otros_vs_citas = result.datos;
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            this.consulta10(payload)
+            this.consulta10(this.payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_agendadas_vs_asistidas = result.datos;
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            this.consulta11(payload)
+            this.consulta11(this.payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_matriculas_sede = result.datos;
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            this.consulta12(payload)
+            this.consulta12(this.payload)
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_origenes_masterclass = result.datos;
@@ -457,6 +485,19 @@ name: 'Dashboard',
             }).finally(() => {
 
             });
+        },
+        descargar(grafica){
+            this.loading = true
+            let payload = {...this.payload};
+            payload.usuario_email = this.userEmail;
+            payload.download_tipo = 'csv';
+            payload.grafica = grafica;
+            
+            let ruta = config.ROOT_API + "leads/descargar_dashboard?" + this.util.getUrlString(payload);
+            let newWindow = window.open(ruta, '_blank');
+            newWindow.focus();
+            newWindow.onblur = function() { newWindow.close(); };
+            this.loading = false
         }
 
     },
@@ -483,6 +524,9 @@ name: 'Dashboard',
             }else{
                 return false;
             }
+        },
+        userEmail() {
+            return this.user && this.user ? this.user.email : null
         }
     },
     watch: {

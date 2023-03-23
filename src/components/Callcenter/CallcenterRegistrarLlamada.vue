@@ -571,7 +571,7 @@
                             return true
                         }
                     }
-                } else if(this.estado == 'matricula_nueva' || this.estado == 'matricula_recaudo'|| this.estado == 'servicio_cliente') {
+                } else if(['servicio_cliente','matricula_recaudo','matricula_nueva','convenio'].includes(this.estado)) {
                     return true;
                 }else if(this.estado=='matriculado'){
                     if(this.resolucion.tipo){

@@ -127,7 +127,7 @@ import CallcenterRegistrarLlamada from '@/components/Callcenter/CallcenterRegist
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
 import config from '@/modules/config';
-import util from "../../utility/util";
+import util from "@/utility/util";
 
 Vue.use(VueClipboard)
 

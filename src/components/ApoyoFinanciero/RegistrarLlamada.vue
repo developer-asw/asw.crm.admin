@@ -391,7 +391,7 @@
                     if (this.resolucion.observacion){
                         return true;
                     }
-                }else if(this.estado=='converso_realizado'){
+                }else if(['converso_realizado','convenio'].includes(this.estado)){
                     return true
                 }
 				return false;
