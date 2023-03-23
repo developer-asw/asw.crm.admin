@@ -199,7 +199,9 @@ export default {
                 { text: 'ID', value: 'id' },
                 { text: 'Documento', value: 'numero_documento' },
                 { text: 'Primer Nombre', value: 'primer_nombre' },
+                { text: 'Segundo Nombre', value: 'segundo_nombre' },
                 { text: 'Primer Apellido', value: 'primer_apellido' },
+                { text: 'Segundo Apellido', value: 'segundo_apellido' },
                 { text: 'Email', value: 'email' },
                 { text: 'Perfil', value: 'perfil.nombre' },
                 { text: 'Actions', value: 'actions', sortable: false }
