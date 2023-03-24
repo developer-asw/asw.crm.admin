@@ -290,9 +290,8 @@ name: 'Dashboard',
     data: () => ({
         estadisticas: [],
         panels: 0,
-        // panels: [0],
         itemsPerPage:6,
-        dates: ['2019-09-10', '2019-09-20'],
+        dates: [],
         menu1: false,
         shown: false,
         d:{
