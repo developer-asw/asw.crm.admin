@@ -183,7 +183,7 @@ export default {
       { text: "", value: "tipo" },
       { text: "Fecha", value: "fecha" },
       { text: "Usuario", value: "usuario.nombre" },
-      { text: "Acción", value: "accion" },
+      { text: "Llamar", value: "accion" },
       { text: "Observación", value: "observacion" },
     ],
     detalles: [],

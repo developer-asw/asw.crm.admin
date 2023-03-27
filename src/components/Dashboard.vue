@@ -354,7 +354,7 @@ name: 'Dashboard',
                             var $this = this;
                             this.d.grafico_por_dia.data.chartOptions.chart.toolbar= {
                                 tools: {
-                                    download: false,
+                                    download: false, // descargar csv datos dibujados
                                     selection: false,
                                     zoom: false,
                                     zoomin: false,
@@ -372,7 +372,6 @@ name: 'Dashboard',
                                 }
                             };
                         }
-                        console.log(this.d.grafico_por_dia)
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
@@ -422,6 +421,29 @@ name: 'Dashboard',
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_digital_vs_citas = result.datos;
+                        if (this.d.grafico_digital_vs_citas.data && this.d.grafico_digital_vs_citas.data.chartOptions && this.d.grafico_digital_vs_citas.data.chartOptions.chart) {
+                            this.d.grafico_digital_vs_citas.data.chartOptions.chart = {selection: { enabled: true }};
+                            var $this = this;
+                            this.d.grafico_digital_vs_citas.data.chartOptions.chart.toolbar= {
+                                tools: {
+                                    download: false, // descargar csv datos dibujados
+                                    selection: false,
+                                    zoom: false,
+                                    zoomin: false,
+                                    zoomout: false,
+                                    pan: false,
+                                    reset: false | '<img src="/img/download-icon.png" width="20">',
+                                    customIcons: [{
+                                        icon: '<img src="/img/download-icon.png" width="20">',
+                                        title: 'Descargar datos.',
+                                        click: function () {
+                                            $this.descargar('digital_vs_citas');
+                                        },
+                                        appendTo: 'top' // left / top means the button will be appended to the left most or right most position
+                                    }]
+                                }
+                            };
+                        }
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })

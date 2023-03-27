@@ -72,7 +72,7 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
                 { text: '', value: 'tipo' },
                 { text: 'Fecha', value: 'fecha', width: '20%', align: 'center' },
                 { text: 'Usuario', value: 'usuario.nombre', align: 'right' },
-                { text: 'Acción', value: 'accion' },
+                { text: 'Llamar', value: 'accion' },
                 { text: 'Observación', value: 'observacion' },
             ],
             detalles:[],
