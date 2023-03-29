@@ -163,7 +163,7 @@
                                         line-width="2"
                                         padding="16">
                                     <template v-slot:label="item">
-                                        {{ item.value }}
+                                        {{ item.value }} 
                                     </template>
                                     </v-sparkline>
                                 </v-sheet>
@@ -174,6 +174,9 @@
                                     <small>{{d.grafico_masterclass.title}}</small>
                                     <br>
                                     {{d.grafico_masterclass.total}}
+                                    <v-btn small colot="info" text @click="descargar('datos_masterclass')">
+                                        <v-icon>cloud_download</v-icon>
+                                    </v-btn>
                                 </div>
                             </v-card-text>
 
@@ -207,6 +210,9 @@
                                     <small>{{d.grafico_presencial.title}}</small>
                                     <br>
                                     {{d.grafico_presencial.total}}
+                                    <v-btn small colot="info" text @click="descargar('datos_presencial')">
+                                        <v-icon>cloud_download</v-icon>
+                                    </v-btn>
                                 </div>
                             </v-card-text>
 
@@ -240,6 +246,9 @@
                                     <small>{{d.grafico_matriculado.title}}</small>
                                     <br>
                                     {{d.grafico_matriculado.total}}
+                                    <v-btn small colot="info" text @click="descargar('datos_matriculados')">
+                                        <v-icon>cloud_download</v-icon>
+                                    </v-btn>
                                 </div>
                             </v-card-text>
 
@@ -412,6 +421,31 @@ name: 'Dashboard',
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_por_sede = result.datos;
+                        if (this.d.grafico_por_sede.data && this.d.grafico_por_sede.data.chartOptions) {
+                            var $this = this;
+                            if (!this.d.grafico_por_sede.data.chartOptions.chart) {
+                                this.d.grafico_por_sede.data.chartOptions.chart = {selection: { enabled: true }};
+                            }
+                            this.d.grafico_por_sede.data.chartOptions.chart.toolbar= {
+                                tools: {
+                                    download: false, // descargar csv datos dibujados
+                                    selection: false,
+                                    zoom: false,
+                                    zoomin: false,
+                                    zoomout: false,
+                                    pan: false,
+                                    reset: false | '<img src="/img/download-icon.png" width="20">',
+                                    customIcons: [{
+                                        icon: '<img src="/img/download-icon.png" width="20">',
+                                        title: 'Descargar datos.',
+                                        click: function () {
+                                            $this.descargar('datos_por_sede');
+                                        },
+                                        appendTo: 'top' // left / top means the button will be appended to the left most or right most position
+                                    }]
+                                }
+                            };
+                        }
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; });
@@ -421,10 +455,12 @@ name: 'Dashboard',
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_digital_vs_citas = result.datos;
-                        if (this.d.grafico_digital_vs_citas.data && this.d.grafico_digital_vs_citas.data.chartOptions && this.d.grafico_digital_vs_citas.data.chartOptions.chart) {
-                            this.d.grafico_digital_vs_citas.data.chartOptions.chart = {selection: { enabled: true }};
+                        if (this.d.grafico_digital_vs_citas.data && this.d.grafico_digital_vs_citas.data.barOptions) {
                             var $this = this;
-                            this.d.grafico_digital_vs_citas.data.chartOptions.chart.toolbar= {
+                            if (!this.d.grafico_digital_vs_citas.data.barOptions.chart) {
+                                this.d.grafico_digital_vs_citas.data.barOptions.chart = {selection: { enabled: true }};
+                            }
+                            this.d.grafico_digital_vs_citas.data.barOptions.chart.toolbar= {
                                 tools: {
                                     download: false, // descargar csv datos dibujados
                                     selection: false,
@@ -451,6 +487,31 @@ name: 'Dashboard',
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_otros_vs_citas = result.datos;
+                        if (this.d.grafico_otros_vs_citas.data && this.d.grafico_otros_vs_citas.data.barOptions) {
+                            var $this = this;
+                            if (!this.d.grafico_otros_vs_citas.data.barOptions.chart) {
+                                this.d.grafico_otros_vs_citas.data.barOptions.chart = {selection: { enabled: true }};
+                            }
+                            this.d.grafico_otros_vs_citas.data.barOptions.chart.toolbar= {
+                                tools: {
+                                    download: false, // descargar csv datos dibujados
+                                    selection: false,
+                                    zoom: false,
+                                    zoomin: false,
+                                    zoomout: false,
+                                    pan: false,
+                                    reset: false | '<img src="/img/download-icon.png" width="20">',
+                                    customIcons: [{
+                                        icon: '<img src="/img/download-icon.png" width="20">',
+                                        title: 'Descargar datos.',
+                                        click: function () {
+                                            $this.descargar('otrosmedios_vs_citas');
+                                        },
+                                        appendTo: 'top' // left / top means the button will be appended to the left most or right most position
+                                    }]
+                                }
+                            };
+                        }
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
@@ -458,6 +519,31 @@ name: 'Dashboard',
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_agendadas_vs_asistidas = result.datos;
+                        if (this.d.grafico_agendadas_vs_asistidas.data && this.d.grafico_agendadas_vs_asistidas.data.barOptions) {
+                            var $this = this;
+                            if (!this.d.grafico_agendadas_vs_asistidas.data.barOptions.chart) {
+                                this.d.grafico_agendadas_vs_asistidas.data.barOptions.chart = {selection: { enabled: true }};
+                            }
+                            this.d.grafico_agendadas_vs_asistidas.data.barOptions.chart.toolbar= {
+                                tools: {
+                                    download: false, // descargar csv datos dibujados
+                                    selection: false,
+                                    zoom: false,
+                                    zoomin: false,
+                                    zoomout: false,
+                                    pan: false,
+                                    reset: false | '<img src="/img/download-icon.png" width="20">',
+                                    customIcons: [{
+                                        icon: '<img src="/img/download-icon.png" width="20">',
+                                        title: 'Descargar datos.',
+                                        click: function () {
+                                            $this.descargar('agendadas_vs_asistidas');
+                                        },
+                                        appendTo: 'top' // left / top means the button will be appended to the left most or right most position
+                                    }]
+                                }
+                            };
+                        }
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
@@ -465,6 +551,31 @@ name: 'Dashboard',
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_matriculas_sede = result.datos;
+                        if (this.d.grafico_matriculas_sede.data && this.d.grafico_matriculas_sede.data.chartOptions) {
+                            var $this = this;
+                            if (!this.d.grafico_matriculas_sede.data.chartOptions.chart) {
+                                this.d.grafico_matriculas_sede.data.chartOptions.chart = {selection: { enabled: true }};
+                            }
+                            this.d.grafico_matriculas_sede.data.chartOptions.chart.toolbar= {
+                                tools: {
+                                    download: false, // descargar csv datos dibujados
+                                    selection: false,
+                                    zoom: false,
+                                    zoomin: false,
+                                    zoomout: false,
+                                    pan: false,
+                                    reset: false | '<img src="/img/download-icon.png" width="20">',
+                                    customIcons: [{
+                                        icon: '<img src="/img/download-icon.png" width="20">',
+                                        title: 'Descargar datos.',
+                                        click: function () {
+                                            $this.descargar('matriculas_por_sede');
+                                        },
+                                        appendTo: 'top' // left / top means the button will be appended to the left most or right most position
+                                    }]
+                                }
+                            };
+                        }
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
@@ -472,6 +583,31 @@ name: 'Dashboard',
                 .then(result => {
                     if(result && result.datos) {
                         this.d.grafico_origenes_masterclass = result.datos;
+                        if (this.d.grafico_origenes_masterclass.data && this.d.grafico_origenes_masterclass.data.barOptions) {
+                            var $this = this;
+                            if (!this.d.grafico_origenes_masterclass.data.barOptions.chart) {
+                                this.d.grafico_origenes_masterclass.data.barOptions.chart = {selection: { enabled: true }};
+                            }
+                            this.d.grafico_origenes_masterclass.data.barOptions.chart.toolbar= {
+                                tools: {
+                                    download: false, // descargar csv datos dibujados
+                                    selection: false,
+                                    zoom: false,
+                                    zoomin: false,
+                                    zoomout: false,
+                                    pan: false,
+                                    reset: false | '<img src="/img/download-icon.png" width="20">',
+                                    customIcons: [{
+                                        icon: '<img src="/img/download-icon.png" width="20">',
+                                        title: 'Descargar datos.',
+                                        click: function () {
+                                            $this.descargar('masterclass_vs_citas');
+                                        },
+                                        appendTo: 'top' // left / top means the button will be appended to the left most or right most position
+                                    }]
+                                }
+                            };
+                        }
                     }
                 })
                 .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
