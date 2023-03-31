@@ -319,6 +319,12 @@ export default {
             if (this.permiso('OP_CALL_VENTA_TELEFONICA')) {
                 this.prioridad.push({ text: 'Venta Teléfonica', value : 6 })
             }
+            if (this.permiso('OP_CALL_TOTALES')) {
+                this.prioridad.push({ text: 'Totales', value : 10 })
+            }
+            if (this.permiso('OP_CALL_TOTALES_AGENTES')) {
+                this.prioridad.push({ text: 'Totales Callcenter', value : 11 })
+            }
             if (grupo_usuario == 'grupo_fredy' || this.permiso('OP_CALL_GRUPO_1')){
                 if (!this.prioridad.find(x => x.text == 'Grupo 1')) {
                     this.prioridad.push({ text: 'Grupo 1', value : 7 })

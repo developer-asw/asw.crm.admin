@@ -1,10 +1,14 @@
 <template>
     <div>
         <v-toolbar flat light dense color="blue lighten-5">
-            <v-toolbar-title>{{getTitle}}</v-toolbar-title>
+            <v-toolbar-title>
+                <v-btn small text @click="$router.back()" :disabled="loading">
+                    <v-icon>arrow_back_ios</v-icon>
+                </v-btn>
+                {{getTitle}}
+            </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
-                <!--<v-subheader>{{pagination.total}} registros</v-subheader>-->
                 <v-subheader> - </v-subheader>
                 <v-btn small color="info" dark @click="init" :disabled="loading">
                     <v-icon>autorenew</v-icon>

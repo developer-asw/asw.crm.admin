@@ -5,6 +5,9 @@
     <v-toolbar flat light dense color="blue lighten-5">
     
       <v-toolbar-title>
+        <v-btn small text @click="$router.back()" :disabled="loading">
+            <v-icon>arrow_back_ios</v-icon>
+        </v-btn>
         {{getTitle}}
       </v-toolbar-title>
       <v-spacer></v-spacer>

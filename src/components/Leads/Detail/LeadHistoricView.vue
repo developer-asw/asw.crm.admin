@@ -17,9 +17,8 @@
                             
                             <v-layout column style="height: 110vh">       
                                 <v-flex md6 style="overflow: auto">  
-                                    <v-card>
+                                    <!--<v-card>
                                         <v-card-text>
-                                            <!--<div class="font-weight-bold ms-1 mb-2">Today</div>-->
                                             <v-timeline density="compact" align="start">
                                                 <v-timeline-item v-for="(item, index) in historial" :key="index" :dot-color="item.color" size="x-small">
                                                 <div class="mb-4">
@@ -36,8 +35,8 @@
                                                 </v-timeline-item>
                                             </v-timeline>
                                         </v-card-text>
-                                    </v-card>
-                                    <!--<v-data-table dense full-width  
+                                    </v-card>-->
+                                    <v-data-table dense full-width  
                                         v-if="historial && historial.length > 0"
                                         :headers="headerHistorial" 
                                         :items="historial" 
@@ -76,7 +75,7 @@
                                                 {{ getObservacion(item) }}
                                             </td>
                                         </template>
-                                    </v-data-table>-->
+                                    </v-data-table>
                                 </v-flex>
                             </v-layout>
                         </v-expansion-panel-content>
@@ -90,8 +89,8 @@
                         <v-col cols="12">
                             <v-layout column style="height: 110vh">       
                                 <v-flex md6 style="overflow: auto">  
-                                    <v-card>
-                                        <!--<v-img height="200" src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg" cover class="text-white">
+                                    <!--<v-card>
+                                        <v-img height="200" src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg" cover class="text-white">
                                         <v-toolbar color="rgba(0, 0, 0, 0)" theme="dark">
                                             <template v-slot:prepend>
                                             <v-btn icon="$menu"></v-btn>
@@ -106,9 +105,9 @@
                                             </template>
                                         </v-toolbar>
                                         </v-img>-->
-
-                                        <v-card-text>
-                                            <!--<div class="font-weight-bold ms-1 mb-2">Today</div>-->
+                                        
+                                        <!--<div class="font-weight-bold ms-1 mb-2">Today</div>-->
+                                        <!--<v-card-text>
                                             <v-timeline density="compact" align="start">
                                                 <v-timeline-item v-for="(item, index) in historial" :key="index" :dot-color="item.color" size="x-small">
                                                 <div class="mb-4">
@@ -125,8 +124,8 @@
                                                 </v-timeline-item>
                                             </v-timeline>
                                         </v-card-text>
-                                    </v-card>
-                                    <!--<v-data-table dense full-width  
+                                    </v-card>-->
+                                    <v-data-table dense full-width  
                                         v-if="historial && historial.length > 0"
                                         :headers="headerHistorial" 
                                         :items="historial" 
@@ -167,7 +166,7 @@
                                                 &raquo; {{ getObservacion(item) }}
                                             </td>
                                         </template>
-                                    </v-data-table>-->
+                                    </v-data-table>
                                 </v-flex>
                             </v-layout>
                         </v-col>
@@ -226,7 +225,7 @@ export default {
             { text: 'Fecha', value: 'fecha' },
             { text: 'Usuario', value: 'usuario.nombre' },
             { text: 'Evento', value: 'evento' },
-            { text: 'Llamar', value: 'accion' },
+            { text: 'Acción', value: 'accion' },
             // { text: 'Observación', value: 'observacion' },
             { text: '', value: 'data-table-expand' },
         ],
