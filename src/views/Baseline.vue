@@ -57,15 +57,6 @@
                         </v-list-item-content>
                     </v-list-item> -->
 
-                    <v-list-item v-if="isLogged && permiso('OP_PLANTILLAS')" link @click="dirigir('/plantillas')">
-                        <v-list-item-action>
-                            <v-icon>perm_media</v-icon>
-                        </v-list-item-action>
-                        <v-list-item-content>
-                            <v-list-item-title>Plantillas</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-
                     <v-list-group v-if="isLogged && permiso('OP_LEAD')" no-action sub-group>
                         <template v-slot:activator>
                             <v-list-item-content>
@@ -278,6 +269,15 @@
                                 <v-list-item-title>Configuración</v-list-item-title>
                             </v-list-item-content>
                         </template>
+                        
+                        <v-list-item v-if="isLogged && permiso('OP_PLANTILLAS')" link @click="dirigir('/plantillas')">
+                            <v-list-item-action>
+                                <v-icon>perm_media</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Plantillas</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
                         
                         <v-list-item v-if="isLogged && permiso('OP_CONF_PARAMETROS')" link @click="dirigir('/setting/parameters')">
                             <v-list-item-action>
