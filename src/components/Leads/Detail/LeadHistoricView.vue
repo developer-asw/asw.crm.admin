@@ -26,6 +26,7 @@
                                                     <div class="font-weight-normal">
                                                     <strong>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</strong> @{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
                                                     </div>
+                                                    <div>{{ item.evento }}</div>
                                                     <div>{{ item.accion }}</div>
                                                     <div>{{ item.observacion }}</div>
                                                 </div>
@@ -111,8 +112,9 @@
                                                     <div class="font-weight-normal">
                                                     <strong>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</strong> @{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
                                                     </div>
+                                                    <div><b>Evento:</b> {{ item.evento }}</div>
                                                     <div>{{ item.accion }}</div>
-                                                    <div>{{ item.observacion }}</div>
+                                                    <div><b>Observación:</b> {{ item.observacion }}</div>
                                                 </div>
                                                 </v-timeline-item>
                                             </v-timeline>
