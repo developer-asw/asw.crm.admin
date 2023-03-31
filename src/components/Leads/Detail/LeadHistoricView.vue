@@ -17,7 +17,23 @@
                             
                             <v-layout column style="height: 110vh">       
                                 <v-flex md6 style="overflow: auto">  
-                                    <v-data-table dense full-width  
+                                    <v-card>
+                                        <v-card-text>
+                                            <!--<div class="font-weight-bold ms-1 mb-2">Today</div>-->
+                                            <v-timeline density="compact" align="start">
+                                                <v-timeline-item v-for="(item, index) in historial" :key="index" :dot-color="item.color" size="x-small">
+                                                <div class="mb-4">
+                                                    <div class="font-weight-normal">
+                                                    <strong>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</strong> @{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
+                                                    </div>
+                                                    <div>{{ item.accion }}</div>
+                                                    <div>{{ item.observacion }}</div>
+                                                </div>
+                                                </v-timeline-item>
+                                            </v-timeline>
+                                        </v-card-text>
+                                    </v-card>
+                                    <!--<v-data-table dense full-width  
                                         v-if="historial && historial.length > 0"
                                         :headers="headerHistorial" 
                                         :items="historial" 
@@ -45,7 +61,6 @@
                                         
                                         <template v-slot:top>
                                             <v-toolbar flat>
-                                                <!-- <v-toolbar-title>HISTORIAL</v-toolbar-title> -->
                                                 <v-toolbar-title><v-icon>folder</v-icon></v-toolbar-title>
                                                 <v-divider class="mx-4" inset vertical></v-divider>
                                                 <v-spacer></v-spacer>
@@ -57,7 +72,7 @@
                                                 {{ getObservacion(item) }}
                                             </td>
                                         </template>
-                                    </v-data-table>
+                                    </v-data-table>-->
                                 </v-flex>
                             </v-layout>
                         </v-expansion-panel-content>
@@ -71,7 +86,39 @@
                         <v-col cols="12">
                             <v-layout column style="height: 110vh">       
                                 <v-flex md6 style="overflow: auto">  
-                                    <v-data-table dense full-width  
+                                    <v-card>
+                                        <!--<v-img height="200" src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg" cover class="text-white">
+                                        <v-toolbar color="rgba(0, 0, 0, 0)" theme="dark">
+                                            <template v-slot:prepend>
+                                            <v-btn icon="$menu"></v-btn>
+                                            </template>
+
+                                            <v-toolbar-title class="text-h6">
+                                            Messages
+                                            </v-toolbar-title>
+
+                                            <template v-slot:append>
+                                            <v-btn icon="mdi-dots-vertical"></v-btn>
+                                            </template>
+                                        </v-toolbar>
+                                        </v-img>-->
+
+                                        <v-card-text>
+                                            <!--<div class="font-weight-bold ms-1 mb-2">Today</div>-->
+                                            <v-timeline density="compact" align="start">
+                                                <v-timeline-item v-for="(item, index) in historial" :key="index" :dot-color="item.color" size="x-small">
+                                                <div class="mb-4">
+                                                    <div class="font-weight-normal">
+                                                    <strong>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</strong> @{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
+                                                    </div>
+                                                    <div>{{ item.accion }}</div>
+                                                    <div>{{ item.observacion }}</div>
+                                                </div>
+                                                </v-timeline-item>
+                                            </v-timeline>
+                                        </v-card-text>
+                                    </v-card>
+                                    <!--<v-data-table dense full-width  
                                         v-if="historial && historial.length > 0"
                                         :headers="headerHistorial" 
                                         :items="historial" 
@@ -112,7 +159,7 @@
                                                 &raquo; {{ getObservacion(item) }}
                                             </td>
                                         </template>
-                                    </v-data-table>
+                                    </v-data-table>-->
                                 </v-flex>
                             </v-layout>
                         </v-col>
@@ -179,6 +226,26 @@ export default {
         detalles: [],
         dialog: false,
         expanded: [true, true],
+        messages: [
+        {
+          from: 'You',
+          message: `Sure, I'll see you later.`,
+          time: '10:42am',
+          color: 'deep-purple-lighten-1',
+        },
+        {
+          from: 'John Doe',
+          message: 'Yeah, sure. Does 1:00pm work?',
+          time: '10:37am',
+          color: 'green',
+        },
+        {
+          from: 'You',
+          message: 'Did you still want to grab lunch today?',
+          time: '9:47am',
+          color: 'deep-purple-lighten-1',
+        },
+      ]
     }),
     props: {
         lead_id: String,
