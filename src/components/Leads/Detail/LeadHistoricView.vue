@@ -225,7 +225,7 @@ export default {
             { text: 'Fecha', value: 'fecha' },
             { text: 'Usuario', value: 'usuario.nombre' },
             { text: 'Evento', value: 'evento' },
-            { text: 'Acción', value: 'accion' },
+            { text: 'Acción', value: 'desc_evento' },
             // { text: 'Observación', value: 'observacion' },
             { text: '', value: 'data-table-expand' },
         ],
