@@ -23,12 +23,15 @@
                                             <v-timeline density="compact" align="start">
                                                 <v-timeline-item v-for="(item, index) in historial" :key="index" :dot-color="item.color" size="x-small">
                                                 <div class="mb-4">
-                                                    <div class="font-weight-normal">
-                                                    <strong>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</strong> @{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
+                                                    <div class="d-flex">
+                                                        <div class="font-weight-normal me-auto justify-start">
+                                                            <strong>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</strong> @{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
+                                                        </div>
+                                                        <small class="justify-end"><b>{{ item.accion }}</b></small>
                                                     </div>
-                                                    <div>{{ item.evento }}</div>
-                                                    <div>{{ item.accion }}</div>
-                                                    <div>{{ item.observacion }}</div>
+                                                    <div><b>Evento:</b> {{ item.evento }}</div>
+                                                    <div>{{ item.desc_evento }}</div>
+                                                    <div><b>Observación:</b> {{ item.observacion }}</div>
                                                 </div>
                                                 </v-timeline-item>
                                             </v-timeline>
@@ -109,11 +112,14 @@
                                             <v-timeline density="compact" align="start">
                                                 <v-timeline-item v-for="(item, index) in historial" :key="index" :dot-color="item.color" size="x-small">
                                                 <div class="mb-4">
-                                                    <div class="font-weight-normal">
-                                                    <strong>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</strong> @{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
+                                                    <div class="d-flex">
+                                                        <div class="font-weight-normal me-auto justify-start">
+                                                            <strong>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</strong> @{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
+                                                        </div>
+                                                        <small class="justify-end"><b>{{ item.accion }}</b></small>
                                                     </div>
                                                     <div><b>Evento:</b> {{ item.evento }}</div>
-                                                    <div>{{ item.accion }}</div>
+                                                    <div>{{ item.desc_evento }}</div>
                                                     <div><b>Observación:</b> {{ item.observacion }}</div>
                                                 </div>
                                                 </v-timeline-item>
