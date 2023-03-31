@@ -78,40 +78,25 @@
         <v-row>
           <!-- <v-card-actions> -->
           <v-spacer></v-spacer>
-          <v-btn
-            class="ma-2"
-            color="red darken-1"
-            text
-            :to="{ name: 'lead_edit', params: { id: leadId } }"
-            ><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
+          <v-btn class="ma-2" color="red darken-1" text :to="{ name: 'lead_edit', params: { id: leadId } }"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
+          <v-btn class="ma-2" v-if="puedeSolicitar() && permiso('OP_AGENTE')" color="green darken-1" text @click="iniciarSolicitar()" :loading="loading" title="Callcenter">
+            <v-icon left small>phone</v-icon>&nbsp;Llamar &nbsp;
+          </v-btn>
+          <v-btn class="ma-2" v-else-if="estaAsignado() && permiso('OP_AGENTE')" color="green darken-1" text @click="iniciarCerrar()" :loading="loading" title="Callcenter">
+            <v-icon left small>warning</v-icon>&nbsp;Llamar &nbsp;
+          </v-btn>
+          <v-btn class="ma-2" v-else-if="permiso('OP_AGENTE')" color="green darken-1" text @click="historyOnly()" :loading="loading" title="Callcenter">
+            <v-icon left small>phone_locked</v-icon>&nbsp;Llamar &nbsp;
+          </v-btn>
 
-          <v-btn
-            class="ma-2"
-            v-if="puedeSolicitar()"
-            color="green darken-1"
-            text
-            @click="iniciarSolicitar()"
-            :loading="loading">
-            <v-icon left small>phone</v-icon>&nbsp;Accion &nbsp;
+          <v-btn class="ma-2" v-if="puedeSolicitarApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarSolicitarApoyoFinanciero()" :loading="loading" title="Apoyo Finaciero">
+            <v-icon left small>phone</v-icon>&nbsp;Apoyo Financiero &nbsp;
           </v-btn>
-          <v-btn
-            class="ma-2"
-            v-else-if="estaAsignado()"
-            color="green darken-1"
-            text
-            @click="iniciarCerrar()"
-            :loading="loading">
-            <v-icon left small>warning</v-icon>&nbsp;Accion &nbsp;
+          <v-btn class="ma-2" v-else-if="estaAsignadoApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarCerrarApofoFinanciero()" :loading="loading" title="Apoyo Finaciero">
+            <v-icon left small>warning</v-icon>&nbsp;Apoyo Financiero &nbsp;
           </v-btn>
-          <v-btn
-            class="ma-2"
-            v-else
-            color="green darken-1"
-            text
-            @click="historyOnly()"
-            :loading="loading"
-          >
-            <v-icon left small>phone_locked</v-icon>&nbsp;Accion &nbsp;
+          <v-btn class="ma-2" v-else-if="permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="historyOnlyApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" :loading="loading" title="Apoyo Finaciero">
+            <v-icon left small>phone_locked</v-icon>&nbsp;Apoyo Financiero &nbsp;
           </v-btn>
 
           <v-btn class="ma-2" color="blue darken-1" text @click="regresar"
@@ -120,11 +105,10 @@
           <!-- </v-card-actions>  -->
         </v-row>
         <v-row class="mt-10">
-          <LeadHistoricView
-            :key="leadId"
-            :lead_id="leadId"
-            :ver_detalles="true"
-          ></LeadHistoricView>
+          <v-col cols="12" md="1"  sm="2"></v-col>
+          <v-col cols="12" md="10" sm="8">
+            <LeadHistoricView :key="leadId" :lead_id="leadId" :ver_detalles="true"></LeadHistoricView>
+          </v-col>
         </v-row>
       </v-card-text>
     </v-card>
@@ -143,7 +127,7 @@
         :key="leadId"
         :lead_id="leadId"
         :ocultar="false"
-        @cerrar="cerrarDialog"
+        @cerrar="cerrarDialogApoyoFinanciero"
         @actualizar="actualizar"
         @copiarDatoParent="copiarDato"
       ></RegistrarLlamadaApoyoFinanciero>
@@ -225,11 +209,10 @@ export default {
       this.$router.back();
     },
     cerrarDialog() {
-      if (this.permisoOnly('OP_AF_REGISTRAR_LLAMADA')) {
-        this.llamadaApoyoFinanciero.show = false;
-      } else {
-        this.llamada.show = false;
-      }
+      this.llamada.show = false;
+    },
+    cerrarDialogApoyoFinanciero() {
+      this.llamadaApoyoFinanciero.show = false;
     },
     actualizar() {
       this.traerLead();
@@ -257,7 +240,28 @@ export default {
       }
       return false;
     },
+    puedeSolicitarApoyoFinanciero(){
+        if((this.lead.af_ultima_llamada && ['pendiente','terminado'].includes(this.lead.af_ultima_llamada.estado)) || (!this.lead.af_ultima_llamada)){
+            return true
+        }
+        return false
+    },
     iniciarSolicitar() {
+      this.loading = true;
+      this.solicitar({ id_lead: this.leadId })
+        .then((result) => {
+          if (result.result == "ok") {
+            this.viewItem();
+          }
+          if (result.result == "llamando") {
+            this.setInfo("Ya fue asignado");
+          }
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    iniciarSolicitarApoyoFinanciero() {
       this.loading = true;
       this.solicitar({ id_lead: this.leadId })
         .then((result) => {
@@ -283,22 +287,30 @@ export default {
       }
       return false;
     },
+    estaAsignadoApoyoFinanciero() {
+        if(this.lead.af_ultima_llamada && this.lead.af_ultima_llamada.estado == 'llamando' && this.lead.af_ultima_llamada.agente && this.lead.af_ultima_llamada.agente.email == this.user.email){
+            return true
+        }
+        return false
+    },
     iniciarCerrar() {
       this.viewItem();
     },
+    iniciarCerrarApofoFinanciero(){
+        this.viewItemApoyoFinanciero()
+    },
     historyOnly() {
       this.setInfo("Ya lo llamaron");
-      if (this.permisoOnly('OP_AF_REGISTRAR_LLAMADA')) {
-        this.llamadaApoyoFinanciero.show = true;
-        this.llamadaApoyoFinanciero.llamada = false;
-      } else {
-        this.llamada.show = true;
-        this.llamada.llamada = false;
-      }
+      this.llamada.show = true;
+      this.llamada.llamada = false;
+    },
+    historyOnlyApoyoFinanciero() {
+      this.setInfo("Ya lo llamaron");
+      this.llamadaApoyoFinanciero.show = true;
+      this.llamadaApoyoFinanciero.llamada = false;
     },
     viewItem() {
       this.loading = true;
-      console.log(this.permisoOnly('OP_AF_REGISTRAR_LLAMADA'));
       this.fetchDetalle({ id: this.leadId })
         .then((result) => {
           if (result.datos && result.datos.uid) {
@@ -319,14 +331,37 @@ export default {
                 });
             }
           }
-          //this.viewDialog = true
-          if (this.permisoOnly('OP_AF_REGISTRAR_LLAMADA')) {
-            this.llamadaApoyoFinanciero.show = true;
-            this.llamadaApoyoFinanciero.llamada = true;
-          } else {
-            this.llamada.show = true;
-            this.llamada.llamada = true;
+          this.llamada.show = true;
+          this.llamada.llamada = true;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    viewItemApoyoFinanciero() {
+      this.loading = true;
+      this.fetchDetalle({ id: this.leadId })
+        .then((result) => {
+          if (result.datos && result.datos.uid) {
+            let phoneCopy = result.datos.uid;
+            if (phoneCopy) {
+              if (phoneCopy.startsWith("57")) {
+                phoneCopy = phoneCopy.substring(2);
+              }
+              if (phoneCopy.length == 10) {
+                phoneCopy = "9" + phoneCopy;
+              }
+              this.$copyText(phoneCopy)
+                .then(() => {
+                  this.setInfo("Autorizado y Copiado");
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }
           }
+          this.llamadaApoyoFinanciero.show = true;
+          this.llamadaApoyoFinanciero.llamada = true;
         })
         .finally(() => {
           this.loading = false;
@@ -369,7 +404,7 @@ export default {
       error: (state) => state.error,
     }),
     ...mapGetters({
-      permisoOnly: 'auth/permisoOnly', 
+      permiso: 'auth/permiso', 
     }),
     getTitle() {
       return "Leads";
