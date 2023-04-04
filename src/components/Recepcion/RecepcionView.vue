@@ -1,10 +1,17 @@
 <template>
     <div>
         <v-card>
-            <!-- <v-card-title>
-                <span class="headline">{{getTitle}}</span>
+            <v-card-title>
+                <v-toolbar-title>
+                    <v-btn small text @click="$router.back()" :disabled="loading">
+                        <v-icon>arrow_back_ios</v-icon>
+                    </v-btn>
+                    {{getTitle}}
+                </v-toolbar-title>
+                <!--<span class="headline">{{getTitle}}</span>-->
                 
-            </v-card-title> -->
+            </v-card-title> 
+            
             <v-card-text>
                 <v-row>
                     <v-col cols="12" sm="3" md="2"></v-col>
@@ -21,7 +28,17 @@
                         <v-spacer></v-spacer>
                         <div class="text-right">
                             <!--<v-btn class="ma-2" color="blue darken-1" text @click="consola"><v-icon left small>event</v-icon>Consola</v-btn>-->
-                            <v-btn v-if="setAsisteCita" class="ma-2" color="red darken-1" text @click="iniciarSolicitar"><v-icon left small>event</v-icon>&nbsp;Asiste&nbsp;</v-btn>
+                            <v-btn v-if="setAsisteCita" class="ma-2" color="red darken-1" text @click="asiste"><v-icon left small>event</v-icon>&nbsp;Asiste&nbsp;</v-btn>
+                            
+                            <v-btn class="ma-2" v-if="puedeSolicitar() && permiso('OP_AGENTE')" color="green darken-1" text @click="iniciarSolicitar()" :loading="loading" title="Callcenter"><v-icon left small>phone</v-icon>&nbsp;Llamar &nbsp;</v-btn>
+                            <v-btn class="ma-2" v-else-if="estaAsignado() && permiso('OP_AGENTE')" color="green darken-1" text @click="iniciarCerrarCallcenter()" :loading="loading" title="Callcenter"><v-icon left small>warning</v-icon>&nbsp;Llamar &nbsp;</v-btn>
+                            <v-btn class="ma-2" v-else-if="permiso('OP_AGENTE')" color="green darken-1" text @click="historyOnlyCallcenter()" :loading="loading" title="Callcenter"><v-icon left small>phone_locked</v-icon>&nbsp;Llamar &nbsp;</v-btn>
+
+                            <v-btn class="ma-2" v-if="puedeSolicitarApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarSolicitarApoyoFinanciero()" :loading="loading" title="Apoyo Finaciero"><v-icon left small>phone</v-icon>&nbsp;Apoyo Financiero &nbsp;</v-btn>
+                            <v-btn class="ma-2" v-else-if="estaAsignadoApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarCerrarApofoFinanciero()" :loading="loading" title="Apoyo Finaciero"><v-icon left small>warning</v-icon>&nbsp;Apoyo Financiero &nbsp;</v-btn>
+                            <v-btn class="ma-2" v-else-if="permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="historyOnlyApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" :loading="loading" title="Apoyo Finaciero"><v-icon left small>phone_locked</v-icon>&nbsp;Apoyo Financiero &nbsp;</v-btn>
+
+                            <!--<v-btn class="ma-2" color="red darken-1" text :to="{ name: 'lead_edit', params: { id: leadId } }"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>-->
                             <v-btn class="ma-2" color="orange darken-1" text :to="{ name: 'lead_edit', params: { id: lead_id } }"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
                             <v-btn class="ma-2" color="blue darken-1" text @click="regresar"><v-icon>navigate_before</v-icon>&nbsp;Regresar&nbsp;</v-btn>
                         </div>
@@ -94,7 +111,9 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
         methods: {
             ...mapActions({
                 fetchDetalle: 'leads/fetchDetalle',
-                solicitar: 'recepcionista/solicitar',
+                solicitarCita: 'recepcionista/solicitar',
+                solicitarApoyoFinanciero:'callcenter/solicitarAF',
+                solicitarCallcenter: "callcenter/solicitar",
                 fetchDisponibilidad: 'agenda/fetchDisponibilidad',
                 fetchDisponibilidadLlamadas: 'agenda/fetchDisponibilidadLlamadas',
                 cambiarEstado: 'agenda/confirmarAsistencia',
@@ -129,17 +148,8 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
                     }
                 );
             },
-            viewItem() {
+            viewItemCita() {
                 this.loading = true;
-                // this.fetchDetalle({id:this.lead_id}).then((result) => {
-                //     if(result.datos){
-                //         console.log(result.datos)
-                //         this.setLead(result.datos);
-                //     }
-                // })
-                // .finally(() => {
-                //     this.loading = false;
-                // })
                 this.fetchDetalle({id:this.lead_id})
                 .finally(() => {
                     this.loading = false;
@@ -148,26 +158,14 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             viewDialog() {
                 this.dialog = !this.dialog;
             },
-            iniciarSolicitar(){
+            asiste(){
                 this.dialog = true;
-                // this.loading = true;
-                // this.solicitar({id_lead:this.lead_id, sede: this.sede})
-                // .then((result) => {
-                //     if(result.result == 'ok') {
-                //         this.dialog = true;
-                //     }else{
-                //         this.setInfo(result.mensaje)
-                //     }           
-                // })
-                // .finally(()=>{
-                //     this.loading = false;
-                // })
             },
             cerrarDialog(){
                 this.dialog = false;
             },
             actualizar(){
-                this.viewItem();
+                this.viewItemCita();
             },
             consola(){
                 console.log(this.lead)
@@ -181,6 +179,133 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             },
             actualizarHistorial() {
 
+            },
+            puedeSolicitar() {
+            if (
+                this.lead.ultima_llamada &&
+                this.lead.ultima_llamada.estado == "pendiente"
+            ) {
+                return true;
+            }
+            return false;
+            },
+            puedeSolicitarApoyoFinanciero(){
+                if((this.lead.af_ultima_llamada && ['pendiente','terminado'].includes(this.lead.af_ultima_llamada.estado)) || (!this.lead.af_ultima_llamada)){
+                    return true
+                }
+                return false
+            },
+            estaAsignado() {
+                if (this.lead.ultima_llamada && this.lead.ultima_llamada.estado == "llamando" && this.lead.ultima_llamada.agente ) {
+                    return true;
+                }
+                return false;
+            },
+            estaAsignadoApoyoFinanciero() {
+                if(this.lead.af_ultima_llamada && this.lead.af_ultima_llamada.estado == 'llamando' && this.lead.af_ultima_llamada.agente && this.lead.af_ultima_llamada.agente.email == this.user.email){
+                    return true
+                }
+                return false
+            },
+            iniciarSolicitar() {
+                this.loading = true;
+                this.solicitarCallcenter({ id_lead: this.leadId }).then((result) => {
+                    if (result.result == "ok") {
+                        this.viewItemCallcenter();
+                    }
+                    if (result.result == "llamando") {
+                        this.setInfo("Ya fue asignado");
+                    }
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+            },
+            iniciarSolicitarApoyoFinanciero() {
+                this.loading = true;
+                this.solicitarApoyoFinanciero({ id_lead: this.leadId }).then((result) => {
+                    if (result.result == "ok") {
+                        this.viewItemApoyoFinanciero();
+                    }
+                    if (result.result == "llamando") {
+                        this.setInfo("Ya fue asignado");
+                    }
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+            },
+            iniciarCerrarCallcenter() {
+                this.viewItemCallcenter();
+            },
+            iniciarCerrarApofoFinanciero(){
+                this.viewItemApoyoFinanciero()
+            },
+            viewItemCallcenter() {
+                this.loading = true;
+                this.fetchDetalle({ id: this.leadId }).then((result) => {
+                    if (result.datos && result.datos.uid) {
+                        let phoneCopy = result.datos.uid;
+                        if (phoneCopy) {
+                        if (phoneCopy.startsWith("57")) {
+                            phoneCopy = phoneCopy.substring(2);
+                        }
+                        if (phoneCopy.length == 10) {
+                            phoneCopy = "9" + phoneCopy;
+                        }
+                        this.$copyText(phoneCopy)
+                            .then(() => {
+                            this.setInfo("Autorizado y Copiado");
+                            })
+                            .catch((error) => {
+                            console.log(error);
+                            });
+                        }
+                    }
+                    this.llamada.show = true;
+                    this.llamada.llamada = true;
+                })
+                .finally(() => {
+                this.loading = false;
+                });
+            },
+            viewItemApoyoFinanciero() {
+                this.loading = true;
+                this.fetchDetalle({ id: this.leadId }).then((result) => {
+                    if (result.datos && result.datos.uid) {
+                        let phoneCopy = result.datos.uid;
+                        if (phoneCopy) {
+                        if (phoneCopy.startsWith("57")) {
+                            phoneCopy = phoneCopy.substring(2);
+                        }
+                        if (phoneCopy.length == 10) {
+                            phoneCopy = "9" + phoneCopy;
+                        }
+                        this.$copyText(phoneCopy)
+                            .then(() => {
+                            this.setInfo("Autorizado y Copiado");
+                            })
+                            .catch((error) => {
+                            console.log(error);
+                            });
+                        }
+                    }
+                    this.llamadaApoyoFinanciero.show = true;
+                    this.llamadaApoyoFinanciero.llamada = true;
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+            },
+            historyOnlyCallcenter() {
+                this.setInfo("Ya lo llamaron");
+                this.llamada.show = true;
+                this.llamada.llamada = false;
+            },
+            historyOnlyApoyoFinanciero() {
+                this.setInfo("Ya lo llamaron");
+                this.llamadaApoyoFinanciero.show = true;
+                this.llamadaApoyoFinanciero.llamada = false;
             },
         },
         computed: {

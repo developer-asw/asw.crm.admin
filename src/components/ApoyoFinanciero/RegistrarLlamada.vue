@@ -177,7 +177,7 @@
                 fetchDisponibilidad: 'agenda/fetchDisponibilidad',
                 fetchDisponibilidadLlamadas: 'agenda/fetchDisponibilidadLlamadas',
                 crear: 'leads/crearCita',
-                solicitar: 'callcenter/solicitar',
+                solicitar:'callcenter/solicitarAF',
                 cerrarLlamada: 'callcenter/cerrar',
                 listarEstados: 'listado/fetchListaLlamadas',
                 listarOrigenes: 'listado/fetchListaLeads',

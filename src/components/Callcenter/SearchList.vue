@@ -55,7 +55,7 @@
                         <span v-else-if="item.ultimo_origen.referer">{{item.ultimo_origen.referer}}</span>
                     </div>
                 </template>
-                <template v-slot:[`item.action`]="{ item }">
+                <template v-if="payload.prioridad < 10" v-slot:[`item.action`]="{ item }">
                 
                     <v-icon v-if="puedeSolicitar(item)" smallclass="mr-2" @click="iniciarSolicitar(item)">
                         phone
@@ -89,7 +89,7 @@
                 </template>
                 <template v-slot:[`item.ultima_llamada_estado`]="{ item }">
                     <span v-if="payload.prioridad == 0">{{item.reingreso == 2 ? "Reingreso" : ""}}</span>
-                    <span v-else-if="payload.prioridad == 3">{{item.ultima_llamada_estado}}</span>
+                    <span v-else-if="payload.prioridad == 3 || payload.prioridad > 9">{{item.ultima_llamada_estado}}</span>
                     <span v-else-if="item.reingreso == 2">Reingreso</span>
                     <span v-else>{{item.ultima_llamada_estado}}</span>
                 </template>
@@ -279,6 +279,12 @@ export default {
             }
             if (this.permiso('OP_CALL_VENTA_TELEFONICA')) {
                 this.prioridad.push({ text: 'Venta Teléfonica', value : 6 })
+            }
+            if (this.permiso('OP_CALL_TOTALES')) {
+                this.prioridad.push({ text: 'Totales', value : 10 })
+            }
+            if (this.permiso('OP_CALL_TOTALES_AGENTES')) {
+                this.prioridad.push({ text: 'Totales Callcenter', value : 11 })
             }
         }
     },

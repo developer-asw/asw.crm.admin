@@ -188,7 +188,8 @@ export default {
     ...mapActions({
       consultar: "leads/fetchLeadHistorial",
       listarOrigenes: "listado/fetchListaLeads",
-      solicitar: "callcenter/solicitar",
+      solicitarApoyoFinanciero:'callcenter/solicitarAF',
+      solicitarCallcenter: "callcenter/solicitar",
       fetchDetalle: "leads/fetchDetalle",
       listarEstados: 'listado/fetchListaLlamadas',
     }),
@@ -248,7 +249,7 @@ export default {
     },
     iniciarSolicitar() {
       this.loading = true;
-      this.solicitar({ id_lead: this.leadId })
+      this.solicitarCallcenter({ id_lead: this.leadId })
         .then((result) => {
           if (result.result == "ok") {
             this.viewItem();
@@ -263,10 +264,10 @@ export default {
     },
     iniciarSolicitarApoyoFinanciero() {
       this.loading = true;
-      this.solicitar({ id_lead: this.leadId })
+      this.solicitarApoyoFinanciero({ id_lead: this.leadId })
         .then((result) => {
           if (result.result == "ok") {
-            this.viewItem();
+            this.viewItemApoyoFinanciero();
           }
           if (result.result == "llamando") {
             this.setInfo("Ya fue asignado");
@@ -277,15 +278,10 @@ export default {
         });
     },
     estaAsignado() {
-      if (
-        this.lead.ultima_llamada &&
-        this.lead.ultima_llamada.estado == "llamando" &&
-        this.lead.ultima_llamada.agente 
-        // && this.lead.ultima_llamada.agente.email == this.user.email
-      ) {
-        return true;
-      }
-      return false;
+        if ( this.lead.ultima_llamada && this.lead.ultima_llamada.estado == "llamando" && this.lead.ultima_llamada.agente ) {
+            return true;
+        }
+        return false;
     },
     estaAsignadoApoyoFinanciero() {
         if(this.lead.af_ultima_llamada && this.lead.af_ultima_llamada.estado == 'llamando' && this.lead.af_ultima_llamada.agente && this.lead.af_ultima_llamada.agente.email == this.user.email){

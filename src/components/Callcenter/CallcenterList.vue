@@ -73,7 +73,7 @@
                         pending
                     </v-icon>
                 </template>
-                <template v-slot:[`item.action`]="{ item }">
+                <template v-if="payload.prioridad < 10" v-slot:[`item.action`]="{ item }">
                     <!-- <v-icon smallclass="mr-2" @click="viewItem(item)">
                         remove_red_eye
                     </v-icon> -->
@@ -103,7 +103,7 @@
                 </template>
                 <template v-slot:[`item.ultima_llamada_estado`]="{ item }">
                     <span v-if="payload.prioridad == 0">{{item.reingreso == 2 ? "Reingreso" : (item.reingreso == 1 ? item.ultima_llamada_estado : "" )}}</span>
-                    <span v-else-if="payload.prioridad == 3">{{item.ultima_llamada_estado}}</span>
+                    <span v-else-if="payload.prioridad == 3 || payload.prioridad > 9">{{item.ultima_llamada_estado}}</span>
                     <span v-else-if="item.reingreso == 2">Reingreso</span>
                     <span v-else>{{item.ultima_llamada_estado}}</span>
                 </template>

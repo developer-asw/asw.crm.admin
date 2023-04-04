@@ -15,7 +15,8 @@
         </v-toolbar>
         <v-card>
             <v-card-title>
-                <!-- <v-select v-model="payload.prioridad" :items="prioridad" label="Prioridad" item-text="text" item-value="value" :disabled="loading" @change="actualizar"></v-select>
+                <v-select v-model="payload.prioridad" :items="prioridad" label="Prioridad" item-text="text" item-value="value" :disabled="loading" @change="actualizar"></v-select>
+                <!-- 
                 <v-select v-model="payload.estado" :items="llamadas_estados" label="Estados" item-text="text" item-value="value" :disabled="loading"></v-select> -->
                 <!-- <v-select v-model="payload.limit" :items="limits" item-text="text" item-value="value" :disabled="loading"></v-select> -->
                 <!-- <v-radio-group v-model="payload.tipo" row>
@@ -80,7 +81,7 @@
                         pending
                     </v-icon>
                 </template>
-                <template v-slot:[`item.action`]="{ item }">
+                <template v-if="payload.prioridad < 10"  v-slot:[`item.action`]="{ item }">
                     <!-- <v-icon smallclass="mr-2" @click="viewItem(item)">
                         remove_red_eye
                     </v-icon> -->
@@ -111,7 +112,7 @@
                 </template>
                 <template v-slot:[`item.ultima_llamada_estado`]="{ item }">
                     <span v-if="payload.prioridad == 0">{{item.reingreso == 2 ? "Reingreso" : ""}}</span>
-                    <span v-else-if="payload.prioridad == 3">{{item.ultima_llamada_estado}}</span>
+                    <span v-else-if="payload.prioridad == 3 || payload.prioridad > 9">{{item.ultima_llamada_estado}}</span>
                     <span v-else-if="item.reingreso == 2">Reingreso</span>
                     <span v-else>{{item.ultima_llamada_estado}}</span>
                 </template>
@@ -166,9 +167,8 @@ export default {
             loading: false,
             rowsPerPage : [100],
             search: '',
-            payload: {
-                prioridad: 1,
-            },
+            payload: { prioridad: null},
+            prioridad:[],
             leadSeleccionado:null,
             llamadas_estados:[],
             estados: {}
@@ -291,14 +291,20 @@ export default {
             if (this.permiso('OP_CALL_MARCADO_MANUAL')) {
                 this.prioridad.push({ text: 'Marcado Manual', value : 3 })
             }
-            if (this.permiso('OP_CALL_NO_CONTESTA')) {
+            /*if (this.permiso('OP_CALL_NO_CONTESTA')) {
                 this.prioridad.push({ text: 'No contestan - Pendientes', value : 2 })
-            }
+            }*/
             if (this.permiso('OP_CALL_GRUPO_1')) {
                 this.prioridad.push({ text: 'Grupo 1', value : 7 })
             }
             if (this.permiso('OP_CALL_VENTA_TELEFONICA')) {
                 this.prioridad.push({ text: 'Venta Teléfonica', value : 6 })
+            }
+            if (this.permiso('OP_CALL_TOTALES')) {
+                this.prioridad.push({ text: 'Totales', value : 10 })
+            }
+            if (this.permiso('OP_CALL_TOTALES_AGENTES')) {
+                this.prioridad.push({ text: 'Totales Callcenter', value : 11 })
             }
 
             /**
@@ -306,7 +312,7 @@ export default {
              * { text: 'Datos por Resolver', value:5 },
              * { text: 'No contestan - Pendientes', value : 2 },
              */
-            
+            console.log(this.payload)
             if (grupo_usuario == 'grupo_fredy' || this.permiso('OP_CALL_GRUPO_1')){
                 if (!this.prioridad.find(x => x.text == 'Grupo 1')) {
                     this.prioridad.push({ text: 'Grupo 1', value : 7 })
