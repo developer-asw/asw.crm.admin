@@ -178,7 +178,7 @@
                 fetchDisponibilidadLlamadas: 'agenda/fetchDisponibilidadLlamadas',
                 crear: 'leads/crearCita',
                 solicitar:'callcenter/solicitarAF',
-                cerrarLlamada: 'callcenter/cerrar',
+                cerrarLlamada: 'callcenter/cerrarAF',
                 listarEstados: 'listado/fetchListaLlamadas',
                 listarOrigenes: 'listado/fetchListaLeads',
             }),
