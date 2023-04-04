@@ -79,13 +79,13 @@
           <!-- <v-card-actions> -->
           <v-spacer></v-spacer>
           <v-btn class="ma-2" color="red darken-1" text :to="{ name: 'lead_edit', params: { id: leadId } }"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
-          <v-btn class="ma-2" v-if="puedeSolicitar() && permiso('OP_AGENTE')" color="green darken-1" text @click="iniciarSolicitar()" :loading="loading" title="Callcenter">
+          <v-btn class="ma-2" v-if="puedeSolicitar() && (permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="iniciarSolicitar()" :loading="loading" title="Callcenter">
             <v-icon left small>phone</v-icon>&nbsp;Llamar &nbsp;
           </v-btn>
-          <v-btn class="ma-2" v-else-if="estaAsignado() && permiso('OP_AGENTE')" color="green darken-1" text @click="iniciarCerrar()" :loading="loading" title="Callcenter">
+          <v-btn class="ma-2" v-else-if="estaAsignado() && (permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="iniciarCerrar()" :loading="loading" title="Callcenter">
             <v-icon left small>warning</v-icon>&nbsp;Llamar &nbsp;
           </v-btn>
-          <v-btn class="ma-2" v-else-if="permiso('OP_AGENTE')" color="green darken-1" text @click="historyOnly()" :loading="loading" title="Callcenter">
+          <v-btn class="ma-2" v-else-if="(permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="historyOnly()" :loading="loading" title="Callcenter">
             <v-icon left small>phone_locked</v-icon>&nbsp;Llamar &nbsp;
           </v-btn>
 
