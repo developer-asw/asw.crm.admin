@@ -30,15 +30,14 @@
                             <!--<v-btn class="ma-2" color="blue darken-1" text @click="consola"><v-icon left small>event</v-icon>Consola</v-btn>-->
                             <v-btn v-if="setAsisteCita" class="ma-2" color="red darken-1" text @click="asiste"><v-icon left small>event</v-icon>&nbsp;Asiste&nbsp;</v-btn>
                             
-                            <v-btn class="ma-2" v-if="puedeSolicitar() && permiso('OP_AGENTE')" color="green darken-1" text @click="iniciarSolicitar()" :loading="loading" title="Callcenter"><v-icon left small>phone</v-icon>&nbsp;Llamar &nbsp;</v-btn>
-                            <v-btn class="ma-2" v-else-if="estaAsignado() && permiso('OP_AGENTE')" color="green darken-1" text @click="iniciarCerrarCallcenter()" :loading="loading" title="Callcenter"><v-icon left small>warning</v-icon>&nbsp;Llamar &nbsp;</v-btn>
+                            <v-btn class="ma-2" v-if="puedeSolicitarCallcenter() && permiso('OP_AGENTE')" color="green darken-1" text @click="iniciarSolicitar()" :loading="loading" title="Callcenter"><v-icon left small>phone</v-icon>&nbsp;Llamar &nbsp;</v-btn>
+                            <v-btn class="ma-2" v-else-if="estaAsignadoCallcenter() && permiso('OP_AGENTE')" color="green darken-1" text @click="iniciarCerrarCallcenter()" :loading="loading" title="Callcenter"><v-icon left small>warning</v-icon>&nbsp;Llamar &nbsp;</v-btn>
                             <v-btn class="ma-2" v-else-if="permiso('OP_AGENTE')" color="green darken-1" text @click="historyOnlyCallcenter()" :loading="loading" title="Callcenter"><v-icon left small>phone_locked</v-icon>&nbsp;Llamar &nbsp;</v-btn>
 
                             <v-btn class="ma-2" v-if="puedeSolicitarApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarSolicitarApoyoFinanciero()" :loading="loading" title="Apoyo Finaciero"><v-icon left small>phone</v-icon>&nbsp;Apoyo Financiero &nbsp;</v-btn>
                             <v-btn class="ma-2" v-else-if="estaAsignadoApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarCerrarApofoFinanciero()" :loading="loading" title="Apoyo Finaciero"><v-icon left small>warning</v-icon>&nbsp;Apoyo Financiero &nbsp;</v-btn>
                             <v-btn class="ma-2" v-else-if="permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="historyOnlyApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" :loading="loading" title="Apoyo Finaciero"><v-icon left small>phone_locked</v-icon>&nbsp;Apoyo Financiero &nbsp;</v-btn>
 
-                            <!--<v-btn class="ma-2" color="red darken-1" text :to="{ name: 'lead_edit', params: { id: leadId } }"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>-->
                             <v-btn class="ma-2" color="orange darken-1" text :to="{ name: 'lead_edit', params: { id: lead_id } }"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
                             <v-btn class="ma-2" color="blue darken-1" text @click="regresar"><v-icon>navigate_before</v-icon>&nbsp;Regresar&nbsp;</v-btn>
                         </div>
@@ -59,6 +58,27 @@
         <v-dialog v-model="dialog" persistent max-width="800px">
             <RecepcionRegistrarAsistencia :lead_id="lead_id" :sede_id="sede"  @cerrar="cerrarDialog" @actualizar="actualizar"></RecepcionRegistrarAsistencia>
         </v-dialog>
+        
+        <v-dialog v-model="llamada.show" max-width="800px">
+        <CallcenterRegistrarLlamada
+            :key="'callcenter'"
+            :lead_id="lead_id"
+            :ocultar="false"
+            @cerrar="cerrarDialogCallcenter"
+            @actualizar="actualizar"
+            @copiarDatoParent="copiarDato"
+        ></CallcenterRegistrarLlamada>
+        </v-dialog>
+        <v-dialog v-model="llamadaApoyoFinanciero.show" max-width="800px">
+        <RegistrarLlamadaApoyoFinanciero
+            :key="'apoyo_financiero'"
+            :lead_id="lead_id"
+            :ocultar="false"
+            @cerrar="cerrarDialogApoyoFinanciero"
+            @actualizar="actualizar"
+            @copiarDatoParent="copiarDato"
+        ></RegistrarLlamadaApoyoFinanciero>
+        </v-dialog>
     </div>
 </template>
 <script>
@@ -69,6 +89,8 @@
         mapMutations
     } from 'vuex';
 
+import CallcenterRegistrarLlamada from "@/components/Callcenter/CallcenterRegistrarLlamada";
+import RegistrarLlamadaApoyoFinanciero from "@/components/ApoyoFinanciero/RegistrarLlamada";
 import RecepcionRegistrarAsistencia from '@/components/Recepcion/RecepcionRegistrarAsistencia'
 import EditLead from '@/components/Callcenter/EditLead'
 import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
@@ -79,7 +101,9 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
         components: {
             RecepcionRegistrarAsistencia,
             EditLead,
-            LeadHistoricView
+            LeadHistoricView,
+            CallcenterRegistrarLlamada,
+            RegistrarLlamadaApoyoFinanciero
         },
         data: () => ({
             loading: false,
@@ -94,6 +118,9 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             ],
             detalles:[],
             llamada: {
+                show: false,
+            },
+            llamadaApoyoFinanciero: {
                 show: false,
             },
             sedes: [],
@@ -148,7 +175,7 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
                     }
                 );
             },
-            viewItemCita() {
+            viewItem() {
                 this.loading = true;
                 this.fetchDetalle({id:this.lead_id})
                 .finally(() => {
@@ -165,7 +192,7 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
                 this.dialog = false;
             },
             actualizar(){
-                this.viewItemCita();
+                this.viewItem();
             },
             consola(){
                 console.log(this.lead)
@@ -180,36 +207,33 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             actualizarHistorial() {
 
             },
-            puedeSolicitar() {
-            if (
-                this.lead.ultima_llamada &&
-                this.lead.ultima_llamada.estado == "pendiente"
-            ) {
+            puedeSolicitarCallcenter() {
+            if (this.lead && this.lead.ultima_llamada && this.lead.ultima_llamada.estado == "pendiente") {
                 return true;
             }
             return false;
             },
             puedeSolicitarApoyoFinanciero(){
-                if((this.lead.af_ultima_llamada && ['pendiente','terminado'].includes(this.lead.af_ultima_llamada.estado)) || (!this.lead.af_ultima_llamada)){
+                if((this.lead && this.lead.af_ultima_llamada && ['pendiente','terminado'].includes(this.lead.af_ultima_llamada.estado)) || (this.lead && !this.lead.af_ultima_llamada)){
                     return true
                 }
                 return false
             },
-            estaAsignado() {
-                if (this.lead.ultima_llamada && this.lead.ultima_llamada.estado == "llamando" && this.lead.ultima_llamada.agente ) {
+            estaAsignadoCallcenter() {
+                if (this.lead && this.lead.ultima_llamada && this.lead.ultima_llamada.estado == "llamando" && this.lead.ultima_llamada.agente ) {
                     return true;
                 }
                 return false;
             },
             estaAsignadoApoyoFinanciero() {
-                if(this.lead.af_ultima_llamada && this.lead.af_ultima_llamada.estado == 'llamando' && this.lead.af_ultima_llamada.agente && this.lead.af_ultima_llamada.agente.email == this.user.email){
+                if(this.lead && this.lead.af_ultima_llamada && this.lead.af_ultima_llamada.estado == 'llamando' && this.lead.af_ultima_llamada.agente && this.lead.af_ultima_llamada.agente.email == this.user.email){
                     return true
                 }
                 return false
             },
             iniciarSolicitar() {
                 this.loading = true;
-                this.solicitarCallcenter({ id_lead: this.leadId }).then((result) => {
+                this.solicitarCallcenter({ id_lead: this.lead_id }).then((result) => {
                     if (result.result == "ok") {
                         this.viewItemCallcenter();
                     }
@@ -223,7 +247,7 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             },
             iniciarSolicitarApoyoFinanciero() {
                 this.loading = true;
-                this.solicitarApoyoFinanciero({ id_lead: this.leadId }).then((result) => {
+                this.solicitarApoyoFinanciero({ id_lead: this.lead_id }).then((result) => {
                     if (result.result == "ok") {
                         this.viewItemApoyoFinanciero();
                     }
@@ -243,7 +267,7 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             },
             viewItemCallcenter() {
                 this.loading = true;
-                this.fetchDetalle({ id: this.leadId }).then((result) => {
+                this.fetchDetalle({ id: this.lead_id }).then((result) => {
                     if (result.datos && result.datos.uid) {
                         let phoneCopy = result.datos.uid;
                         if (phoneCopy) {
@@ -271,7 +295,7 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
             },
             viewItemApoyoFinanciero() {
                 this.loading = true;
-                this.fetchDetalle({ id: this.leadId }).then((result) => {
+                this.fetchDetalle({ id: this.lead_id }).then((result) => {
                     if (result.datos && result.datos.uid) {
                         let phoneCopy = result.datos.uid;
                         if (phoneCopy) {
@@ -306,6 +330,12 @@ import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
                 this.setInfo("Ya lo llamaron");
                 this.llamadaApoyoFinanciero.show = true;
                 this.llamadaApoyoFinanciero.llamada = false;
+            },
+            cerrarDialogCallcenter() {
+                this.llamada.show = false;
+            },
+            cerrarDialogApoyoFinanciero() {
+                this.llamadaApoyoFinanciero.show = false;
             },
         },
         computed: {
