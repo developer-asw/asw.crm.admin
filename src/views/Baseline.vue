@@ -103,12 +103,20 @@
                                 <v-list-item-title>Mis seguimientos</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged && permiso('OP_APOYO_FINANCIERO')" link @click="dirigir('/callcenter/matriculados')">
+                        <v-list-item v-if="isLogged && permiso('OP_APOYO_FINANCIERO')" link @click="dirigir('/apoyofinanciero/matriculados')">
                             <v-list-item-action>
                                 <v-icon>credit_card</v-icon>
                             </v-list-item-action>
                             <v-list-item-content>
                                 <v-list-item-title>Apoyo Financiero</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item v-if="isLogged && permiso('OP_AF_SEGUIMIENTO')" link @click="dirigir('/apoyofinanciero/seguimientos')">
+                            <v-list-item-action>
+                                <v-icon>calendar_today</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Mis seguimientos</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                         <!--<v-list-item v-if="isLogged && user && user.rol == 'coordinador'" link @click="dirigir('/venta_telefonica')">

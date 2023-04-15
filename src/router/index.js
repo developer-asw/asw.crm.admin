@@ -37,6 +37,7 @@ import ADMPermisos from '@/components/Administracion/Permisos';
 import ADMAsignarPermisos from '@/components/Administracion/Perfiles/AsignarPermisos';
 import ProfileUser from '@/components/Profile/User';
 import CallcenterMatriculados from '../components/ApoyoFinanciero/CallcenterMatriculados';
+import AFSeguimiento from '../components/ApoyoFinanciero/Seguimiento'
 import OrientadorList from '@/components/Coordinador/OrientadorList';
 import OrientadorDatosList from '@/components/Coordinador/OrientadorDatosList';
 
@@ -120,13 +121,19 @@ const routes = [
     path: '/consultas/seguimientos',
     name: 'seguimiento',
     component: CallcenterSeguimiento,
-    meta: { Auth: true, title: 'Callcenter - Tracing' , view: 'baseline'},
+    meta: { Auth: true, title: 'Callcenter - Seguimiento' , view: 'baseline'},
   },
   {
-    path: '/callcenter/matriculados',
+    path: '/apoyofinanciero/matriculados',
     name: 'matriculados',
     component: CallcenterMatriculados,
     meta: { Auth: true, title: 'Callcenter - Matriculados' , view: 'baseline'},
+  },
+  {
+    path: '/apoyofinanciero/seguimientos',
+    name: 'seguimiento',
+    component: AFSeguimiento,
+    meta: { Auth: true, title: 'Callcenter - Seguimiento' , view: 'baseline'},
   },
   {
     path: '/callcenter_coordinator',

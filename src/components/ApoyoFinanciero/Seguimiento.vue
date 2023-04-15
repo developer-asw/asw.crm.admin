@@ -39,8 +39,8 @@
                 :search="payload.search"
                 loading-text="Loading... Please wait"
                 class="elevation-1">
-                <template v-slot:[`item.ultima_llamada.fecha_solicitado`]="{ item }">
-                    <span v-if="item.ultima_llamada && item.ultima_llamada.fecha_solicitado">{{presentDate(item.ultima_llamada.fecha_solicitado)}}</span>
+                <template v-slot:[`item.af_ultima_llamada.fecha_solicitado`]="{ item }">
+                    <span v-if="item.af_ultima_llamada && item.af_ultima_llamada.fecha_solicitado">{{presentDate(item.af_ultima_llamada.fecha_solicitado)}}</span>
                 </template>
                 <template v-slot:[`item.full_name`]="{ item }">
                     <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
@@ -102,12 +102,12 @@ export default {
     data () {
         return {
             headers: [
-                { text: 'Solicitud', value: 'ultima_llamada.fecha_solicitado' },
+                { text: 'Solicitud', value: 'af_ultima_llamada.fecha_solicitado' },
                 { text: 'Nombre', value: 'full_name' },
                 { text: 'Móvil', value: 'uid' },
                 { text: 'Email', value: 'email' },
                 { text: 'Sede', value: 'sede' },
-                { text: 'Solicitado', value: 'ultima_llamada.agente.nombre' },
+                { text: 'Solicitado', value: 'af_ultima_llamada.agente.nombre' },
                 { text: 'Origen', value: 'ultimo_origen' },
                 // { text: 'Estudiante', value: 'es_estudiante' },
                 { text: 'Actions', value: 'action', sortable: false }
@@ -137,8 +137,7 @@ export default {
     },
     methods:{
       ...mapActions({
-          fetchLista: 'callcenter/fetchSeguimiento',
-          solicitar: 'callcenter/solicitar',
+          fetchLista: 'callcenter/fetchSeguimientoAF',
           fetchDetalle: 'leads/fetchDetalle',
       }),
       ...mapMutations({
