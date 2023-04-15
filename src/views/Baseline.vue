@@ -119,7 +119,7 @@
                                 <v-list-item-title>Venta Teléfonica</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>-->
-                        <v-list-item v-if="isLogged && permiso('OP_CONVENIO')" link @click="dirigir('/consultar')">
+                        <v-list-item v-if="isLogged && permiso('OP_CONVENIO')" link @click="dirigir('/callcenter/convenio')">
                             <v-list-item-action>
                                 <v-icon>thumb_up</v-icon>
                             </v-list-item-action>

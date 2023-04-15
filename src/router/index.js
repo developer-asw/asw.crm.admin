@@ -10,7 +10,7 @@ import OrientadoresList from '../components/Orientadores/OrientadoresList'
 import AgendaActual from '../components/Agenda/AgendaActual'
 import CallcenterList from '../components/Callcenter/CallcenterList';
 import VentaTelefonicaList from '../components/Callcenter/VentaTelefonicaList';
-import SearchList from '../components/Callcenter/SearchList';
+import Convenio from '../components/Callcenter/Convenio';
 import Contact from '../components/Callcenter/Contact'
 import CallcenterSeguimiento from '../components/Callcenter/CallcenterSeguimiento'
 import CallcenterCoordinatorList from '../components/Callcenter/Coordinator/CallcenterCoordinatorList'
@@ -72,19 +72,19 @@ const routes = [
     path: '/leads',
     name: 'leads',
     component: LeadsList,
-    meta: { Auth: true, title: 'Leads - List' , view: 'baseline'},
+    meta: { Auth: true, title: 'Leads - Lista' , view: 'baseline'},
   },
   {
     path: '/plantillas',
     name: 'plantillas',
     component: PlantillasList,
-    meta: { Auth: true, title: 'Templates - List' , view: 'baseline'},
+    meta: { Auth: true, title: 'Templates - Lista' , view: 'baseline'},
   },
   {
     path: '/orientadores/consulta',
     name: 'orientadores',
     component: OrientadoresList,
-    meta: { Auth: true, title: 'Guidance - List' , view: 'baseline'},
+    meta: { Auth: true, title: 'Guidance - Lista' , view: 'baseline'},
   },
   {
     path: '/agenda',
@@ -96,19 +96,19 @@ const routes = [
     path: '/callcenter',
     name: 'callcenter',
     component: CallcenterList,
-    meta: { Auth: true, title: 'Callcenter - List' , view: 'baseline'},
+    meta: { Auth: true, title: 'Callcenter - Lista' , view: 'baseline'},
   },
   {
     path: '/venta_telefonica',
     name: 'venta_telefonica',
     component: VentaTelefonicaList,
-    meta: { Auth: true, title: 'Venta Teléfonica - List' , view: 'baseline'},
+    meta: { Auth: true, title: 'Venta Teléfonica - Lista' , view: 'baseline'},
   },
   {
-    path: '/consultar',
-    name: 'consultar',
-    component: SearchList,
-    meta: { Auth: true, title: 'Consulta - List' , view: 'baseline'},
+    path: '/callcenter/convenio',
+    name: 'convenio',
+    component: Convenio,
+    meta: { Auth: true, title: 'Convenio - Lista' , view: 'baseline'},
   },
   {
     path: '/contact',

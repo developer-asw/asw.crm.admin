@@ -5,9 +5,9 @@
             <v-spacer></v-spacer>
             <v-toolbar-items>
                 <v-subheader>{{pagination.total}} registros</v-subheader>
-                <!-- <v-btn v-if="lista.length>0" flat small color="info" dark @click="descargarReporte">
+                <v-btn v-if="puedeDescargar" small color="info" dark @click="descargar">
                   <v-icon>cloud_download</v-icon>
-                </v-btn> -->
+                </v-btn>
                 <v-btn small color="info" dark @click="actualizar">
                     <v-icon>autorenew</v-icon>
                 </v-btn>
@@ -106,6 +106,8 @@ import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
 import CallcenterRegistrarLlamada from '@/components/Callcenter/CallcenterRegistrarLlamada'
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
+import config from '@/modules/config';
+import util from "@/utility/util";
 
 Vue.use(VueClipboard)
 
@@ -146,7 +148,8 @@ export default {
                 { text: 'Datos entrantes', value:0 }, 
                 { text: 'No contestan - Pendientes', value : 2 },
                 { text: 'Marcado Manual', value : 3 },
-            ]
+            ],
+            util:util
         }
     },
     props : {
@@ -283,9 +286,26 @@ export default {
             if (this.permiso('OP_CALL_TOTALES')) {
                 this.prioridad.push({ text: 'Totales', value : 10 })
             }
-            if (this.permiso('OP_CALL_TOTALES_AGENTES')) {
+            /*if (this.permiso('OP_CALL_TOTALES_AGENTES')) {
                 this.prioridad.push({ text: 'Totales Callcenter', value : 11 })
+            }*/
+            if (this.permiso('OP_CALL_TOTALES_CONVENIO')) {
+                this.prioridad.push({ text: 'Totales Convenio', value : 12 })
             }
+        },
+        async descargar(){
+            this.loading = true
+            let payload = {...this.payload};
+            payload.usuario_email = this.userEmail;
+            payload.download_tipo = 'csv'
+            
+            let ruta = config.ROOT_API + "convenio/descargar_datos?" + this.util.getUrlString(payload);
+
+            let newWindow = window.open(ruta, '_blank');
+            newWindow.focus();
+            newWindow.onblur = function() { newWindow.close(); };
+            this.loading = false
+            this.$emit('cerrar');
         }
     },
     computed: {
@@ -298,7 +318,7 @@ export default {
             permiso: 'auth/permiso', 
         }),
         getTitle(){
-            return 'Callcenter Agent'
+            return 'Convenios'
         },
         leadIdDialog(){
             if(this.leadSeleccionado){
@@ -306,6 +326,12 @@ export default {
             }else{
                 return null
             }
+        },
+        userEmail() {
+            return this.user && this.user ? this.user.email : null
+        },
+        puedeDescargar() {
+            return this.permiso('OP_CALL_DESCARGAR');
         }
     }
 }
