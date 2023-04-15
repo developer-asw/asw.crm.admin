@@ -17,65 +17,40 @@
                             
                             <v-layout column style="height: 110vh">       
                                 <v-flex md6 style="overflow: auto">  
-                                    <!--<v-card>
-                                        <v-card-text>
-                                            <v-timeline density="compact" align="start">
-                                                <v-timeline-item v-for="(item, index) in historial" :key="index" :dot-color="item.color" size="x-small">
-                                                <div class="mb-4">
-                                                    <div class="d-flex">
-                                                        <div class="font-weight-normal me-auto justify-start">
-                                                            <strong>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</strong> @{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
-                                                        </div>
-                                                        <small class="justify-end"><b>{{ item.accion }}</b></small>
+                                    
+                                    <v-list rounded :border="true" v-for="key_item in keys" :key="key_item.code" class="mx-auto" lines="three">
+                                        <v-subheader style="text-transform: uppercase;">{{ key_item.titulo }}</v-subheader>
+                                        <v-divider></v-divider>
+                                        <v-list-item v-for="(item, index) in historial[key_item.code]" :key="index">
+                                            
+                                            
+                                            <v-list-item-content class="pb-0">
+
+                                                <v-list-item-title class="d-flex">
+                                                    <div class="me-auto justify-start">
+                                                        <b>Evento:</b> {{ item.evento }}
                                                     </div>
-                                                    <div><b>Evento:</b> {{ item.evento }}</div>
-                                                    <div>{{ item.desc_evento }}</div>
-                                                    <div><b>Observación:</b> {{ item.observacion }}</div>
+                                                    <small class="historico-fecha justify-end">
+                                                        {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
+                                                    </small>
+                                                </v-list-item-title>
+                                                
+                                                <v-list-item-subtitle>
+                                                    {{ item.desc_evento }}
+                                                </v-list-item-subtitle>
+
+                                                <div><b>Observación:</b> {{ item.observacion }}</div>
+                                                <div class="d-flex">
+                                                    <div class="font-weight-normal me-auto justify-start">
+                                                        <strong>Usuario: </strong> {{ item.usuario ? item.usuario.nombre + (item.usuario.perfil ? ` (${item.usuario.perfil})`: '') : 'SISTEMA' }}
+                                                    </div>
+                                                    <span class="justify-end"><b>Acción: {{ item.accion }}</b></span>
                                                 </div>
-                                                </v-timeline-item>
-                                            </v-timeline>
-                                        </v-card-text>
-                                    </v-card>-->
-                                    <v-data-table dense full-width  
-                                        v-if="historial && historial.length > 0"
-                                        :headers="headerHistorial" 
-                                        :items="historial" 
-                                        hide-default-footer
-                                        :items-per-page="-1"
-                                        loading-text="Loading... Please wait"
-                                        class="elevation-1 tabla-historial"
-                                        item-key="index"
-                                        :single-expand="false"
-                                        
-                                        :expanded.sync="expanded"
-                                        show-expand>
-                                        <template v-slot:[`item.fecha`]="{ item }">
-                                            <span v-if="item.fecha_mostrar">
-                                                {{item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
-                                            </span>
-                                        </template>
-                                        <template v-slot:[`item.tipo`]="{ item }">
-                                            <v-icon></v-icon>
-                                            <v-icon v-if="item.tipo == 'llamada' && ver_detalles" @click="viewDetail(item)" x-small>call</v-icon>
-                                            <v-icon v-else-if="ver_detalles" x-small @click="viewDetail(item)">edit</v-icon>
-                                            <v-icon v-else-if="item.tipo == 'llamada'" x-small>call</v-icon>
-                                            <v-icon v-else x-small>edit</v-icon>
-                                        </template>
-                                        
-                                        <template v-slot:top>
-                                            <v-toolbar flat>
-                                                <v-toolbar-title><v-icon>folder</v-icon></v-toolbar-title>
-                                                <v-divider class="mx-4" inset vertical></v-divider>
-                                                <v-spacer></v-spacer>
-                                                <v-btn class="ma-2" color="primary" text @click="traerHistorial"><v-icon left small>refresh</v-icon>&nbsp;Actualizar&nbsp;</v-btn>
-                                            </v-toolbar>
-                                        </template>
-                                        <template v-slot:expanded-item="{ headers, item }" class="row-observacion">
-                                            <td class="observacion" :colspan="headers.length">
-                                                {{ getObservacion(item) }}
-                                            </td>
-                                        </template>
-                                    </v-data-table>
+                                                <v-divider class="mt-3"></v-divider>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                    </v-list>
+
                                 </v-flex>
                             </v-layout>
                         </v-expansion-panel-content>
@@ -87,86 +62,41 @@
                 <v-col>
                     <v-row>
                         <v-col cols="12">
-                            <v-layout column style="height: 110vh">       
-                                <v-flex md6 style="overflow: auto">  
-                                    <!--<v-card>
-                                        <v-img height="200" src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg" cover class="text-white">
-                                        <v-toolbar color="rgba(0, 0, 0, 0)" theme="dark">
-                                            <template v-slot:prepend>
-                                            <v-btn icon="$menu"></v-btn>
-                                            </template>
+                            <v-layout column style="height: 175vh">
+                                <v-flex md6 style="overflow: auto">
 
-                                            <v-toolbar-title class="text-h6">
-                                            Messages
-                                            </v-toolbar-title>
+                                    <v-list rounded :border="true" v-for="key_item in keys" :key="key_item.code" class="mx-auto" lines="three">
+                                        <v-subheader style="text-transform: uppercase;">{{ key_item.titulo }}</v-subheader>
+                                        <v-divider></v-divider>
+                                        <v-list-item v-for="(item, index) in historial[key_item.code]" :key="index">
+                                            
+                                            
+                                            <v-list-item-content class="pb-0">
 
-                                            <template v-slot:append>
-                                            <v-btn icon="mdi-dots-vertical"></v-btn>
-                                            </template>
-                                        </v-toolbar>
-                                        </v-img>-->
-                                        
-                                        <!--<div class="font-weight-bold ms-1 mb-2">Today</div>-->
-                                        <!--<v-card-text>
-                                            <v-timeline density="compact" align="start">
-                                                <v-timeline-item v-for="(item, index) in historial" :key="index" :dot-color="item.color" size="x-small">
-                                                <div class="mb-4">
-                                                    <div class="d-flex">
-                                                        <div class="font-weight-normal me-auto justify-start">
-                                                            <strong>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</strong> @{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
-                                                        </div>
-                                                        <small class="justify-end"><b>{{ item.accion }}</b></small>
+                                                <v-list-item-title class="d-flex">
+                                                    <div class="me-auto justify-start">
+                                                        <b>Evento:</b> {{ item.evento }}
                                                     </div>
-                                                    <div><b>Evento:</b> {{ item.evento }}</div>
-                                                    <div>{{ item.desc_evento }}</div>
-                                                    <div><b>Observación:</b> {{ item.observacion }}</div>
+                                                    <small class="historico-fecha justify-end">
+                                                        {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
+                                                    </small>
+                                                </v-list-item-title>
+                                                
+                                                <v-list-item-subtitle>
+                                                    {{ item.desc_evento }}
+                                                </v-list-item-subtitle>
+
+                                                <div><b>Observación:</b> {{ item.observacion }}</div>
+                                                <div class="d-flex">
+                                                    <div class="font-weight-normal me-auto justify-start">
+                                                        <strong>Usuario: </strong> {{ item.usuario ? item.usuario.nombre + (item.usuario.perfil ? ` (${item.usuario.perfil})`: '') : 'SISTEMA' }}
+                                                    </div>
+                                                    <span class="justify-end"><b>Acción: {{ item.accion }}</b></span>
                                                 </div>
-                                                </v-timeline-item>
-                                            </v-timeline>
-                                        </v-card-text>
-                                    </v-card>-->
-                                    <v-data-table dense full-width  
-                                        v-if="historial && historial.length > 0"
-                                        :headers="headerHistorial" 
-                                        :items="historial" 
-                                        hide-default-footer
-                                        :items-per-page="-1"
-                                        loading-text="Loading... Please wait"
-                                        class="elevation-1 tabla-historial"
-                                        item-key="index"
-                                        :single-expand="false"
-                                        :expanded.sync="expanded"
-                                        show-expand
-                                        >
-                                        <template v-slot:[`item.fecha`]="{ item }">
-                                            <span v-if="item.fecha_mostrar">
-                                                {{item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
-                                            </span>
-                                        </template>
-                                        <template v-slot:[`item.tipo`]="{ item }">
-                                            <v-icon></v-icon>
-                                            <v-icon v-if="item.tipo == 'llamada' && ver_detalles" @click="viewDetail(item)" x-small>call</v-icon>
-                                            <v-icon v-else-if="item.tipo == 'cita' && ver_detalles" x-small @click="viewDetail(item)">event</v-icon>
-                                            <v-icon v-else-if="ver_detalles" x-small @click="viewDetail(item)">edit</v-icon>
-                                            <v-icon v-else-if="item.tipo == 'llamada'" x-small>call</v-icon>
-                                            <v-icon v-else-if="item.tipo == 'cita'" x-small>event</v-icon>
-                                            <v-icon v-else x-small>edit</v-icon>
-                                        </template>
-                                        
-                                        <template v-slot:top>
-                                            <v-toolbar flat>
-                                                <v-toolbar-title>HISTORIAL</v-toolbar-title>
-                                                <v-divider class="mx-4" inset vertical></v-divider>
-                                                <v-spacer></v-spacer>
-                                                <v-btn class="ma-2" color="green darken-1" text @click="traerHistorial"><v-icon left small>refresh</v-icon>&nbsp;Actualizar&nbsp;</v-btn>
-                                            </v-toolbar>
-                                        </template>
-                                        <template v-slot:expanded-item="{ headers, item }" class="row-observacion">
-                                            <td class="observacion" :colspan="headers.length">
-                                                &raquo; {{ getObservacion(item) }}
-                                            </td>
-                                        </template>
-                                    </v-data-table>
+                                                <v-divider class="mt-3"></v-divider>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                    </v-list>
                                 </v-flex>
                             </v-layout>
                         </v-col>
@@ -230,29 +160,10 @@ export default {
             { text: '', value: 'data-table-expand' },
         ],
         historial: [],
+        keys:[],
         detalles: [],
         dialog: false,
         expanded: [true, true],
-        messages: [
-        {
-          from: 'You',
-          message: `Sure, I'll see you later.`,
-          time: '10:42am',
-          color: 'deep-purple-lighten-1',
-        },
-        {
-          from: 'John Doe',
-          message: 'Yeah, sure. Does 1:00pm work?',
-          time: '10:37am',
-          color: 'green',
-        },
-        {
-          from: 'You',
-          message: 'Did you still want to grab lunch today?',
-          time: '9:47am',
-          color: 'deep-purple-lighten-1',
-        },
-      ]
     }),
     props: {
         lead_id: String,
@@ -271,6 +182,7 @@ export default {
             this.consultar({id:this.lead_id})
                 .then(result => {
                     this.historial = result.datos;
+                    this.keys = result.keys;
                     this.expandAll();
                 })
                 .catch(error => {
@@ -325,6 +237,12 @@ export default {
 .tabla-historial tr.v-data-table__expanded__content {
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
+}
+.historico-fecha {
+    border-radius: 5px;
+    border: solid 1px #000;
+    background-color: #E3F2FD;
+    padding: 0px 7px;
 }
 
 </style>

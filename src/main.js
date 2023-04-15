@@ -24,11 +24,16 @@ Vue.http.interceptors.push((request, next) => {
 
 //moment
 import VueMoment from 'vue-moment'
+// import es from '/moment/locale/es'
+require('moment/locale/es')
 //import { ref, reactive } from 'vue'
 //Vue.use(ref);
 //Vue.use(reactive);
  
 Vue.use(VueMoment)
+// Vue.moment().locale(es)
+// console.log(Vue.moment().locale())
+// this.$moment.locale('es')
 
 new Vue({
   router,
