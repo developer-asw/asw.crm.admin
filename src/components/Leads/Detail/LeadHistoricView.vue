@@ -24,7 +24,7 @@
                                         <v-list-item v-for="(item, index) in historial[key_item.code]" :key="index">
                                             <v-list-item-content class="pb-0">
 
-                                                <v-list-item-title class="d-flex">
+                                                <v-list-item-subtitle>
                                                     <v-row>
                                                         <v-col cols="3">
                                                             <b>Evento:</b> {{ item.evento }}
@@ -36,7 +36,7 @@
                                                             {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
                                                         </v-col>
                                                     </v-row>
-                                                </v-list-item-title>
+                                                </v-list-item-subtitle>
                                                 
                                                 <v-list-item-subtitle>
                                                     <v-row>
@@ -45,7 +45,7 @@
                                                         </v-col>
                                                     </v-row>
                                                 </v-list-item-subtitle>
-                                                <v-list-item-title>
+                                                <v-list-item-subtitle>
                                                     <v-row>
                                                         <v-col  cols="3">
                                                             <b >Usuario:</b> <span class="usuario">{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
@@ -57,7 +57,7 @@
                                                             <b>Acción:</b> {{ item.accion }}
                                                         </v-col>
                                                     </v-row>
-                                                </v-list-item-title>
+                                                </v-list-item-subtitle>
                                                 <v-divider class="mt-3"></v-divider>
                                             </v-list-item-content>
                                         </v-list-item>
@@ -83,7 +83,7 @@
                                         <v-list-item v-for="(item, index) in historial[key_item.code]" :key="index">
                                             <v-list-item-content class="pb-0">
 
-                                                <v-list-item-title class="d-flex">
+                                                <v-list-item-subtitle>
                                                     <v-row>
                                                         <v-col cols="3">
                                                             <b>Evento:</b> {{ item.evento }}
@@ -95,7 +95,7 @@
                                                             {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
                                                         </v-col>
                                                     </v-row>
-                                                </v-list-item-title>
+                                                </v-list-item-subtitle>
                                                 
                                                 <v-list-item-subtitle>
                                                     <v-row>
@@ -104,7 +104,7 @@
                                                         </v-col>
                                                     </v-row>
                                                 </v-list-item-subtitle>
-                                                <v-list-item-title>
+                                                <v-list-item-subtitle>
                                                     <v-row>
                                                         <v-col  cols="3">
                                                             <b >Usuario:</b> <span class="usuario">{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
@@ -116,7 +116,7 @@
                                                             <b>Acción:</b> {{ item.accion }}
                                                         </v-col>
                                                     </v-row>
-                                                </v-list-item-title>
+                                                </v-list-item-subtitle>
                                                 <v-divider class="mt-3"></v-divider>
                                             </v-list-item-content>
                                         </v-list-item>
