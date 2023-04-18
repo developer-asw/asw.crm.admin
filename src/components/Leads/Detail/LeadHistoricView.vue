@@ -18,7 +18,7 @@
                             <v-layout column style="height: 110vh">       
                                 <v-flex md6 style="overflow: auto">  
                                     
-                                    <v-list rounded :border="true" v-for="key_item in keys" :key="key_item.code" class="mx-auto" lines="three">
+                                    <v-list rounded :border="true" v-for="key_item in keys" :key="key_item.code" class="mx-auto" lines="four">
                                         <v-subheader style="text-transform: uppercase;">{{ key_item.titulo }}</v-subheader>
                                         <v-divider></v-divider>
                                         <v-list-item v-for="(item, index) in historial[key_item.code]" :key="index">
