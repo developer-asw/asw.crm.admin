@@ -48,7 +48,7 @@
                                                 <v-list-item-subtitle>
                                                     <v-row>
                                                         <v-col  cols="3">
-                                                            <b >Usuario:</b> <span class="usuario">{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
+                                                            <b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
                                                         </v-col>
                                                         <v-col cols="5">
                                                             <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil : '' }}
@@ -58,7 +58,7 @@
                                                         </v-col>
                                                     </v-row>
                                                 </v-list-item-subtitle>
-                                                <v-divider class="mt-3"></v-divider>
+                                                <v-divider></v-divider>
                                             </v-list-item-content>
                                         </v-list-item>
                                     </v-list>
@@ -107,7 +107,7 @@
                                                 <v-list-item-subtitle>
                                                     <v-row>
                                                         <v-col  cols="3">
-                                                            <b >Usuario:</b> <span class="usuario">{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
+                                                            <b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
                                                         </v-col>
                                                         <v-col cols="5">
                                                             <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil : '' }}
@@ -117,7 +117,7 @@
                                                         </v-col>
                                                     </v-row>
                                                 </v-list-item-subtitle>
-                                                <v-divider class="mt-3"></v-divider>
+                                                <v-divider></v-divider>
                                             </v-list-item-content>
                                         </v-list-item>
                                     </v-list>
