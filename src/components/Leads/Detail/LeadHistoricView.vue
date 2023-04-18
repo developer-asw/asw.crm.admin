@@ -22,30 +22,42 @@
                                         <v-subheader style="text-transform: uppercase;">{{ key_item.titulo }}</v-subheader>
                                         <v-divider></v-divider>
                                         <v-list-item v-for="(item, index) in historial[key_item.code]" :key="index">
-                                            
-                                            
                                             <v-list-item-content class="pb-0">
 
                                                 <v-list-item-title class="d-flex">
-                                                    <div class="me-auto justify-start">
-                                                        <b>Evento:</b> {{ item.evento }}
-                                                    </div>
-                                                    <small class="historico-fecha justify-end">
-                                                        {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
-                                                    </small>
+                                                    <v-row>
+                                                        <v-col cols="3">
+                                                            <b>Evento:</b> {{ item.evento }}
+                                                        </v-col>
+                                                        <v-col cols="5">
+                                                            {{ item.desc_evento }}
+                                                        </v-col>
+                                                        <v-col cols="4">
+                                                            {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
+                                                        </v-col>
+                                                    </v-row>
                                                 </v-list-item-title>
                                                 
                                                 <v-list-item-subtitle>
-                                                    {{ item.desc_evento }}
+                                                    <v-row>
+                                                        <v-col>
+                                                            <b>Observación:</b> {{ item.observacion }}
+                                                        </v-col>
+                                                    </v-row>
                                                 </v-list-item-subtitle>
-
-                                                <div><b>Observación:</b> {{ item.observacion }}</div>
-                                                <div class="d-flex">
-                                                    <div class="font-weight-normal me-auto justify-start">
-                                                        <strong>Usuario: </strong> {{ item.usuario ? item.usuario.nombre + (item.usuario.perfil ? ` (${item.usuario.perfil})`: '') : 'SISTEMA' }}
-                                                    </div>
-                                                    <span class="justify-end"><b>Acción: {{ item.accion }}</b></span>
-                                                </div>
+                                                <v-list-item-title>
+                                                    <v-row>
+                                                        <v-col  cols="3">
+                                                            <b >Usuario:</b> <span class="usuario">{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
+                                                        </v-col>
+                                                        <v-col cols="5">
+                                                            <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil : '' }}
+                                                        </v-col>
+                                                        <v-col cols="4">
+                                                            <b>Acción:</b> {{ item.accion }}
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-list-item-title>
                                                 <v-divider class="mt-3"></v-divider>
                                             </v-list-item-content>
                                         </v-list-item>
@@ -69,30 +81,42 @@
                                         <v-subheader style="text-transform: uppercase;">{{ key_item.titulo }}</v-subheader>
                                         <v-divider></v-divider>
                                         <v-list-item v-for="(item, index) in historial[key_item.code]" :key="index">
-                                            
-                                            
                                             <v-list-item-content class="pb-0">
 
                                                 <v-list-item-title class="d-flex">
-                                                    <div class="me-auto justify-start">
-                                                        <b>Evento:</b> {{ item.evento }}
-                                                    </div>
-                                                    <small class="historico-fecha justify-end">
-                                                        {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
-                                                    </small>
+                                                    <v-row>
+                                                        <v-col cols="3">
+                                                            <b>Evento:</b> {{ item.evento }}
+                                                        </v-col>
+                                                        <v-col cols="5">
+                                                            {{ item.desc_evento }}
+                                                        </v-col>
+                                                        <v-col cols="4">
+                                                            {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
+                                                        </v-col>
+                                                    </v-row>
                                                 </v-list-item-title>
                                                 
                                                 <v-list-item-subtitle>
-                                                    {{ item.desc_evento }}
+                                                    <v-row>
+                                                        <v-col>
+                                                            <b>Observación:</b> {{ item.observacion }}
+                                                        </v-col>
+                                                    </v-row>
                                                 </v-list-item-subtitle>
-
-                                                <div><b>Observación:</b> {{ item.observacion }}</div>
-                                                <div class="d-flex">
-                                                    <div class="font-weight-normal me-auto justify-start">
-                                                        <strong>Usuario: </strong> {{ item.usuario ? item.usuario.nombre + (item.usuario.perfil ? ` (${item.usuario.perfil})`: '') : 'SISTEMA' }}
-                                                    </div>
-                                                    <span class="justify-end"><b>Acción: {{ item.accion }}</b></span>
-                                                </div>
+                                                <v-list-item-title>
+                                                    <v-row>
+                                                        <v-col  cols="3">
+                                                            <b >Usuario:</b> <span class="usuario">{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
+                                                        </v-col>
+                                                        <v-col cols="5">
+                                                            <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil : '' }}
+                                                        </v-col>
+                                                        <v-col cols="4">
+                                                            <b>Acción:</b> {{ item.accion }}
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-list-item-title>
                                                 <v-divider class="mt-3"></v-divider>
                                             </v-list-item-content>
                                         </v-list-item>
@@ -244,5 +268,16 @@ export default {
     background-color: #E3F2FD;
     padding: 0px 7px;
 }
+.usuario {
+    display: inline-block;
+    width:80%;
+    line-height: 0.7;
+    overflow:hidden;
+    white-space:nowrap;
+    -ms-text-overflow:ellipsis;
+    text-overflow:ellipsis;
+
+    white-space: nowrap;
+ }
 
 </style>
