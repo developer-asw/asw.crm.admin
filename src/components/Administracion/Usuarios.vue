@@ -95,7 +95,7 @@
                                                         <v-select v-model="usuario.gestion_id" :disabled="loading" :items="gestiones" label="Gestión" item-text="nombre" item-value="id" :rules="rules.gestion" @change="cambiarGestion()"></v-select>
                                                     </v-col>
                                                     <v-col cols="12" sm="6">
-                                                        <v-select v-model="usuario.grupo_usuario_id" :disabled="loading" :items="gruposUsuarios" label="Grupo" item-text="codigo" item-value="id"></v-select>
+                                                        <v-select v-model="usuario.grupo_usuario_id" :disabled="loading" :items="gruposUsuarios" label="Grupo" item-text="codigo" item-value="id" @change="cambiarGrupo()"></v-select>
                                                     </v-col>
                                                     <v-col cols="12" sm="6">
                                                         <v-select v-model="usuario.perfil_id" :disabled="loading" :items="perfiles" label="Perfiles" item-text="nombre" item-value="id" :rules="rules.pefil"></v-select>
@@ -468,9 +468,17 @@ export default {
                 // this.usuario.grupo_usuario_id = null;
             }
         },
+        cambiarGrupo() {
+            let item = this.gruposUsuarios.find(x => x.id == this.usuario.grupo_usuario_id);
+            if (item) {
+                var call = this.gruposCall.find(x => x.codigo.toUpperCase() == item.codigo.toUpperCase());
+                this.usuario.grupo_call_id = call && call.id ? call.id : null;
+            } else {
+                this.usuario.grupo_call_id = null;
+            }
+        },
         consola() {
             console.log(this.usuario)
-            console.log(this._user.data)
         },
     },
     computed: {
