@@ -39,8 +39,9 @@
                     <span title="Solicitado" v-if="item.ultima_llamada && item.ultima_llamada.fecha_solicitado">{{presentDate(item.ultima_llamada.fecha_solicitado)}}</span>
                 </template>
                 <template v-slot:[`item.ultima_llamada.usuario`]="{ item }">
-                    <span v-if="item.ultima_llamada && item.ultima_llamada.agente">{{item.ultima_llamada.agente.nombre}}</span>
-                    <span v-else-if="item.ultima_llamada && item.ultima_llamada.solicitante">{{item.ultima_llamada.solicitante.nombre}}</span>
+                    <span v-if="item.ultima_llamada && item.ultima_llamada.agente">{{item.ultima_llamada.agente.nombre}} <small>{{ item.ultima_llamada.call_grupo ? `(${item.ultima_llamada.call_grupo})` : '' }}</small></span>
+                    <span v-else-if="item.ultima_llamada && item.ultima_llamada.solicitante">{{item.ultima_llamada.solicitante.nombre}} <small>{{ item.ultima_llamada.call_grupo ? `(${item.ultima_llamada.call_grupo})` : '' }}</small></span>
+                    <span v-else-if="item.ultima_llamada && item.ultima_llamada.call_grupo">{{item.ultima_llamada.call_grupo}}</span>
                 </template>
                 <template v-slot:[`item.full_name`]="{ item }">
                     <span @click="$copyText(item.full_name);setInfo(item.full_name)">{{item.full_name}}</span>
