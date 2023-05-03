@@ -147,7 +147,7 @@ export default {
                 // { text: 'Predeterminado', value: null }, 
                 { text: 'Mis pendientes', value:1 }, 
                 { text: 'Datos entrantes', value:0 }, 
-                { text: 'No contestan - Pendientes', value : 2 },
+                { text: 'Pendientes - Contacto', value : 2 },
                 { text: 'Marcado Manual', value : 3 },
             ],
             util:util
@@ -276,7 +276,7 @@ export default {
                 this.prioridad.push({ text: 'Marcado Manual', value : 3 })
             }
             if (this.permiso('OP_CALL_NO_CONTESTA')) {
-                this.prioridad.push({ text: 'No contestan - Pendientes', value : 2 })
+                this.prioridad.push({ text: 'Pendientes - Contacto', value : 2 })
             }
             if (this.permiso('OP_CALL_GRUPO_1')) {
                 this.prioridad.push({ text: 'Grupo 1', value : 7 })

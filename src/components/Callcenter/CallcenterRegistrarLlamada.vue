@@ -218,7 +218,7 @@
                 </v-row>
 
                 
-                <v-row v-if="estado == 'venta_telefonica'">
+                <!--v-row v-if="estado == 'venta_telefonica'">
                     <v-select v-model="resolucion.agente" label="Coordinador de admisiones" :items="coordinadores" item-text="primer_nombre" item-value="email" 
                     @change="consola()">
                         <template slot="item" slot-scope="data">
@@ -228,7 +228,7 @@
                             {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
                         </template>
                     </v-select>
-                </v-row>
+                </v-row-->
                 
                 <v-row v-if="estado == 'apoyo_financiero'">
                     <v-col cols="12">
@@ -536,9 +536,10 @@
                     }
 				}    
                 else if(this.estado == 'venta_telefonica'){
-                    if (this.resolucion.agente){
+                    return true
+                    /*if (this.resolucion.agente){
                         return true
-                    }
+                    }*/
 				}    
                 else if(this.estado == 'apoyo_financiero'){
                     if (this.resolucion.sede){
