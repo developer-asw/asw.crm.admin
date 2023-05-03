@@ -32,6 +32,7 @@
                 :headers="headers"
                 :items="lista"
                 :loading="loading"
+                :search="payload.search"
                 loading-text="Loading... Please wait"
                 class="elevation-1">
                 <template v-slot:[`item.ultima_llamada.fecha`]="{ item }">
