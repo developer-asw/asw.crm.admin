@@ -190,7 +190,7 @@
                     </template>
                 </v-simple-table>
             </div>  
-            <div>
+            <div class="mt-5" >
                 <h2>Referidos Efectivo</h2>
                 <v-simple-table dense class="lighten-5">
                     <template v-slot:default>
@@ -421,7 +421,8 @@ export default {
         getreferidos() {
             console.log("getreferidos");
             this.consultarreferidos({ id: this.lead_id }).then((result) => {
-                this.referidos = result;
+                console.log(result)
+                this.referidos = result.datos;
             })
             .finally(() => {
                 this.loading = false;
