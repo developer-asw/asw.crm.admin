@@ -426,6 +426,7 @@ name: 'Dashboard',
                             if (!this.d.grafico_por_sede.data.chartOptions.chart) {
                                 this.d.grafico_por_sede.data.chartOptions.chart = {selection: { enabled: true }};
                             }
+                            this.d.grafico_por_sede.data.chartOptions.chart.height = 450;
                             this.d.grafico_por_sede.data.chartOptions.chart.toolbar= {
                                 tools: {
                                     download: false, // descargar csv datos dibujados

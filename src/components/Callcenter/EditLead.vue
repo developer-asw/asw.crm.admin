@@ -1,171 +1,217 @@
 <template>
 <!-- dark -->
-    <v-simple-table dense class="blue lighten-5">
-        <template v-slot:default>
-            <tbody>
-                <tr>
-                    <td><b>Tipo: </b></td>
-                    <td>{{ lead.categoria_lead }}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><b>ID: </b></td>
-                    <td>{{ lead.numero }}</td>
-                    <td></td>
-                </tr>
-                <tr v-if="lead.empresa">
-                    <td><b>Empresa: </b></td>
-                    <td>{{ lead.empresa }}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><b>Nombre: </b></td>
-                    <td>{{ lead.full_name }}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><b>E-Mail: </b></td>
-                    <td>
-                        <span v-if="ver.email">{{lead.email}}</span>
-                        <input type="email" v-else v-model="lead.email" />
-                    </td>
-                    <td class="text-right">
-                        <v-icon v-if="!ver.email" @click="actualizarEmail()" small right>save</v-icon>
-                        <v-icon v-if="ver.email" @click="editarEmail()" small right>autorenew</v-icon>
-                        <v-icon v-else @click="editarEmail()" small right>cancel</v-icon>
-                    </td>
-                </tr>
-                <tr>
-                    <td><b>Teléfono: </b></td>
-                    <td>{{ lead.movil }}</td>
-                    <td class="text-right">
-                        <v-icon v-if="!ver.movil" @click="actualizarMovil()" small right>save</v-icon>
-                        <v-icon v-if="ver.movil" @click="editarMovil()" small right>autorenew</v-icon>
-                        <v-icon v-else @click="editarMovil()" small right>cancel</v-icon>
-                    </td>
-                </tr>
-                <tr>
-                    <td><b>Sede: </b></td>
-                    <td>
-                        <span v-if="ver.sede">{{lead.sede_full  ? lead.sede_full.nombre:""}}</span>
-                        <v-select v-else v-model="lead.sede_id" :items="sedes" item-text="nombre" item-value="id">
-                            <template slot="item" slot-scope="data">
-                                {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.sede }}
-                            </template>
-                            <template slot="selection" slot-scope="data">
-                                {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.sede }}
-                            </template>
-                        </v-select>
-                    </td>
-                    <td class="text-right">
-                        <v-icon v-if="!ver.sede" @click="actualizarSede()" small right>save</v-icon>
-                        <v-icon v-if="ver.sede" @click="editarSede()" small right>autorenew</v-icon>
-                        <v-icon v-else @click="editarSede()" small right>cancel</v-icon>
-                    </td>
-                </tr>
-                <tr>
-                    <td><b>Programa de interes: </b></td>
-                    <td>
-                        <span v-if="ver.programa_interes">{{lead.programa_interes}}</span>
-                        <v-select v-else v-model="lead.programa_interes" :items="listado.programaInteres" item-text="title" item-value="value">
-                        </v-select>
-                    </td>
-                    <td class="text-right">
-                        <v-icon v-if="!ver.programa_interes" @click="actualizarProgramaInteres()" small right>save</v-icon>
-                        <v-icon v-if="ver.programa_interes" @click="editarProgramaInteres()" small right>autorenew</v-icon>
-                        <v-icon v-else @click="editarProgramaInteres()" small right>cancel</v-icon>
-                    </td>
-                </tr>
-                <tr>
-                    <td><b>Ciudad: </b></td>
-                    <td>{{ lead.ciudad }}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><b>Cómo llego: </b></td>
-                    <td>{{ lead.como_llego }}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><b>Cómo se entero: </b></td>
-                    <td>{{ lead.como_se_entero }}</td>
-                    <td></td>
-                </tr>
-                <tr v-if="lead.comentarios">
-                    <td><b>Comentarios Pagina Web: </b></td>
-                    <td>{{ lead.comentarios }}</td>
-                    <td></td>
-                </tr>
-                
-                <tr v-if="lead.form_plan">
-                    <td><b>Plan: </b></td>
-                    <td>{{ lead.form_plan }}</td>
-                    <td></td>
-                </tr>
-                
-                <tr v-if="lead.sede_full">
-                    <td><b>Ciudad: </b></td>
-                    <td>{{ lead.sede_full.ciudad }}</td>
-                    <td></td>
-                </tr>
-                
-                <tr v-if="lead.form_adicional">
-                    <td><b>Adicional: </b></td>
-                    <td>{{ lead.form_adicional }}</td>
-                    <td></td>
-                </tr>
-                
-                <tr v-if="lead.inputNivel">
-                    <td><b>Nivel de inglés: </b></td>
-                    <td>{{ lead.inputNivel }}</td>
-                    <td></td>
-                </tr>
-                
-                <tr v-if="lead.inputOcupacion">
-                    <td><b>Ocupación: </b></td>
-                    <td>{{ lead.inputOcupacion }}</td>
-                    <td></td>
-                </tr>
-                
-                <tr v-if="lead.inputAge">
-                    <td><b>Edad: </b></td>
-                    <td>{{ lead.inputAge }}</td>
-                    <td></td>
-                </tr>
+    <v-row>
+        <v-col cols="12" md="8">
 
-                <tr v-if="lead.mesagge">
-                    <td><b>Observaciones Cliente </b></td>
-                    <td><p>{{ lead.mesagge ? lead.mesagge : lead.comentarios }}</p></td>
-                    <td></td>
-                </tr>
+            <v-simple-table dense class="blue lighten-5">
+                <template v-slot:default>
+                    <tbody>
+                        <tr>
+                            <td><b>Tipo: </b></td>
+                            <td>{{ lead.categoria_lead }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>ID: </b></td>
+                            <td>{{ lead.numero }}</td>
+                            <td></td>
+                        </tr>
+                        <tr v-if="lead.empresa">
+                            <td><b>Empresa: </b></td>
+                            <td>{{ lead.empresa }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>Nombre: </b></td>
+                            <td>{{ lead.full_name }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>E-Mail: </b></td>
+                            <td>
+                                <span v-if="ver.email">{{lead.email}}</span>
+                                <input type="email" v-else v-model="lead.email" />
+                            </td>
+                            <td class="text-right">
+                                <v-icon v-if="!ver.email" @click="actualizarEmail()" small right>save</v-icon>
+                                <v-icon v-if="ver.email" @click="editarEmail()" small right>autorenew</v-icon>
+                                <v-icon v-else @click="editarEmail()" small right>cancel</v-icon>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Teléfono: </b></td>
+                            <td>{{ lead.movil }}</td>
+                            <td class="text-right">
+                                <v-icon v-if="!ver.movil" @click="actualizarMovil()" small right>save</v-icon>
+                                <v-icon v-if="ver.movil" @click="editarMovil()" small right>autorenew</v-icon>
+                                <v-icon v-else @click="editarMovil()" small right>cancel</v-icon>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Sede: </b></td>
+                            <td>
+                                <span v-if="ver.sede">{{lead.sede_full  ? lead.sede_full.nombre:""}}</span>
+                                <v-select v-else v-model="lead.sede_id" :items="sedes" item-text="nombre" item-value="id">
+                                    <template slot="item" slot-scope="data">
+                                        {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.sede }}
+                                    </template>
+                                    <template slot="selection" slot-scope="data">
+                                        {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.sede }}
+                                    </template>
+                                </v-select>
+                            </td>
+                            <td class="text-right">
+                                <v-icon v-if="!ver.sede" @click="actualizarSede()" small right>save</v-icon>
+                                <v-icon v-if="ver.sede" @click="editarSede()" small right>autorenew</v-icon>
+                                <v-icon v-else @click="editarSede()" small right>cancel</v-icon>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Programa de interes: </b></td>
+                            <td>
+                                <span v-if="ver.programa_interes">{{lead.programa_interes}}</span>
+                                <v-select v-else v-model="lead.programa_interes" :items="listado.programaInteres" item-text="title" item-value="value">
+                                </v-select>
+                            </td>
+                            <td class="text-right">
+                                <v-icon v-if="!ver.programa_interes" @click="actualizarProgramaInteres()" small right>save</v-icon>
+                                <v-icon v-if="ver.programa_interes" @click="editarProgramaInteres()" small right>autorenew</v-icon>
+                                <v-icon v-else @click="editarProgramaInteres()" small right>cancel</v-icon>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Ciudad: </b></td>
+                            <td>{{ lead.ciudad }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>Cómo llego: </b></td>
+                            <td>{{ lead.como_llego }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><b>Cómo se entero: </b></td>
+                            <td>{{ lead.como_se_entero }}</td>
+                            <td></td>
+                        </tr>
+                        <tr v-if="lead.comentarios">
+                            <td><b>Comentarios Pagina Web: </b></td>
+                            <td>{{ lead.comentarios }}</td>
+                            <td></td>
+                        </tr>
+                        
+                        <tr v-if="lead.form_plan">
+                            <td><b>Plan: </b></td>
+                            <td>{{ lead.form_plan }}</td>
+                            <td></td>
+                        </tr>
+                        
+                        <tr v-if="lead.sede_full">
+                            <td><b>Ciudad: </b></td>
+                            <td>{{ lead.sede_full.ciudad }}</td>
+                            <td></td>
+                        </tr>
+                        
+                        <tr v-if="lead.form_adicional">
+                            <td><b>Adicional: </b></td>
+                            <td>{{ lead.form_adicional }}</td>
+                            <td></td>
+                        </tr>
+                        
+                        <tr v-if="lead.inputNivel">
+                            <td><b>Nivel de inglés: </b></td>
+                            <td>{{ lead.inputNivel }}</td>
+                            <td></td>
+                        </tr>
+                        
+                        <tr v-if="lead.inputOcupacion">
+                            <td><b>Ocupación: </b></td>
+                            <td>{{ lead.inputOcupacion }}</td>
+                            <td></td>
+                        </tr>
+                        
+                        <tr v-if="lead.inputAge">
+                            <td><b>Edad: </b></td>
+                            <td>{{ lead.inputAge }}</td>
+                            <td></td>
+                        </tr>
 
-                <tr>
-                    <td><b>Estado: </b></td>
-                    <td>
-                        {{lead.ultima_llamada_estado}}
-                    </td>
-                    <td>
-                        <v-icon v-if="!ver.estado" @click="actualizarEstado()" small right>save</v-icon>
-                        <v-icon v-if="ver.estado" @click="editarEstado()" small right>autorenew</v-icon>
-                        <v-icon v-else @click="editarEstado()" small right>cancel</v-icon>
-                    </td>
-                </tr>
-                <tr>
-                    <td><b>Renovación: </b></td>
-                    <td>{{ lead.cmp_renovacion ? "SI" : "NO" }}</td>
-                    <td></td>
-                </tr>
-                <tr v-if="!ver.estado">
-                    <td colspan="3" bgColor="white">
-                        <CallcenterRegistrarLlamada :key="lead_id" :lead_id="lead_id" :ocultar="true" @actualizar="actualizarEstado" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada>
-                    </td>
-                </tr>
-                <!-- <td colspan="2">
-                    <v-icon @click="actualizar" right>refresh</v-icon>
-                </td> -->
-            </tbody>
-        </template>
-    </v-simple-table>
+                        <tr v-if="lead.mesagge">
+                            <td><b>Observaciones Cliente </b></td>
+                            <td><p>{{ lead.mesagge ? lead.mesagge : lead.comentarios }}</p></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td><b>Estado: </b></td>
+                            <td>
+                                {{lead.ultima_llamada_estado}}
+                            </td>
+                            <td>
+                                <v-icon v-if="!ver.estado" @click="actualizarEstado()" small right>save</v-icon>
+                                <v-icon v-if="ver.estado" @click="editarEstado()" small right>autorenew</v-icon>
+                                <v-icon v-else @click="editarEstado()" small right>cancel</v-icon>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Renovación: </b></td>
+                            <td>{{ lead.cmp_renovacion ? "SI" : "NO" }}</td>
+                            <td></td>
+                        </tr>
+                        <tr v-if="!ver.estado">
+                            <td colspan="3" bgColor="white">
+                                <CallcenterRegistrarLlamada :key="lead_id" :lead_id="lead_id" :ocultar="true" @actualizar="actualizarEstado" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada>
+                            </td>
+                        </tr>
+                        <!-- <td colspan="2">
+                            <v-icon @click="actualizar" right>refresh</v-icon>
+                        </td> -->
+                    </tbody>
+                </template>
+            </v-simple-table>
+        </v-col>
+        <v-col cols="12" md="4">
+            <div>
+                <h2>Referidos</h2>
+                <v-simple-table dense class="lighten-5">
+                    <template v-slot:default>
+                        <thead>
+                            <tr>
+                                <th>
+                                    Nombre
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(r, i) in referidos.referidos" :key="i">
+                                <td>{{ r.full_name }}</td>
+                            </tr>
+                        </tbody>
+                    </template>
+                </v-simple-table>
+            </div>  
+            <div>
+                <h2>Referidos Efectivo</h2>
+                <v-simple-table dense class="lighten-5">
+                    <template v-slot:default>
+                        <thead>
+                            <tr>
+                                <th>
+                                    Nombre
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(re, i) in referidos.referidos_efectivos" :key="i">
+                                <td>{{ re.full_name }}</td>
+                            </tr>
+                        </tbody>
+                    </template>
+                </v-simple-table>
+            </div> 
+        </v-col>
+    </v-row>
+
 </template>
 
 <script>
@@ -190,6 +236,7 @@ export default {
         },
         lead: {},
         leadOriginal: {},
+        referidos:{referidos:[], referidos_efectivos:[]}
     }),
     props: {
         lead_id: String,
@@ -198,9 +245,11 @@ export default {
     mounted() {
         this.verificar();
         this.traerOrigenes();
+        this.getreferidos();
     },
     methods: {
         ...mapActions({
+            consultarreferidos: "leads/fetchLeadreferidos",
             fetchLead: 'leads/fetchLead',
             listarOrigenes: 'listado/fetchListaLeads',
             sedeUpdate: 'leads/actualizarSede',
@@ -368,6 +417,15 @@ export default {
         },
         actualizar(){
             this.viewItem();
+        },
+        getreferidos() {
+            console.log("getreferidos");
+            this.consultarreferidos({ id: this.lead_id }).then((result) => {
+                this.referidos = result;
+            })
+            .finally(() => {
+                this.loading = false;
+            });
         }
     },
     computed: {

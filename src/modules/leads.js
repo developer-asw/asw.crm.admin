@@ -3,6 +3,7 @@ import Vue from 'vue';
 const state = {
     lista: [],
     historial: [],
+    referidos:[],
     pagination:{
         total : 0,
         page : 1,
@@ -66,6 +67,22 @@ const actions = {
             Vue.http.post('lead/historial',data).then(
                 response =>{
                     commit('setHistorial',response.data.datos);
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
+    fetchLeadreferidos:({commit},data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.post('lead/referidos',data).then(
+                response =>{
+                    commit('setReferidos',response.data.datos);
                     resolve(response.data)
                 }
             ).catch(error=>{
@@ -410,6 +427,9 @@ const mutations = {
     },
     setHistorial: (state, datos) => {
         state.historial = datos
+    },
+    setReferidos: (state, datos) => {
+        state.referidos = datos
     },
     restart: (state) => {
         state.lista = []
