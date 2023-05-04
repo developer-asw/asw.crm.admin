@@ -1,7 +1,7 @@
 <template>
 <!-- dark -->
     <v-row>
-        <v-col cols="12" md="8">
+        <v-col cols="12" md="12">
 
             <v-simple-table dense class="blue lighten-5">
                 <template v-slot:default>
@@ -163,52 +163,26 @@
                                 <CallcenterRegistrarLlamada :key="lead_id" :lead_id="lead_id" :ocultar="true" @actualizar="actualizarEstado" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada>
                             </td>
                         </tr>
+                        <tr>
+                            <td><b>Referidos: </b></td>
+                            <td colspan="2">
+                                {{referidos.referidos.length}}
+                                <v-btn text v-for="(r, i) in referidos.referidos" :key="i" :to="{ name: 'recepcion_view', params: { id: r.id } }" target="_blank">{{ r.full_name }}, </v-btn>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Referidos Efectivo: </b></td>
+                            <td colspan="2">
+                                {{referidos.referidos_efectivos.length}}
+                                <v-btn text v-for="(re, i) in referidos.referidos_efectivos" :key="i" :to="{ name: 'recepcion_view', params: { id: re.id } }" target="_blank">{{ re.full_name }}, </v-btn>
+                            </td>
+                        </tr>
                         <!-- <td colspan="2">
                             <v-icon @click="actualizar" right>refresh</v-icon>
                         </td> -->
                     </tbody>
                 </template>
             </v-simple-table>
-        </v-col>
-        <v-col cols="12" md="4">
-            <div>
-                <h2>Referidos</h2>
-                <v-simple-table dense class="lighten-5">
-                    <template v-slot:default>
-                        <thead>
-                            <tr>
-                                <th>
-                                    Nombre
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(r, i) in referidos.referidos" :key="i">
-                                <td>{{ r.full_name }}</td>
-                            </tr>
-                        </tbody>
-                    </template>
-                </v-simple-table>
-            </div>  
-            <div class="mt-5" >
-                <h2>Referidos Efectivo</h2>
-                <v-simple-table dense class="lighten-5">
-                    <template v-slot:default>
-                        <thead>
-                            <tr>
-                                <th>
-                                    Nombre
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(re, i) in referidos.referidos_efectivos" :key="i">
-                                <td>{{ re.full_name }}</td>
-                            </tr>
-                        </tbody>
-                    </template>
-                </v-simple-table>
-            </div> 
         </v-col>
     </v-row>
 
