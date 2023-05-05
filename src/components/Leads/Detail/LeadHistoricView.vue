@@ -26,13 +26,13 @@
 
                                                 <v-list-item-subtitle>
                                                     <v-row>
-                                                        <v-col cols="3" class="py-3">
+                                                        <v-col cols="3" class="py-0">
                                                             <b>Evento:</b> {{ item.evento }}
                                                         </v-col>
-                                                        <v-col cols="5" class="py-3">
+                                                        <v-col cols="5" class="py-0">
                                                             {{ item.desc_evento }}
                                                         </v-col>
-                                                        <v-col cols="4" class="py-3">
+                                                        <v-col cols="4" class="py-0">
                                                             {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
                                                         </v-col>
                                                     </v-row>
@@ -40,20 +40,20 @@
                                                 
                                                 <v-list-item-subtitle>
                                                     <v-row>
-                                                        <v-col class="py-3">
+                                                        <v-col class="py-0">
                                                             <b>Observación:</b> {{ item.observacion }}
                                                         </v-col>
                                                     </v-row>
                                                 </v-list-item-subtitle>
                                                 <v-list-item-subtitle>
                                                     <v-row>
-                                                        <v-col  cols="3" class="py-3">
+                                                        <v-col  cols="3" class="py-0">
                                                             <b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
                                                         </v-col>
-                                                        <v-col cols="5" class="py-3">
+                                                        <v-col cols="5" class="py-0">
                                                             <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil : '' }}
                                                         </v-col>
-                                                        <v-col cols="4" class="py-3">
+                                                        <v-col cols="4" class="py-0">
                                                             <b>Acción:</b> {{ item.accion }}
                                                         </v-col>
                                                     </v-row>
@@ -89,13 +89,13 @@
 
                                                 <v-list-item-subtitle>
                                                     <v-row>
-                                                        <v-col cols="3" class="py-3">
+                                                        <v-col cols="3" class="py-0">
                                                             <b>Evento:</b> {{ item.evento }}
                                                         </v-col>
-                                                        <v-col cols="5" class="py-3">
+                                                        <v-col cols="5" class="py-0">
                                                             {{ item.desc_evento }}
                                                         </v-col>
-                                                        <v-col cols="4" class="py-3">
+                                                        <v-col cols="4" class="py-0">
                                                             {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
                                                         </v-col>
                                                     </v-row>
@@ -103,20 +103,20 @@
                                                 
                                                 <v-list-item-subtitle>
                                                     <v-row>
-                                                        <v-col class="py-3">
+                                                        <v-col class="py-0">
                                                             <b>Observación:</b> {{ item.observacion }}
                                                         </v-col>
                                                     </v-row>
                                                 </v-list-item-subtitle>
                                                 <v-list-item-subtitle>
                                                     <v-row>
-                                                        <v-col  cols="3" class="py-3">
+                                                        <v-col  cols="3" class="py-0">
                                                             <b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
                                                         </v-col>
-                                                        <v-col cols="5" class="py-3">
+                                                        <v-col cols="5" class="py-0">
                                                             <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil : '' }}
                                                         </v-col>
-                                                        <v-col cols="4" class="py-3">
+                                                        <v-col cols="4" class="py-0">
                                                             <b>Acción:</b> {{ item.accion }}
                                                         </v-col>
                                                     </v-row>
