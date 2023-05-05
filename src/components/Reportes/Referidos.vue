@@ -85,11 +85,13 @@ Vue.use(VueClipboard)
             headers: [
                 { text: 'Refiere - Documento', value: '_id.referido_documento'},
                 { text: 'Refiere - Nombre', value: '_id.referido_nombre'},
+                { text: 'Efectivo', value: 'matriculados'},
                 { text: 'Total', value: 'total'},
             ],
             json_fields:{
                 "Refiere - Documento": "_id.referido_documento",
                 "Refiere - Nombre": "_id.referido_nombre",
+                "Efectivo": "matriculados",
                 "Total": "total",
             },
             dialogFilter: false,
