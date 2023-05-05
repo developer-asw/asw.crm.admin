@@ -295,7 +295,7 @@ export default {
                 this.prioridad.push({ text: 'Marcado Manual', value : 3 })
             }
             /*if (this.permiso('OP_CALL_NO_CONTESTA')) {
-                this.prioridad.push({ text: 'No contestan - Pendientes', value : 2 })
+                this.prioridad.push({ text: 'Pendientes - Contacto', value : 2 })
             }*/
             if (this.permiso('OP_CALL_GRUPO_1')) {
                 this.prioridad.push({ text: 'Grupo 1', value : 7 })
@@ -313,7 +313,7 @@ export default {
             /**
              * { text: 'Tareas Pendientes', value:1 },
              * { text: 'Datos por Resolver', value:5 },
-             * { text: 'No contestan - Pendientes', value : 2 },
+             * { text: 'Pendientes - Contacto', value : 2 },
              */
             console.log(this.payload)
             if (grupo_usuario == 'grupo_fredy' || this.permiso('OP_CALL_GRUPO_1')){

@@ -157,7 +157,7 @@ export default {
                 // { text: 'Predeterminado', value: null }, 
                 // { text: 'Mis pendientes', value:1 }, 
                 // { text: 'Datos entrantes', value:0 }, 
-                // { text: 'No contestan - Pendientes', value : 2 },
+                // { text: 'Pendientes - Contacto', value : 2 },
                 { text: 'Marcado Manual', value : 3 },
             ],
             llamadas_estados:[],
