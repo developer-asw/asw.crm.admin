@@ -21,7 +21,6 @@
         </v-toolbar>
         <v-card>
             <v-card-title>
-                <v-checkbox v-model="todos" @change="aplicarTodos()"></v-checkbox>
                 Referidos
                 <v-spacer></v-spacer>
 
@@ -74,7 +73,6 @@ import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
 import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
 import util from "../../utility/util";
-import config from '@/modules/config'
  
 Vue.use(VueClipboard)
   export default {

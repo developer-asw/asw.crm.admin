@@ -320,6 +320,9 @@ export default {
             if (this.permiso('OP_CALL_VENTA_TELEFONICA')) {
                 this.prioridad.push({ text: 'Venta Teléfonica', value : 6 })
             }
+            if (this.permiso('OP_CALL_MASTERCLASS')) {
+                this.prioridad.push({ text: 'MasterClass', value : 8 })
+            }
             if (this.permiso('OP_CALL_TOTALES')) {
                 this.prioridad.push({ text: 'Totales', value : 10 })
             }
