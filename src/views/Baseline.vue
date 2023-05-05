@@ -234,6 +234,14 @@
                                 <v-list-item-title>Tareas</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
+                        <v-list-item v-if="isLogged && permiso('OP_REPORTE_REFERIDOS')" link @click="dirigir('/Reportes/Referidos')">
+                            <v-list-item-action>
+                                <v-icon>filter_list</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Referidos</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
                     </v-list-group>
                     
                                         

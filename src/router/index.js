@@ -24,6 +24,7 @@ import ReportesLlamadas from '../components/Reportes/Llamadas'
 import ReportesLeads from '../components/Reportes/Leads'
 import ReportesCitas from '../components/Reportes/Citas'
 import ReportesAgentes from '../components/Reportes/Agentes'
+import ReportesReferidos from '../components/Reportes/Referidos'
 import RecepcionView from '@/components/Recepcion/RecepcionView'
 
 import MissedAppointments from '@/components/Settings/MissedAppointments';
@@ -211,7 +212,13 @@ const routes = [
     path: '/Reportes/Agentes',
     name: 'ReportesAgentes',
     component: ReportesAgentes,
-    meta: { Auth: true, title: 'Reportes - Leads' , view: 'baseline'},
+    meta: { Auth: true, title: 'Reportes - Tareas' , view: 'baseline'},
+  },
+  {
+    path: '/Reportes/Referidos',
+    name: 'ReportesReferidos',
+    component: ReportesReferidos,
+    meta: { Auth: true, title: 'Reportes - Referidos' , view: 'baseline'},
   },
   {
     path: '/about',

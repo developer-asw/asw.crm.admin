@@ -237,7 +237,7 @@
                         </v-select>
                     </v-col>
                 </v-row>
-                <v-row v-if="estado == 'seguimiento_whatsapp' || estado == 'venta_telefonica'">
+                <v-row v-if="['seguimiento_whatsapp','venta_telefonica','masterclass'].includes(estado)">
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
                 </v-row>
 
@@ -527,7 +527,7 @@
 					if(this.resolucion.fecha_proxima_llamada && this.resolucion.hora_proxima_llamada){
 						return true
 					}
-				}else if(this.estado=='no_contesta' || this.estado == 'seguimiento_whatsapp' || this.estado == 'convocatoria_talento_humano'){
+				}else if(this.estado=='no_contesta' || this.estado=='masterclass' || this.estado == 'seguimiento_whatsapp' || this.estado == 'convocatoria_talento_humano'){
 					return true
 				}
                 else if(this.estado == 'seguimiento'){
@@ -539,7 +539,7 @@
                     if (this.resolucion.agente){
                         return true
                     }
-				}    
+				}
                 else if(this.estado == 'apoyo_financiero'){
                     if (this.resolucion.sede){
                         return true

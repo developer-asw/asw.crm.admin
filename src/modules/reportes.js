@@ -10,6 +10,15 @@ const state = {
             lastPage : 1,
         }
     },
+    referidos:{
+        lista:[],
+        pagination: {
+            total : 0,
+            page : 1,
+            perPage : 100,
+            lastPage : 1,
+        }
+    },
     hits:{
         lista:[],
         pagination: {
@@ -146,6 +155,22 @@ const actions = {
             })
         });
     },
+    fetchReferidos:({commit},data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.post('reportes/referidos',data).then(
+                response =>{
+                    commit('setReferidos',response.data.datos);
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
 };
 
 const getters = {
@@ -187,6 +212,13 @@ const mutations = {
     state.llamadas.pagination.page = datos.page;
     state.llamadas.pagination.perPage = datos.perPage;
     state.llamadas.pagination.lastPage = datos.lastPage;
+  },
+  setReferidos: (state, datos) => {
+    state.referidos.lista = datos;
+    state.referidos.pagination.total = datos.total;
+    state.referidos.pagination.page = datos.page;
+    state.referidos.pagination.perPage = datos.perPage;
+    state.referidos.pagination.lastPage = datos.lastPage;
   },
   restart: (state) => {
     state.lista = []
