@@ -24,7 +24,7 @@
                                         <v-list-item class="py-0 my-0" v-for="(item, index) in historial[key_item.code]" :key="index">
                                             <v-list-item-content class="py-0 my-0">
 
-                                                <v-container class="bg-surface-variant py-0 my-0">
+                                                <v-container class="bg-surface-variant">
 
                                                     <v-row no-gutters>
                                                         <v-col cols="3" class="py-0">
@@ -83,7 +83,7 @@
                                         <v-divider></v-divider>
                                         <v-list-item class="py-0 my-0" v-for="(item, index) in historial[key_item.code]" :key="index">
                                             <v-list-item-content class="py-0 my-0">
-                                                <v-container class="bg-surface-variant py-0 my-0">
+                                                <v-container class="bg-surface-variant">
 
                                                     <v-row no-gutters>
                                                         <v-col cols="3" class="py-0">
