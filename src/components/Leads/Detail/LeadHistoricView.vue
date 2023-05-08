@@ -41,7 +41,7 @@
                                                 <v-list-item-subtitle>
                                                     <v-row>
                                                         <v-col class="py-0">
-                                                            <b>Observación:</b> {{ item.observacion }}
+                                                            <p><b>Observación:</b> {{ item.observacion }}</p>
                                                         </v-col>
                                                     </v-row>
                                                 </v-list-item-subtitle>
@@ -104,7 +104,7 @@
                                                 <v-list-item-subtitle>
                                                     <v-row>
                                                         <v-col class="py-0">
-                                                            <b>Observación:</b> {{ item.observacion }}
+                                                            <p><b>Observación:</b> {{ item.observacion }}</p>
                                                         </v-col>
                                                     </v-row>
                                                 </v-list-item-subtitle>
