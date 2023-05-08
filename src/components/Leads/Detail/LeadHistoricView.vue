@@ -40,7 +40,7 @@
                                                     
                                                     <v-row no-gutters>
                                                         <v-col class="py-0">
-                                                            <p class="text-left"><b>Observación:</b> {{ item.observacion }}</p>
+                                                            <p class="text-left my-0"><b>Observación:</b> {{ item.observacion }}</p>
                                                         </v-col>
                                                     </v-row>
                                                     <v-row no-gutters>
@@ -99,7 +99,7 @@
                                                     
                                                     <v-row no-gutters>
                                                         <v-col class="py-0">
-                                                            <p class="text-left"><b>Observación:</b> {{ item.observacion }}</p>
+                                                            <p class="text-left my-0"><b>Observación:</b> {{ item.observacion }}</p>
                                                         </v-col>
                                                     </v-row>
                                                     <v-row no-gutters>
