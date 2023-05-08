@@ -24,8 +24,9 @@
                                         <v-list-item v-for="(item, index) in historial[key_item.code]" :key="index">
                                             <v-list-item-content class="pb-0">
 
-                                                <v-list-item-subtitle>
-                                                    <v-row>
+                                                <v-container class="bg-surface-variant">
+
+                                                    <v-row no-gutters>
                                                         <v-col cols="3" class="py-0">
                                                             <b>Evento:</b> {{ item.evento }}
                                                         </v-col>
@@ -36,17 +37,13 @@
                                                             {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
                                                         </v-col>
                                                     </v-row>
-                                                </v-list-item-subtitle>
-                                                
-                                                <v-list-item-subtitle>
-                                                    <v-row>
+                                                    
+                                                    <v-row no-gutters>
                                                         <v-col class="py-0">
-                                                            <p><b>Observación:</b> {{ item.observacion }}</p>
+                                                            <p class="text-left"><b>Observación:</b> {{ item.observacion }}</p>
                                                         </v-col>
                                                     </v-row>
-                                                </v-list-item-subtitle>
-                                                <v-list-item-subtitle>
-                                                    <v-row>
+                                                    <v-row no-gutters>
                                                         <v-col  cols="3" class="py-0">
                                                             <b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
                                                         </v-col>
@@ -62,7 +59,7 @@
                                                             <v-divider></v-divider>
                                                         </v-col>
                                                     </v-row>
-                                                </v-list-item-subtitle>
+                                                </v-container>
                                             </v-list-item-content>
                                         </v-list-item>
                                     </v-list>
@@ -86,9 +83,9 @@
                                         <v-divider></v-divider>
                                         <v-list-item v-for="(item, index) in historial[key_item.code]" :key="index">
                                             <v-list-item-content class="pb-0">
+                                                <v-container class="bg-surface-variant">
 
-                                                <v-list-item-subtitle>
-                                                    <v-row>
+                                                    <v-row no-gutters>
                                                         <v-col cols="3" class="py-0">
                                                             <b>Evento:</b> {{ item.evento }}
                                                         </v-col>
@@ -99,17 +96,13 @@
                                                             {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
                                                         </v-col>
                                                     </v-row>
-                                                </v-list-item-subtitle>
-                                                
-                                                <v-list-item-subtitle>
-                                                    <v-row>
+                                                    
+                                                    <v-row no-gutters>
                                                         <v-col class="py-0">
-                                                            <p><b>Observación:</b> {{ item.observacion }}</p>
+                                                            <p class="text-left"><b>Observación:</b> {{ item.observacion }}</p>
                                                         </v-col>
                                                     </v-row>
-                                                </v-list-item-subtitle>
-                                                <v-list-item-subtitle>
-                                                    <v-row>
+                                                    <v-row no-gutters>
                                                         <v-col  cols="3" class="py-0">
                                                             <b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
                                                         </v-col>
@@ -125,7 +118,7 @@
                                                             <v-divider></v-divider>
                                                         </v-col>
                                                     </v-row>
-                                                </v-list-item-subtitle>
+                                                </v-container>
                                             </v-list-item-content>
                                         </v-list-item>
                                     </v-list>
@@ -284,8 +277,10 @@ export default {
     white-space:nowrap;
     -ms-text-overflow:ellipsis;
     text-overflow:ellipsis;
-
     white-space: nowrap;
- }
+}
+.bg-surface-variant {
+    color: rgba(0,0,0,.6);
+}
 
 </style>
