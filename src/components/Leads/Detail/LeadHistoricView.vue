@@ -81,9 +81,9 @@
                                     <v-list rounded :border="true" v-for="key_item in keys" :key="key_item.code" class="mx-auto" lines="three">
                                         <v-subheader style="text-transform: uppercase;">{{ key_item.titulo }}</v-subheader>
                                         <v-divider></v-divider>
-                                        <v-list-item v-for="(item, index) in historial[key_item.code]" :key="index">
+                                        <v-list-item class="py-0 my-0" v-for="(item, index) in historial[key_item.code]" :key="index">
                                             <v-list-item-content class="py-0 my-0">
-                                                <v-container class="bg-surface-variant">
+                                                <v-container class="bg-surface-variant py-0 my-0">
 
                                                     <v-row no-gutters>
                                                         <v-col cols="3" class="py-0">
