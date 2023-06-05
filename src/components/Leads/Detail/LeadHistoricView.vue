@@ -39,8 +39,8 @@
                                                     </v-row>
                                                     
                                                     <v-row no-gutters>
-                                                        <v-col class="py-0">
-                                                            <p class="text-left my-0"><b>Observación:</b> {{ item.observacion }}</p>
+                                                        <v-col class="py-2">
+                                                            <p class="text-left"><b>Observación:</b> {{ item.observacion }}</p>
                                                         </v-col>
                                                     </v-row>
                                                     <v-row no-gutters>
@@ -48,7 +48,7 @@
                                                             <b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
                                                         </v-col>
                                                         <v-col cols="5" class="py-0">
-                                                            <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil : '' }}
+                                                            <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil + (item.usuario.grupo_usuario ? ` (${item.usuario.grupo_usuario})` : '') : '' }}
                                                         </v-col>
                                                         <v-col cols="4" class="py-0">
                                                             <b>Acción:</b> {{ item.accion }}
@@ -98,7 +98,7 @@
                                                     </v-row>
                                                     
                                                     <v-row no-gutters>
-                                                        <v-col class="py-0">
+                                                        <v-col class="py-2">
                                                             <p class="text-left my-0"><b>Observación:</b> {{ item.observacion }}</p>
                                                         </v-col>
                                                     </v-row>
@@ -107,7 +107,7 @@
                                                             <b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
                                                         </v-col>
                                                         <v-col cols="5" class="py-0">
-                                                            <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil : '' }}
+                                                            <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil + (item.usuario.grupo_usuario ? ` (${item.usuario.grupo_usuario})` : '') : '' }}
                                                         </v-col>
                                                         <v-col cols="4" class="py-0">
                                                             <b>Acción:</b> {{ item.accion }}
