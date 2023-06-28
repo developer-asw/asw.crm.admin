@@ -166,11 +166,9 @@ export default {
     mounted() {
         this.verificar();
         this.traerOrigenes();
-        this.getreferidos();
     },
     methods: {
         ...mapActions({
-            consultarreferidos: "leads/fetchLeadreferidos",
             fetchLead: 'leads/fetchLead',
             listarOrigenes: 'listado/fetchListaLeads',
             sedeUpdate: 'leads/actualizarSede',
@@ -255,15 +253,6 @@ export default {
         },
         actualizar(){
             this.viewItem();
-        },
-        getreferidos() {
-            console.log("getreferidos");
-            this.consultarreferidos({ id: this.lead_id }).then((result) => {
-                console.log(result);
-            })
-            .finally(() => {
-                this.loading = false;
-            });
         }
     },
     computed: {

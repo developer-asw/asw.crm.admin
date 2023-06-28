@@ -469,13 +469,13 @@ export default {
             }
         },
         cambiarGrupo() {
-            let item = this.gruposUsuarios.find(x => x.id == this.usuario.grupo_usuario_id);
+            /*let item = this.gruposUsuarios.find(x => x.id == this.usuario.grupo_usuario_id);
             if (item) {
                 var call = this.gruposCall.find(x => x.codigo.toUpperCase() == item.codigo.toUpperCase());
                 this.usuario.grupo_call_id = call && call.id ? call.id : null;
             } else {
                 this.usuario.grupo_call_id = null;
-            }
+            }*/
         },
         consola() {
             console.log(this.usuario)

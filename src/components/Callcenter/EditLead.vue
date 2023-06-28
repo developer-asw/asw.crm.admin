@@ -148,9 +148,9 @@
                                 {{lead.ultima_llamada_estado}}
                             </td>
                             <td>
-                                <v-icon v-if="!ver.estado" @click="actualizarEstado()" small right>save</v-icon>
-                                <v-icon v-if="ver.estado" @click="editarEstado()" small right>autorenew</v-icon>
-                                <v-icon v-else @click="editarEstado()" small right>cancel</v-icon>
+                                <v-icon v-if="(permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AF_REGISTRAR_LLAMADA')) && !ver.estado" @click="actualizarEstado()" small right>save</v-icon>
+                                <v-icon v-if="(permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AF_REGISTRAR_LLAMADA')) && ver.estado" @click="editarEstado()" small right>autorenew</v-icon>
+                                <v-icon v-else-if="(permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AF_REGISTRAR_LLAMADA'))" @click="editarEstado()" small right>cancel</v-icon>
                             </td>
                         </tr>
                         <tr>
@@ -160,7 +160,8 @@
                         </tr>
                         <tr v-if="!ver.estado">
                             <td colspan="3" bgColor="white">
-                                <CallcenterRegistrarLlamada :key="lead_id" :lead_id="lead_id" :ocultar="true" @actualizar="actualizarEstado" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada>
+                                <RegistrarLlamadaApoyoFinanciero v-if="permiso('OP_AF_REGISTRAR_LLAMADA') && puedeSolicitarApoyoFinanciero" :key="'apoyo_financiero'" :lead_id="lead_id" :ocultar="true" @actualizar="actualizarEstado" @copiarDatoParent="copiarDato"></RegistrarLlamadaApoyoFinanciero>
+                                <CallcenterRegistrarLlamada v-else-if="permiso('OP_REGISTRAR_LLAMADA')" :key="'callcenter'" :lead_id="lead_id" :ocultar="true" @actualizar="actualizarEstado" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada>
                             </td>
                         </tr>
                         <tr>
@@ -193,11 +194,13 @@
 import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';//,,
 
 import CallcenterRegistrarLlamada from '@/components/Callcenter/CallcenterRegistrarLlamada'
+import RegistrarLlamadaApoyoFinanciero from '@/components/ApoyoFinanciero/RegistrarLlamada'
 
 export default {
     name: 'EditLead',
     components: {
-      CallcenterRegistrarLlamada
+      CallcenterRegistrarLlamada,
+      RegistrarLlamadaApoyoFinanciero
     },
     data: () => ({
         listado: [],
@@ -415,6 +418,12 @@ export default {
         },
         sedes() {
             return this.setSedes
+        },
+        puedeSolicitarApoyoFinanciero(){
+            if(this.lead && this.lead.af_ultima_llamada && ['pendiente'].includes(this.lead.af_ultima_llamada.estado)){
+                return true
+            }
+            return false
         }
     }
 }

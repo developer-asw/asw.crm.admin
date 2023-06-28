@@ -103,22 +103,6 @@
                                 <v-list-item-title>Mis seguimientos</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-if="isLogged && permiso('OP_APOYO_FINANCIERO')" link @click="dirigir('/apoyofinanciero/matriculados')">
-                            <v-list-item-action>
-                                <v-icon>credit_card</v-icon>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                                <v-list-item-title>Apoyo Financiero</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item v-if="isLogged && permiso('OP_AF_SEGUIMIENTO')" link @click="dirigir('/apoyofinanciero/seguimientos')">
-                            <v-list-item-action>
-                                <v-icon>calendar_today</v-icon>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                                <v-list-item-title>Mis seguimientos</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
                         <!--<v-list-item v-if="isLogged && user && user.rol == 'coordinador'" link @click="dirigir('/venta_telefonica')">
                             <v-list-item-action>
                                 <v-icon>call</v-icon>
@@ -151,6 +135,32 @@
                             </v-list-item-action>
                             <v-list-item-content>
                                 <v-list-item-title>Orientadores</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list-group>
+
+                    <v-list-group v-if="isLogged && permiso('OP_APOYO_FINANCIERO')" no-action sub-group
+                    value="true">
+                        <template v-slot:activator>
+                            <v-list-item-content>
+                                <v-list-item-title>Apoyo Financiero</v-list-item-title>
+                            </v-list-item-content>
+                        </template>
+                        
+                        <v-list-item v-if="isLogged" link @click="dirigir('/apoyofinanciero/matriculados')">
+                            <v-list-item-action>
+                                <v-icon>credit_card</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Llamar</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item v-if="isLogged && permiso('OP_AF_SEGUIMIENTO')" link @click="dirigir('/apoyofinanciero/seguimientos')">
+                            <v-list-item-action>
+                                <v-icon>calendar_today</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Mis seguimientos</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list-group>

@@ -186,7 +186,6 @@ export default {
   },
   methods: {
     ...mapActions({
-      consultarreferidos: "leads/fetchLeadreferidos",
       listarOrigenes: "listado/fetchListaLeads",
       solicitarApoyoFinanciero:'callcenter/solicitarAF',
       solicitarCallcenter: "callcenter/solicitar",
@@ -369,22 +368,11 @@ export default {
         .then((result) => {
           if (result.datos) {
             this.lead = result.datos;
-            this.getreferidos();
           }
         })
         .finally(() => {
           this.loading = false;
         });
-    },
-    getreferidos() {
-      console.log("getreferidos");
-      this.consultarreferidos({ id: this.leadId }).then((result) => {
-        console.log(result);
-
-      })
-      .finally(() => {
-        this.loading = false;
-      });
     },
     getEstado(value) {
         if (this.estados && this.estados.llamadas) {

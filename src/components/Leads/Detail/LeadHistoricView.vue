@@ -21,39 +21,36 @@
                                     <v-list rounded :border="true" v-for="key_item in keys" :key="key_item.code" class="mx-auto" lines="three">
                                         <v-subheader style="text-transform: uppercase;">{{ key_item.titulo }}</v-subheader>
                                         <v-divider></v-divider>
-                                        <v-list-item v-for="(item, index) in historial[key_item.code]" :key="index">
-                                            <v-list-item-content class="pb-0">
+                                        <v-list-item class="py-0 my-0" v-for="(item, index) in historial[key_item.code]" :key="index">
+                                            <v-list-item-content class="py-0 my-0">
 
-                                                <v-list-item-subtitle>
-                                                    <v-row>
-                                                        <v-col cols="3" class="py-3">
+                                                <v-container class="bg-surface-variant">
+
+                                                    <v-row no-gutters>
+                                                        <v-col cols="3" class="py-0">
                                                             <b>Evento:</b> {{ item.evento }}
                                                         </v-col>
-                                                        <v-col cols="5" class="py-3">
+                                                        <v-col cols="5" class="py-0">
                                                             {{ item.desc_evento }}
                                                         </v-col>
-                                                        <v-col cols="4" class="py-3">
+                                                        <v-col cols="4" class="py-0">
                                                             {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
                                                         </v-col>
                                                     </v-row>
-                                                </v-list-item-subtitle>
-                                                
-                                                <v-list-item-subtitle>
-                                                    <v-row>
-                                                        <v-col class="py-3">
-                                                            <b>Observación:</b> {{ item.observacion }}
+                                                    
+                                                    <v-row no-gutters>
+                                                        <v-col class="py-2">
+                                                            <p class="text-left"><b>Observación:</b> {{ item.observacion }}</p>
                                                         </v-col>
                                                     </v-row>
-                                                </v-list-item-subtitle>
-                                                <v-list-item-subtitle>
-                                                    <v-row>
-                                                        <v-col  cols="3" class="py-3">
+                                                    <v-row no-gutters>
+                                                        <v-col  cols="3" class="py-0">
                                                             <b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
                                                         </v-col>
-                                                        <v-col cols="5" class="py-3">
-                                                            <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil : '' }}
+                                                        <v-col cols="5" class="py-0">
+                                                            <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil + (item.usuario.grupo_usuario ? ` (${item.usuario.grupo_usuario})` : '') : '' }}
                                                         </v-col>
-                                                        <v-col cols="4" class="py-3">
+                                                        <v-col cols="4" class="py-0">
                                                             <b>Acción:</b> {{ item.accion }}
                                                         </v-col>
                                                     </v-row>
@@ -62,7 +59,7 @@
                                                             <v-divider></v-divider>
                                                         </v-col>
                                                     </v-row>
-                                                </v-list-item-subtitle>
+                                                </v-container>
                                             </v-list-item-content>
                                         </v-list-item>
                                     </v-list>
@@ -84,39 +81,35 @@
                                     <v-list rounded :border="true" v-for="key_item in keys" :key="key_item.code" class="mx-auto" lines="three">
                                         <v-subheader style="text-transform: uppercase;">{{ key_item.titulo }}</v-subheader>
                                         <v-divider></v-divider>
-                                        <v-list-item v-for="(item, index) in historial[key_item.code]" :key="index">
-                                            <v-list-item-content class="pb-0">
+                                        <v-list-item class="py-0 my-0" v-for="(item, index) in historial[key_item.code]" :key="index">
+                                            <v-list-item-content class="py-0 my-0">
+                                                <v-container class="bg-surface-variant">
 
-                                                <v-list-item-subtitle>
-                                                    <v-row>
-                                                        <v-col cols="3" class="py-3">
+                                                    <v-row no-gutters>
+                                                        <v-col cols="3" class="py-0">
                                                             <b>Evento:</b> {{ item.evento }}
                                                         </v-col>
-                                                        <v-col cols="5" class="py-3">
+                                                        <v-col cols="5" class="py-0">
                                                             {{ item.desc_evento }}
                                                         </v-col>
-                                                        <v-col cols="4" class="py-3">
+                                                        <v-col cols="4" class="py-0">
                                                             {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
                                                         </v-col>
                                                     </v-row>
-                                                </v-list-item-subtitle>
-                                                
-                                                <v-list-item-subtitle>
-                                                    <v-row>
-                                                        <v-col class="py-3">
-                                                            <b>Observación:</b> {{ item.observacion }}
+                                                    
+                                                    <v-row no-gutters>
+                                                        <v-col class="py-2">
+                                                            <p class="text-left my-0"><b>Observación:</b> {{ item.observacion }}</p>
                                                         </v-col>
                                                     </v-row>
-                                                </v-list-item-subtitle>
-                                                <v-list-item-subtitle>
-                                                    <v-row>
-                                                        <v-col  cols="3" class="py-3">
+                                                    <v-row no-gutters>
+                                                        <v-col  cols="3" class="py-0">
                                                             <b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
                                                         </v-col>
-                                                        <v-col cols="5" class="py-3">
-                                                            <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil : '' }}
+                                                        <v-col cols="5" class="py-0">
+                                                            <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil + (item.usuario.grupo_usuario ? ` (${item.usuario.grupo_usuario})` : '') : '' }}
                                                         </v-col>
-                                                        <v-col cols="4" class="py-3">
+                                                        <v-col cols="4" class="py-0">
                                                             <b>Acción:</b> {{ item.accion }}
                                                         </v-col>
                                                     </v-row>
@@ -125,7 +118,7 @@
                                                             <v-divider></v-divider>
                                                         </v-col>
                                                     </v-row>
-                                                </v-list-item-subtitle>
+                                                </v-container>
                                             </v-list-item-content>
                                         </v-list-item>
                                     </v-list>
@@ -284,8 +277,10 @@ export default {
     white-space:nowrap;
     -ms-text-overflow:ellipsis;
     text-overflow:ellipsis;
-
     white-space: nowrap;
- }
+}
+.bg-surface-variant {
+    color: rgba(0,0,0,.6);
+}
 
 </style>
