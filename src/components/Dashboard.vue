@@ -286,6 +286,7 @@
 
 <script>
 
+import IngresoPorDia from '@/components/Dashboard/Graficas/IngresoPorDia';
 import { mapState, mapActions, mapMutations } from 'vuex';
 import VueApexCharts from 'vue-apexcharts';
 import config from '@/modules/config';
