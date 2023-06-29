@@ -396,7 +396,6 @@ export default {
             this.viewItem();
         },
         getreferidos() {
-            console.log("getreferidos");
             this.consultarreferidos({ id: this.lead_id }).then((result) => {
                 console.log(result)
                 this.referidos = result.datos;

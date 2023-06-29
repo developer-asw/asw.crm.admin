@@ -17,7 +17,7 @@
             apexchart: VueApexCharts, 
         },
         props: {
-            estudiante: Object,
+            // estudiante: Object,
             fecha_inicio: String,
             fecha_final: String,
             sede: Array,
