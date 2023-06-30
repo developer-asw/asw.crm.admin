@@ -1,9 +1,7 @@
 <template>
-    <v-card class="mx-auto text-center">
-        <v-card-text>
-            <apexchart type="area" height="350" :options="grafico.data.chartOptions" :series="grafico.data.series"></apexchart>
-        </v-card-text>
-    </v-card>
+    <div style="width: 100%; height: 100%">
+        <apexchart v-if="grafico && grafico.data" type="area" height="350" width="100%" :options="grafico.data.chartOptions" :series="grafico.data.series"></apexchart>
+    </div>
 </template>
 <script>
     import { mapState, mapActions, mapMutations } from 'vuex';
@@ -16,21 +14,13 @@
         components: { 
             apexchart: VueApexCharts, 
         },
-        props: {
-            // estudiante: Object,
-            fecha_inicio: String,
-            fecha_final: String,
-            sede: Array,
-            tipo: Array
-        },
         data: () => ({
-            dates: [],
-            grafico: null,
+            grafico: {},
             loading:false,
             util:util
         }),
         mounted() {
-            // this.consultar();
+            console.log("INGRESO_POR_DIA")
         },
         methods: {
             ...mapActions({
@@ -40,14 +30,14 @@
                 setInfo: 'setInfo',
                 setError: 'setError',
             }),
-            consultar() {
+            consultar(payload) {
                 this.loading = true;
-                this.payload = {desde: this.fecha_inicio, hasta: this.fecha_final, sede:this.sede, tipo: this.tipo};
-                this.consulta(this.payload)
+                this.consulta(payload)
                     .then(result => {
+                        var _payload = payload;
                         if(result && result.datos) {
                             this.grafico = result.datos;
-                            this.grafico = result.datos;
+                            console.log(this.grafico);
                             if (this.grafico.data && this.grafico.data.chartOptions && this.grafico.data.chartOptions.chart) {
                                 this.grafico.data.chartOptions.chart = {selection: { enabled: true }};
                                 var $this = this;
@@ -64,7 +54,7 @@
                                             icon: '<img src="/img/download-icon.png" width="20">',
                                             title: 'Descargar datos.',
                                             click: function () {
-                                                $this.descargar('datos_por_dia');
+                                                $this.descargar(_payload, 'datos_por_dia');
                                             },
                                             appendTo: 'top' // left / top means the button will be appended to the left most or right most position
                                         }]
@@ -75,10 +65,9 @@
                     })
                     .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })    
             },
-            
-            descargar(grafica){
+            descargar(_payload, grafica){
                 this.loading = true
-                let payload = {...this.payload};
+                let payload = {..._payload};
                 payload.usuario_email = this.userEmail;
                 payload.download_tipo = 'csv';
                 payload.grafica = grafica;
