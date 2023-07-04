@@ -149,7 +149,8 @@
                 observacion: null,
                 errado_motivo: null,
                 forzar: false,
-                agente: null
+                agente: null,
+                tipo_gestion:"Apoyo Financiero"
             },
             fechas: [],
             sedes: [],

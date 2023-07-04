@@ -24,6 +24,7 @@
                         <v-select :disabled="resolucion.sede !=  null" v-model="resolucion.sede" :items="sedes" label="Sede Asitencia"
                             item-text="text" item-value="id">
                         </v-select>
+
                         <v-select v-model="resolucion.orientador" :items="orientadores" label="Orientador Asignado" item-text="primer_nombre" item-value="email">
                             <template slot="item" slot-scope="data">
                                 {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
@@ -32,6 +33,7 @@
                                 {{ data.item.primer_nombre }} {{ data.item.segundo_nombre }} {{ data.item.primer_apellido }} {{ data.item.segundo_apellido }}
                             </template>
                         </v-select>
+
                     </v-col>
                     <v-col cols="12" md="6" v-if="estado == 'agendar_cita'">
                         <v-select v-model="resolucion.sede" :items="sedes" label="Sede"
@@ -175,6 +177,7 @@
                 fetchDisponibilidad: 'agenda/fetchDisponibilidad',
                 fetchDisponibilidadLlamadas: 'agenda/fetchDisponibilidadLlamadas',
                 fetchOrientadores: 'admisiones/fetchLista',
+                fetchAgentes: 'agentes/fetchLista',
                 crear: 'leads/crearCita',
                 cerrarCita: 'recepcionista/cerrar',
                 listarEstados: 'listado/fetchListaLlamadas',
@@ -259,8 +262,9 @@
 
                     })
             },
-            traerOrientadores() {  
-                this.fetchOrientadores(this.resolucion.sede)
+            traerOrientadores() {
+                if (this.lead && this.lead.ultima_cita && this.lead.ultima_cita.tipo_gestion == "Apoyo Financiero") {
+                    this.fetchAgentes({tipo_gestion: this.lead.ultima_cita.tipo_gestion,sede:this.resolucion.sede})
                     .then(result => {
                         this.orientadores = result;
                     })
@@ -270,6 +274,18 @@
                     }).finally(() => {
 
                     })
+                } else {
+                    this.fetchOrientadores(this.resolucion.sede)
+                    .then(result => {
+                        this.orientadores = result;
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        this.setError(error)
+                    }).finally(() => {
+
+                    })
+                }
             },
             getDaysBetweenDates(d0, d1) {
                 var msPerDay = 8.64e7;
