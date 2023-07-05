@@ -23,6 +23,7 @@ import management from '@/modules/management';
 import user from '@/modules/user';
 import perfiles from '@/modules/perfiles';
 import permisos from '@/modules/permisos';
+import agentes from '@/modules/agentes';
 
 Vue.use(Vuex)
 
@@ -156,7 +157,8 @@ const store = new Vuex.Store({
     management,
     user,
     perfiles,
-    permisos
+    permisos,
+    agentes
   }
 })
 

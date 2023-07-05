@@ -296,7 +296,7 @@
                 forzar: false,
                 agente: null,
                 tipo: null,
-                clase:null
+                clase:null,
             },
             fechas: [],
             sedes: [],

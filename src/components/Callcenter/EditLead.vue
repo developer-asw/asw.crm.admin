@@ -411,6 +411,7 @@ export default {
         }),
         ...mapGetters({
             detalle: 'leads/getDetalle',
+            permiso: 'auth/permiso', 
         }),
         getTitle() {
             return 'Registro de llamada'
