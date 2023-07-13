@@ -28,7 +28,7 @@
 
                                                     <v-row no-gutters>
                                                         <v-col cols="3" class="py-0">
-                                                            <b>Evento:</b> {{ item.evento }}
+                                                            <b><v-icon small @click="viewDetail(item)">info</v-icon> Evento:</b> {{ item.evento }}
                                                         </v-col>
                                                         <v-col cols="5" class="py-0">
                                                             {{ item.desc_evento }}
@@ -87,7 +87,7 @@
 
                                                     <v-row no-gutters>
                                                         <v-col cols="3" class="py-0">
-                                                            <b>Evento:</b> {{ item.evento }}
+                                                            <b><v-icon small @click="viewDetail(item)">info</v-icon> Evento:</b> {{ item.evento }}
                                                         </v-col>
                                                         <v-col cols="5" class="py-0">
                                                             {{ item.desc_evento }}
