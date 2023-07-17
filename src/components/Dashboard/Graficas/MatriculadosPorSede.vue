@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%; height: 100%">
-        <apexchart v-if="grafico && grafico.data" type="area" height="350" width="100%" :options="grafico.data.chartOptions" :series="grafico.data.series"></apexchart>
+        <apexchart v-if="grafico && grafico.data" type="bar" height="350" width="100%" :options="grafico.data.chartOptions" :series="grafico.data.series"></apexchart>
     </div>
 </template>
 <script>
@@ -20,11 +20,11 @@
             util:util
         }),
         mounted() {
-            console.log("INGRESO_POR_DIA")
+            console.log("MATRICULADOS_POR_SEDE")
         },
         methods: {
             ...mapActions({
-                consulta: 'dashboard/consultarDatosPorDia',
+                consulta: 'dashboard/consultarMatriculasPorSede',
             }),
             ...mapMutations({
                 setInfo: 'setInfo',
@@ -53,7 +53,7 @@
                                             icon: '<img src="/img/download-icon.png" width="20">',
                                             title: 'Descargar datos.',
                                             click: function () {
-                                                $this.descargar(_payload, 'datos_por_dia');
+                                                $this.descargar(_payload, 'matriculas_por_sede');
                                             },
                                             appendTo: 'top' // left / top means the button will be appended to the left most or right most position
                                         }]
@@ -61,6 +61,35 @@
                                 };
                             }
                         }
+
+                        /*
+                        this.d.grafico_matriculas_sede = result.datos;
+                        if (this.d.grafico_matriculas_sede.data && this.d.grafico_matriculas_sede.data.chartOptions) {
+                            var $this = this;
+                            if (!this.d.grafico_matriculas_sede.data.chartOptions.chart) {
+                                this.d.grafico_matriculas_sede.data.chartOptions.chart = {selection: { enabled: true }};
+                            }
+                            this.d.grafico_matriculas_sede.data.chartOptions.chart.toolbar= {
+                                tools: {
+                                    download: false, // descargar csv d atos dibujados
+                                    selection: false,
+                                    zoom: false,
+                                    zoomin: false,
+                                    zoomout: false,
+                                    pan: false,
+                                    reset: false | '<img src="/img/download-icon.png" width="20">',
+                                    customIcons: [{
+                                        icon: '<img src="/img/download-icon.png" width="20">',
+                                        title: 'Descargar datos.',
+                                        click: function () {
+                                            $this.descargar('matriculas_por_sede');
+                                        },
+                                        appendTo: 'top' // left / top means the button will be appended to the left most or right most position
+                                    }]
+                                }
+                            };
+                        }
+                        */
                     })
                     .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })    
             },

@@ -68,171 +68,58 @@
                             </v-col>
                         </v-row>
                     </v-col>
-                    <v-col md="12" sm="12" cols="12"><h3>Efectividad Por fuente de Dato</h3></v-col>
-                    <v-col md="4" sm="6" cols="12">
-                        <v-row>
-                            <DatosDigital ref="digitalMatriculadosVsCita"></DatosDigital>
+
+                    <v-col md="12" sm="12" cols="12">
+                        <v-row align="center" justify="center">
+                            <v-col md="12" sm="12" cols="12">
+                                <h3>Efectividad Por fuente de Dato</h3>
+                            </v-col>
+                            <v-col md="4" sm="6" cols="12">
+                                <v-row>
+                                    <DatosDigital ref="digitalMatriculadosVsCita"></DatosDigital>
+                                </v-row>
+                            </v-col>
+                            <v-col md="4" sm="6" cols="12">
+                                <v-row>
+                                    <DatosOtrosMedios ref="otrosMediosMatriculadosVsCita"></DatosOtrosMedios>
+                                </v-row>
+                            </v-col>
+                            <v-col md="4" sm="6" cols="12">
+                                <v-row>
+                                    <DatosMasterclass ref="masterclassMatriculadosVsCita"></DatosMasterclass>
+                                </v-row>
+                            </v-col>
+                            
+                            <v-col md="4" sm="6" cols="12">
+                                <v-row>
+                                    <DatosCitas ref="citasAgendadasvsAsistidas"></DatosCitas>
+                                </v-row>
+                            </v-col>
                         </v-row>
                     </v-col>
-                    <v-col v-if="d.grafico_otros_vs_citas" md="4" sm="6" cols="12">
-                        
-                        <v-card
-                            class="mx-auto text-center"
-                            >
-                            <v-card-text>
-                                <apexchart type="bar" height="350" :options="d.grafico_otros_vs_citas.data.barOptions" :series="d.grafico_otros_vs_citas.data.series"></apexchart>
-                            </v-card-text>
 
-                        </v-card>
-                    </v-col>
-                    <v-col v-if="d.grafico_origenes_masterclass" md="4" sm="6" cols="12">
-                        
-                        <v-card
-                            class="mx-auto text-center"
-                            >
-                            <v-card-text>
-                                <apexchart type="bar" height="350" :options="d.grafico_origenes_masterclass.data.barOptions" :series="d.grafico_origenes_masterclass.data.series"></apexchart>
-                            </v-card-text>
-
-                        </v-card>
-                    </v-col>
-                    <v-col md="4" sm="6" cols="12"></v-col>
-                    <v-col v-if="d.grafico_agendadas_vs_asistidas" md="4" sm="6" cols="12">
-                        <v-card
-                            class="mx-auto text-center"
-                            >
-                            <v-card-text>
-                                <apexchart type="bar" height="350" :options="d.grafico_agendadas_vs_asistidas.data.barOptions" :series="d.grafico_agendadas_vs_asistidas.data.series"></apexchart>
-                            </v-card-text>
-
-                        </v-card>
-                    </v-col>
-                    <v-col md="4" sm="6" cols="12"></v-col>
-
-                    <v-col md="4" sm="6" cols="12" v-if="d.grafico_masterclass">
-                        <v-card
-                            class="mx-auto text-center"
-                            color="cyan"
-                            dark
-                            max-width="600">
-                            <v-card-text>
-                                <v-sheet color="rgba(0, 0, 0, .12)">
-                                    <v-sparkline
-                                        :value="d.grafico_masterclass.data.values"
-                                        :labels="d.grafico_masterclass.data.labels"
-                                        color="white"
-                                        line-width="2"
-                                        padding="16">
-                                    <template v-slot:label="item">
-                                        {{ item.value }} 
-                                    </template>
-                                    </v-sparkline>
-                                </v-sheet>
-                            </v-card-text>
-
-                            <v-card-text>
-                                <div class="display-1 font-weight-thin">
-                                    <small>{{d.grafico_masterclass.title}}</small>
-                                    <br>
-                                    {{d.grafico_masterclass.total}}
-                                    <v-btn small colot="info" text @click="descargar('datos_masterclass')">
-                                        <v-icon>cloud_download</v-icon>
-                                    </v-btn>
-                                </div>
-                            </v-card-text>
-
-
-                        </v-card>
+                    <v-col md="4" sm="6" cols="12">
+                        <IngresoMasterClass ref="ingresoMasterClass"></IngresoMasterClass>
                     </v-col>
 
-                    <v-col md="4" sm="6" cols="12" v-if="d.grafico_presencial">
-                        <v-card
-                            class="mx-auto text-center"
-                            color="orange"
-                            dark
-                            max-width="600">
-                            <v-card-text>
-                                <v-sheet color="rgba(0, 0, 0, .12)">
-                                    <v-sparkline
-                                        :value="d.grafico_presencial.data.values"
-                                        :labels="d.grafico_presencial.data.labels"
-                                        color="white"
-                                        line-width="2"
-                                        padding="16">
-                                    <template v-slot:label="item">
-                                        {{ item.value }}
-                                    </template>
-                                    </v-sparkline>
-                                </v-sheet>
-                            </v-card-text>
-
-                            <v-card-text>
-                                <div class="display-1 font-weight-thin">
-                                    <small>{{d.grafico_presencial.title}}</small>
-                                    <br>
-                                    {{d.grafico_presencial.total}}
-                                    <v-btn small colot="info" text @click="descargar('datos_presencial')">
-                                        <v-icon>cloud_download</v-icon>
-                                    </v-btn>
-                                </div>
-                            </v-card-text>
-
-
-                        </v-card>
+                    <v-col md="4" sm="6" cols="12">
+                        <IngresoPresencial ref="ingresoPresencial"></IngresoPresencial>
                     </v-col>
 
-                    <v-col md="4" sm="6" cols="12" v-if="d.grafico_matriculado">
-                        <v-card
-                            class="mx-auto text-center"
-                            color="light-green"
-                            dark
-                            max-width="600">
-                            <v-card-text>
-                                <v-sheet color="rgba(0, 0, 0, .12)">
-                                    <v-sparkline
-                                        :value="d.grafico_matriculado.data.values"
-                                        :labels="d.grafico_matriculado.data.labels"
-                                        color="white"
-                                        line-width="2"
-                                        padding="16">
-                                    <template v-slot:label="item">
-                                        {{ item.value }}
-                                    </template>
-                                    </v-sparkline>
-                                </v-sheet>
-                            </v-card-text>
-
-                            <v-card-text>
-                                <div class="display-1 font-weight-thin">
-                                    <small>{{d.grafico_matriculado.title}}</small>
-                                    <br>
-                                    {{d.grafico_matriculado.total}}
-                                    <v-btn small colot="info" text @click="descargar('datos_matriculados')">
-                                        <v-icon>cloud_download</v-icon>
-                                    </v-btn>
-                                </div>
-                            </v-card-text>
-
-
-                        </v-card>
+                    <v-col md="4" sm="6" cols="12">
+                        <IngresoMatriculados ref="ingresoMatriculados"></IngresoMatriculados>
                     </v-col>
 
-                    <v-col lg="12" md="12" sm="12" cols="12" v-if="d.grafico_matriculas_sede">
-                        <v-card class="mx-auto text-center">
-                            <v-card-text>
-                                <apexchart type="bar" height="350" :options="d.grafico_matriculas_sede.data.chartOptions" :series="d.grafico_matriculas_sede.data.series"></apexchart>
-                            </v-card-text>
-
-                        </v-card>
+                    <v-col lg="12" md="12" sm="12" cols="12">
+                        <v-row>
+                            <MatriculadosPorSede ref="matriculadosPorSede"></MatriculadosPorSede>
+                        </v-row>
                     </v-col>
 
-                    <v-col lg="12" md="12" sm="12" cols="12" v-if="d.grafico_por_sede">
-                        <v-card class="mx-auto text-center">
-                            <v-card-text>
-                                <apexchart type="bar" height="350" :options="d.grafico_por_sede.data.chartOptions" :series="d.grafico_por_sede.data.series"></apexchart>
-                            </v-card-text>
-
-                        </v-card>
+                    <v-col lg="12" md="12" sm="12" cols="12">
+                        <v-row>
+                            <DatosPorSede ref="datosPorSede"></DatosPorSede>
+                        </v-row>
                     </v-col>
                 </v-row>
             </v-container>
@@ -250,18 +137,35 @@
 import IngresoPorDia from '@/components/Dashboard/Graficas/IngresoPorDia';
 import Embudo from '@/components/Dashboard/Graficas/Embudo';
 import DatosDigital from '@/components/Dashboard/Graficas/DatosDigital';
+import DatosOtrosMedios from '@/components/Dashboard/Graficas/DatosOtrosMedios';
+import DatosMasterclass from '@/components/Dashboard/Graficas/DatosMasterclass';
+import DatosCitas from '@/components/Dashboard/Graficas/DatosCitas';
+
+import MatriculadosPorSede from '@/components/Dashboard/Graficas/MatriculadosPorSede';
+import DatosPorSede from '@/components/Dashboard/Graficas/DatosPorSede';
+
+import IngresoPresencial from '@/components/Dashboard/Graficas/IngresoPresencial';
+import IngresoMasterClass from '@/components/Dashboard/Graficas/IngresoMasterClass';
+import IngresoMatriculados from '@/components/Dashboard/Graficas/IngresoMatriculados';
+
 import { mapState, mapActions, mapMutations } from 'vuex';
-import VueApexCharts from 'vue-apexcharts';
 import config from '@/modules/config';
 import util from "@/utility/util";
 
 export default {
 name: 'Dashboard',
     components: {
-        apexchart: VueApexCharts,
         IngresoPorDia,
         Embudo,
-        DatosDigital
+        DatosDigital,
+        DatosOtrosMedios,
+        DatosMasterclass,
+        DatosCitas,
+        MatriculadosPorSede,
+        DatosPorSede,
+        IngresoPresencial,
+        IngresoMasterClass,
+        IngresoMatriculados
     },
     data: () => ({
         estadisticas: [],
@@ -271,19 +175,16 @@ name: 'Dashboard',
         menu1: false,
         shown: false,
         d:{
-            grafico_por_dia:null,
             grafico_masterclass: null,
             grafico_presencial: null,
             grafico_matriculado: null,
             grafico_cumplimientoCita: null,
             grafico_datosDigitales: null,
             grafico_datosDigitalesMercadeo: null,
-            grafico_por_sede: null,
             general:null,
             grafico_digital_vs_citas:null,
             grafico_otros_vs_citas:null,
             grafico_agendadas_vs_asistidas: null,
-            grafico_matriculas_sede: null,
             grafico_origenes_masterclass: null
         },
         tags: ["Digital", "Convenio", "Referido", "Renovación", "Walk-In", "Otros"],
@@ -300,15 +201,6 @@ name: 'Dashboard',
     },
     methods: {
         ...mapActions({
-            consulta2: 'dashboard/consultarDatosGeneral',
-            consulta3: 'dashboard/consultarDatosMasterclass',
-            consulta4: 'dashboard/consultarDatosPresencial',
-            consulta5: 'dashboard/consultarDatosMatriculado',
-            consulta6: 'dashboard/consultarDatosPorSede',
-            consulta9: 'dashboard/consultarDatosOtrosVsCitas',
-            consulta10: 'dashboard/consultarDatosAgendadasVsAsistidas',
-            consulta11: 'dashboard/consultarMatriculasPorSede',
-            consulta12: 'dashboard/consultarOrigenesMasterclass',
             listarSedes: 'sedes/fetchLista',
         }),
         ...mapMutations({
@@ -319,6 +211,16 @@ name: 'Dashboard',
             this.$refs.ingresoPorDia.consultar(this.payload);
             this.$refs.embudo.consultar(this.payload);
             this.$refs.digitalMatriculadosVsCita.consultar(this.payload);
+            this.$refs.otrosMediosMatriculadosVsCita.consultar(this.payload);
+            this.$refs.masterclassMatriculadosVsCita.consultar(this.payload);
+            this.$refs.citasAgendadasvsAsistidas.consultar(this.payload);
+            this.$refs.matriculadosPorSede.consultar(this.payload);
+            this.$refs.datosPorSede.consultar(this.payload);
+            this.$refs.ingresoMasterClass.consultar(this.payload);
+            this.$refs.ingresoPresencial.consultar(this.payload);
+            this.$refs.ingresoMatriculados.consultar(this.payload);
+            
+            
         },
         inicializar() {
             this.loading = true;
@@ -326,193 +228,7 @@ name: 'Dashboard',
             console.log("DASHBOARD")
             setTimeout(this.consultar, 200);
 
-            this.loading = true;
-            this.consulta3(this.payload)
-                .then(result => {
-                    if(result && result.datos) {
-                        this.d.grafico_masterclass = result.datos;
-                    }
-                })
-                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            this.loading = true;
-            this.consulta4(this.payload)
-                .then(result => {
-                    if(result && result.datos) {
-                        this.d.grafico_presencial = result.datos;
-                    }
-                })
-                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            this.loading = true;
-            this.consulta5(this.payload)
-                .then(result => {
-                    if(result && result.datos) {
-                        this.d.grafico_matriculado = result.datos;
-                    }
-                })
-                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            this.loading = true;
-            this.consulta6(this.payload)
-                .then(result => {
-                    if(result && result.datos) {
-                        this.d.grafico_por_sede = result.datos;
-                        if (this.d.grafico_por_sede.data && this.d.grafico_por_sede.data.chartOptions) {
-                            var $this = this;
-                            if (!this.d.grafico_por_sede.data.chartOptions.chart) {
-                                this.d.grafico_por_sede.data.chartOptions.chart = {selection: { enabled: true }};
-                            }
-                            this.d.grafico_por_sede.data.chartOptions.chart.height = 450;
-                            this.d.grafico_por_sede.data.chartOptions.chart.toolbar= {
-                                tools: {
-                                    download: false, // descargar csv datos dibujados
-                                    selection: false,
-                                    zoom: false,
-                                    zoomin: false,
-                                    zoomout: false,
-                                    pan: false,
-                                    reset: false | '<img src="/img/download-icon.png" width="20">',
-                                    customIcons: [{
-                                        icon: '<img src="/img/download-icon.png" width="20">',
-                                        title: 'Descargar datos.',
-                                        click: function () {
-                                            $this.descargar('datos_por_sede');
-                                        },
-                                        appendTo: 'top' // left / top means the button will be appended to the left most or right most position
-                                    }]
-                                }
-                            };
-                        }
-                    }
-                })
-                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; });
-            
-            this.consulta9(this.payload)
-                .then(result => {
-                    if(result && result.datos) {
-                        this.d.grafico_otros_vs_citas = result.datos;
-                        if (this.d.grafico_otros_vs_citas.data && this.d.grafico_otros_vs_citas.data.barOptions) {
-                            var $this = this;
-                            if (!this.d.grafico_otros_vs_citas.data.barOptions.chart) {
-                                this.d.grafico_otros_vs_citas.data.barOptions.chart = {selection: { enabled: true }};
-                            }
-                            this.d.grafico_otros_vs_citas.data.barOptions.chart.toolbar= {
-                                tools: {
-                                    download: false, // descargar csv datos dibujados
-                                    selection: false,
-                                    zoom: false,
-                                    zoomin: false,
-                                    zoomout: false,
-                                    pan: false,
-                                    reset: false | '<img src="/img/download-icon.png" width="20">',
-                                    customIcons: [{
-                                        icon: '<img src="/img/download-icon.png" width="20">',
-                                        title: 'Descargar datos.',
-                                        click: function () {
-                                            $this.descargar('otrosmedios_vs_citas');
-                                        },
-                                        appendTo: 'top' // left / top means the button will be appended to the left most or right most position
-                                    }]
-                                }
-                            };
-                        }
-                    }
-                })
-                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            this.consulta10(this.payload)
-                .then(result => {
-                    if(result && result.datos) {
-                        this.d.grafico_agendadas_vs_asistidas = result.datos;
-                        if (this.d.grafico_agendadas_vs_asistidas.data && this.d.grafico_agendadas_vs_asistidas.data.barOptions) {
-                            var $this = this;
-                            if (!this.d.grafico_agendadas_vs_asistidas.data.barOptions.chart) {
-                                this.d.grafico_agendadas_vs_asistidas.data.barOptions.chart = {selection: { enabled: true }};
-                            }
-                            this.d.grafico_agendadas_vs_asistidas.data.barOptions.chart.toolbar= {
-                                tools: {
-                                    download: false, // descargar csv datos dibujados
-                                    selection: false,
-                                    zoom: false,
-                                    zoomin: false,
-                                    zoomout: false,
-                                    pan: false,
-                                    reset: false | '<img src="/img/download-icon.png" width="20">',
-                                    customIcons: [{
-                                        icon: '<img src="/img/download-icon.png" width="20">',
-                                        title: 'Descargar datos.',
-                                        click: function () {
-                                            $this.descargar('agendadas_vs_asistidas');
-                                        },
-                                        appendTo: 'top' // left / top means the button will be appended to the left most or right most position
-                                    }]
-                                }
-                            };
-                        }
-                    }
-                })
-                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            this.consulta11(this.payload)
-                .then(result => {
-                    if(result && result.datos) {
-                        this.d.grafico_matriculas_sede = result.datos;
-                        if (this.d.grafico_matriculas_sede.data && this.d.grafico_matriculas_sede.data.chartOptions) {
-                            var $this = this;
-                            if (!this.d.grafico_matriculas_sede.data.chartOptions.chart) {
-                                this.d.grafico_matriculas_sede.data.chartOptions.chart = {selection: { enabled: true }};
-                            }
-                            this.d.grafico_matriculas_sede.data.chartOptions.chart.toolbar= {
-                                tools: {
-                                    download: false, // descargar csv datos dibujados
-                                    selection: false,
-                                    zoom: false,
-                                    zoomin: false,
-                                    zoomout: false,
-                                    pan: false,
-                                    reset: false | '<img src="/img/download-icon.png" width="20">',
-                                    customIcons: [{
-                                        icon: '<img src="/img/download-icon.png" width="20">',
-                                        title: 'Descargar datos.',
-                                        click: function () {
-                                            $this.descargar('matriculas_por_sede');
-                                        },
-                                        appendTo: 'top' // left / top means the button will be appended to the left most or right most position
-                                    }]
-                                }
-                            };
-                        }
-                    }
-                })
-                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
-            this.consulta12(this.payload)
-                .then(result => {
-                    if(result && result.datos) {
-                        this.d.grafico_origenes_masterclass = result.datos;
-                        if (this.d.grafico_origenes_masterclass.data && this.d.grafico_origenes_masterclass.data.barOptions) {
-                            var $this = this;
-                            if (!this.d.grafico_origenes_masterclass.data.barOptions.chart) {
-                                this.d.grafico_origenes_masterclass.data.barOptions.chart = {selection: { enabled: true }};
-                            }
-                            this.d.grafico_origenes_masterclass.data.barOptions.chart.toolbar= {
-                                tools: {
-                                    download: false, // descargar csv datos dibujados
-                                    selection: false,
-                                    zoom: false,
-                                    zoomin: false,
-                                    zoomout: false,
-                                    pan: false,
-                                    reset: false | '<img src="/img/download-icon.png" width="20">',
-                                    customIcons: [{
-                                        icon: '<img src="/img/download-icon.png" width="20">',
-                                        title: 'Descargar datos.',
-                                        click: function () {
-                                            $this.descargar('masterclass_vs_citas');
-                                        },
-                                        appendTo: 'top' // left / top means the button will be appended to the left most or right most position
-                                    }]
-                                }
-                            };
-                        }
-                    }
-                })
-                .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })
+
                 
         },
         setDates() {
