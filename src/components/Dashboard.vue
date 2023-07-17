@@ -208,7 +208,18 @@ name: 'Dashboard',
             setError: 'setError',
         }), 
         consultar() {
-            this.$refs.ingresoPorDia.consultar(this.payload);
+            this.consultarComponentes(this.$refs.ingresoPorDia, new Date());
+            this.consultarComponentes(this.$refs.embudo, new Date());
+            this.consultarComponentes(this.$refs.digitalMatriculadosVsCita, new Date());
+            this.consultarComponentes(this.$refs.otrosMediosMatriculadosVsCita, new Date());
+            this.consultarComponentes(this.$refs.masterclassMatriculadosVsCita, new Date());
+            this.consultarComponentes(this.$refs.citasAgendadasvsAsistidas, new Date());
+            this.consultarComponentes(this.$refs.matriculadosPorSede, new Date());
+            this.consultarComponentes(this.$refs.datosPorSede, new Date());
+            this.consultarComponentes(this.$refs.ingresoMasterClass, new Date());
+            this.consultarComponentes(this.$refs.ingresoPresencial, new Date());
+            this.consultarComponentes(this.$refs.ingresoMatriculados, new Date());
+            /*this.$refs.ingresoPorDia.consultar(this.payload);
             this.$refs.embudo.consultar(this.payload);
             this.$refs.digitalMatriculadosVsCita.consultar(this.payload);
             this.$refs.otrosMediosMatriculadosVsCita.consultar(this.payload);
@@ -218,15 +229,12 @@ name: 'Dashboard',
             this.$refs.datosPorSede.consultar(this.payload);
             this.$refs.ingresoMasterClass.consultar(this.payload);
             this.$refs.ingresoPresencial.consultar(this.payload);
-            this.$refs.ingresoMatriculados.consultar(this.payload);
+            this.$refs.ingresoMatriculados.consultar(this.payload);*/
         },
         inicializar() {
             this.payload = {desde: this.dates[0], hasta: this.dates[1], sede:this.sede, tipo: this.tagSelected};
             console.log("DASHBOARD")
-            setTimeout(this.consultar, 300);
-
-
-                
+            setTimeout(this.consultar, 500);                
         },
         setDates() {
             this.dates[0] = this.$moment().format('YYYY-MM-01');
@@ -271,6 +279,17 @@ name: 'Dashboard',
             newWindow.focus();
             newWindow.onblur = function() { newWindow.close(); };
             this.loading = false
+        },
+        consultarComponentes(componente, comienza) {
+            if (componente && typeof componente.consultar === "function") {
+                componente.consultar(this.payload);
+            } else if(((new Date()).getTime() - comienza.getTime()) / 1000 / 60 > 5) {
+                // terminar ejecucion
+            } else {
+                setTimeout(() => {
+                    this.consultarComponentes(componente, comienza);
+                }, 100);
+            }
         }
 
     },
