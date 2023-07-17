@@ -14,9 +14,15 @@
         <v-layout text-center wrap>
             <v-container>
 
+                <v-row>
+                    <v-col cols="12" sm="4" md="3">
+                        <v-select v-model="tipo" :items="tipos" label="Sede" item-text="nombre" item-value="id" :disabled="loading" chips>
+                        </v-select>
+                    </v-col>
+                </v-row>
+
                 <v-row justify="space-around">
                     <v-col cols="12" sm="4" md="3">
-                        
                         <v-select v-model="sede" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="loading"
                         multiple chips>
                         </v-select>
@@ -168,25 +174,11 @@ name: 'Dashboard',
         IngresoMatriculados
     },
     data: () => ({
-        estadisticas: [],
-        panels: 0,
-        itemsPerPage:6,
+        tipos:[],
+        tipo:null,
         dates: [],
         menu1: false,
         shown: false,
-        d:{
-            grafico_masterclass: null,
-            grafico_presencial: null,
-            grafico_matriculado: null,
-            grafico_cumplimientoCita: null,
-            grafico_datosDigitales: null,
-            grafico_datosDigitalesMercadeo: null,
-            general:null,
-            grafico_digital_vs_citas:null,
-            grafico_otros_vs_citas:null,
-            grafico_agendadas_vs_asistidas: null,
-            grafico_origenes_masterclass: null
-        },
         tags: ["Digital", "Convenio", "Referido", "Renovación", "Walk-In", "Otros"],
         tagSelected: [],
         sedes:[],
