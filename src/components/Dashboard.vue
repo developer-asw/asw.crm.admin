@@ -208,7 +208,6 @@ name: 'Dashboard',
             setError: 'setError',
         }), 
         consultar() {
-            this.loading = true;
             this.$refs.ingresoPorDia.consultar(this.payload);
             this.$refs.embudo.consultar(this.payload);
             this.$refs.digitalMatriculadosVsCita.consultar(this.payload);
@@ -220,7 +219,6 @@ name: 'Dashboard',
             this.$refs.ingresoMasterClass.consultar(this.payload);
             this.$refs.ingresoPresencial.consultar(this.payload);
             this.$refs.ingresoMatriculados.consultar(this.payload);
-            this.loading = false;
         },
         inicializar() {
             this.payload = {desde: this.dates[0], hasta: this.dates[1], sede:this.sede, tipo: this.tagSelected};
@@ -250,6 +248,7 @@ name: 'Dashboard',
             }
         },
         traerSedes() {
+            this.loading = true;
             this.listarSedes()
             .then(result => {
                 this.sedes = result;
@@ -257,7 +256,7 @@ name: 'Dashboard',
             .catch(error => {
                 console.error(error)
             }).finally(() => {
-
+                this.loading = false;
             });
         },
         descargar(grafica){
