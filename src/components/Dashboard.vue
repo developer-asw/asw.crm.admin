@@ -223,7 +223,7 @@ name: 'Dashboard',
         inicializar() {
             this.payload = {desde: this.dates[0], hasta: this.dates[1], sede:this.sede, tipo: this.tagSelected};
             console.log("DASHBOARD")
-            setTimeout(this.consultar, 200);
+            setTimeout(this.consultar, 300);
 
 
                 
