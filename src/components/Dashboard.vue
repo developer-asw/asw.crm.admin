@@ -208,6 +208,7 @@ name: 'Dashboard',
             setError: 'setError',
         }), 
         consultar() {
+            this.loading = true;
             this.$refs.ingresoPorDia.consultar(this.payload);
             this.$refs.embudo.consultar(this.payload);
             this.$refs.digitalMatriculadosVsCita.consultar(this.payload);
@@ -219,11 +220,9 @@ name: 'Dashboard',
             this.$refs.ingresoMasterClass.consultar(this.payload);
             this.$refs.ingresoPresencial.consultar(this.payload);
             this.$refs.ingresoMatriculados.consultar(this.payload);
-            
-            
+            this.loading = false;
         },
         inicializar() {
-            this.loading = true;
             this.payload = {desde: this.dates[0], hasta: this.dates[1], sede:this.sede, tipo: this.tagSelected};
             console.log("DASHBOARD")
             setTimeout(this.consultar, 200);
