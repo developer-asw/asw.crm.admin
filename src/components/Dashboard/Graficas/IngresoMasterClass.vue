@@ -41,12 +41,12 @@
         components: { 
         },
         data: () => ({
-            grafico: {},
+            grafico: {data:{}},
             loading:false,
             util:util
         }),
         mounted() {
-            console.log("MASTERCLASS_MATRICULADOS_VS_CITA")
+            console.log("INGRESO_MASTERCLASS")
         },
         methods: {
             ...mapActions({

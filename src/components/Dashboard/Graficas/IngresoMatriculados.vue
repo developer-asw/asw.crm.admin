@@ -43,7 +43,7 @@
         components: { 
         },
         data: () => ({
-            grafico: {},
+            grafico: {data:{}},
             loading:false,
             util:util
         }),
