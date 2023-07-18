@@ -206,7 +206,7 @@ name: 'Dashboard',
         ...mapMutations({
             setInfo: 'setInfo',
             setError: 'setError',
-        }), 
+        }),
         consultar() {
             this.consultarComponentes('ingresoPorDia', new Date());
             this.consultarComponentes('embudo', new Date());
@@ -270,13 +270,11 @@ name: 'Dashboard',
         },
         consultarComponentes(componente, comienza) {
             if (this.$refs[componente] && typeof this.$refs[componente].consultar === "function") {
-                // console.log(`Ejecutar funcion : ${componente}`);
                 this.$refs[componente].consultar(this.payload);
             } else if(((new Date()).getTime() - comienza.getTime()) / 1000 / 60 > 5) {
                 // console.log(`Terminar funcion : ${componente}`);
                 // terminar ejecucion
             } else {
-                // console.log(`Posponer la ejecucion de la función : ${componente}, tiempo: ${(((new Date()).getTime() - comienza.getTime()) / 1000 / 60)}`);
                 setTimeout(() => {
                     this.consultarComponentes(componente, comienza);
                 }, 100);
