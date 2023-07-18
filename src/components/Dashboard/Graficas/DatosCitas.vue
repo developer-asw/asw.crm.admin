@@ -68,19 +68,25 @@
             },
             
             descargar(_payload, grafica){
+                this.comenzar();
                 this.loading = true
                 let payload = {..._payload};
                 payload.usuario_email = this.userEmail;
                 payload.download_tipo = 'csv';
-                payload.grafica = grafica;
-                
+                payload.grafica = grafica;                
                 let ruta = config.ROOT_API + "leads/descargar_dashboard?" + this.util.getUrlString(payload);
                 let newWindow = window.open(ruta, '_blank');
                 newWindow.focus();
                 newWindow.onblur = function() { newWindow.close(); };
                 this.loading = false
+                this.terminar();
+            },
+            terminar() {
+                this.$emit('terminar');
+            },
+            comenzar() {
+                this.$emit('comenzar');
             }
-    
         },
         computed:{
             ...mapState({

@@ -64,7 +64,7 @@
                     
                     <v-col cols="12" sm="12" md="9" lg="9">
                         <v-row>
-                            <IngresoPorDia ref="ingresoPorDia"></IngresoPorDia>
+                            <IngresoPorDia ref="ingresoPorDia" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></IngresoPorDia>
                         </v-row>
                     </v-col>
                     <v-col cols="12" sm="6" md="3" lg="3">
@@ -98,7 +98,7 @@
                             
                             <v-col md="4" sm="6" cols="12">
                                 <v-row>
-                                    <DatosCitas ref="citasAgendadasvsAsistidas"></DatosCitas>
+                                    <DatosCitas ref="citasAgendadasvsAsistidas" @comenzar="comenzarLoading" @terminar="terminarLoading"></DatosCitas>
                                 </v-row>
                             </v-col>
                         </v-row>
@@ -200,28 +200,21 @@ name: 'Dashboard',
             setError: 'setError',
         }), 
         consultar() {
-            this.$refs.ingresoPorDia.consultar(this.payload);
-            this.$refs.embudo.consultar(this.payload);
-            this.$refs.digitalMatriculadosVsCita.consultar(this.payload);
-            this.$refs.otrosMediosMatriculadosVsCita.consultar(this.payload);
-            this.$refs.masterclassMatriculadosVsCita.consultar(this.payload);
-            this.$refs.citasAgendadasvsAsistidas.consultar(this.payload);
-            this.$refs.matriculadosPorSede.consultar(this.payload);
-            this.$refs.datosPorSede.consultar(this.payload);
-            this.$refs.ingresoMasterClass.consultar(this.payload);
-            this.$refs.ingresoPresencial.consultar(this.payload);
-            this.$refs.ingresoMatriculados.consultar(this.payload);
-            
-            
+            this.consultarComponentes('ingresoPorDia', new Date());
+            this.consultarComponentes('embudo', new Date());
+            this.consultarComponentes('digitalMatriculadosVsCita', new Date());
+            this.consultarComponentes('otrosMediosMatriculadosVsCita', new Date());
+            this.consultarComponentes('masterclassMatriculadosVsCita', new Date());
+            this.consultarComponentes('citasAgendadasvsAsistidas', new Date());
+            this.consultarComponentes('matriculadosPorSede', new Date());
+            this.consultarComponentes('datosPorSede', new Date());
+            this.consultarComponentes('ingresoMasterClass', new Date());
+            this.consultarComponentes('ingresoPresencial', new Date());
+            this.consultarComponentes('ingresoMatriculados', new Date());
         },
         inicializar() {
-            this.loading = true;
             this.payload = {desde: this.dates[0], hasta: this.dates[1], sede:this.sede, tipo: this.tagSelected};
-            console.log("DASHBOARD")
-            setTimeout(this.consultar, 200);
-
-
-                
+            this.consultar();
         },
         setDates() {
             this.dates[0] = this.$moment().format('YYYY-MM-01');
@@ -243,6 +236,7 @@ name: 'Dashboard',
             }
         },
         traerSedes() {
+            this.loading = true;
             this.listarSedes()
             .then(result => {
                 this.sedes = result;
@@ -250,7 +244,7 @@ name: 'Dashboard',
             .catch(error => {
                 console.error(error)
             }).finally(() => {
-
+                this.loading = false;
             });
         },
         descargar(grafica){
@@ -265,8 +259,27 @@ name: 'Dashboard',
             newWindow.focus();
             newWindow.onblur = function() { newWindow.close(); };
             this.loading = false
+        },
+        consultarComponentes(componente, comienza) {
+            if (this.$refs[componente] && typeof this.$refs[componente].consultar === "function") {
+                // console.log(`Ejecutar funcion : ${componente}`);
+                this.$refs[componente].consultar(this.payload);
+            } else if(((new Date()).getTime() - comienza.getTime()) / 1000 / 60 > 5) {
+                // console.log(`Terminar funcion : ${componente}`);
+                // terminar ejecucion
+            } else {
+                // console.log(`Posponer la ejecucion de la función : ${componente}, tiempo: ${(((new Date()).getTime() - comienza.getTime()) / 1000 / 60)}`);
+                setTimeout(() => {
+                    this.consultarComponentes(componente, comienza);
+                }, 100);
+            }
+        },
+        comenzarLoading() {
+            this.loading = true;
+        },
+        terminarLoading() {
+            this.loading = false;  
         }
-
     },
     computed:{
         ...mapState({
@@ -306,6 +319,9 @@ name: 'Dashboard',
                 return this.dates[this.dates.length - 1];
             }
             return "";
+        },
+        loadingProp() {
+            return this.loading;
         }
     },
     watch: {
