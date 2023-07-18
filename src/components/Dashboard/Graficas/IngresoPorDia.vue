@@ -16,9 +16,12 @@
         },
         data: () => ({
             grafico: {},
+            util:util,
             loading:false,
-            util:util
         }),
+        props: {
+            loadingProp: Boolean,
+        },
         mounted() {
             console.log("INGRESO_POR_DIA")
         },
@@ -65,7 +68,7 @@
                     .catch(error => { this.setError(error) }).finally(() => { this.loading = false; })    
             },
             descargar(_payload, grafica){
-                this.loading = true
+                this.comenzar();
                 let payload = {..._payload};
                 payload.usuario_email = this.userEmail;
                 payload.download_tipo = 'csv';
@@ -75,7 +78,17 @@
                 let newWindow = window.open(ruta, '_blank');
                 newWindow.focus();
                 newWindow.onblur = function() { newWindow.close(); };
-                this.loading = false
+                this.terminar();
+            },
+            terminar() {
+                this.loading = false;
+                this.loadingProp = false;
+                this.$emit('terminar');
+            },
+            comenzar() {
+                this.loading = true;
+                this.loadingProp = true;
+                this.$emit('comenzar');
             }
     
         },
@@ -85,6 +98,9 @@
             }),
             userEmail() {
                 return this.user && this.user ? this.user.email : null
+            },
+            loadingComp() {
+                return this.loadingProp
             }
         }
     };

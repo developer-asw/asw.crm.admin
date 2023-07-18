@@ -113,7 +113,6 @@ export default {
         },
         copy(o) {
             if (o === null) return null;
-
             var output, v, key;
             output = Array.isArray(o) ? [] : {};
             for (key in o) {
