@@ -21,9 +21,10 @@
         }),
         props: {
             loadingProp: Boolean,
+            tipo:String,
         },
         mounted() {
-            console.log("INGRESO_POR_DIA")
+            // 
         },
         methods: {
             ...mapActions({
@@ -35,6 +36,7 @@
             }),
             consultar(payload) {
                 this.loading = true;
+                payload.tipo = this.tipo;
                 this.consulta(payload)
                     .then(result => {
                         var _payload = payload;

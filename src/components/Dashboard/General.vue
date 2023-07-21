@@ -1,7 +1,7 @@
 <template>
     <v-layout text-center wrap>
         <v-container>
-            <v-row justify="space-around" style="display: none;">
+            <v-row justify="space-around">
                 <v-col cols="12" sm="4" md="3">
                     <v-select v-model="sede" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="loading"
                     multiple chips>
@@ -34,19 +34,70 @@
                     <v-btn class="ma-2" color="primary darken-1" text @click="consultar"><v-icon left small>refresh</v-icon>&nbsp;Actualizar&nbsp;</v-btn>
                 </v-col>
             </v-row>
-
             <v-row>
-                <v-col>
-                    {{ tipo }}
-                </v-col>
-                <v-col cols="12" class="mt-4 mb-4">
+                <v-col cols="12" sm="12" md="9" lg="9">
                     <v-row>
-                        <EmbudoContactCenter ref="embudoContactCenter" :tipo="tipo" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></EmbudoContactCenter>
+                        <IngresoPorDia ref="ingresoPorDia" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></IngresoPorDia>
                     </v-row>
                 </v-col>
-                <v-col cols="12" class="mt-4 pb-4">
+                <v-col cols="12" sm="6" md="3" lg="3">
                     <v-row>
-                        <IngresoPorDia ref="ingresoPorDia" :tipo="tipo" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></IngresoPorDia>
+                        <v-col>
+                            <Embudo ref="embudo"></Embudo>
+                        </v-col>
+                    </v-row>
+                </v-col>
+
+                <v-col md="12" sm="12" cols="12">
+                    <v-row align="center" justify="center">
+                        <v-col md="12" sm="12" cols="12">
+                            <h3>Efectividad Por fuente de Dato</h3>
+                        </v-col>
+                        <v-col md="4" sm="6" cols="12">
+                            <v-row>
+                                <DatosDigital ref="digitalMatriculadosVsCita"></DatosDigital>
+                            </v-row>
+                        </v-col>
+                        <v-col md="4" sm="6" cols="12">
+                            <v-row>
+                                <DatosOtrosMedios ref="otrosMediosMatriculadosVsCita"></DatosOtrosMedios>
+                            </v-row>
+                        </v-col>
+                        <v-col md="4" sm="6" cols="12">
+                            <v-row>
+                                <DatosMasterclass ref="masterclassMatriculadosVsCita"></DatosMasterclass>
+                            </v-row>
+                        </v-col>
+                        
+                        <v-col md="4" sm="6" cols="12">
+                            <v-row>
+                                <DatosCitas ref="citasAgendadasvsAsistidas" @comenzar="comenzarLoading" @terminar="terminarLoading"></DatosCitas>
+                            </v-row>
+                        </v-col>
+                    </v-row>
+                </v-col>
+
+                <v-col md="4" sm="6" cols="12">
+                    <IngresoMasterClass ref="ingresoMasterClass"></IngresoMasterClass>
+                </v-col>
+
+                <v-col md="4" sm="6" cols="12">
+                    <IngresoPresencial ref="ingresoPresencial"></IngresoPresencial>
+                </v-col>
+
+                <v-col md="4" sm="6" cols="12">
+                    <IngresoMatriculados ref="ingresoMatriculados"></IngresoMatriculados>
+                </v-col>
+
+                <v-col lg="12" md="12" sm="12" cols="12">
+                    <v-row>
+                        <MatriculadosPorSede ref="matriculadosPorSede"></MatriculadosPorSede>
+                    </v-row>
+                </v-col>
+
+                <v-col lg="12" md="12" sm="12" cols="12">
+                    <v-row>
+                        <DatosPorSede ref="datosPorSede"></DatosPorSede>
                     </v-row>
                 </v-col>
             </v-row>
@@ -55,14 +106,32 @@
 </template>
 <script>
     import IngresoPorDia from '@/components/Dashboard/Graficas/IngresoPorDia';
-    import EmbudoContactCenter from '@/components/Dashboard/Graficas/EmbudoContactCenter';
+    import Embudo from '@/components/Dashboard/Graficas/Embudo';
+    import DatosDigital from '@/components/Dashboard/Graficas/DatosDigital';
+    import DatosOtrosMedios from '@/components/Dashboard/Graficas/DatosOtrosMedios';
+    import DatosMasterclass from '@/components/Dashboard/Graficas/DatosMasterclass';
+    import DatosCitas from '@/components/Dashboard/Graficas/DatosCitas';
+    import MatriculadosPorSede from '@/components/Dashboard/Graficas/MatriculadosPorSede';
+    import DatosPorSede from '@/components/Dashboard/Graficas/DatosPorSede';
+    import IngresoPresencial from '@/components/Dashboard/Graficas/IngresoPresencial';
+    import IngresoMasterClass from '@/components/Dashboard/Graficas/IngresoMasterClass';
+    import IngresoMatriculados from '@/components/Dashboard/Graficas/IngresoMatriculados';
     import { mapState, mapActions, mapMutations } from 'vuex';
     
     export default {
     name: 'General',
         components: { 
             IngresoPorDia,
-            EmbudoContactCenter
+            Embudo,
+            DatosDigital,
+            DatosOtrosMedios,
+            DatosMasterclass,
+            DatosCitas,
+            MatriculadosPorSede,
+            DatosPorSede,
+            IngresoPresencial,
+            IngresoMasterClass,
+            IngresoMatriculados
         },
         data: () => ({
             opciones:[],
@@ -72,15 +141,11 @@
             shown: false,
             sedes:[],
             sede:null,
-            loading:false,
-            payload:{}
+            loading:false
         }),
         mounted() {
             this.setDates();
             this.traerSedes();
-        },
-        props: {
-            tipo: String,
         },
         methods: {
             ...mapActions({
@@ -92,10 +157,19 @@
             }),
             actualizar() {
                 this.consultarComponentes('ingresoPorDia', new Date());
-                this.consultarComponentes('embudoContactCenter', new Date());
+                this.consultarComponentes('embudo', new Date());
+                this.consultarComponentes('digitalMatriculadosVsCita', new Date());
+                this.consultarComponentes('otrosMediosMatriculadosVsCita', new Date());
+                this.consultarComponentes('masterclassMatriculadosVsCita', new Date());
+                this.consultarComponentes('citasAgendadasvsAsistidas', new Date());
+                this.consultarComponentes('matriculadosPorSede', new Date());
+                this.consultarComponentes('datosPorSede', new Date());
+                this.consultarComponentes('ingresoMasterClass', new Date());
+                this.consultarComponentes('ingresoPresencial', new Date());
+                this.consultarComponentes('ingresoMatriculados', new Date());
             },
             consultar() {
-                this.payload = {desde: this.dates[0], hasta: this.dates[1], sede:this.sede, tipo: this.tipo};
+                this.payload = {desde: this.dates[0], hasta: this.dates[1], sede:this.sede};
                 this.actualizar();
             },
             setDates() {
@@ -145,6 +219,7 @@
             terminarLoading() {
                 this.loading = false;  
             }
+
         },
         computed:{
             ...mapState({

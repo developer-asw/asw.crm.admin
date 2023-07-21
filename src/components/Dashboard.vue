@@ -10,129 +10,44 @@
         </v-toolbar-items>
     </v-toolbar>
 
-    <v-container v-if="esUsuario">
-        <v-layout text-center wrap>
-            <v-container>
+    <v-row justify="center">
+        <v-col cols="12" sm="4" md="3">
+            <v-select v-model="opcionComputed" :items="opciones" label="Opción" :disabled="loading" @change="inicializar()">
+            </v-select>
+        </v-col>
+    </v-row>
 
-                <v-row>
-                    <v-col cols="12" sm="4" md="3">
-                        <v-select v-model="tipo" :items="tipos" label="Sede" item-text="nombre" item-value="id" :disabled="loading" chips>
-                        </v-select>
-                    </v-col>
-                </v-row>
-
-                <v-row justify="space-around">
-                    <v-col cols="12" sm="4" md="3">
-                        <v-select v-model="sede" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="loading"
-                        multiple chips>
-                        </v-select>
-                    </v-col>
-                    
-                    <v-col cols="12" sm="4" md="5">
-                        <v-container>
-                            <v-menu ref="menu1" :close-on-content-click="false" transition="scale-transition" offset-y :value="shown" max-width="290px" min-width="auto">
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-text-field
-                                        v-model="dateRangeText"
-                                        label="Rango de fecha"
-                                        prepend-icon="mdi-calendar"
-                                        readonly
-                                        v-bind="attrs"
-                                        v-on="on">
-                                    </v-text-field>
-                                </template>
-                                <v-icon @click="closemenu">
-                                    close
-                                </v-icon>
-                                <v-date-picker v-model="dates" no-title range @input="menu1 = false">
-                                    
-                                </v-date-picker>
-                            </v-menu>
-                        </v-container>
-                    </v-col>
-                    <!--<v-col cols="12" sm="6" md="6"  class="pb-5">
-                        <v-chip-group multiple active-class="primary--text">
-                            <v-chip filter v-for="tag in tags" :key="tag" @click="seleccionarTag(tag)"> {{ tag }} </v-chip>
-                        </v-chip-group>
-                    </v-col>-->
-                    <v-col cols="12" sm="6" md="2" class="pb-5">
-                        <v-btn class="ma-2" color="primary darken-1" text @click="inicializar"><v-icon left small>refresh</v-icon>&nbsp;Actualizar&nbsp;</v-btn>
-                    </v-col>
-                    
-                </v-row>
-                <v-row>
-                    
-                    <v-col cols="12" sm="12" md="9" lg="9">
-                        <v-row>
-                            <IngresoPorDia ref="ingresoPorDia" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></IngresoPorDia>
-                        </v-row>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="3" lg="3">
-                        <v-row>
-                            <v-col>
-                                <Embudo ref="embudo"></Embudo>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-
-                    <v-col md="12" sm="12" cols="12">
-                        <v-row align="center" justify="center">
-                            <v-col md="12" sm="12" cols="12">
-                                <h3>Efectividad Por fuente de Dato</h3>
-                            </v-col>
-                            <v-col md="4" sm="6" cols="12">
-                                <v-row>
-                                    <DatosDigital ref="digitalMatriculadosVsCita"></DatosDigital>
-                                </v-row>
-                            </v-col>
-                            <v-col md="4" sm="6" cols="12">
-                                <v-row>
-                                    <DatosOtrosMedios ref="otrosMediosMatriculadosVsCita"></DatosOtrosMedios>
-                                </v-row>
-                            </v-col>
-                            <v-col md="4" sm="6" cols="12">
-                                <v-row>
-                                    <DatosMasterclass ref="masterclassMatriculadosVsCita"></DatosMasterclass>
-                                </v-row>
-                            </v-col>
-                            
-                            <v-col md="4" sm="6" cols="12">
-                                <v-row>
-                                    <DatosCitas ref="citasAgendadasvsAsistidas" @comenzar="comenzarLoading" @terminar="terminarLoading"></DatosCitas>
-                                </v-row>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-
-                    <v-col md="4" sm="6" cols="12">
-                        <IngresoMasterClass ref="ingresoMasterClass"></IngresoMasterClass>
-                    </v-col>
-
-                    <v-col md="4" sm="6" cols="12">
-                        <IngresoPresencial ref="ingresoPresencial"></IngresoPresencial>
-                    </v-col>
-
-                    <v-col md="4" sm="6" cols="12">
-                        <IngresoMatriculados ref="ingresoMatriculados"></IngresoMatriculados>
-                    </v-col>
-
-                    <v-col lg="12" md="12" sm="12" cols="12">
-                        <v-row>
-                            <MatriculadosPorSede ref="matriculadosPorSede"></MatriculadosPorSede>
-                        </v-row>
-                    </v-col>
-
-                    <v-col lg="12" md="12" sm="12" cols="12">
-                        <v-row>
-                            <DatosPorSede ref="datosPorSede"></DatosPorSede>
-                        </v-row>
-                    </v-col>
-                </v-row>
-            </v-container>
-        </v-layout>
+    <v-container v-if="opcionComputed == OPCIONES_DASHBOARD.general">
+        <General ref="general" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></General>
+    </v-container>
+    <v-container v-else-if="opcionComputed == OPCIONES_DASHBOARD.contactcenter_elite">
+        <v-row justify="center">
+            <v-col cols="6">
+                <ContactCenter :key="OPCIONES_DASHBOARD.contactcenter_elite" ref="contactCenterELITE" :tipo="OPCIONES_DASHBOARD.contactcenter_elite" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></ContactCenter>
+            </v-col>
+        </v-row>
+    </v-container>
+    <v-container v-else-if="opcionComputed == OPCIONES_DASHBOARD.contactcenter_fenix">
+        <v-row justify="center">
+            <v-col cols="6">
+                <ContactCenter :key="OPCIONES_DASHBOARD.contactcenter_fenix" ref="contactCenterFENIX" :tipo="OPCIONES_DASHBOARD.contactcenter_fenix" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></ContactCenter>
+            </v-col>
+        </v-row>
+    </v-container>
+    <v-container v-else-if="opcionComputed == OPCIONES_DASHBOARD.contactcenter">
+        <v-row justify="center">
+            <v-col cols="6">
+                <ContactCenter :key="OPCIONES_DASHBOARD.contactcenter_elite" ref="contactCenterELITE" :tipo="OPCIONES_DASHBOARD.contactcenter_elite" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></ContactCenter>
+            </v-col>
+            <v-col cols="6">
+                <ContactCenter :key="OPCIONES_DASHBOARD.contactcenter_fenix" ref="contactCenterFENIX" :tipo="OPCIONES_DASHBOARD.contactcenter_fenix" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></ContactCenter>
+            </v-col>
+        </v-row>
     </v-container>
     <v-container v-else>
-        <h1>Bienvenido a CRM</h1>
+        <v-row justify="center">
+            <h1>Bienvenido a CRM</h1>
+        </v-row>
     </v-container>
 </div>
 
@@ -140,42 +55,27 @@
 
 <script>
 
-import IngresoPorDia from '@/components/Dashboard/Graficas/IngresoPorDia';
-import Embudo from '@/components/Dashboard/Graficas/Embudo';
-import DatosDigital from '@/components/Dashboard/Graficas/DatosDigital';
-import DatosOtrosMedios from '@/components/Dashboard/Graficas/DatosOtrosMedios';
-import DatosMasterclass from '@/components/Dashboard/Graficas/DatosMasterclass';
-import DatosCitas from '@/components/Dashboard/Graficas/DatosCitas';
-
-import MatriculadosPorSede from '@/components/Dashboard/Graficas/MatriculadosPorSede';
-import DatosPorSede from '@/components/Dashboard/Graficas/DatosPorSede';
-
-import IngresoPresencial from '@/components/Dashboard/Graficas/IngresoPresencial';
-import IngresoMasterClass from '@/components/Dashboard/Graficas/IngresoMasterClass';
-import IngresoMatriculados from '@/components/Dashboard/Graficas/IngresoMatriculados';
+import General from '@/components/Dashboard/General';
+import ContactCenter from '@/components/Dashboard/ContactCenter';
 
 import { mapState, mapActions, mapMutations } from 'vuex';
-import config from '@/modules/config';
-import util from "@/utility/util";
+const OPCIONES_DASHBOARD = {
+    general:"GENERAL",
+    contactcenter_elite:"ELITE",
+    contactcenter_fenix:"FENIX",
+    contactcenter:"ELITE_FENIX",
+    consulta:"CONSULTA",
+}
 
 export default {
 name: 'Dashboard',
     components: {
-        IngresoPorDia,
-        Embudo,
-        DatosDigital,
-        DatosOtrosMedios,
-        DatosMasterclass,
-        DatosCitas,
-        MatriculadosPorSede,
-        DatosPorSede,
-        IngresoPresencial,
-        IngresoMasterClass,
-        IngresoMatriculados
+        General,
+        ContactCenter
     },
     data: () => ({
-        tipos:[],
-        tipo:null,
+        opciones:[],
+        opcion:null,
         dates: [],
         menu1: false,
         shown: false,
@@ -184,33 +84,33 @@ name: 'Dashboard',
         sedes:[],
         sede:null,
         loading:false,
-        util:util
+        OPCIONES_DASHBOARD:OPCIONES_DASHBOARD
     }),
     mounted() {
         this.setDates();
         this.traerSedes();
-        this.inicializar();
+        this.traerOpciones();
     },
     methods: {
         ...mapActions({
             listarSedes: 'sedes/fetchLista',
+            listarOpciones: 'auth/getPermisos'
         }),
         ...mapMutations({
             setInfo: 'setInfo',
             setError: 'setError',
         }),
         consultar() {
-            this.consultarComponentes('ingresoPorDia', new Date());
-            this.consultarComponentes('embudo', new Date());
-            this.consultarComponentes('digitalMatriculadosVsCita', new Date());
-            this.consultarComponentes('otrosMediosMatriculadosVsCita', new Date());
-            this.consultarComponentes('masterclassMatriculadosVsCita', new Date());
-            this.consultarComponentes('citasAgendadasvsAsistidas', new Date());
-            this.consultarComponentes('matriculadosPorSede', new Date());
-            this.consultarComponentes('datosPorSede', new Date());
-            this.consultarComponentes('ingresoMasterClass', new Date());
-            this.consultarComponentes('ingresoPresencial', new Date());
-            this.consultarComponentes('ingresoMatriculados', new Date());
+            if (this.opcion == this.OPCIONES_DASHBOARD.general) {
+                this.consultarComponentes('general', new Date());
+            } else if (this.opcion == this.OPCIONES_DASHBOARD.contactcenter) {
+                this.consultarComponentes('contactCenterFENIX', new Date());
+                this.consultarComponentes('contactCenterELITE', new Date());
+            } if (this.opcion == this.OPCIONES_DASHBOARD.contactcenter_elite) {
+                this.consultarComponentes('contactCenterELITE', new Date());
+            } if (this.opcion == this.OPCIONES_DASHBOARD.contactcenter_fenix) {
+                this.consultarComponentes('contactCenterFENIX', new Date());
+            }
         },
         inicializar() {
             this.payload = {desde: this.dates[0], hasta: this.dates[1], sede:this.sede, tipo: this.tagSelected};
@@ -247,29 +147,33 @@ name: 'Dashboard',
                 this.loading = false;
             });
         },
-        descargar(grafica){
-            this.loading = true
-            let payload = {...this.payload};
-            payload.usuario_email = this.userEmail;
-            payload.download_tipo = 'csv';
-            payload.grafica = grafica;
-            
-            let ruta = config.ROOT_API + "leads/descargar_dashboard?" + this.util.getUrlString(payload);
-            let newWindow = window.open(ruta, '_blank');
-            newWindow.focus();
-            newWindow.onblur = function() { newWindow.close(); };
-            this.loading = false
+        traerOpciones() {
+            this.loading = true;
+            this.listarOpciones({modulo:'OP_DASHBOARD'})
+            .then(result => {
+                this.opciones = result.map(x => x.valor);
+                if (this.opciones.length > 0) {
+                    this.opcion = this.opciones[0];
+                }
+                this.inicializar();
+            })
+            .catch(error => {
+                console.error(error)
+            }).finally(() => {
+                this.loading = false;
+            });
         },
         consultarComponentes(componente, comienza) {
             if (this.$refs[componente] && typeof this.$refs[componente].consultar === "function") {
-                this.$refs[componente].consultar(this.payload);
-            } else if(((new Date()).getTime() - comienza.getTime()) / 1000 / 60 > 5) {
+                this.$refs[componente].consultar();
+            } else if(((new Date()).getTime() - comienza.getTime()) / 1000 / 60 > 1) {
                 // console.log(`Terminar funcion : ${componente}`);
                 // terminar ejecucion
             } else {
+                // console.log(`Posponer la ejecucion de la función : ${componente}, tiempo: ${(((new Date()).getTime() - comienza.getTime()) / 1000 / 60)}`);
                 setTimeout(() => {
                     this.consultarComponentes(componente, comienza);
-                }, 100);
+                }, 200);
             }
         },
         comenzarLoading() {
@@ -320,7 +224,15 @@ name: 'Dashboard',
         },
         loadingProp() {
             return this.loading;
-        }
+        },
+        opcionComputed:{
+            get() {
+                return this.opcion;
+            },
+            set(val) {
+                this.opcion = val;
+            }
+        },
     },
     watch: {
       selected () {

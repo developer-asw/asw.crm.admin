@@ -58,6 +58,21 @@ const actions = {
         })
     });
   },
+  getPermisos:({commit},data) => {
+    commit('startProcessing', null, { root: true });
+    return new Promise((resolve, reject) => {
+        Vue.http.post('usuario/permisos',data).then(
+            response =>{
+              resolve(response.data)
+            }
+        ).catch(error=>{
+            commit('setError', error, { root: true });
+            reject(error)
+        }).finally(()=>{
+            commit('stopProcessing', null, { root: true });
+        })
+    });
+  },
   logout: ({commit}) => {
     window.localStorage.removeItem('_token');
     commit('setUser');
