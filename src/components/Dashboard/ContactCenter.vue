@@ -49,6 +49,12 @@
                         <IngresoPorDia ref="ingresoPorDia" :tipo="tipo" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></IngresoPorDia>
                     </v-row>
                 </v-col>
+                <v-col cols="12" class="mt-4 mb-4">
+                    <v-row>
+                        <ResumenSedeContactCenter ref="resumenSedeContactCenter" :tipo="tipo" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></ResumenSedeContactCenter>
+                    </v-row>
+                </v-col>
+                
             </v-row>
         </v-container>
     </v-layout>
@@ -56,13 +62,15 @@
 <script>
     import IngresoPorDia from '@/components/Dashboard/Graficas/IngresoPorDia';
     import EmbudoContactCenter from '@/components/Dashboard/Graficas/EmbudoContactCenter';
+    import ResumenSedeContactCenter from '@/components/Dashboard/Graficas/ResumenSedeContactCenter';
     import { mapState, mapActions, mapMutations } from 'vuex';
     
     export default {
     name: 'General',
         components: { 
             IngresoPorDia,
-            EmbudoContactCenter
+            EmbudoContactCenter,
+            ResumenSedeContactCenter
         },
         data: () => ({
             opciones:[],
@@ -93,6 +101,7 @@
             actualizar() {
                 this.consultarComponentes('ingresoPorDia', new Date());
                 this.consultarComponentes('embudoContactCenter', new Date());
+                this.consultarComponentes('resumenSedeContactCenter', new Date());
             },
             consultar() {
                 this.payload = {desde: this.dates[0], hasta: this.dates[1], sede:this.sede, tipo: this.tipo};

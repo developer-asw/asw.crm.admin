@@ -132,7 +132,7 @@
             }
         }),
         mounted() {
-            console.log("EMBUDO")
+            console.log("EMBUDO_CONTACTCENTER")
         },
         methods: {
             ...mapActions({
@@ -146,7 +146,6 @@
                 this.loading = true;
                 this.consulta(payload)
                 .then(result => {
-                    console.log(result);
                     if(result && result.datos) {
                         this.datos = result.datos;
                     }

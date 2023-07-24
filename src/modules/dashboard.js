@@ -195,6 +195,21 @@ const actions = {
             })
         });
     },
+    consultarResumenSedesContactCenterPorFecha:({ commit }, data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.post('lead/dashboard/resumen_sedes_contact_center_fecha',data).then(
+                response =>{
+                    resolve(response.data)
+                }
+            ).catch(error=>{
+                commit('setError', error, { root: true });
+                reject(error)
+            }).finally(()=>{
+                commit('stopProcessing', null, { root: true });
+            })
+        });
+    },
     consultarDatosPresencialVsMaster:({ commit }, data) => {
         commit('startProcessing', null, { root: true });
         return new Promise((resolve, reject) => {
