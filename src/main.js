@@ -7,6 +7,7 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 
 import JsonExcel from 'vue-json-excel';
+import PrimeVue from 'primevue/config';
  
 Vue.component('downloadExcel', JsonExcel)
 
@@ -34,6 +35,12 @@ Vue.use(VueMoment)
 // Vue.moment().locale(es)
 // console.log(Vue.moment().locale())
 // this.$moment.locale('es')
+Vue.use(PrimeVue);
+// import Dialog from 'primevue/dialog';
+// Vue.component('Dialog', Dialog);
+import "primevue/resources/themes/nova-vue/theme.css";
+import "primevue/resources/primevue.min.css";
+import "primeicons/primeicons.css";
 
 new Vue({
   router,

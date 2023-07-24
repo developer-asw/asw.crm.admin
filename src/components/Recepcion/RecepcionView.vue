@@ -46,6 +46,12 @@
 
                      <!-- </v-card-actions>   -->
                 </v-row>
+
+                <v-row justify="center">
+                    <v-col cols="12" md="10" sm="8">
+                        <LeadTimeLine :key="lead_id" :lead_id="lead_id"></LeadTimeLine>
+                    </v-col>
+                </v-row>
                 
                 <v-row class="mt-10">
                     <v-col cols="12" md="1"  sm="2"></v-col>
@@ -91,277 +97,278 @@
 
 import CallcenterRegistrarLlamada from "@/components/Callcenter/CallcenterRegistrarLlamada";
 import RegistrarLlamadaApoyoFinanciero from "@/components/ApoyoFinanciero/RegistrarLlamada";
-import RecepcionRegistrarAsistencia from '@/components/Recepcion/RecepcionRegistrarAsistencia'
-import EditLead from '@/components/Callcenter/EditLead'
-import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
+import RecepcionRegistrarAsistencia from '@/components/Recepcion/RecepcionRegistrarAsistencia';
+import EditLead from '@/components/Callcenter/EditLead';
+import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView';
+import LeadTimeLine from '@/components/Leads/Detail/LeadTimeLine';
 
-
-    export default {
-        name: 'RecepcionView',
-        components: {
-            RecepcionRegistrarAsistencia,
-            EditLead,
-            LeadHistoricView,
-            CallcenterRegistrarLlamada,
-            RegistrarLlamadaApoyoFinanciero
+export default {
+    name: 'RecepcionView',
+    components: {
+        RecepcionRegistrarAsistencia,
+        EditLead,
+        LeadHistoricView,
+        CallcenterRegistrarLlamada,
+        RegistrarLlamadaApoyoFinanciero,
+        LeadTimeLine
+    },
+    data: () => ({
+        loading: false,
+        dialog: false,
+        listado: {},
+        headerSeguimientos: [
+            { text: '', value: 'tipo' },
+            { text: 'Fecha', value: 'fecha', width: '20%', align: 'center' },
+            { text: 'Usuario', value: 'usuario.nombre', align: 'right' },
+            { text: 'Llamar', value: 'accion' },
+            { text: 'Observación', value: 'observacion' },
+        ],
+        detalles:[],
+        llamada: {
+            show: false,
         },
-        data: () => ({
-            loading: false,
-            dialog: false,
-            listado: {},
-            headerSeguimientos: [
-                { text: '', value: 'tipo' },
-                { text: 'Fecha', value: 'fecha', width: '20%', align: 'center' },
-                { text: 'Usuario', value: 'usuario.nombre', align: 'right' },
-                { text: 'Llamar', value: 'accion' },
-                { text: 'Observación', value: 'observacion' },
-            ],
-            detalles:[],
-            llamada: {
-                show: false,
-            },
-            llamadaApoyoFinanciero: {
-                show: false,
-            },
-            sedes: [],
-            fechas: [],
-            sede: null,
-            fechaMinima:null,
-            horaMinima:null,
-            horaMaxima:null
+        llamadaApoyoFinanciero: {
+            show: false,
+        },
+        sedes: [],
+        fechas: [],
+        sede: null,
+        fechaMinima:null,
+        horaMinima:null,
+        horaMaxima:null
+    }),
+    mounted() {
+        this.fechaMinima = this.$moment().format('YYYY-MM-DD');
+        this.traerSedesYFechas();
+        this.viewItem();
+    },
+    methods: {
+        ...mapActions({
+            fetchDetalle: 'leads/fetchDetalle',
+            solicitarCita: 'recepcionista/solicitar',
+            solicitarApoyoFinanciero:'callcenter/solicitarAF',
+            solicitarCallcenter: "callcenter/solicitar",
+            fetchDisponibilidad: 'agenda/fetchDisponibilidad',
+            fetchDisponibilidadLlamadas: 'agenda/fetchDisponibilidadLlamadas',
+            cambiarEstado: 'agenda/confirmarAsistencia',
         }),
-        mounted() {
-            this.fechaMinima = this.$moment().format('YYYY-MM-DD');
-            this.traerSedesYFechas();
+        ...mapMutations({
+            setInfo: 'setInfo',
+            setError: 'setError',
+            setLead: 'leads/setDetalle',
+        }),
+        traerSedesYFechas() {
+            this.fetchDisponibilidad()
+                .then(result => {
+                    this.fechas = result.resultSet.fechas
+                    this.sedes = result.resultSet.sedes
+                    this.sede = this.getSedeUsuario();
+                })
+                .catch(error => {
+                    console.log(error)
+                    this.setError(error)
+                }).finally(() => {
+
+                })
+        },
+        regresar() {
+            this.$router.back();
+        },
+        copiarDato(value) {
+            this.$copyText(value).then(() => {
+                    this.setInfo('Copiado en list:' + value) 
+                }).catch(error => {
+                    console.log(error);this.setInfo(error)
+                }
+            );
+        },
+        viewItem() {
+            this.loading = true;
+            this.fetchDetalle({id:this.lead_id})
+            .finally(() => {
+                this.loading = false;
+            })  
+        },
+        viewDialog() {
+            this.dialog = !this.dialog;
+        },
+        asiste(){
+            this.dialog = true;
+        },
+        cerrarDialog(){
+            this.dialog = false;
+        },
+        actualizar(){
             this.viewItem();
         },
-        methods: {
-            ...mapActions({
-                fetchDetalle: 'leads/fetchDetalle',
-                solicitarCita: 'recepcionista/solicitar',
-                solicitarApoyoFinanciero:'callcenter/solicitarAF',
-                solicitarCallcenter: "callcenter/solicitar",
-                fetchDisponibilidad: 'agenda/fetchDisponibilidad',
-                fetchDisponibilidadLlamadas: 'agenda/fetchDisponibilidadLlamadas',
-                cambiarEstado: 'agenda/confirmarAsistencia',
-            }),
-            ...mapMutations({
-				setInfo: 'setInfo',
-				setError: 'setError',
-                setLead: 'leads/setDetalle',
-            }),
-            traerSedesYFechas() {
-                this.fetchDisponibilidad()
-                    .then(result => {
-                        this.fechas = result.resultSet.fechas
-                        this.sedes = result.resultSet.sedes
-                        this.sede = this.getSedeUsuario();
-                    })
-                    .catch(error => {
-                        console.log(error)
-                        this.setError(error)
-                    }).finally(() => {
+        consola(){
+            console.log(this.lead)
+        },
+        getSedeUsuario(){
+            if(this.user && this.user.sede_id) {
+                return this.user.sede_id;
+            }else{
+                return null;
+            }
+        },
+        actualizarHistorial() {
 
-                    })
-            },
-            regresar() {
-                this.$router.back();
-            },
-            copiarDato(value) {
-                this.$copyText(value).then(() => {
-                        this.setInfo('Copiado en list:' + value) 
-                    }).catch(error => {
-                        console.log(error);this.setInfo(error)
-                    }
-                );
-            },
-            viewItem() {
-                this.loading = true;
-                this.fetchDetalle({id:this.lead_id})
-                .finally(() => {
-                    this.loading = false;
-                })  
-            },
-            viewDialog() {
-                this.dialog = !this.dialog;
-            },
-            asiste(){
-                this.dialog = true;
-            },
-            cerrarDialog(){
-                this.dialog = false;
-            },
-            actualizar(){
-                this.viewItem();
-            },
-            consola(){
-                console.log(this.lead)
-            },
-            getSedeUsuario(){
-                if(this.user && this.user.sede_id) {
-                    return this.user.sede_id;
-                }else{
-                    return null;
-                }
-            },
-            actualizarHistorial() {
-
-            },
-            puedeSolicitarCallcenter() {
-            if (this.lead && this.lead.ultima_llamada && this.lead.ultima_llamada.estado == "pendiente") {
+        },
+        puedeSolicitarCallcenter() {
+        if (this.lead && this.lead.ultima_llamada && this.lead.ultima_llamada.estado == "pendiente") {
+            return true;
+        }
+        return false;
+        },
+        puedeSolicitarApoyoFinanciero(){
+            if((this.lead && this.lead.af_ultima_llamada && ['pendiente','terminado'].includes(this.lead.af_ultima_llamada.estado)) || (this.lead && !this.lead.af_ultima_llamada)){
+                return true
+            }
+            return false
+        },
+        estaAsignadoCallcenter() {
+            if (this.lead && this.lead.ultima_llamada && this.lead.ultima_llamada.estado == "llamando" && this.lead.ultima_llamada.agente ) {
                 return true;
             }
             return false;
-            },
-            puedeSolicitarApoyoFinanciero(){
-                if((this.lead && this.lead.af_ultima_llamada && ['pendiente','terminado'].includes(this.lead.af_ultima_llamada.estado)) || (this.lead && !this.lead.af_ultima_llamada)){
-                    return true
-                }
-                return false
-            },
-            estaAsignadoCallcenter() {
-                if (this.lead && this.lead.ultima_llamada && this.lead.ultima_llamada.estado == "llamando" && this.lead.ultima_llamada.agente ) {
-                    return true;
-                }
-                return false;
-            },
-            estaAsignadoApoyoFinanciero() {
-                if(this.lead && this.lead.af_ultima_llamada && this.lead.af_ultima_llamada.estado == 'llamando' && this.lead.af_ultima_llamada.agente && this.lead.af_ultima_llamada.agente.email == this.user.email){
-                    return true
-                }
-                return false
-            },
-            iniciarSolicitar() {
-                this.loading = true;
-                this.solicitarCallcenter({ id_lead: this.lead_id }).then((result) => {
-                    if (result.result == "ok") {
-                        this.viewItemCallcenter();
-                    }
-                    if (result.result == "llamando") {
-                        this.setInfo("Ya fue asignado");
-                    }
-                })
-                .finally(() => {
-                    this.loading = false;
-                });
-            },
-            iniciarSolicitarApoyoFinanciero() {
-                this.loading = true;
-                this.solicitarApoyoFinanciero({ id_lead: this.lead_id }).then((result) => {
-                    if (result.result == "ok") {
-                        this.viewItemApoyoFinanciero();
-                    }
-                    if (result.result == "llamando") {
-                        this.setInfo("Ya fue asignado");
-                    }
-                })
-                .finally(() => {
-                    this.loading = false;
-                });
-            },
-            iniciarCerrarCallcenter() {
-                this.viewItemCallcenter();
-            },
-            iniciarCerrarApofoFinanciero(){
-                this.viewItemApoyoFinanciero()
-            },
-            viewItemCallcenter() {
-                this.loading = true;
-                this.fetchDetalle({ id: this.lead_id }).then((result) => {
-                    if (result.datos && result.datos.uid) {
-                        let phoneCopy = result.datos.uid;
-                        if (phoneCopy) {
-                        if (phoneCopy.startsWith("57")) {
-                            phoneCopy = phoneCopy.substring(2);
-                        }
-                        if (phoneCopy.length == 10) {
-                            phoneCopy = "9" + phoneCopy;
-                        }
-                        this.$copyText(phoneCopy)
-                            .then(() => {
-                            this.setInfo("Autorizado y Copiado");
-                            })
-                            .catch((error) => {
-                            console.log(error);
-                            });
-                        }
-                    }
-                    this.llamada.show = true;
-                    this.llamada.llamada = true;
-                })
-                .finally(() => {
-                this.loading = false;
-                });
-            },
-            viewItemApoyoFinanciero() {
-                this.loading = true;
-                this.fetchDetalle({ id: this.lead_id }).then((result) => {
-                    if (result.datos && result.datos.uid) {
-                        let phoneCopy = result.datos.uid;
-                        if (phoneCopy) {
-                        if (phoneCopy.startsWith("57")) {
-                            phoneCopy = phoneCopy.substring(2);
-                        }
-                        if (phoneCopy.length == 10) {
-                            phoneCopy = "9" + phoneCopy;
-                        }
-                        this.$copyText(phoneCopy)
-                            .then(() => {
-                            this.setInfo("Autorizado y Copiado");
-                            })
-                            .catch((error) => {
-                            console.log(error);
-                            });
-                        }
-                    }
-                    this.llamadaApoyoFinanciero.show = true;
-                    this.llamadaApoyoFinanciero.llamada = true;
-                })
-                .finally(() => {
-                    this.loading = false;
-                });
-            },
-            historyOnlyCallcenter() {
-                this.setInfo("Ya lo llamaron");
-                this.llamada.show = true;
-                this.llamada.llamada = false;
-            },
-            historyOnlyApoyoFinanciero() {
-                this.setInfo("Ya lo llamaron");
-                this.llamadaApoyoFinanciero.show = true;
-                this.llamadaApoyoFinanciero.llamada = false;
-            },
-            cerrarDialogCallcenter() {
-                this.llamada.show = false;
-            },
-            cerrarDialogApoyoFinanciero() {
-                this.llamadaApoyoFinanciero.show = false;
-            },
         },
-        computed: {
-            ...mapState({
-                error: state => state.error,
-                user: state => state.auth.user_info,
-            }),
-            ...mapGetters({
-                
-            }),
-            getTitle() {
-                return 'Recepcion'
-            },
-            lead_id(){
-                return this.$route.params.id
-            },
-            lead() {
-                return this.detalle(this.lead_id)
-            },
-            ...mapGetters({
-                detalle: 'leads/getDetalle',
-                permiso: 'auth/permiso', 
-            }),
-            setAsisteCita(){
-                return this.permiso('OP_ASISTIR_CITA') ? true : false;
+        estaAsignadoApoyoFinanciero() {
+            if(this.lead && this.lead.af_ultima_llamada && this.lead.af_ultima_llamada.estado == 'llamando' && this.lead.af_ultima_llamada.agente && this.lead.af_ultima_llamada.agente.email == this.user.email){
+                return true
             }
+            return false
+        },
+        iniciarSolicitar() {
+            this.loading = true;
+            this.solicitarCallcenter({ id_lead: this.lead_id }).then((result) => {
+                if (result.result == "ok") {
+                    this.viewItemCallcenter();
+                }
+                if (result.result == "llamando") {
+                    this.setInfo("Ya fue asignado");
+                }
+            })
+            .finally(() => {
+                this.loading = false;
+            });
+        },
+        iniciarSolicitarApoyoFinanciero() {
+            this.loading = true;
+            this.solicitarApoyoFinanciero({ id_lead: this.lead_id }).then((result) => {
+                if (result.result == "ok") {
+                    this.viewItemApoyoFinanciero();
+                }
+                if (result.result == "llamando") {
+                    this.setInfo("Ya fue asignado");
+                }
+            })
+            .finally(() => {
+                this.loading = false;
+            });
+        },
+        iniciarCerrarCallcenter() {
+            this.viewItemCallcenter();
+        },
+        iniciarCerrarApofoFinanciero(){
+            this.viewItemApoyoFinanciero()
+        },
+        viewItemCallcenter() {
+            this.loading = true;
+            this.fetchDetalle({ id: this.lead_id }).then((result) => {
+                if (result.datos && result.datos.uid) {
+                    let phoneCopy = result.datos.uid;
+                    if (phoneCopy) {
+                    if (phoneCopy.startsWith("57")) {
+                        phoneCopy = phoneCopy.substring(2);
+                    }
+                    if (phoneCopy.length == 10) {
+                        phoneCopy = "9" + phoneCopy;
+                    }
+                    this.$copyText(phoneCopy)
+                        .then(() => {
+                        this.setInfo("Autorizado y Copiado");
+                        })
+                        .catch((error) => {
+                        console.log(error);
+                        });
+                    }
+                }
+                this.llamada.show = true;
+                this.llamada.llamada = true;
+            })
+            .finally(() => {
+            this.loading = false;
+            });
+        },
+        viewItemApoyoFinanciero() {
+            this.loading = true;
+            this.fetchDetalle({ id: this.lead_id }).then((result) => {
+                if (result.datos && result.datos.uid) {
+                    let phoneCopy = result.datos.uid;
+                    if (phoneCopy) {
+                    if (phoneCopy.startsWith("57")) {
+                        phoneCopy = phoneCopy.substring(2);
+                    }
+                    if (phoneCopy.length == 10) {
+                        phoneCopy = "9" + phoneCopy;
+                    }
+                    this.$copyText(phoneCopy)
+                        .then(() => {
+                        this.setInfo("Autorizado y Copiado");
+                        })
+                        .catch((error) => {
+                        console.log(error);
+                        });
+                    }
+                }
+                this.llamadaApoyoFinanciero.show = true;
+                this.llamadaApoyoFinanciero.llamada = true;
+            })
+            .finally(() => {
+                this.loading = false;
+            });
+        },
+        historyOnlyCallcenter() {
+            this.setInfo("Ya lo llamaron");
+            this.llamada.show = true;
+            this.llamada.llamada = false;
+        },
+        historyOnlyApoyoFinanciero() {
+            this.setInfo("Ya lo llamaron");
+            this.llamadaApoyoFinanciero.show = true;
+            this.llamadaApoyoFinanciero.llamada = false;
+        },
+        cerrarDialogCallcenter() {
+            this.llamada.show = false;
+        },
+        cerrarDialogApoyoFinanciero() {
+            this.llamadaApoyoFinanciero.show = false;
+        },
+    },
+    computed: {
+        ...mapState({
+            error: state => state.error,
+            user: state => state.auth.user_info,
+        }),
+        ...mapGetters({
+            
+        }),
+        getTitle() {
+            return 'Recepcion'
+        },
+        lead_id(){
+            return this.$route.params.id
+        },
+        lead() {
+            return this.detalle(this.lead_id)
+        },
+        ...mapGetters({
+            detalle: 'leads/getDetalle',
+            permiso: 'auth/permiso', 
+        }),
+        setAsisteCita(){
+            return this.permiso('OP_ASISTIR_CITA') ? true : false;
         }
-    };
+    }
+};
 </script>

@@ -1,12 +1,10 @@
 <template>
     <div>
         <v-col cols="12">
-            
             <v-row v-if="isCollapse">
                 <v-expansion-panels>
                     <v-expansion-panel>
                         <v-expansion-panel-header>     
-
                             <v-col>
                                 <h4>
                                     HISTORIAL [{{historial && historial.length ? (historial[0].accion+" : "+(historial[0].observacion?historial[0].observacion:'')) : 'Sin historicos'}}]
@@ -15,7 +13,7 @@
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
                             
-                            <v-layout column style="height: 110vh">       
+                            <v-layout column style="height: 175vh">       
                                 <v-flex md6 style="overflow: auto">  
                                     
                                     <v-list rounded :border="true" v-for="key_item in keys" :key="key_item.code" class="mx-auto" lines="three">
@@ -26,34 +24,39 @@
 
                                                 <v-container class="bg-surface-variant">
 
-                                                    <v-row no-gutters>
-                                                        <v-col cols="3" class="py-0">
-                                                            <b><v-icon small @click="viewDetail(item)">info</v-icon> Evento:</b> {{ item.evento }}
-                                                        </v-col>
-                                                        <v-col cols="5" class="py-0">
-                                                            {{ item.desc_evento }}
-                                                        </v-col>
-                                                        <v-col cols="4" class="py-0">
-                                                            {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
+                                                    <v-row v-bind:style="{ 'background-color': item.color ? item.color : '#FFF' }">
+                                                        <v-col>                                                            
+                                                            <v-row no-gutters>
+                                                                <v-col cols="3" class="py-0">
+                                                                    <b><v-icon small @click="viewDetail(item)">info</v-icon> Evento:</b> {{ item.evento }}
+                                                                </v-col>
+                                                                <v-col cols="5" class="py-0">
+                                                                    {{ item.desc_evento }}
+                                                                </v-col>
+                                                                <v-col cols="4" class="py-0">
+                                                                    {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
+                                                                </v-col>
+                                                            </v-row>
+                                                            
+                                                            <v-row no-gutters>
+                                                                <v-col class="py-2">
+                                                                    <p class="text-left"><b>Observación:</b> {{ item.observacion }}</p>
+                                                                </v-col>
+                                                            </v-row>
+                                                            <v-row no-gutters>
+                                                                <v-col  cols="3" class="py-0">
+                                                                    <b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
+                                                                </v-col>
+                                                                <v-col cols="5" class="py-0">
+                                                                    <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil + (item.usuario.grupo_usuario ? ` (${item.usuario.grupo_usuario})` : '') : '' }}
+                                                                </v-col>
+                                                                <v-col cols="4" class="py-0">
+                                                                    <b>Acción:</b> {{ item.accion }}
+                                                                </v-col>
+                                                            </v-row>
                                                         </v-col>
                                                     </v-row>
-                                                    
-                                                    <v-row no-gutters>
-                                                        <v-col class="py-2">
-                                                            <p class="text-left"><b>Observación:</b> {{ item.observacion }}</p>
-                                                        </v-col>
-                                                    </v-row>
-                                                    <v-row no-gutters>
-                                                        <v-col  cols="3" class="py-0">
-                                                            <b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
-                                                        </v-col>
-                                                        <v-col cols="5" class="py-0">
-                                                            <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil + (item.usuario.grupo_usuario ? ` (${item.usuario.grupo_usuario})` : '') : '' }}
-                                                        </v-col>
-                                                        <v-col cols="4" class="py-0">
-                                                            <b>Acción:</b> {{ item.accion }}
-                                                        </v-col>
-                                                    </v-row>
+
                                                     <v-row>
                                                         <v-col>
                                                             <v-divider></v-divider>
@@ -85,32 +88,36 @@
                                             <v-list-item-content class="py-0 my-0">
                                                 <v-container class="bg-surface-variant">
 
-                                                    <v-row no-gutters>
-                                                        <v-col cols="3" class="py-0">
-                                                            <b><v-icon small @click="viewDetail(item)">info</v-icon> Evento:</b> {{ item.evento }}
-                                                        </v-col>
-                                                        <v-col cols="5" class="py-0">
-                                                            {{ item.desc_evento }}
-                                                        </v-col>
-                                                        <v-col cols="4" class="py-0">
-                                                            {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
-                                                        </v-col>
-                                                    </v-row>
-                                                    
-                                                    <v-row no-gutters>
-                                                        <v-col class="py-2">
-                                                            <p class="text-left my-0"><b>Observación:</b> {{ item.observacion }}</p>
-                                                        </v-col>
-                                                    </v-row>
-                                                    <v-row no-gutters>
-                                                        <v-col  cols="3" class="py-0">
-                                                            <b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
-                                                        </v-col>
-                                                        <v-col cols="5" class="py-0">
-                                                            <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil + (item.usuario.grupo_usuario ? ` (${item.usuario.grupo_usuario})` : '') : '' }}
-                                                        </v-col>
-                                                        <v-col cols="4" class="py-0">
-                                                            <b>Acción:</b> {{ item.accion }}
+                                                    <v-row v-bind:style="{ 'background-color': item.color ? item.color : '#FFF' }">
+                                                        <v-col>
+                                                            <v-row no-gutters>
+                                                                <v-col cols="3" class="py-0">
+                                                                    <b><v-icon small @click="viewDetail(item)">info</v-icon> Evento:</b> {{ item.evento }}
+                                                                </v-col>
+                                                                <v-col cols="5" class="py-0">
+                                                                    {{ item.desc_evento }}
+                                                                </v-col>
+                                                                <v-col cols="4" class="py-0">
+                                                                    {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
+                                                                </v-col>
+                                                            </v-row>
+                                                            
+                                                            <v-row no-gutters>
+                                                                <v-col class="py-2">
+                                                                    <p class="text-left my-0"><b>Observación:</b> {{ item.observacion }}</p>
+                                                                </v-col>
+                                                            </v-row>
+                                                            <v-row no-gutters>
+                                                                <v-col  cols="3" class="py-0">
+                                                                    <b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> 
+                                                                </v-col>
+                                                                <v-col cols="5" class="py-0">
+                                                                    <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil + (item.usuario.grupo_usuario ? ` (${item.usuario.grupo_usuario})` : '') : '' }}
+                                                                </v-col>
+                                                                <v-col cols="4" class="py-0">
+                                                                    <b>Acción:</b> {{ item.accion }}
+                                                                </v-col>
+                                                            </v-row>
                                                         </v-col>
                                                     </v-row>
                                                     <v-row>
@@ -188,7 +195,7 @@ export default {
         keys:[],
         detalles: [],
         dialog: false,
-        expanded: [true, true],
+        expanded: [true, true]
     }),
     props: {
         lead_id: String,
