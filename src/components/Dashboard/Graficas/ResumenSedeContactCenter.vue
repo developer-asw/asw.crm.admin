@@ -1,24 +1,28 @@
 <template>
-    <v-row>
-        <v-col>
-            <v-row>
-                <v-col>
-                    
-                </v-col>
-                <v-col>
-                    <h6>Citas asistidas por sede</h6>
-                </v-col>
-                <v-col>
-                    <h6>Citas matriculadas por sede</h6>
-                </v-col>
-            </v-row>
-            <v-row v-for="(item, index) in datos" :key="index">
-                <v-col><small>{{item._id}}</small></v-col>
-                <v-col><small>{{item.citas}}</small></v-col>
-                <v-col><small>{{item.matriculas}}</small></v-col>
-            </v-row>
-        </v-col>
-    </v-row>
+    <v-simple-table dense>
+        <template v-slot:default>
+            <thead>
+                <tr>
+                    <th class="text-left">
+                        Sede
+                    </th>
+                    <th class="text-left">
+                        Citas asistidas
+                    </th>
+                    <th class="text-left">
+                        Citas matriculadas
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, index) in datos" :key="index">
+                    <td class="text-left">{{ item._id }}</td>
+                    <td class="text-right">{{ item.citas }}</td>
+                    <td class="text-right">{{ item.matriculas }}</td>
+                </tr>
+            </tbody>
+        </template>
+    </v-simple-table>
 </template>
 <script>
     import { mapState, mapActions, mapMutations } from 'vuex';

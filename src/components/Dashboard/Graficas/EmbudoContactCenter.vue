@@ -78,34 +78,20 @@
                 </v-col>
             </v-row>
 
-            
             <v-row>
                 <v-col>
-                    Llamadas día:
-                </v-col>
-                <v-col>
-                    {{datos.llamadas_dia.total}}
-                </v-col>
-            </v-row>
-            
-            <v-row>
-                <v-col>
-                    Llamadas mes:
-                </v-col>
-                <v-col>
-                    {{datos.llamadas_mes.total}}
+                    <v-simple-table dense>
+                        <template v-slot:default>
+                            <tbody>
+                                <tr v-for="(item, index) in datos.llamadas" :key="index">
+                                    <td class="text-left">{{ item.titulo }}</td>
+                                    <td class="text-right">{{ item.total }}</td>
+                                </tr>
+                            </tbody>
+                        </template>
+                    </v-simple-table>
                 </v-col>
             </v-row>
-            
-            <v-row>
-                <v-col>
-                    Promedio llamadas por día:
-                </v-col>
-                <v-col>
-                    {{datos.llamadas_promedio.total}}
-                </v-col>
-            </v-row>
-            
         </v-col>
     </v-row>
 </template>
