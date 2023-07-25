@@ -46,7 +46,9 @@
                 </v-col>
                 <v-col cols="12" class="mt-4 pb-4">
                     <v-row>
-                        <IngresoPorDia ref="ingresoPorDia" :tipo="tipo" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></IngresoPorDia>
+                        <v-col>
+                            <IngresoPorDia ref="ingresoPorDia" :tipo="tipo" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></IngresoPorDia>
+                        </v-col>
                     </v-row>
                 </v-col>
                 <v-col cols="12" class="mt-4 mb-4">
