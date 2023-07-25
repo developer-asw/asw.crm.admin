@@ -18,7 +18,7 @@
                             </template>
                         </v-progress-linear>
                     </v-col>
-                    <v-col>
+                    <v-col class="text-right pr-5">
                         {{datos.ingresados.porcentaje}}%
                     </v-col>
                 </v-row>
@@ -37,7 +37,7 @@
                             </template>
                         </v-progress-linear>
                     </v-col>
-                    <v-col>
+                    <v-col class="text-right pr-5">
                         {{datos.citas_agendadas.porcentaje}}%
                     </v-col>
                 </v-row>
@@ -56,7 +56,7 @@
                             </template>
                         </v-progress-linear>
                     </v-col>
-                    <v-col>
+                    <v-col class="text-right pr-5">
                         {{datos.citas_asistidas.porcentaje}}%
                     </v-col>
                 </v-row>
@@ -75,7 +75,7 @@
                             </template>
                         </v-progress-linear>
                     </v-col>
-                    <v-col>
+                    <v-col class="text-right pr-5">
                         {{datos.matriculas.porcentaje}}%
                     </v-col>
                 </v-row>
@@ -88,7 +88,7 @@
                         <tbody>
                             <tr v-for="(item, index) in datos.llamadas" :key="index">
                                 <td class="text-left pl-3">{{ item.titulo }}</td>
-                                <td class="text-right">{{ item.total }}</td>
+                                <td class="text-right pr-3">{{ item.total }}</td>
                             </tr>
                         </tbody>
                     </template>
