@@ -35,7 +35,7 @@
                 </v-col>
             </v-row>
 
-            <v-row>
+            <v-row v-bind:style="{ 'border-left': showBorderLeft ? '2px solid #000' : 'none' }" style="border-left: 2px solid #000;">
                 <v-col>
                     {{ tipo }}
                 </v-col>
@@ -89,6 +89,7 @@
         },
         props: {
             tipo: String,
+            showBorderLeftProp: Boolean
         },
         methods: {
             ...mapActions({
@@ -164,6 +165,9 @@
             },
             loadingProp() {
                 return this.loading;
+            },
+            showBorderLeft(){
+                return this.showBorderLeftProp;
             },
         },
         watch: {

@@ -1,99 +1,101 @@
 <template>
-    <v-row>
-        <v-col>            
-            <v-row>
-                <v-col >
-                    Datos ingresados
-                </v-col>
-                <v-col>
-                    <v-progress-linear
-                        v-model="datos.ingresados.total"
-                        color="amber"
-                        height="25"
-                        >
-                        <template v-slot:default="{ value }">
-                            <strong>{{ Math.ceil(value) }}</strong>
-                        </template>
-                    </v-progress-linear>
-                </v-col>
-                <v-col>
-                    {{datos.ingresados.porcentaje}}%
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    Citas agendadas
-                </v-col>
-                <v-col>
-                    <v-progress-linear
-                        v-model="datos.citas_agendadas.porcentaje"
-                        color="amber"
-                        height="25"
-                        >
-                        <template v-slot:default="{ value }">
-                            <strong>{{ Math.ceil(datos.citas_agendadas.total) }}</strong>
-                        </template>
-                    </v-progress-linear>
-                </v-col>
-                <v-col>
-                    {{datos.citas_agendadas.porcentaje}}%
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    Citas asistidas
-                </v-col>
-                <v-col>
-                    <v-progress-linear
-                        v-model="datos.citas_asistidas.porcentaje"
-                        color="amber"
-                        height="25"
-                        >
-                        <template v-slot:default="{ value }">
-                            <strong>{{ Math.ceil(datos.citas_asistidas.total) }}</strong>
-                        </template>
-                    </v-progress-linear>
-                </v-col>
-                <v-col>
-                    {{datos.citas_asistidas.porcentaje}}%
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    Citas matriculadas
-                </v-col>
-                <v-col>
-                    <v-progress-linear
-                        v-model="datos.matriculas.porcentaje"
-                        color="amber"
-                        height="25"
-                        >
-                        <template v-slot:default="{ value }">
-                            <strong>{{ Math.ceil(datos.matriculas.total) }}</strong>
-                        </template>
-                    </v-progress-linear>
-                </v-col>
-                <v-col>
-                    {{datos.matriculas.porcentaje}}%
-                </v-col>
-            </v-row>
+    <v-col>
+        <v-row>
+            <v-col class="pl-5">
 
-            <v-row>
-                <v-col>
-                    <v-simple-table dense>
-                        <template v-slot:default>
-                            <tbody>
-                                <tr v-for="(item, index) in datos.llamadas" :key="index">
-                                    <td class="text-left">{{ item.titulo }}</td>
-                                    <td class="text-right">{{ item.total }}</td>
-                                </tr>
-                            </tbody>
-                        </template>
-                    </v-simple-table>
-                </v-col>
-            </v-row>
-        </v-col>
-    </v-row>
+                <v-row>
+                    <v-col class="text-left pl-4">
+                        <h5>Datos ingresados</h5>
+                    </v-col>
+                    <v-col>
+                        <v-progress-linear
+                            v-model="datos.ingresados.total"
+                            color="amber"
+                            height="25"
+                            >
+                            <template v-slot:default="{ value }">
+                                <strong>{{ Math.ceil(value) }}</strong>
+                            </template>
+                        </v-progress-linear>
+                    </v-col>
+                    <v-col>
+                        {{datos.ingresados.porcentaje}}%
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col class="text-left pl-4">
+                        <h5>Citas agendadas</h5>
+                    </v-col>
+                    <v-col>
+                        <v-progress-linear
+                            v-model="datos.citas_agendadas.porcentaje"
+                            color="amber"
+                            height="25"
+                            >
+                            <template v-slot:default="{ value }">
+                                <strong>{{ Math.ceil(datos.citas_agendadas.total) }}</strong>
+                            </template>
+                        </v-progress-linear>
+                    </v-col>
+                    <v-col>
+                        {{datos.citas_agendadas.porcentaje}}%
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col class="text-left pl-4">
+                        <h5>Citas asistidas</h5>
+                    </v-col>
+                    <v-col>
+                        <v-progress-linear
+                            v-model="datos.citas_asistidas.porcentaje"
+                            color="amber"
+                            height="25"
+                            >
+                            <template v-slot:default="{ value }">
+                                <strong>{{ Math.ceil(datos.citas_asistidas.total) }}</strong>
+                            </template>
+                        </v-progress-linear>
+                    </v-col>
+                    <v-col>
+                        {{datos.citas_asistidas.porcentaje}}%
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col class="text-left pl-4">
+                        <h5>Citas matriculadas</h5>
+                    </v-col>
+                    <v-col>
+                        <v-progress-linear
+                            v-model="datos.matriculas.porcentaje"
+                            color="amber"
+                            height="25"
+                            >
+                            <template v-slot:default="{ value }">
+                                <strong>{{ Math.ceil(datos.matriculas.total) }}</strong>
+                            </template>
+                        </v-progress-linear>
+                    </v-col>
+                    <v-col>
+                        {{datos.matriculas.porcentaje}}%
+                    </v-col>
+                </v-row>
+            </v-col>
+        </v-row>
+        <v-row class="mt-5">
+            <v-col>
+                <v-simple-table dense style="border: 1px solid #000;">
+                    <template v-slot:default>
+                        <tbody>
+                            <tr v-for="(item, index) in datos.llamadas" :key="index">
+                                <td class="text-left pl-3">{{ item.titulo }}</td>
+                                <td class="text-right">{{ item.total }}</td>
+                            </tr>
+                        </tbody>
+                    </template>
+                </v-simple-table>
+            </v-col>
+        </v-row>
+    </v-col>
 </template>
 <script>
     import { mapState, mapActions, mapMutations } from 'vuex';
