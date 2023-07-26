@@ -74,7 +74,7 @@
                         pending
                     </v-icon>
                 </template>
-                <template v-if="payload.prioridad < 10" v-slot:[`item.action`]="{ item }">
+                <template v-if="payload.prioridad < 10 || payload.prioridad > 19" v-slot:[`item.action`]="{ item }">
                     <!-- <v-icon smallclass="mr-2" @click="viewItem(item)">
                         remove_red_eye
                     </v-icon> -->
@@ -316,6 +316,12 @@ export default {
             }
             if (this.permiso('OP_CALL_GRUPO_1')) {
                 this.prioridad.push({ text: 'Grupo 1', value : 7 })
+            }
+            if (this.permiso('OP_CALL_RENOVACION')) {
+                this.prioridad.push({ text: 'Renovación', value : 21 })
+            }
+            if (this.permiso('OP_CALL_REFERIDOS')) {
+                this.prioridad.push({ text: 'Referidos', value : 20 })
             }
             if (this.permiso('OP_CALL_VENTA_TELEFONICA')) {
                 this.prioridad.push({ text: 'Venta Teléfonica', value : 6 })

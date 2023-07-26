@@ -168,14 +168,14 @@
                             <td><b>Referidos: </b></td>
                             <td colspan="2">
                                 {{referidos.referidos.length}}
-                                <v-btn text v-for="(r, i) in referidos.referidos" :key="i" :to="{ name: 'recepcion_view', params: { id: r.id } }" target="_blank">{{ r.full_name }}, </v-btn>
+                                <v-btn small text v-for="(r, i) in referidos.referidos" :key="i" :to="{ name: 'recepcion_view', params: { id: r.id } }" target="_blank">{{ r.full_name }}, </v-btn>
                             </td>
                         </tr>
                         <tr>
                             <td><b>Referidos Efectivo: </b></td>
                             <td colspan="2">
                                 {{referidos.referidos_efectivos.length}}
-                                <v-btn text v-for="(re, i) in referidos.referidos_efectivos" :key="i" :to="{ name: 'recepcion_view', params: { id: re.id } }" target="_blank">{{ re.full_name }}, </v-btn>
+                                <v-btn small text v-for="(re, i) in referidos.referidos_efectivos" :key="i" :to="{ name: 'recepcion_view', params: { id: re.id } }" target="_blank">{{ re.full_name }}, </v-btn>
                             </td>
                         </tr>
                         <!-- <td colspan="2">

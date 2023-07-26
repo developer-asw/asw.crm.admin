@@ -3,11 +3,11 @@
     <v-simple-table dense class="blue lighten-5">
         <template v-slot:default>
             <tbody>
-                <tr>
+                <!--tr>
                     <td><b>Tipo: </b></td>
                     <td>{{ lead.categoria_lead }}</td>
                     <td></td>
-                </tr>
+                </tr-->
                 <tr>
                     <td><b>ID: </b></td>
                     <td>{{ lead.numero }}</td>
@@ -80,6 +80,11 @@
                     <td>{{ lead.como_se_entero }}</td>
                     <td></td>
                 </tr>
+                <tr v-if="lead.referido">
+                    <td><b>Referido por: </b></td>
+                    <td>{{ lead.referido.nombre }}</td>
+                    <td></td>
+                </tr>
                 <tr v-if="lead.comentarios">
                     <td><b>Comentarios Pagina Web: </b></td>
                     <td>{{ lead.comentarios }}</td>
@@ -92,11 +97,11 @@
                     <td></td>
                 </tr>
                 
-                <tr v-if="lead.form_ciudad">
+                <!--tr v-if="lead.form_ciudad">
                     <td><b>Ciudad: </b></td>
                     <td>{{ lead.form_ciudad }}</td>
                     <td></td>
-                </tr>
+                </tr-->
                 
                 <tr v-if="lead.form_adicional">
                     <td><b>Adicional: </b></td>
