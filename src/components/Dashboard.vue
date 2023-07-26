@@ -60,10 +60,10 @@ import ContactCenter from '@/components/Dashboard/ContactCenter';
 
 import { mapState, mapActions, mapMutations } from 'vuex';
 const OPCIONES_DASHBOARD = {
-    general:"GENERAL",
+    general:"MERCADEO",
     contactcenter_elite:"ELITE",
     contactcenter_fenix:"FENIX",
-    contactcenter:"ELITE_FENIX",
+    contactcenter:"CONTACT CENTER",
     consulta:"CONSULTA",
 }
 

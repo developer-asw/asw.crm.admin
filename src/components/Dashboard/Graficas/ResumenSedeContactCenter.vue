@@ -1,8 +1,8 @@
 <template>
     <v-col>
         <v-row>
-            <v-col>                
-                <v-simple-table dense>
+            <v-col>
+                <v-simple-table dense >
                     <template v-slot:default>
                         <thead>
                             <tr>
@@ -15,6 +15,7 @@
                                 <th class="text-left">
                                     Citas matriculadas
                                 </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -22,6 +23,17 @@
                                 <td class="text-left">{{ item.sede }}</td>
                                 <td class="text-right">{{ item.citas }}</td>
                                 <td class="text-right">{{ item.matriculas }}</td>
+                                <td class="text-right" width="70px">
+                                    <v-progress-linear
+                                        v-model="item.porcentaje"
+                                        color="blue lighten-4"
+                                        height="10"
+                                        >
+                                        <template v-slot:default="{ value }">
+                                            <small><strong>{{ Math.ceil(value) }}%</strong></small>
+                                        </template>
+                                    </v-progress-linear>
+                                </td>
                             </tr>
                         </tbody>
                     </template>
