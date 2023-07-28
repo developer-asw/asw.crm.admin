@@ -10,6 +10,7 @@
                     <v-col>
                         <v-progress-linear
                             v-model="datos.ingresados.total"
+                            style="pointer-events: none"
                             color="amber"
                             height="25"
                             >
@@ -29,6 +30,7 @@
                     <v-col>
                         <v-progress-linear
                             v-model="datos.citas_agendadas.porcentaje"
+                            style="pointer-events: none"
                             color="amber"
                             height="25"
                             >
@@ -49,6 +51,7 @@
                         <v-progress-linear
                             v-model="datos.citas_asistidas.porcentaje"
                             color="amber"
+                            style="pointer-events: none"
                             height="25"
                             >
                             <template v-slot:default="{ value }">
@@ -68,6 +71,7 @@
                         <v-progress-linear
                             v-model="datos.matriculas.porcentaje"
                             color="amber"
+                            style="pointer-events: none"
                             height="25"
                             >
                             <template v-slot:default="{ value }">
