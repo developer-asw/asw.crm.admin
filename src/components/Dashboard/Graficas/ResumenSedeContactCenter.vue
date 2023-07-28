@@ -28,6 +28,7 @@
                                         v-model="item.porcentaje"
                                         color="blue lighten-4"
                                         height="10"
+                                        style="pointer-events: none"
                                         >
                                         <template v-slot:default="{ value }">
                                             <small><strong>{{ Math.ceil(value) }}%</strong></small>
