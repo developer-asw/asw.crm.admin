@@ -1,16 +1,16 @@
 <template>
     <v-layout text-center wrap>
         <v-container>
-            <v-row justify="space-around" style="display: none;">
-                <v-col cols="12" sm="4" md="3">
+            <v-row>
+                <v-col cols="12" sm="5" md="4">
                     <v-select v-model="sede" :items="sedes" label="Sede" item-text="nombre" item-value="id" :disabled="loading"
                     multiple chips>
                     </v-select>
                 </v-col>
                 
-                <v-col cols="12" sm="4" md="5">
+                <v-col cols="12" sm="5" md="6">
                     <v-container>
-                        <v-menu ref="menu1" :close-on-content-click="false" transition="scale-transition" offset-y :value="shown" max-width="290px" min-width="auto">
+                        <v-menu ref="menu1" :close-on-content-click="false" transition="scale-transition" offset-y :value="shown" max-width="auto">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-text-field
                                     v-model="dateRangeText"
@@ -30,8 +30,8 @@
                         </v-menu>
                     </v-container>
                 </v-col>
-                <v-col cols="12" sm="6" md="2" class="pb-5">
-                    <v-btn class="ma-2" color="primary darken-1" text @click="consultar"><v-icon left small>refresh</v-icon>&nbsp;Actualizar&nbsp;</v-btn>
+                <v-col cols="12" sm="2" md="1">
+                    <v-btn class="ma-2" color="primary darken-1" text @click="consultar"><v-icon left small>refresh</v-icon></v-btn>
                 </v-col>
             </v-row>
 
