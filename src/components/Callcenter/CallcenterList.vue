@@ -321,6 +321,11 @@ export default {
                 this.prioridad.push({ text: 'Renovación', value : 21 })
             }
             if (this.permiso('OP_CALL_REFERIDOS')) {
+                console.log('OP_CALL_REFERIDOS');
+                this.prioridad.push({ text: 'Referidos', value : 20 })
+            }
+            if (this.permiso('OP_CALL_REFERIDOS_SEDE')) {
+                console.log('OP_CALL_REFERIDOS_SEDE');
                 this.prioridad.push({ text: 'Referidos', value : 20 })
             }
             if (this.permiso('OP_CALL_VENTA_TELEFONICA')) {
