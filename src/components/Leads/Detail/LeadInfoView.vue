@@ -143,6 +143,12 @@
                     <td>{{ lead.cmp_renovacion ? "SI" : "NO" }}</td>
                     <td></td>
                 </tr>
+                <tr v-if="viewInfoMatricula">
+                    <td>Matricula:</td>
+                    <td v-if="lead.ultima_matricula && lead.ultima_matricula.sticker">{{lead.ultima_matricula.sticker}}</td>
+                    <td v-else>{{lead.af_ultima_llamada && lead.af_ultima_llamada.solicitante ? lead.af_ultima_llamada.solicitante.nombre + ' ('+lead.af_ultima_llamada.solicitante.perfil+')' : '' }}</td>
+                    <td></td>
+                </tr>
                 
                 <!-- <td colspan="2">
                     <v-icon @click="actualizar" right>refresh</v-icon>
@@ -167,6 +173,7 @@ export default {
     props: {
         lead_id: String,
         setSedes: Array,
+        viewInfoMatricula: Boolean
     },
     mounted() {
         this.verificar();

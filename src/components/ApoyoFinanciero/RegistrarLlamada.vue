@@ -6,7 +6,7 @@
         <v-card-text>
 			<v-row v-if="!ocultar">
 				<v-col cols="12" md="12">
-                    <LeadInfoView :key="lead_id" :lead_id="lead_id" :setSedes="sedes"></LeadInfoView>
+                    <LeadInfoView :key="lead_id" :lead_id="lead_id" :setSedes="sedes" :viewInfoMatricula="true"></LeadInfoView>
 				</v-col>
 			</v-row>
             <v-row class="mt-10" v-if="!ocultar">
