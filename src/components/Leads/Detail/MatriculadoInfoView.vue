@@ -42,8 +42,8 @@
                     <td><b>Sede: </b></td>
                     <td>
                         
-                        <span v-if="ver_sede && lead.sede_matricula">{{lead.sede_matricula}}</span>
-                        <span v-else-if="ver_sede && !lead.sede_matricula">{{lead.sede_full  ? lead.sede_full.nombre:""}}</span>
+                        <span v-if="ver_sede && lead.ultima_matricula.sede_matricula">{{lead.ultima_matricula.sede_matricula}}</span>
+                        <span v-else-if="ver_sede && !lead.ultima_matricula.sede_matricula">{{lead.sede_full  ? lead.sede_full.nombre:""}}</span>
                         <v-select v-else v-model="lead.sede_id" :items="sedes" item-text="nombre" item-value="id">
                             <template slot="item" slot-scope="data">
                                 {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.sede }}

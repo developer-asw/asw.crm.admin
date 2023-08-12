@@ -75,7 +75,8 @@
                 payload.usuario_email = this.userEmail;
                 payload.download_tipo = 'csv';
                 payload.grafica = grafica;
-                
+                console.log(payload)
+                console.log(this.util.getUrlString(payload))
                 let ruta = config.ROOT_API + "leads/descargar_dashboard?" + this.util.getUrlString(payload);
                 let newWindow = window.open(ruta, '_blank');
                 newWindow.focus();
@@ -84,12 +85,12 @@
             },
             terminar() {
                 this.loading = false;
-                this.loadingProp = false;
+                // this.loadingProp = false;
                 this.$emit('terminar');
             },
             comenzar() {
                 this.loading = true;
-                this.loadingProp = true;
+                // this.loadingProp = true;
                 this.$emit('comenzar');
             }
     
