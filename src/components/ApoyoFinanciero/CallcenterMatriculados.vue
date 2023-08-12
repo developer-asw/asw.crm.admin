@@ -42,9 +42,12 @@
                 :loading="loading"
                 loading-text="Loading... Please wait"
                 class="elevation-1">
-                <template v-slot:[`item.fecha_registro_matricula`]="{ item }">
+                <template v-slot:[`item.af_ultima_llamada.fecha_solicitado`]="{ item }">
+                    <span title="Solicitado" v-if="item.af_ultima_llamada && item.af_ultima_llamada.fecha_solicitado">{{presentDate(item.af_ultima_llamada.fecha_solicitado)}}</span>
+                </template>
+                <template v-slot:[`item.ultima_matricula.fecha_registro_matricula`]="{ item }">
                     <!-- <span title="Asignado" v-if="item.af_ultima_llamada && item.af_ultima_llamada.fecha_asignado">{{presentDate(item.af_ultima_llamada.fecha_asignado)}}</span> -->
-                    <span title="Solicitado" v-if="item.af_ultima_llamada && item.fecha_registro_matricula">{{presentDate(item.fecha_registro_matricula)}}</span>
+                    <span title="Fecha Matricula" v-if="item.ultima_matricula && item.ultima_matricula.fecha_registro_matricula">{{presentDate(item.ultima_matricula.fecha_registro_matricula)}}</span>
                 </template>
                 <template v-slot:[`item.af_ultima_llamada.usuario`]="{ item }">
                     <span v-if="item.af_ultima_llamada && item.af_ultima_llamada.agente">{{item.af_ultima_llamada.agente.nombre}}</span>
@@ -149,8 +152,9 @@ export default {
         return {
             headers: [
                 { text: '', value: 'prioridad' },
+                { text: 'Tarea', value: 'af_ultima_llamada.fecha_solicitado' },
                 { text: 'Matriculado', value: 'fecha_registro_matricula' },
-                { text: 'Forma Pago', value: 'forma_pago' },
+                // { text: 'Forma Pago', value: 'forma_pago' },
                 { text: 'Nombre', value: 'full_name' },
                 { text: 'Ciudad', value: 'field_ciudad' },
                 { text: 'Email', value: 'email' },
@@ -302,9 +306,6 @@ export default {
             }
             if (this.permiso('OP_CALL_VENTA_TELEFONICA')) {
                 this.prioridad.push({ text: 'Venta Teléfonica', value : 6 })
-            }
-            if (this.permiso('OP_CALL_TOTALES')) {
-                this.prioridad.push({ text: 'Totales', value : 10 })
             }
             if (this.permiso('OP_CALL_TOTALES_AF')) {
                 this.prioridad.push({ text: 'Totales Apoyo Financiero', value : 13 })
