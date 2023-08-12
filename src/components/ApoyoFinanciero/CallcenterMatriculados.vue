@@ -42,19 +42,14 @@
                 :loading="loading"
                 loading-text="Loading... Please wait"
                 class="elevation-1">
-<<<<<<< HEAD
-                <template v-slot:[`item.ultima_matricula.fecha_registro_matricula`]="{ item }">
-                    <!-- <span title="Asignado" v-if="item.af_ultima_llamada && item.af_ultima_llamada.fecha_asignado">{{presentDate(item.af_ultima_llamada.fecha_asignado)}}</span> -->
-                    <span title="Solicitado" v-if="item.af_ultima_llamada && item.ultima_matricula.fecha_registro_matricula">{{presentDate(item.ultima_matricula.fecha_registro_matricula)}}</span>
-=======
                 <template v-slot:[`item.af_ultima_llamada.fecha_solicitado`]="{ item }">
                     <span title="Solicitado" v-if="item.af_ultima_llamada && item.af_ultima_llamada.fecha_solicitado">{{presentDate(item.af_ultima_llamada.fecha_solicitado)}}</span>
                 </template>
-                <template v-slot:[`item.ultima_matricula.fecha_registro_matricula`]="{ item }">
+                <template v-slot:[`item.fecha_registro_matricula`]="{ item }">
                     <!-- <span title="Asignado" v-if="item.af_ultima_llamada && item.af_ultima_llamada.fecha_asignado">{{presentDate(item.af_ultima_llamada.fecha_asignado)}}</span> -->
                     <span title="Fecha Matricula" v-if="item.ultima_matricula && item.ultima_matricula.fecha_registro_matricula">{{presentDate(item.ultima_matricula.fecha_registro_matricula)}}</span>
->>>>>>> master
                 </template>
+                
                 <template v-slot:[`item.af_ultima_llamada.usuario`]="{ item }">
                     <span v-if="item.af_ultima_llamada && item.af_ultima_llamada.agente">{{item.af_ultima_llamada.agente.nombre}}</span>
                     <span v-else-if="item.af_ultima_llamada && item.af_ultima_llamada.solicitante">{{item.af_ultima_llamada.solicitante.nombre}}</span>
@@ -109,7 +104,7 @@
                     </v-icon>
                 </template>
                 <template v-slot:[`item.sede`]="{ item }">
-                    <span v-if="item.ultima_matricula.sede_matricula">{{item.ultima_matricula.sede_matricula}}</span>
+                    <span v-if="item.ultima_matricula && item.ultima_matricula.sede_matricula">{{item.ultima_matricula.sede_matricula}}</span>
                     <span v-else-if="item.sede_full">{{item.sede_full.nombre}}</span>
                     <span v-else>{{item.sede}}</span>
                 </template>
@@ -158,14 +153,8 @@ export default {
         return {
             headers: [
                 { text: '', value: 'prioridad' },
-<<<<<<< HEAD
-                { text: 'Matriculado', value: 'ultima_matricula.fecha_registro_matricula' },
-                { text: 'Forma Pago', value: 'forma_pago' },
-=======
                 { text: 'Tarea', value: 'af_ultima_llamada.fecha_solicitado' },
                 { text: 'Matriculado', value: 'fecha_registro_matricula' },
-                // { text: 'Forma Pago', value: 'forma_pago' },
->>>>>>> master
                 { text: 'Nombre', value: 'full_name' },
                 { text: 'Ciudad', value: 'field_ciudad' },
                 { text: 'Email', value: 'email' },
