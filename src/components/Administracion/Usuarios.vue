@@ -104,13 +104,10 @@
                                                         <v-select v-model="usuario.grupo_call_id" :disabled="loading" :items="gruposCall" label="Grupo Call" item-text="codigo" item-value="id"></v-select>
                                                     </v-col>
                                                     <v-col cols="12" sm="6">
-                                                        <v-checkbox v-model="usuario.todas_sedes" :disabled="loading" label="Todas las sedes"></v-checkbox>
-                                                    </v-col>
-                                                    <v-col cols="12" sm="6">
                                                         <v-select v-model="usuario.sede_id" :disabled="loading" :items="sedesSeleccionadas" label="Sede principal" item-text="nombre" item-value="id" :rules="rules.sede_principal"></v-select>
                                                     </v-col>
                                                     <v-col cols="12" sm="12">
-                                                        <v-select v-model="usuario.sedes" :disabled="loading || (usuario.todas_sedes ? true : false)" :items="sedes" label="Sedes" item-text="nombre" item-value="id" multiple :rules="rules.sedes" @change="seleccionarSede()"></v-select>
+                                                        <v-select v-model="usuario.sedes" :disabled="loading" :items="sedes" label="Sedes" item-text="nombre" item-value="id" multiple :rules="rules.sedes" @change="seleccionarSede()"></v-select>
                                                     </v-col>
                                                     <v-col cols="12" sm="6" v-if="usuario.id" >
                                                         <v-select v-model="usuario.activo" :disabled="loading" :items="estados" label="Estado" item-text="valor" item-value="clave"></v-select>
@@ -497,7 +494,6 @@ export default {
             return this.editedIndex === -1 ? 'Nuevo' : 'Editar'
         },
         sedesSeleccionadas() {
-            if (this.usuario.todas_sedes) return this.sedes;
             if (this.usuario && this.usuario.sedes) return this.sedes.filter(x => this.usuario.sedes.includes(x.id) );
             return [];
         },

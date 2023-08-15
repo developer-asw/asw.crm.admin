@@ -14,9 +14,7 @@
               </tr>
             </tbody>
           </v-simple-table>
-<!--
-          <AgendaActualOrientador :orientadores="item.children" :sede_id="sede_id" :fecha="fecha" :franja="item.id"></AgendaActualOrientador>
-        -->
+          <!-- <AgendaActualOrientador :orientadores="item.children" :sede_id="sede_id" :fecha="fecha" :franja="item.id"></AgendaActualOrientador> -->
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
