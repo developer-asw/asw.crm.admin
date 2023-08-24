@@ -240,7 +240,14 @@
                 this.procesando = true;
                 this.resolucion.id = this.lead_id;
                 this.resolucion.solucion = this.estado;
-                this.cerrarLlamada(this.resolucion)
+                let objeto = {...this.resolucion};
+                if (objeto.fecha_proxima_llamada) {
+                    objeto.fecha_proxima_llamada = this.$moment(objeto.fecha_proxima_llamada).format('YYYY-MM-DD')
+                }
+                if (objeto.hora_proxima_llamada) {
+                    objeto.hora_proxima_llamada = this.$moment(objeto.hora_proxima_llamada).format('HH:mm')
+                }
+                this.cerrarLlamada(objeto)
                 .then((result)=>{
                     this.accion = "";
 					if(result.result=='ok'){

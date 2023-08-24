@@ -364,9 +364,17 @@
                 let objeto = {...this.resolucion};
                 if (objeto.fecha_proxima_llamada) {
                     objeto.fecha_proxima_llamada = this.$moment(objeto.fecha_proxima_llamada).format('YYYY-MM-DD')
+                    if (objeto.fecha_proxima_llamada === 'Invalid date') {
+                        this.setInfo('Revise el campo fecha, tiene un valor no válido.')
+                        return;
+                    }
                 }
                 if (objeto.hora_proxima_llamada) {
                     objeto.hora_proxima_llamada = this.$moment(objeto.hora_proxima_llamada).format('HH:mm')
+                    if (objeto.hora_proxima_llamada === 'Invalid date') {
+                        this.setInfo('Revise el campo hora, tiene un valor no válido.')
+                        return;
+                    }
                 }
                 this.cerrarLlamada(objeto)
                 .then((result)=>{
@@ -399,9 +407,17 @@
                 let objeto = {...this.resolucion};
                 if (objeto.fecha_proxima_llamada) {
                     objeto.fecha_proxima_llamada = this.$moment(objeto.fecha_proxima_llamada).format('YYYY-MM-DD')
+                    if (objeto.fecha_proxima_llamada === 'Invalid date') {
+                        this.setInfo('Revise el campo fecha, tiene un valor no válido.')
+                        return;
+                    }
                 }
                 if (objeto.hora_proxima_llamada) {
                     objeto.hora_proxima_llamada = this.$moment(objeto.hora_proxima_llamada).format('HH:mm')
+                    if (objeto.hora_proxima_llamada === 'Invalid date') {
+                        this.setInfo('Revise el campo hora, tiene un valor no válido.')
+                        return;
+                    }
                 }
                 this.cerrarLlamada(objeto)
                 .then((result)=>{
