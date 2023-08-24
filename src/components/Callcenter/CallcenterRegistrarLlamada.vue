@@ -46,7 +46,8 @@
                         Próxima llamada:
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                        <v-date-picker v-model="resolucion.fecha_proxima_llamada" :min="fechaMinima" @click:date="traerDisponibilidadLlamadas"></v-date-picker>
+                        <!--showTime hourFormat="12"-->
+                        <Calendar v-model="resolucion.fecha_proxima_llamada" :minDate="fechaMinima" @date-select="traerDisponibilidadLlamadas" />
                         <div class="v-text-field__details" v-if="!resolucion.fecha_proxima_llamada">
                             <div class="v-messages theme--light error--text" role="alert">
                                 <div class="v-messages__wrapper">
@@ -58,8 +59,7 @@
                         </div>
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                        <v-time-picker v-model="resolucion.hora_proxima_llamada" :min="horaMinima" :max="horaMaxima" full-width>
-                        </v-time-picker>
+                        <Calendar id="calendar-timeonly" v-model="resolucion.hora_proxima_llamada" timeOnly :minDate="horaMinima" :maxDate="horaMaxima" hourFormat="12" />
                         <div class="v-text-field__details" v-if="!resolucion.hora_proxima_llamada">
                             <div class="v-messages theme--light error--text" role="alert">
                                 <div class="v-messages__wrapper">
@@ -113,8 +113,8 @@
                 </v-row>
                 <v-row v-if="estado == 'agendar_llamada'">
                     <v-col cols="12" md="6" sm="6">
-						<v-date-picker v-model="resolucion.fecha_proxima_llamada" :min="fechaMinima" @click:date="traerDisponibilidadLlamadas"></v-date-picker>
-                        <div class="v-text-field__details" v-if="!resolucion.fecha_proxima_llamada">
+                        <Calendar v-model="resolucion.fecha_proxima_llamada" :minDate="fechaMinima" @date-select="traerDisponibilidadLlamadas" />
+						<div class="v-text-field__details" v-if="!resolucion.fecha_proxima_llamada">
                             <div class="v-messages theme--light error--text" role="alert">
                                 <div class="v-messages__wrapper">
                                     <div class="v-messages__message">
@@ -125,9 +125,8 @@
                         </div>
                     </v-col>
                     <v-col cols="12" md="6"  sm="6"> 
-						<v-time-picker v-model="resolucion.hora_proxima_llamada" :min="horaMinima" :max="horaMaxima" full-width>
-						</v-time-picker>
-                        <div class="v-text-field__details" v-if="!resolucion.hora_proxima_llamada">
+                        <Calendar id="calendar-timeonly" v-model="resolucion.hora_proxima_llamada" timeOnly :minDate="horaMinima" :maxDate="horaMaxima" hourFormat="12"/>
+						<div class="v-text-field__details" v-if="!resolucion.hora_proxima_llamada">
                             <div class="v-messages theme--light error--text" role="alert">
                                 <div class="v-messages__wrapper">
                                     <div class="v-messages__message">
@@ -160,7 +159,7 @@
                         Próxima llamada:
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                        <v-date-picker v-model="resolucion.fecha_proxima_llamada" :min="fechaMinima" @click:date="traerDisponibilidadLlamadas"></v-date-picker>
+                        <Calendar v-model="resolucion.fecha_proxima_llamada" :minDate="fechaMinima" @date-select="traerDisponibilidadLlamadas" />
                         <div class="v-text-field__details" v-if="!resolucion.fecha_proxima_llamada">
                             <div class="v-messages theme--light error--text" role="alert">
                                 <div class="v-messages__wrapper">
@@ -172,8 +171,7 @@
                         </div>
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                        <v-time-picker v-model="resolucion.hora_proxima_llamada" :min="horaMinima" :max="horaMaxima" full-width>
-                        </v-time-picker>
+                        <Calendar id="calendar-timeonly" v-model="resolucion.hora_proxima_llamada" timeOnly :minDate="horaMinima" :maxDate="horaMaxima" hourFormat="12" />
                         <div class="v-text-field__details" v-if="!resolucion.hora_proxima_llamada">
                             <div class="v-messages theme--light error--text" role="alert">
                                 <div class="v-messages__wrapper">
@@ -190,7 +188,7 @@
 
                 <v-row v-if="estado == 'pago_pendiente'">
                     <v-col cols="12" md="6" sm="6">
-                        <v-date-picker v-model="resolucion.fecha_proxima_llamada" :min="fechaMinima" @click:date="traerDisponibilidadLlamadas"></v-date-picker>
+                        <Calendar v-model="resolucion.fecha_proxima_llamada" :minDate="fechaMinima" @date-select="traerDisponibilidadLlamadas" />
                         <div class="v-text-field__details" v-if="!resolucion.fecha_proxima_llamada">
                             <div class="v-messages theme--light error--text" role="alert">
                                 <div class="v-messages__wrapper">
@@ -201,8 +199,8 @@
                             </div>
                         </div>
                     </v-col>
-                    <v-col cols="12" md="6" sm="6">
-                        <v-time-picker v-model="resolucion.hora_proxima_llamada" :min="horaMinima" :max="horaMaxima" full-width></v-time-picker>
+                    <v-col cols="12" md="6" sm="6">4
+                        <Calendar id="calendar-timeonly" v-model="resolucion.hora_proxima_llamada" timeOnly :minDate="horaMinima" :maxDate="horaMaxima" hourFormat="12" />
                         <div class="v-text-field__details" v-if="!resolucion.hora_proxima_llamada">
                             <div class="v-messages theme--light error--text" role="alert">
                                 <div class="v-messages__wrapper">
@@ -260,15 +258,18 @@
     </v-card>
 </template>
 <script>
+    import { ref } from "vue";
     import {mapState,mapGetters,mapActions,mapMutations} from 'vuex';
     import LeadInfoView from '@/components/Leads/Detail/LeadInfoView'
-    import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
+    import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView';
+    import Calendar from 'primevue/calendar';
 
     export default {
         name: 'CallcenterRegistrarLlamada',
         components:{
             LeadInfoView,
-            LeadHistoricView
+            LeadHistoricView,
+            Calendar
         },
         data: () => ({
             date: new Date().toISOString().substring(0, 10),
@@ -314,7 +315,8 @@
             ocultar: Boolean,
         },
         mounted() {
-            this.fechaMinima = this.$moment().format('YYYY-MM-DD');
+            this.fechaMinima = ref(new Date());
+            console.log(this.fechaMinima)
             this.traerDisponibilidad();
             this.traerEstados();
             this.traerOrigenes();
@@ -359,7 +361,14 @@
                 this.procesando = true;
                 this.resolucion.id = this.lead_id;
                 this.resolucion.solucion = this.estado;
-                this.cerrarLlamada(this.resolucion)
+                let objeto = {...this.resolucion};
+                if (objeto.fecha_proxima_llamada) {
+                    objeto.fecha_proxima_llamada = this.$moment(objeto.fecha_proxima_llamada).format('YYYY-MM-DD')
+                }
+                if (objeto.hora_proxima_llamada) {
+                    objeto.hora_proxima_llamada = this.$moment(objeto.hora_proxima_llamada).format('HH:mm')
+                }
+                this.cerrarLlamada(objeto)
                 .then((result)=>{
                     this.accion = "";
 					if(result.result=='ok'){
@@ -387,8 +396,14 @@
                 this.resolucion.id = this.lead_id;
                 this.resolucion.solucion = this.estado;
                 this.resolucion.forzar = true;
-                console.log(this.resolucion)
-                this.cerrarLlamada(this.resolucion)
+                let objeto = {...this.resolucion};
+                if (objeto.fecha_proxima_llamada) {
+                    objeto.fecha_proxima_llamada = this.$moment(objeto.fecha_proxima_llamada).format('YYYY-MM-DD')
+                }
+                if (objeto.hora_proxima_llamada) {
+                    objeto.hora_proxima_llamada = this.$moment(objeto.hora_proxima_llamada).format('HH:mm')
+                }
+                this.cerrarLlamada(objeto)
                 .then((result)=>{
                     this.accion = "";
 					if(result.result=='ok'){
@@ -446,8 +461,8 @@
                 let payload = { fecha: this.resolucion.fecha_proxima_llamada };
                 this.fetchDisponibilidadLlamadas(payload)
                     .then(result => {
-                        this.horaMaxima = result.horaMaxima;
-                        this.horaMinima = result.horaMinima;
+                        this.horaMaxima = ref(new Date(`${this.$moment(this.resolucion.fecha_proxima_llamada).format('YYYY-MM-DD')} ${result.horaMaxima}`));
+                        this.horaMinima = ref(new Date(`${this.$moment(this.resolucion.fecha_proxima_llamada).format('YYYY-MM-DD')} ${result.horaMinima}`));
                     })
                     .catch(error => {
                         console.log(error)

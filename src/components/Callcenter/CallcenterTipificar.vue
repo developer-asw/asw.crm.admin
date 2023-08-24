@@ -69,17 +69,7 @@
                         </div>
                     </v-col>
                     <v-col cols="12" md="6"  sm="6"> 
-						<v-time-picker v-model="resolucion.hora_proxima_llamada" :min="horaMinima" :max="horaMaxima" full-width>
-						</v-time-picker>
-                        <div class="v-text-field__details" v-if="!resolucion.hora_proxima_llamada">
-                            <div class="v-messages theme--light error--text" role="alert">
-                                <div class="v-messages__wrapper">
-                                    <div class="v-messages__message">
-                                        {{ 'Complete el campo hora' }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <Calendar id="calendar-timeonly" v-model="resolucion.hora_proxima_llamada" timeOnly :minDate="horaMinima" :maxDate="horaMaxima" hourFormat="12" />
                     </v-col>
                 </v-row>
 
@@ -116,17 +106,7 @@
                         </div>
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                        <v-time-picker v-model="resolucion.hora_proxima_llamada" :min="horaMinima" :max="horaMaxima" full-width>
-                        </v-time-picker>
-                        <div class="v-text-field__details" v-if="!resolucion.hora_proxima_llamada">
-                            <div class="v-messages theme--light error--text" role="alert">
-                                <div class="v-messages__wrapper">
-                                    <div class="v-messages__message">
-                                        {{ 'Complete el campo hora' }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <Calendar id="calendar-timeonly" v-model="resolucion.hora_proxima_llamada" timeOnly :minDate="horaMinima" :maxDate="horaMaxima" hourFormat="12" />
                     </v-col>
 
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
@@ -146,16 +126,7 @@
                         </div>
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                        <v-time-picker v-model="resolucion.hora_proxima_llamada" :min="horaMinima" :max="horaMaxima" full-width></v-time-picker>
-                        <div class="v-text-field__details" v-if="!resolucion.hora_proxima_llamada">
-                            <div class="v-messages theme--light error--text" role="alert">
-                                <div class="v-messages__wrapper">
-                                    <div class="v-messages__message">
-                                        {{ 'Complete el campo hora' }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <Calendar id="calendar-timeonly" v-model="resolucion.hora_proxima_llamada" timeOnly :minDate="horaMinima" :maxDate="horaMaxima" hourFormat="12" />
                     </v-col>
 
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
@@ -186,12 +157,14 @@
 </template>
 <script>
     import {mapState,mapGetters,mapActions,mapMutations} from 'vuex';
+    import Calendar from 'primevue/calendar';
     // import LeadInfoView from '@/components/Leads/Detail/LeadInfoView'
     // import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView'
 
     export default {
         name: 'CallcenterTipificar',
         components:{
+            Calendar
             // LeadInfoView,
             // LeadHistoricView
         },
