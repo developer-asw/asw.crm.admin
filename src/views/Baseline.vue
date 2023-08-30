@@ -6,6 +6,8 @@
         v-model="drawer"
         app dark
         class="blue-grey overflow-y-auto theme--light light"
+        absolute
+        temporary
         >
             <v-overlay :value="overlay" class="align-center justify-center">
                 <v-progress-circular color="primary" indeterminate size="64"></v-progress-circular>
