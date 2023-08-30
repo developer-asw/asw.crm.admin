@@ -10,6 +10,16 @@
                     
                     <h3>Forma de pago</h3>
                     <p>{{adicional.matricula ? adicional.matricula.ultima.forma_pago : '' }}</p>
+                    
+                    <h3>Vigencia</h3>
+                    <p>{{adicional.matricula ? adicional.matricula.ultima.fecha_vigencia : '' }}</p>
+                    
+                    <h3>Orientador</h3>
+                    <p>{{adicional.matricula ? adicional.matricula.ultima.orientador : '' }}</p>
+                    
+                    <h3>Puntos</h3>
+                    <p>{{adicional.matricula ? adicional.matricula.ultima.puntos : '' }}</p>
+                    
                 </div>
                 
             </v-col>
