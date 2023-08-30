@@ -14,9 +14,25 @@
             
             <v-card-text>
                 <v-row>
-                    <v-col cols="12" sm="3" md="2"></v-col>
-                    <v-col cols="12" sm="6" md="8">
+                    <v-col cols="12" sm="6" md="3">
                         <EditLead :key="lead_id" :lead_id="lead_id" :setSedes="sedes" @actualizar="actualizarHistorial"></EditLead>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="6">
+                        <v-row justify="center">
+                            <v-col cols="12" md="10" sm="8">
+                                <LeadTimeLine :key="lead_id" :lead_id="lead_id"></LeadTimeLine>
+                            </v-col>
+                        </v-row>
+                        
+                        <v-row class="mt-10">
+                            <v-col cols="12" md="1"  sm="2"></v-col>
+                            <v-col cols="12" md="10" sm="8">
+                                <LeadHistoricView :key="lead_id" :lead_id="lead_id"  :ver_detalles="true"></LeadHistoricView>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="3">
+                        <LeadAdicional :key="lead_id" :lead_id="lead_id" :setSedes="sedes"></LeadAdicional>
                     </v-col>
                 </v-row>
 
@@ -47,18 +63,6 @@
                      <!-- </v-card-actions>   -->
                 </v-row>
 
-                <v-row justify="center">
-                    <v-col cols="12" md="10" sm="8">
-                        <LeadTimeLine :key="lead_id" :lead_id="lead_id"></LeadTimeLine>
-                    </v-col>
-                </v-row>
-                
-                <v-row class="mt-10">
-                    <v-col cols="12" md="1"  sm="2"></v-col>
-                    <v-col cols="12" md="10" sm="8">
-                        <LeadHistoricView :key="lead_id" :lead_id="lead_id"  :ver_detalles="true"></LeadHistoricView>
-                    </v-col>
-                </v-row>
             </v-card-text>
         </v-card>
         <v-dialog v-model="dialog" persistent max-width="800px">
@@ -101,6 +105,7 @@ import RecepcionRegistrarAsistencia from '@/components/Recepcion/RecepcionRegist
 import EditLead from '@/components/Callcenter/EditLead';
 import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView';
 import LeadTimeLine from '@/components/Leads/Detail/LeadTimeLine';
+import LeadAdicional from '@/components/Leads/Detail/LeadAdicional';
 
 export default {
     name: 'RecepcionView',
@@ -110,7 +115,8 @@ export default {
         LeadHistoricView,
         CallcenterRegistrarLlamada,
         RegistrarLlamadaApoyoFinanciero,
-        LeadTimeLine
+        LeadTimeLine,
+        LeadAdicional
     },
     data: () => ({
         loading: false,
