@@ -8,7 +8,8 @@
             :items="datos.data"
             hide-default-header
             hide-default-footer
-            class="elevation-1">
+            class="elevation-1"
+            dense>
             <template v-slot:[`item.percent`]="{ item }">
                 {{ item.percent ? item.percent+'%':'' }}
             </template>
