@@ -1,9 +1,9 @@
 <template>
     <div>
-        <v-card>
+        <v-card class="pl-4 pr-4">
             <v-card-title>
                 <v-toolbar-title>
-                    <v-btn small text @click="$router.back()" :disabled="loading">
+                    <v-btn no-gutters small text @click="$router.back()" :disabled="loading">
                         <v-icon>arrow_back_ios</v-icon>
                     </v-btn>
                     {{getTitle}}
@@ -16,9 +16,8 @@
                 <v-row>
                     <v-col cols="12" sm="6" md="3">
                         <v-row>
-                            <v-col cols="12" sm="2" md="1"></v-col>
-        
-                            <v-col cols="12" sm="8" md="10">
+                            
+                            <v-col cols="12">
                                 <v-select v-model="sede" :disabled="sede !=  null" :items="sedes" label="Sede" item-text="text" item-value="id"></v-select>
                                 <v-spacer></v-spacer>
                                 <div class="text-right">
@@ -35,19 +34,15 @@
         
                                 </div>
                             </v-col>
-                             <!-- <v-card-actions>  -->
-        
-                             <!-- </v-card-actions>   -->
-                        </v-row>
-                        <v-row>
-                            <EditLead :key="lead_id" :lead_id="lead_id" :setSedes="sedes" @actualizar="actualizarHistorial"></EditLead>
-                        </v-row>
-                        <v-row>
-                            
-                            <div class="text-center">
-                                <v-btn small class="ma-2" color="orange darken-1" text :to="{ name: 'lead_edit', params: { id: lead_id } }"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
-                                <v-btn small class="ma-2" color="blue darken-1" text @click="regresar"><v-icon>navigate_before</v-icon>&nbsp;Regresar&nbsp;</v-btn>
-                            </div>
+                            <v-col cols="12">
+                                <EditLead :key="lead_id" :lead_id="lead_id" :setSedes="sedes" @actualizar="actualizarHistorial"></EditLead>
+                            </v-col>
+                            <v-col cols="12" justify="center">
+                                <div class="text-center">
+                                    <v-btn small class="ma-2" color="orange darken-1" text :to="{ name: 'lead_edit', params: { id: lead_id } }"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
+                                    <v-btn small class="ma-2" color="blue darken-1" text @click="regresar"><v-icon>navigate_before</v-icon>&nbsp;Regresar&nbsp;</v-btn>
+                                </div>
+                            </v-col>
                         </v-row>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
@@ -58,8 +53,8 @@
                         </v-row>
                         
                         <v-row class="mt-10">
-                            <v-col cols="12" md="1"  sm="2"></v-col>
-                            <v-col cols="12" md="10" sm="8">
+                            <v-col cols="12"></v-col>
+                            <v-col cols="12">
                                 <LeadHistoricView :key="lead_id" :lead_id="lead_id"  :ver_detalles="true"></LeadHistoricView>
                             </v-col>
                         </v-row>

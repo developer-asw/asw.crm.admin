@@ -13,8 +13,8 @@
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
                             
-                            <v-layout column style="height: 175vh">       
-                                <v-flex md6 style="overflow: auto">  
+                            <v-layout column style="height: 450px">       
+                                <v-flex style="overflow: auto">  
                                     
                                     <v-list rounded :border="true" v-for="key_item in keys" :key="key_item.code" class="mx-auto" lines="three">
                                         <v-subheader style="text-transform: uppercase;">{{ key_item.titulo }}</v-subheader>
@@ -78,9 +78,9 @@
                 <v-col>
                     <v-row>
                         <v-col cols="12">
-                            <v-layout column style="height: 175vh">
-                                <v-flex md6 style="overflow: auto">
-
+                            <v-layout column style="height: 680px">
+                                <!-- md6 -->
+                                <v-flex style="overflow: auto">
                                     <v-list rounded :border="true" v-for="key_item in keys" :key="key_item.code" class="mx-auto" lines="three">
                                         <v-subheader style="text-transform: uppercase;">{{ key_item.titulo }}</v-subheader>
                                         <v-divider></v-divider>
@@ -91,16 +91,28 @@
                                                     <v-row v-bind:style="{ 'background-color': item.color ? item.color : '#FFF' }">
                                                         <v-col>
                                                             <v-row no-gutters>
-                                                                <v-col cols="3" class="py-0">
+                                                                <!-- <v-col cols="6" class="py-0">
                                                                     <b><v-icon small @click="viewDetail(item)">info</v-icon> Evento:</b> {{ item.evento }}
                                                                 </v-col>
-                                                                <v-col cols="5" class="py-0">
-                                                                    {{ item.desc_evento }}
-                                                                </v-col>
-                                                                <v-col cols="4" class="py-0">
+                                                                <v-col cols="6" class="py-0 text-right">
                                                                     {{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}
+                                                                </v-col> -->
+
+                                                                <v-col cols="4" class="py-0">
+                                                                    <small><b><v-icon small @click="viewDetail(item)">info</v-icon> Evento:</b> {{ item.evento }}</small>
+                                                                </v-col>
+                                                                <v-col cols="5" class="py-0">
+                                                                    <small>{{ item.desc_evento }}</small>
+                                                                </v-col>
+                                                                <v-col cols="4" class="py-0 text-right">
+                                                                    <small>{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}</small>
                                                                 </v-col>
                                                             </v-row>
+                                                            <!-- <v-row no-gutters>
+                                                                <v-col class="py-0 pl-5">
+                                                                    {{ item.desc_evento }}
+                                                                </v-col>
+                                                            </v-row> -->
                                                             
                                                             <v-row no-gutters>
                                                                 <v-col class="py-2">
@@ -114,8 +126,10 @@
                                                                 <v-col cols="5" class="py-0">
                                                                     <b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil + (item.usuario.grupo_usuario ? ` (${item.usuario.grupo_usuario})` : '') : '' }}
                                                                 </v-col>
-                                                                <v-col cols="4" class="py-0">
-                                                                    <b>Acción:</b> {{ item.accion }}
+                                                                <v-col cols="4" class="py-0 text-right">
+                                                                    <small>
+                                                                        <b>Acción:</b> {{ item.accion }}
+                                                                    </small>
                                                                 </v-col>
                                                             </v-row>
                                                         </v-col>

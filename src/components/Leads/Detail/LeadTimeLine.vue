@@ -69,3 +69,16 @@ export default {
     }
 }
 </script>
+
+<style>
+
+.p-timeline-event:nth-child(5) .p-timeline-event-connector {
+    background-color: #fff !important;
+    color: #fff !important;
+}
+
+.p-timeline-event:last-child .p-timeline-event-connector{
+    background-color: #fff !important;
+    color: #fff !important;
+}
+</style>

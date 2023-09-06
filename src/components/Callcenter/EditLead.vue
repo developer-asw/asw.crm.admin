@@ -1,7 +1,7 @@
 <template>
 <!-- dark -->
-    <v-row>
-        <v-col cols="12" md="12">
+    <v-row >
+        <v-col cols="12" md="12" >
 
             <v-simple-table dense class="blue lighten-5">
                 <template v-slot:default>

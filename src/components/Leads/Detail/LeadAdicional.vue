@@ -2,9 +2,9 @@
     <!-- dark -->
         <v-row>
             <v-col cols="12" md="12">
-                <h2>Datos Matriculas</h2>
+                <h2>Datos Matricula</h2>
                 
-                <div v-if="adicional.matricula">
+                <div v-if="adicional.matricula && adicional.matricula.ultima">
                     <h3>Programa adquirido</h3>
                     <p>{{adicional.matricula ? adicional.matricula.ultima.modulo : '' }}</p>
                     

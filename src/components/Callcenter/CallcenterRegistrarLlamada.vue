@@ -606,7 +606,7 @@
                             return true
                         }
                     }
-                } else if(['servicio_cliente','matricula_recaudo','matricula_nueva','convenio'].includes(this.estado)) {
+                } else if(['servicio_cliente','matricula_recaudo','matricula_nueva','convenio', 'estudiante', 'examen'].includes(this.estado)) {
                     return true;
                 }else if(this.estado=='matriculado'){
                     if(this.resolucion.tipo){
