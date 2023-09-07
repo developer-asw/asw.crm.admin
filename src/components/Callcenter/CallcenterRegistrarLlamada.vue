@@ -8,10 +8,10 @@
 				<v-col cols="12" md="12">
                     <LeadInfoView :key="lead_id" :lead_id="lead_id" :setSedes="sedes"></LeadInfoView>
 				</v-col>
+                <v-col cols="12" md="12" v-if="!ocultar">
+                    <LeadHistoricView :key="lead_id" :lead_id="lead_id" :ver_detalles="false" :collapse="true"></LeadHistoricView>
+                </v-col>
 			</v-row>
-            <v-row class="mt-10" v-if="!ocultar">
-                <LeadHistoricView :key="lead_id" :lead_id="lead_id" :ver_detalles="false" :collapse="true"></LeadHistoricView>
-            </v-row>
             <v-form>
                 
                 <v-row>
