@@ -3,11 +3,12 @@
         <v-row>
             <v-col class="pl-5">
                 <v-row justify="center">
-                    <h3 class="text-center">Datos</h3>
+                    <h3 class="text-center">Ingresados</h3>
                 </v-row>
+
                 <v-row>
                     <v-col class="text-left pl-4">
-                        <h5>Datos</h5>
+                        <h5>Datos ingresados</h5>
                     </v-col>
                     <v-col>
                         <v-progress-linear
@@ -126,11 +127,11 @@
             }
         }),
         mounted() {
-            console.log("EMBUDO_CONTACTCENTER")
+            console.log("EMBUDO_INGRESADOS_CONTACTCENTER")
         },
         methods: {
             ...mapActions({
-                consulta: 'dashboard/consultarDatosContactCenterPorFecha',
+                consulta: 'dashboard/consultarDatosContactCenterIngresadosPorFecha',
             }),
             ...mapMutations({
                 setInfo: 'setInfo',

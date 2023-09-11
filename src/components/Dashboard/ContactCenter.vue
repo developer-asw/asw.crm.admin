@@ -40,9 +40,15 @@
                     {{ tipo }}
                 </v-col>
                 <v-col cols="12" class="mt-4 mb-4">
+                    
                     <v-row>
                         <EmbudoContactCenter ref="embudoContactCenter" :tipo="tipo" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></EmbudoContactCenter>
                     </v-row>
+                    
+                    <v-row class="mt-4">
+                        <EmbudoIngresadosContactCenter ref="embudoIngresadosContactCenter" :tipo="tipo" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></EmbudoIngresadosContactCenter>
+                    </v-row>
+
                 </v-col>
                 <v-col cols="12" class="mt-4 pb-4">
                     <v-row>
@@ -64,6 +70,7 @@
 <script>
     import IngresoPorDia from '@/components/Dashboard/Graficas/IngresoPorDia';
     import EmbudoContactCenter from '@/components/Dashboard/Graficas/EmbudoContactCenter';
+    import EmbudoIngresadosContactCenter from '@/components/Dashboard/Graficas/EmbudoIngresadosContactCenter';
     import ResumenSedeContactCenter from '@/components/Dashboard/Graficas/ResumenSedeContactCenter';
     import { mapState, mapActions, mapMutations } from 'vuex';
     
@@ -72,6 +79,7 @@
         components: { 
             IngresoPorDia,
             EmbudoContactCenter,
+            EmbudoIngresadosContactCenter,
             ResumenSedeContactCenter
         },
         data: () => ({
@@ -104,6 +112,7 @@
             actualizar() {
                 this.consultarComponentes('ingresoPorDia', new Date());
                 this.consultarComponentes('embudoContactCenter', new Date());
+                this.consultarComponentes('embudoIngresadosContactCenter', new Date());
                 this.consultarComponentes('resumenSedeContactCenter', new Date());
             },
             consultar() {
