@@ -146,14 +146,6 @@
                     </v-col>
                 </v-row>
 
-                <v-row v-if="estado == 'estudiante'">
-                    <v-col cols="12" md="12">
-                        <v-select  v-model="resolucion.estudiante_motivo" :items="estados.estudiantes" label="Motivo de la llamada"
-                            item-text="text" item-value="value"></v-select>
-                        <v-textarea v-if="resolucion.estudiante_motivo=='otro'" label="Otro motivo" v-model="resolucion.estudiante_motivo_otro" :required="resolucion.estudiante_motivo=='otro'"></v-textarea>
-                    </v-col>
-                </v-row>
-
                 <v-row v-if="estado == 'abonado'">
                     <v-col cols="12">
                         Próxima llamada:
@@ -235,7 +227,7 @@
                         </v-select>
                     </v-col>
                 </v-row>
-                <v-row v-if="['seguimiento_whatsapp','venta_telefonica','masterclass'].includes(estado)">
+                <v-row v-if="['seguimiento_whatsapp','venta_telefonica','masterclass','estudiante','examen'].includes(estado)">
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
                 </v-row>
 
@@ -596,19 +588,9 @@
                             return true
                         }
                     }
-                }else if(this.estado=='estudiante'){
-                    if(this.resolucion.estudiante_motivo){
-                        if(this.resolucion.estudiante_motivo=='otro'){
-                            if(this.resolucion.estudiante_motivo_otro){
-                                return true
-                            }
-                        }else{
-                            return true
-                        }
-                    }
-                } else if(['servicio_cliente','matricula_recaudo','matricula_nueva','convenio', 'estudiante', 'examen'].includes(this.estado)) {
+                } else if(['servicio_cliente','matricula_recaudo','matricula_nueva','convenio','estudiante', 'examen'].includes(this.estado)) {
                     return true;
-                }else if(this.estado=='matriculado'){
+                } else if(this.estado=='matriculado'){
                     if(this.resolucion.tipo){
                         return true
                     }
