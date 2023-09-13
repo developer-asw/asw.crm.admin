@@ -69,7 +69,7 @@
 </template>
 <script>
     import IngresoPorDia from '@/components/Dashboard/Graficas/IngresoPorDia';
-    import EmbudoContactCenter from '@/components/Dashboard/Graficas/EmbudoContactCenter';
+    // import EmbudoContactCenter from '@/components/Dashboard/Graficas/EmbudoContactCenter';
     import EmbudoIngresadosContactCenter from '@/components/Dashboard/Graficas/EmbudoIngresadosContactCenter';
     import ResumenSedeContactCenter from '@/components/Dashboard/Graficas/ResumenSedeContactCenter';
     import { mapState, mapActions, mapMutations } from 'vuex';
@@ -78,7 +78,7 @@
     name: 'General',
         components: { 
             IngresoPorDia,
-            EmbudoContactCenter,
+            // EmbudoContactCenter,
             EmbudoIngresadosContactCenter,
             ResumenSedeContactCenter
         },
@@ -111,7 +111,7 @@
             }),
             actualizar() {
                 this.consultarComponentes('ingresoPorDia', new Date());
-                this.consultarComponentes('embudoContactCenter', new Date());
+                // this.consultarComponentes('embudoContactCenter', new Date());
                 this.consultarComponentes('embudoIngresadosContactCenter', new Date());
                 this.consultarComponentes('resumenSedeContactCenter', new Date());
             },
