@@ -41,9 +41,9 @@
                 </v-col>
                 <v-col cols="12" class="mt-4 mb-4">
                     
-                    <v-row>
+                    <!-- <v-row>
                         <EmbudoContactCenter ref="embudoContactCenter" :tipo="tipo" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></EmbudoContactCenter>
-                    </v-row>
+                    </v-row> -->
                     
                     <v-row class="mt-4">
                         <EmbudoIngresadosContactCenter ref="embudoIngresadosContactCenter" :tipo="tipo" :loadingProp="loadingProp" @comenzar="comenzarLoading" @terminar="terminarLoading"></EmbudoIngresadosContactCenter>
