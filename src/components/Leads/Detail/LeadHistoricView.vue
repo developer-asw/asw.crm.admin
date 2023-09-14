@@ -13,7 +13,7 @@
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
                             
-                            <v-layout row style="height: 360px">       
+                            <v-layout column row style="height: 360px">       
                                 <v-flex style="overflow: auto">  
                                     
                                     <v-list rounded :border="true" v-for="key_item in keys" :key="key_item.code" class="mx-auto" lines="three">

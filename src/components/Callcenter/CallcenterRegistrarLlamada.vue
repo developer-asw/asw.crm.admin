@@ -308,7 +308,6 @@
         },
         mounted() {
             this.fechaMinima = ref(new Date());
-            console.log(this.fechaMinima)
             this.traerDisponibilidad();
             this.traerEstados();
             this.traerOrigenes();

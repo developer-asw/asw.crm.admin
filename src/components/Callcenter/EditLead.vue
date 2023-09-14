@@ -33,18 +33,22 @@
                                 <input type="email" v-else v-model="lead.email" />
                             </td>
                             <td class="text-right">
-                                <v-icon v-if="!ver.email" @click="actualizarEmail()" small right>save</v-icon>
-                                <v-icon v-if="ver.email" @click="editarEmail()" small right>autorenew</v-icon>
-                                <v-icon v-else @click="editarEmail()" small right>cancel</v-icon>
+                                <div v-if="false">
+                                    <v-icon v-if="!ver.email" @click="actualizarEmail()" small right>save</v-icon>
+                                    <v-icon v-if="ver.email" @click="editarEmail()" small right>autorenew</v-icon>
+                                    <v-icon v-else @click="editarEmail()" small right>cancel</v-icon>
+                                </div>
                             </td>
                         </tr>
                         <tr>
                             <td><b>Teléfono: </b></td>
                             <td>{{ lead.movil }}</td>
                             <td class="text-right">
-                                <v-icon v-if="!ver.movil" @click="actualizarMovil()" small right>save</v-icon>
-                                <v-icon v-if="ver.movil" @click="editarMovil()" small right>autorenew</v-icon>
-                                <v-icon v-else @click="editarMovil()" small right>cancel</v-icon>
+                                <div v-if="false">
+                                    <v-icon v-if="!ver.movil" @click="actualizarMovil()" small right>save</v-icon>
+                                    <v-icon v-if="ver.movil" @click="editarMovil()" small right>autorenew</v-icon>
+                                    <v-icon v-else @click="editarMovil()" small right>cancel</v-icon>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -61,9 +65,11 @@
                                 </v-select>
                             </td>
                             <td class="text-right">
-                                <v-icon v-if="!ver.sede" @click="actualizarSede()" small right>save</v-icon>
-                                <v-icon v-if="ver.sede" @click="editarSede()" small right>autorenew</v-icon>
-                                <v-icon v-else @click="editarSede()" small right>cancel</v-icon>
+                                <div v-if="false">
+                                    <v-icon v-if="!ver.sede" @click="actualizarSede()" small right>save</v-icon>
+                                    <v-icon v-if="ver.sede" @click="editarSede()" small right>autorenew</v-icon>
+                                    <v-icon v-else @click="editarSede()" small right>cancel</v-icon>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -74,9 +80,11 @@
                                 </v-select>
                             </td>
                             <td class="text-right">
-                                <v-icon v-if="!ver.programa_interes" @click="actualizarProgramaInteres()" small right>save</v-icon>
-                                <v-icon v-if="ver.programa_interes" @click="editarProgramaInteres()" small right>autorenew</v-icon>
-                                <v-icon v-else @click="editarProgramaInteres()" small right>cancel</v-icon>
+                                <div v-if="false">
+                                    <v-icon v-if="!ver.programa_interes" @click="actualizarProgramaInteres()" small right>save</v-icon>
+                                    <v-icon v-if="ver.programa_interes" @click="editarProgramaInteres()" small right>autorenew</v-icon>
+                                    <v-icon v-else @click="editarProgramaInteres()" small right>cancel</v-icon>
+                                </div>
                             </td>
                         </tr>
                         <tr>

@@ -36,7 +36,8 @@
                 <tr>
                     <td><b>Sede: </b></td>
                     <td>
-                        <span v-if="ver_sede">{{lead.sede_full  ? lead.sede_full.nombre:""}}</span>
+                        {{lead.sede_full  ? lead.sede_full.nombre:""}}
+                        <!-- <span v-if="ver_sede">{{lead.sede_full  ? lead.sede_full.nombre:""}}</span>
                         <v-select v-else v-model="lead.sede_id" :items="sedes" item-text="nombre" item-value="id">
                             <template slot="item" slot-scope="data">
                                 {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.sede }}
@@ -44,25 +45,26 @@
                             <template slot="selection" slot-scope="data">
                                 {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.sede }}
                             </template>
-                        </v-select>
+                        </v-select> -->
                     </td>
                     <td class="text-right">
-                        <v-icon v-if="!ver_sede" @click="actualizarSede()" small right>save</v-icon>
+                        <!-- <v-icon v-if="!ver_sede" @click="actualizarSede()" small right>save</v-icon>
                         <v-icon v-if="ver_sede" @click="editarSede()" small right>autorenew</v-icon>
-                        <v-icon v-else @click="editarSede()" small right>cancel</v-icon>
+                        <v-icon v-else @click="editarSede()" small right>cancel</v-icon> -->
                     </td>
                 </tr>
                 <tr>
                     <td><b>Programa de interes: </b></td>
                     <td>
-                        <span v-if="ver_programa_interes">{{lead.programa_interes}}</span>
+                        {{lead.programa_interes}}
+                        <!-- <span v-if="ver_programa_interes">{{lead.programa_interes}}</span>
                         <v-select v-else v-model="lead.programa_interes" :items="listado.programaInteres" item-text="title" item-value="value">
-                        </v-select>
+                        </v-select> -->
                     </td>
                     <td class="text-right">
-                        <v-icon v-if="!ver_programa_interes" @click="actualizarProgramaInteres()" small right>save</v-icon>
+                        <!-- <v-icon v-if="!ver_programa_interes" @click="actualizarProgramaInteres()" small right>save</v-icon>
                         <v-icon v-if="ver_programa_interes" @click="editarProgramaInteres()" small right>autorenew</v-icon>
-                        <v-icon v-else @click="editarProgramaInteres()" small right>cancel</v-icon>
+                        <v-icon v-else @click="editarProgramaInteres()" small right>cancel</v-icon> -->
                     </td>
                 </tr>
                 <tr>
