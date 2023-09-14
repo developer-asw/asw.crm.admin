@@ -39,7 +39,7 @@
                             </v-col>
                             <v-col cols="12" justify="center">
                                 <div class="text-center">
-                                    <v-btn small class="ma-2" color="orange darken-1" text :to="{ name: 'lead_edit', params: { id: lead_id } }"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
+                                    <v-btn small class="ma-2" color="orange darken-1" text @click="dirigir('lead_edit', lead_id)"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
                                     <v-btn small class="ma-2" color="blue darken-1" text @click="regresar"><v-icon>navigate_before</v-icon>&nbsp;Regresar&nbsp;</v-btn>
                                 </div>
                             </v-col>
@@ -351,6 +351,15 @@ export default {
         },
         cerrarDialogApoyoFinanciero() {
             this.llamadaApoyoFinanciero.show = false;
+        },
+        dirigir(ruta, id) {
+            if(this.permiso('OP_LEAD_EDITAR')) {
+                // :to="{ name: 'lead_edit', params: { id: lead_id } }"
+                this.$router.push({ name: ruta, params: { id: id } })
+                // this.$router.push(`/recepcion/${value._id}/view`)
+            }else {
+                this.setInfo("Su perfil no tiene este permiso activo");
+            }
         },
     },
     computed: {
