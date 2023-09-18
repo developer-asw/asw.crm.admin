@@ -308,7 +308,7 @@
                         if (this.estados && this.estados.llamadas) {
                             this.llamadas_estados = this.estados.llamadas.filter(x => x.tipo && x.tipo.includes('recepcion'));
                             if (this.lead && this.lead.ultima_cita && ["pendiente","ausencia"].includes(this.lead.ultima_cita.estado) 
-                            && ((this.lead && this.lead.ultima_llamada && ['agendar_cita','agendar_cita_virtual'].includes(this.lead.ultima_llamada.resolucion)) || (this.lead && this.lead.af_ultima_llamada && ['agendar_cita','agendar_cita_virtual'].includes(this.lead.af_ultima_llamada.resolucion)))) {
+                            && (this.lead && this.lead.estado && ['agendar_cita','agendar_cita_virtual'].includes(this.lead.estado))) {
                                 if (this.getDaysBetweenDates(this.lead.ultima_cita.fecha_cita, new Date()) > 1) {
                                     this.llamadas_estados = this.llamadas_estados.filter(x => x.value == 'asiste_sede');
                                 } else {
