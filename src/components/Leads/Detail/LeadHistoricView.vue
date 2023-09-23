@@ -5,10 +5,15 @@
                 <v-expansion-panels  variant="outlined" accordion>
                     <v-expansion-panel>
                         <v-expansion-panel-header>     
-                            <v-col>
+                            <v-col cols="8">
                                 <h4>
                                     {{resumen.texto}}
                                 </h4>
+                            </v-col>
+                            <v-col cols="4" align="right">
+                                <v-btn small color="info" text @click="actualizar" :disabled="loading">
+                                    <v-icon>autorenew</v-icon>
+                                </v-btn>
                             </v-col>
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
@@ -28,30 +33,30 @@
                                                         <v-col>                                                            
                                                             <v-row no-gutters>
                                                                 <v-col cols="4" class="py-0">
-                                                                    <small><b><v-icon small @click="viewDetail(item)">info</v-icon> Evento:</b> {{ item.evento }}</small>
+                                                                    <span><b><v-icon small @click="viewDetail(item)">info</v-icon> Evento:</b> {{ item.evento }}</span>
                                                                 </v-col>
                                                                 <v-col cols="6" class="py-0">
-                                                                    <small>{{ item.desc_evento }}</small>
+                                                                    <span>{{ item.desc_evento }}</span>
                                                                 </v-col>
                                                                 <v-col cols="2" class="py-0">
-                                                                    <small>{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}</small>
+                                                                    <span>{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}</span>
                                                                 </v-col>
                                                             </v-row>
                                                             
                                                             <v-row no-gutters>
                                                                 <v-col class="py-2">
-                                                                    <small><p class="text-left"><b>Observación:</b> {{ item.observacion }}</p></small>
+                                                                    <span><p class="text-left"><b>Observación:</b> {{ item.observacion }}</p></span>
                                                                 </v-col>
                                                             </v-row>
                                                             <v-row no-gutters>
                                                                 <v-col  cols="3" class="py-0">
-                                                                    <small><b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> </small>
+                                                                    <span><b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> </span>
                                                                 </v-col>
                                                                 <v-col cols="5" class="py-0">
-                                                                    <small><b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil + (item.usuario.grupo_usuario ? ` (${item.usuario.grupo_usuario})` : '') : '' }}</small>
+                                                                    <span><b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil + (item.usuario.grupo_usuario ? ` (${item.usuario.grupo_usuario})` : '') : '' }}</span>
                                                                 </v-col>
                                                                 <v-col cols="4" class="py-0">
-                                                                    <small><b>Acción:</b> {{ item.accion }}</small>
+                                                                    <span><b>Acción:</b> {{ item.accion }}</span>
                                                                 </v-col>
                                                             </v-row>
                                                         </v-col>
@@ -77,6 +82,11 @@
             <v-row v-else>
                 <v-col>
                     <v-row>
+                        <v-col align="right">
+                            <v-btn small color="info" text @click="actualizar" :disabled="loading">
+                                <v-icon>autorenew</v-icon>
+                            </v-btn>
+                        </v-col>
                         <v-col cols="12">
                             <v-layout column style="height: 680px">
                                 <!-- md6 -->
@@ -99,13 +109,13 @@
                                                                 </v-col> -->
 
                                                                 <v-col cols="4" class="py-0">
-                                                                    <small><b><v-icon small @click="viewDetail(item)">info</v-icon> Evento:</b> {{ item.evento }}</small>
+                                                                    <span><b><v-icon small @click="viewDetail(item)">info</v-icon> Evento:</b> {{ item.evento }}</span>
                                                                 </v-col>
                                                                 <v-col cols="6" class="py-0">
-                                                                    <small>{{ item.desc_evento }}</small>
+                                                                    <span>{{ item.desc_evento }}</span>
                                                                 </v-col>
                                                                 <v-col cols="2" class="py-0 text-right">
-                                                                    <small>{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}</small>
+                                                                    <span>{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}</span>
                                                                 </v-col>
                                                             </v-row>
                                                             <!-- <v-row no-gutters>
@@ -116,18 +126,18 @@
                                                             
                                                             <v-row no-gutters>
                                                                 <v-col class="py-2">
-                                                                    <small><p class="text-left my-0"><b>Observación:</b> {{ item.observacion }}</p></small>
+                                                                    <span><p class="text-left my-0"><b>Observación:</b> {{ item.observacion }}</p></span>
                                                                 </v-col>
                                                             </v-row>
                                                             <v-row no-gutters>
                                                                 <v-col  cols="3" class="py-0">
-                                                                    <small><b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> </small>
+                                                                    <span><b >Usuario:</b> <span>{{ item.usuario ? item.usuario.nombre : 'SISTEMA' }}</span> </span>
                                                                 </v-col>
                                                                 <v-col cols="5" class="py-0">
-                                                                    <small><b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil + (item.usuario.grupo_usuario ? ` (${item.usuario.grupo_usuario})` : '') : '' }}</small>
+                                                                    <span><b>Perfil:</b> {{ item.usuario && item.usuario.perfil ? item.usuario.perfil + (item.usuario.grupo_usuario ? ` (${item.usuario.grupo_usuario})` : '') : '' }}</span>
                                                                 </v-col>
                                                                 <v-col cols="4" class="py-0 text-right">
-                                                                    <small><b>Acción:</b> {{ item.accion }}</small>
+                                                                    <span><b>Acción:</b> {{ item.accion }}</span>
                                                                 </v-col>
                                                             </v-row>
                                                         </v-col>
@@ -207,6 +217,7 @@ export default {
         keys:[],
         detalles: [],
         dialog: false,
+        loading: false,
         expanded: [true, true],
         resumen:{},
     }),
@@ -223,8 +234,9 @@ export default {
             consultar: 'leads/fetchLeadHistorial',
         }),
         traerHistorial() {
-            if (this.lead_id)
-            this.consultar({id:this.lead_id})
+            if (this.lead_id) {
+                this.loading = true;
+                this.consultar({id:this.lead_id})
                 .then(result => {
                     this.historial = result.datos;
                     this.keys = result.keys;
@@ -234,8 +246,9 @@ export default {
                 .catch(error => {
                     console.log(error)
                 }).finally(() => {
-
+                    this.loading = false;
                 });
+            }
         },
         viewDetail(item) {
             if (this.ver_detalles) {
@@ -254,6 +267,9 @@ export default {
             if (item.estudiante_motivo) return item.estudiante_motivo;
             if (item.errado_motivo) return item.errado_motivo;
             return item.observacion;
+        },
+        actualizar() {
+            this.traerHistorial();
         }
     },
     computed: {

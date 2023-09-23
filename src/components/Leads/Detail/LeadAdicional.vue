@@ -1,29 +1,27 @@
 <template>
     <!-- dark -->
-        <v-row>
-            <v-col cols="12" md="12">
-                <h2>Datos Matricula</h2>
-                
-                <div v-if="adicional.matricula && adicional.matricula.ultima">
-                    <h3>Programa adquirido</h3>
-                    <p>{{adicional.matricula ? adicional.matricula.ultima.modulo : '' }}</p>
-                    
-                    <h3>Forma de pago</h3>
-                    <p>{{adicional.matricula ? adicional.matricula.ultima.forma_pago : '' }}</p>
-                    
-                    <h3>Vigencia</h3>
-                    <p>{{adicional.matricula ? adicional.matricula.ultima.fecha_vigencia : '' }}</p>
-                    
-                    <h3>Orientador</h3>
-                    <p>{{adicional.matricula ? adicional.matricula.ultima.orientador : '' }}</p>
-                    
-                    <h3>Puntos</h3>
-                    <p>{{adicional.matricula ? adicional.matricula.ultima.puntos : '' }}</p>
-                    
-                </div>
-                
-            </v-col>
-        </v-row>
+    <v-col cols="12" md="12">
+        <h2>Datos Matricula</h2>
+        
+        <div v-if="adicional.matricula && adicional.matricula.ultima">
+            <h3>Programa adquirido</h3>
+            <p>{{adicional.matricula ? adicional.matricula.ultima.modulo : '' }}</p>
+            
+            <h3>Forma de pago</h3>
+            <p>{{adicional.matricula ? adicional.matricula.ultima.forma_pago : '' }}</p>
+            
+            <h3>Vigencia</h3>
+            <p>{{adicional.matricula ? adicional.matricula.ultima.fecha_vigencia : '' }}</p>
+            
+            <h3>Orientador</h3>
+            <p>{{adicional.matricula ? adicional.matricula.ultima.orientador : '' }}</p>
+            
+            <h3>Puntos</h3>
+            <p>{{adicional.matricula ? adicional.matricula.ultima.puntos : '' }}</p>
+            
+        </div>
+        
+    </v-col>
     
     </template>
     
