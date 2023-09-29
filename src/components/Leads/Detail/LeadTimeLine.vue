@@ -1,7 +1,7 @@
 <template>
     <Timeline :value="events" layout="horizontal" align="top">
         <template #marker="slotProps">
-            <span class="custom-marker shadow-2" style="color:#4F62DB">
+            <span class="custom-marker shadow-2" :style="{color: slotProps.item.color}">
                 <i v-if="lead && lead.station == slotProps.item.id || completado(slotProps.item.orden)" class="pi pi-circle-on"></i>
                 <i v-else class="pi pi-circle-off"></i>
             </span>
