@@ -1,7 +1,7 @@
 <template>
     <Timeline :value="events" layout="horizontal" align="top">
         <template #marker="slotProps">
-            <span class="custom-marker shadow-2" :style="{color: slotProps.item.color}">
+            <span class="custom-marker shadow-2" style="color:#4F62DB">
                 <i v-if="lead && lead.station == slotProps.item.id || completado(slotProps.item.orden)" class="pi pi-circle-on"></i>
                 <i v-else class="pi pi-circle-off"></i>
             </span>
@@ -24,7 +24,12 @@ export default {
     },
     data: () => ({
         events: [
-            {id:'prospecto', title:"Prospecto", color:"#A9A9A9", orden:1}, {id:'cita', title:"Cita", color:"#A9A9A9", orden:2}, {id:'matriculado', title:"Matriculado", color:"#A9A9A9", orden:3}, {id:'apoyo_financiero', title:"Apoyo Financiero", color:"#A9A9A9", orden:4}, {id:'post_venta', title:"Post Venta", color:"#A9A9A9", orden:5}, {id:'',title:'',color:"#FFF", orden:6}
+            {id:'prospecto', title:"Prospecto", color:"#4F62DB", orden:1}, 
+            {id:'cita', title:"Cita", color:"#4F62DB", orden:2}, 
+            {id:'matriculado', title:"Matriculado", color:"#4F62DB", orden:3}, 
+            {id:'apoyo_financiero', title:"Apoyo Financiero", color:"#4F62DB", orden:4}, 
+            {id:'post_venta', title:"Post Venta", color:"#4F62DB", orden:5}, 
+            {id:'',title:'',color:"#FFF", orden:6}
         ]
     }),
     props: {
