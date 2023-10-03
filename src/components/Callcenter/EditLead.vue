@@ -172,6 +172,14 @@
                                 <CallcenterRegistrarLlamada v-else-if="permiso('OP_REGISTRAR_LLAMADA')" :key="'callcenter'" :lead_id="lead_id" :ocultar="true" @actualizar="actualizarEstado" @copiarDatoParent="copiarDato"></CallcenterRegistrarLlamada>
                             </td>
                         </tr>
+                        
+                        <tr v-if="lead.referido">
+                            <td><b>Referido por: </b></td>
+                            <td colspan="2">
+                                {{lead.referido.nombre}}
+                            </td>
+                        </tr>
+
                         <tr>
                             <td><b>Referidos: </b></td>
                             <td colspan="2">

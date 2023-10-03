@@ -24,11 +24,11 @@ export default {
     },
     data: () => ({
         events: [
-            {id:'prospecto', title:"Prospecto", color:"#4F62DB", orden:1}, 
-            {id:'cita', title:"Cita", color:"#4F62DB", orden:2}, 
-            {id:'matriculado', title:"Matriculado", color:"#4F62DB", orden:3}, 
-            {id:'apoyo_financiero', title:"Apoyo Financiero", color:"#4F62DB", orden:4}, 
-            {id:'post_venta', title:"Post Venta", color:"#4F62DB", orden:5}, 
+            {id:'prospecto', title:"Prospecto", color:"#607d8b", orden:1}, 
+            {id:'cita', title:"Cita", color:"#607d8b", orden:2}, 
+            {id:'matriculado', title:"Matriculado", color:"#607d8b", orden:3}, 
+            {id:'apoyo_financiero', title:"Apoyo Financiero", color:"#607d8b", orden:4}, 
+            {id:'post_venta', title:"Post Venta", color:"#607d8b", orden:5}, 
             {id:'',title:'',color:"#FFF", orden:6}
         ]
     }),

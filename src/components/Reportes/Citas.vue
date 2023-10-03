@@ -11,8 +11,8 @@
                 
                 <v-btn small color="info" dark>
                     <download-excel
-                        :data   = "lista"
-                        :fields = "json_fields">
+                        :data="lista"
+                        :fields="json_fields">
                         <!-- Download Data -->
                         <v-icon smallclass="mr-2">
                             file_download
@@ -146,12 +146,12 @@ Vue.use(VueClipboard)
     data () {
         return {
             headers: [
+                { text: 'ID', value: 'numero'},
                 { text: 'Fecha Asistencia', value: 'fecha_asistencia'},
                 { text: 'Fecha Agendamiento', value: 'fecha_cita'},
                 { text: 'Nombre', value: 'full_name' },
                 { text: 'Móvil', value: 'movil' },
                 { text: 'Email', value: 'email' },
-                
                 { text: 'Agente', value: 'agente.nombre' },
                 {text:"Perfil", value:"agente.perfil"},
                 { text: 'Atendido Por', value: 'orientador.nombre' },
@@ -163,10 +163,10 @@ Vue.use(VueClipboard)
                 { text: 'Como LLego', value: 'como_llego' }
             ],
             json_fields:{
+                "ID": "numero",
                 "Estado": "estado",
                 "Fecha Cumplimiento Cita": "fecha_asistencia",
                 "Sede Asistencia": "sede_asistencia.nombre",
-
                 "Fecha Agendamiento Cita": "fecha_cita",
                 "Nombre": "full_name",
                 "Email": "email",
@@ -184,7 +184,7 @@ Vue.use(VueClipboard)
                     return `Landline Phone - ${value}`;
                     },
                 }*/
-      },
+            },
             dialogFilter: false,
             viewDialogHistorico: false,
             viewDialog : false,
