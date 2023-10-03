@@ -147,7 +147,7 @@ export default {
                 // { text: 'Email', value: 'email' },
                 // { text: 'Movil', value: 'movil' },
                 { text: 'Sede', value: 'sede' },
-                { text: 'Ultimo Agente', value: 'ultima_llamada.usuario' },
+                // { text: 'Ultimo Agente', value: 'ultima_llamada.usuario' },
                 { text: 'Origen', value: 'ultimo_origen' },
                 { text: 'Gestión', value: 'gestion' },
                 { text: 'Estado', value: 'ultima_llamada_estado' },

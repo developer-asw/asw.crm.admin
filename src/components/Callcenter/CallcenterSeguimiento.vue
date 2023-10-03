@@ -107,7 +107,7 @@ export default {
                 { text: 'Móvil', value: 'uid' },
                 { text: 'Email', value: 'email' },
                 { text: 'Sede', value: 'sede' },
-                { text: 'Solicitado', value: 'ultima_llamada.agente.nombre' },
+                // { text: 'Solicitado', value: 'ultima_llamada.agente.nombre' },
                 { text: 'Origen', value: 'ultimo_origen' },
                 // { text: 'Estudiante', value: 'es_estudiante' },
                 { text: 'Actions', value: 'action', sortable: false }
