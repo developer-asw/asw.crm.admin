@@ -79,12 +79,10 @@
                         <v-sheet height="400" class="overflow-hidden" style="position: relative;">
                             <v-container class="fill-height">
                                 <v-row align="center" justify="center">
-                                    <v-btn small color="pink" dark @click.stop="drawer = !drawer">
+                                    <v-btn small block color="primary" dark @click.stop="drawer = !drawer">
                                         Matricula
                                     </v-btn>
-                                    <v-divider class="mt-2"></v-divider>
-                                    <v-spacer></v-spacer>
-                                    <v-btn small color="pink" dark @click.stop="llamadas = !llamadas">
+                                    <v-btn class="mt-2" small block color="primary" dark @click.stop="llamadas = !llamadas">
                                         Llamadas
                                     </v-btn>
                                 </v-row>
