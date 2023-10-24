@@ -27,6 +27,7 @@
                 <v-list-item>
                     <v-list-item-content>
                         <v-list-item-title class="text-right">{{getNombres}}</v-list-item-title>
+                        <v-list-item-subtitle class="text-right">{{getCargo}}</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
 
@@ -141,8 +142,7 @@
                         </v-list-item>
                     </v-list-group>
 
-                    <v-list-group v-if="isLogged && permiso('OP_APOYO_FINANCIERO')" no-action sub-group
-                    value="true">
+                    <v-list-group v-if="isLogged && permiso('OP_APOYO_FINANCIERO')" no-action sub-group>
                         <template v-slot:activator>
                             <v-list-item-content>
                                 <v-list-item-title>Apoyo Financiero</v-list-item-title>
@@ -315,6 +315,14 @@
                                 <v-list-item-title>Parámetros</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
+                        <v-list-item v-if="isLogged && permiso('OP_CONF_CALENDAR')" link @click="dirigir('/setting/calendar')">
+                            <v-list-item-action>
+                                <v-icon>calendar_month</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Calendario</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
                         <v-list-item v-if="isLogged && permiso('OP_CONF_DATOS')" link @click="dirigir('/setting/incoming_data')">
                             <v-list-item-action>
                                 <v-icon>update</v-icon>
@@ -482,6 +490,12 @@ export default {
         getNombres(){
             if(this.user){
                 return this.user.primer_nombre+' '+this.user.primer_apellido
+            }
+            return ''
+        },
+        getCargo() {
+            if(this.user){
+                return this.user.nombre_perfil
             }
             return ''
         },

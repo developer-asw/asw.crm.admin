@@ -1,5 +1,16 @@
 <template>
     <div>
+        <v-toolbar flat light dense color="blue lighten-5">
+            <v-toolbar-title>{{getTitle}}</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-toolbar-items>
+                <!--<v-subheader>{{pagination.total}} registros</v-subheader>-->
+                <v-subheader> - </v-subheader>
+                <v-btn small color="info" dark @click="consola" :disabled="loading">
+                    <v-icon>info</v-icon>
+                </v-btn>
+            </v-toolbar-items>
+        </v-toolbar>
         <v-card class="pl-4 pr-4">
             <v-card-title>
                 <v-toolbar-title>
@@ -21,15 +32,20 @@
                             </v-col>
                             <v-col cols="12">
                                 <v-row justify="center">
-                                    <v-btn small v-if="setAsisteCita" class="ma-2" color="red darken-1" text @click="asiste" :loading="loading" title="Asiste a sede"><v-icon left small>event</v-icon>Asiste</v-btn>
+                                    <v-btn small v-if="setAsisteCita" class="ma-2" color="red darken-1" text @click="asiste" :disabled="activo === 'NO'" :loading="loading" title="Asiste a sede"><v-icon left small>event</v-icon>Asiste</v-btn>
                                     
-                                    <v-btn small class="ma-2 p-0" v-if="puedeSolicitarCallcenter() && (permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="iniciarSolicitar()" :loading="loading" title="Callcenter"><v-icon left small>phone</v-icon>Llamar</v-btn>
-                                    <v-btn small class="ma-2 p-0" v-else-if="estaAsignadoCallcenter() && (permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="iniciarCerrarCallcenter()" :loading="loading" title="Callcenter"><v-icon left small>warning</v-icon>Llamar</v-btn>
-                                    <v-btn small class="ma-2 p-0" v-else-if="(permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="historyOnlyCallcenter()" :loading="loading" title="Callcenter"><v-icon left small>phone_locked</v-icon>Llamar</v-btn>
+                                    <v-btn small class="ma-2 p-0" v-if="puedeSolicitarCallcenter() && (permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="iniciarSolicitar()" :disabled="activo === 'NO'" :loading="loading" title="Callcenter"><v-icon left small>phone</v-icon>Llamar</v-btn>
+                                    <v-btn small class="ma-2 p-0" v-else-if="estaAsignadoCallcenter() && (permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="iniciarCerrarCallcenter()" :disabled="activo === 'NO'" :loading="loading" title="Callcenter"><v-icon left small>warning</v-icon>Llamar</v-btn>
+                                    <v-btn small class="ma-2 p-0" v-else-if="(permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="historyOnlyCallcenter()" :disabled="activo === 'NO'" :loading="loading" title="Callcenter"><v-icon left small>phone_locked</v-icon>Llamar</v-btn>
         
-                                    <v-btn small class="ma-2" v-if="puedeSolicitarApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarSolicitarApoyoFinanciero()" :loading="loading" title="Apoyo Finaciero"><v-icon left small>phone</v-icon>Llamar A.</v-btn>
-                                    <v-btn small class="ma-2" v-else-if="estaAsignadoApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarCerrarApofoFinanciero()" :loading="loading" title="Apoyo Finaciero"><v-icon left small>warning</v-icon>Llamar A.</v-btn>
-                                    <v-btn small class="ma-2" v-else-if="permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="historyOnlyApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" :loading="loading" title="Apoyo Finaciero"><v-icon left small>phone_locked</v-icon>Llamar A.</v-btn>
+                                    <v-btn small class="ma-2" v-if="puedeSolicitarApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarSolicitarApoyoFinanciero()" :loading="loading" :disabled="activo === 'NO'" title="Apoyo Finaciero"><v-icon left small>phone</v-icon>Llamar A.</v-btn>
+                                    <v-btn small class="ma-2" v-else-if="estaAsignadoApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarCerrarApofoFinanciero()" :loading="loading" :disabled="activo === 'NO'" title="Apoyo Finaciero"><v-icon left small>warning</v-icon>Llamar A.</v-btn>
+                                    <v-btn small class="ma-2" v-else-if="permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="historyOnlyApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" :loading="loading" :disabled="activo === 'NO'" title="Apoyo Finaciero"><v-icon left small>phone_locked</v-icon>Llamar A.</v-btn>
+                                </v-row>
+                                <v-row v-if="activo === 'NO'">
+                                    <v-col justify="center">
+                                        <p class="text-center secondary">Deshabilitado el dia {{this.$moment(lead.date_disabled).format('DD/MM/YYYY h:mm a')}}</p>
+                                    </v-col>
                                 </v-row>
                             </v-col>
                             <v-col cols="12">
@@ -51,7 +67,6 @@
                         </v-row>
                         
                         <v-row class="mt-10">
-                            <v-col cols="12"></v-col>
                             <v-col cols="12">
                                 <LeadHistoricView :key="lead_id" :lead_id="lead_id"  :ver_detalles="true"></LeadHistoricView>
                             </v-col>
@@ -68,6 +83,11 @@
                                         Más
                                     </v-btn>
                                 </v-row>
+                                <v-row align="center" justify="center">
+                                    <v-btn small color="pink" dark @click.stop="llamadas = !llamadas">
+                                        Llamadas
+                                    </v-btn>
+                                </v-row>
                             </v-container>
                         </v-sheet>
                     </v-col>
@@ -76,6 +96,9 @@
                     <v-col>
                         <v-navigation-drawer v-model="drawer" fixed temporary right>
                             <LeadAdicional :key="lead_id" :lead_id="lead_id" :setSedes="sedes"></LeadAdicional>
+                        </v-navigation-drawer>
+                        <v-navigation-drawer v-model="llamadas" fixed temporary right>
+                            <LeadLlamadas :key="lead_id" :lead_id="lead_id"  :ver_detalles="true"></LeadLlamadas>
                         </v-navigation-drawer>
                     </v-col>
                 </v-row>
@@ -122,6 +145,7 @@ import RegistrarLlamadaApoyoFinanciero from "@/components/ApoyoFinanciero/Regist
 import RecepcionRegistrarAsistencia from '@/components/Recepcion/RecepcionRegistrarAsistencia';
 import EditLead from '@/components/Callcenter/EditLead';
 import LeadHistoricView from '@/components/Leads/Detail/LeadHistoricView';
+import LeadLlamadas from '@/components/Leads/Detail/LeadLlamadas';
 import LeadTimeLine from '@/components/Leads/Detail/LeadTimeLine';
 import LeadAdicional from '@/components/Leads/Detail/LeadAdicional';
 
@@ -134,7 +158,8 @@ export default {
         CallcenterRegistrarLlamada,
         RegistrarLlamadaApoyoFinanciero,
         LeadTimeLine,
-        LeadAdicional
+        LeadAdicional,
+        LeadLlamadas
     },
     data: () => ({
         loading: false,
@@ -161,6 +186,7 @@ export default {
         horaMinima:null,
         horaMaxima:null,
         drawer: null,
+        llamadas:null,
         items: [
           { title: 'Home', icon: 'mdi-view-dashboard' },
           { title: 'About', icon: 'mdi-forum' },
@@ -399,6 +425,10 @@ export default {
         },
         lead() {
             return this.detalle(this.lead_id)
+        },
+        activo() {
+            if (this.lead) return this.lead._activo;
+            return null;
         },
         ...mapGetters({
             detalle: 'leads/getDetalle',

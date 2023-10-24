@@ -31,6 +31,7 @@ import MissedAppointments from '@/components/Settings/MissedAppointments';
 import IncomingData from '@/components/Settings/IncomingData';
 import Parameters from '@/components/Settings/Parameters';
 import Wolkvox from '@/components/Settings/Wolkvox';
+import Calendario from '@/components/Settings/Calendario';
 
 import ADMUsuario from '@/components/Administracion/Usuarios';
 import ADMPerfiles from '@/components/Administracion/Perfiles/Perfiles';
@@ -251,6 +252,12 @@ const routes = [
     name: 'Parameters',
     component: Parameters,
     meta: { Auth: true, title: 'Settings - parameters' , view: 'baseline'},
+  },
+  {
+    path: '/setting/calendar',
+    name: 'Calendario',
+    component: Calendario,
+    meta: { Auth: true, title: 'Settings - calendar' , view: 'baseline'},
   },
   {
     path: '/setting/wolkvox',
