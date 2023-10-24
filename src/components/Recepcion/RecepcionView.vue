@@ -79,11 +79,11 @@
                         <v-sheet height="400" class="overflow-hidden" style="position: relative;">
                             <v-container class="fill-height">
                                 <v-row align="center" justify="center">
-                                    <v-btn color="pink" dark @click.stop="drawer = !drawer">
-                                        Más
+                                    <v-btn small color="pink" dark @click.stop="drawer = !drawer">
+                                        Matricula
                                     </v-btn>
-                                </v-row>
-                                <v-row align="center" justify="center">
+                                    <v-divider class="mt-2"></v-divider>
+                                    <v-spacer></v-spacer>
                                     <v-btn small color="pink" dark @click.stop="llamadas = !llamadas">
                                         Llamadas
                                     </v-btn>
@@ -94,10 +94,10 @@
                 </v-row>
                 <v-row>
                     <v-col>
-                        <v-navigation-drawer v-model="drawer" fixed temporary right>
+                        <v-navigation-drawer v-model="drawer" fixed temporary right :width="325">
                             <LeadAdicional :key="lead_id" :lead_id="lead_id" :setSedes="sedes"></LeadAdicional>
                         </v-navigation-drawer>
-                        <v-navigation-drawer v-model="llamadas" fixed temporary right>
+                        <v-navigation-drawer v-model="llamadas" fixed temporary right :width="325">
                             <LeadLlamadas :key="lead_id" :lead_id="lead_id"  :ver_detalles="true"></LeadLlamadas>
                         </v-navigation-drawer>
                     </v-col>
