@@ -3,7 +3,7 @@
         <v-col cols="12">
             <h2>Historico llamadas</h2>
             <v-divider class="mt-4"></v-divider>
-            <p v-for="item in llamadas">
+            <p v-for="(item,index) in llamadas" :key="index">
                 <small>
                     <b>{{item.fecha_mostrar}}</b> {{item.code}}
                 </small>
