@@ -334,6 +334,9 @@ export default {
             if (this.permiso('OP_CALL_MASTERCLASS')) {
                 this.prioridad.push({ text: 'MasterClass', value : 8 })
             }
+            if (this.permiso('OP_CALL_WHATSAPP')) {
+                this.prioridad.push({ text: 'WhatsApp', value : 9 })
+            }
             if (this.permiso('OP_CALL_TOTALES')) {
                 this.prioridad.push({ text: 'Totales', value : 10 })
             }
