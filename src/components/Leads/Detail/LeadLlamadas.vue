@@ -44,7 +44,6 @@ export default {
                 this.consultar({id:this.lead_id})
                 .then(result => {
                     this.llamadas = result.datos;
-                    console.log(result);
                 })
                 .catch(error => {
                     console.log(error)

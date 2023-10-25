@@ -62,7 +62,7 @@
                     <v-col cols="12" sm="7" md="7">
                         <v-row justify="center">
                             <v-col cols="12" md="10" sm="8">
-                                <LeadTimeLine :key="lead_id" :lead_id="lead_id"></LeadTimeLine>
+                                <LeadTimeLine :key="lead_id" :lead_id="lead_id" :station="station"></LeadTimeLine>
                             </v-col>
                         </v-row>
                         
@@ -185,6 +185,7 @@ export default {
         horaMaxima:null,
         drawer: null,
         llamadas:null,
+        station:"prospecto",
         items: [
           { title: 'Home', icon: 'mdi-view-dashboard' },
           { title: 'About', icon: 'mdi-forum' },
@@ -237,7 +238,9 @@ export default {
         },
         viewItem() {
             this.loading = true;
-            this.fetchDetalle({id:this.lead_id})
+            this.fetchDetalle({id:this.lead_id}).then((result) => {
+                if (result && result.datos) this.station = result.datos.station;
+            })
             .finally(() => {
                 this.loading = false;
             })  
