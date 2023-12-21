@@ -65,7 +65,7 @@
                                 </v-select>
                             </td>
                             <td class="text-right">
-                                <div v-if="false">
+                                <div>
                                     <v-icon v-if="!ver.sede" @click="actualizarSede()" small right>save</v-icon>
                                     <v-icon v-if="ver.sede" @click="editarSede()" small right>autorenew</v-icon>
                                     <v-icon v-else @click="editarSede()" small right>cancel</v-icon>
