@@ -36,8 +36,7 @@
                 <tr>
                     <td><b>Sede: </b></td>
                     <td>
-                        {{lead.sede_full  ? lead.sede_full.nombre:""}}
-                        <!-- <span v-if="ver_sede">{{lead.sede_full  ? lead.sede_full.nombre:""}}</span>
+                        <span v-if="ver_sede">{{lead.sede_full  ? lead.sede_full.nombre:""}}</span>
                         <v-select v-else v-model="lead.sede_id" :items="sedes" item-text="nombre" item-value="id">
                             <template slot="item" slot-scope="data">
                                 {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.sede }}
@@ -45,12 +44,12 @@
                             <template slot="selection" slot-scope="data">
                                 {{ data.item.ciudad ? data.item.ciudad+':' : '' }} {{ data.item.sede }}
                             </template>
-                        </v-select> -->
+                        </v-select>
                     </td>
                     <td class="text-right">
-                        <!-- <v-icon v-if="!ver_sede" @click="actualizarSede()" small right>save</v-icon>
+                        <v-icon v-if="!ver_sede" @click="actualizarSede()" small right>save</v-icon>
                         <v-icon v-if="ver_sede" @click="editarSede()" small right>autorenew</v-icon>
-                        <v-icon v-else @click="editarSede()" small right>cancel</v-icon> -->
+                        <v-icon v-else @click="editarSede()" small right>cancel</v-icon>
                     </td>
                 </tr>
                 <tr>
