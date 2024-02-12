@@ -39,7 +39,7 @@
                                                                     <span>{{ item.desc_evento }}</span>
                                                                 </v-col>
                                                                 <v-col cols="2" class="py-0">
-                                                                    <span>{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}</span>
+                                                                    <span>{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm:ss") }}</span>
                                                                 </v-col>
                                                             </v-row>
                                                             
@@ -115,7 +115,7 @@
                                                                     <span>{{ item.desc_evento }}</span>
                                                                 </v-col>
                                                                 <v-col cols="2" class="py-0 text-right">
-                                                                    <span>{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm") }}</span>
+                                                                    <span>{{ item.fecha_mostrar | moment("DD/MM/YYYY HH:mm:ss") }}</span>
                                                                 </v-col>
                                                             </v-row>
                                                             <!-- <v-row no-gutters>
