@@ -14,6 +14,7 @@ const actions = {
       Vue.http.post('login', {user: userInput})
         .then(user => {
             window.localStorage.setItem('_token', user.body.token);
+            commit('hideError', null, { root: true });
             commit('setUser');
             resolve(user);
         })
