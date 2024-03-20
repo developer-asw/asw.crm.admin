@@ -272,6 +272,15 @@
                                 <v-list-item-title>Usuarios</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
+                        
+                        <v-list-item v-if="isLogged && permiso('OP_ADM_SEDES')" link @click="dirigir('/administracion/sedes')">
+                            <v-list-item-action>
+                                <v-icon>factory</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>Sedes</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
 
                         <v-list-item v-if="isLogged && permiso('OP_ADM_PERFILES')" link @click="dirigir('/administracion/perfiles')">
                             <v-list-item-action>

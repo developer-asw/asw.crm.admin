@@ -25,8 +25,8 @@
     
     <v-btn small color="info" dark>
         <download-excel
-            :data   = "lista"
-            :fields = "json_fields">
+            :data="lista"
+            :fields="json_fields">
             <v-icon smallclass="mr-2">
                 file_download
             </v-icon>

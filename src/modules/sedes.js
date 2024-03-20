@@ -15,7 +15,7 @@ const actions = {
             root: true
         });
         return new Promise((resolve, reject) => {
-            Vue.http.post('sedes/lista', data).then(
+            Vue.http.get('sedes/lista', data).then(
                 response => {
                     commit('setLista', response.data.datos);
                     resolve(response.data)
@@ -38,9 +38,9 @@ const actions = {
             root: true
         });
         return new Promise((resolve, reject) => {
-            Vue.http.get('sedes', data).then(
+            Vue.http.get('sedes', {params: data}).then(
                 response => {
-                    commit('setLista', response.data.datos);
+                    commit('setLista', response.data);
                     resolve(response.data)
                 }
 
@@ -55,7 +55,87 @@ const actions = {
                 });
             })
         });
-    }
+    },
+    get: ({ commit }, id) => {
+        commit('startProcessing', null, {
+            root: true
+        });
+        return new Promise((resolve, reject) => {
+            Vue.http.get(`sedes/${id}/primero`).then(
+                response => {
+                    resolve(response.data)
+                }
+
+            ).catch(error => {
+                commit('setError', error, {
+                    root: true
+                });
+                reject(error)
+            }).finally(() => {
+                commit('stopProcessing', null, {
+                    root: true
+                });
+            })
+        });
+    },
+    fetchListado: ({ commit }, data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.get('sedes', {params: data}).then(
+                response => {
+                    commit('setLista', response.data);
+                    resolve(response.data)
+                }
+            ).catch(error => {
+                commit('setError', error, {
+                    root: true
+                });
+                reject(error)
+            }).finally(() => {
+                commit('stopProcessing', null, {
+                    root: true
+                });
+            })
+        });
+    },
+    saveSede: ({ commit }, data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.post('sedes', data).then(
+                response => {
+                    resolve(response.data)
+                }
+            ).catch(error => {
+                commit('setError', error, {
+                    root: true
+                });
+                reject(error)
+            }).finally(() => {
+                commit('stopProcessing', null, {
+                    root: true
+                });
+            })
+        });
+    },
+    updateSede: ({ commit }, data) => {
+        commit('startProcessing', null, { root: true });
+        return new Promise((resolve, reject) => {
+            Vue.http.post(`sedes/${data.id}`, data).then(
+                response => {
+                    resolve(response.data)
+                }
+            ).catch(error => {
+                commit('setError', error, {
+                    root: true
+                });
+                reject(error)
+            }).finally(() => {
+                commit('stopProcessing', null, {
+                    root: true
+                });
+            })
+        });
+    },
 }
 
 

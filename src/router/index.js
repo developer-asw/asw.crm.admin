@@ -34,6 +34,7 @@ import Wolkvox from '@/components/Settings/Wolkvox';
 import Calendario from '@/components/Settings/Calendario';
 
 import ADMUsuario from '@/components/Administracion/Usuarios';
+import ADMSedes from '@/components/Administracion/Sedes';
 import ADMPerfiles from '@/components/Administracion/Perfiles/Perfiles';
 import ADMPermisos from '@/components/Administracion/Permisos';
 import ADMAsignarPermisos from '@/components/Administracion/Perfiles/AsignarPermisos';
@@ -270,6 +271,12 @@ const routes = [
     name: 'ADMUsuario',
     component: ADMUsuario,
     meta: { Auth: true, title: 'Administración - Usuarios' , view: 'baseline'},
+  },
+  {
+    path: '/administracion/sedes',
+    name: 'ADMSedes',
+    component: ADMSedes,
+    meta: { Auth: true, title: 'Administración - Sedes' , view: 'baseline'},
   },
   {
     path: '/administracion/perfiles',

@@ -107,7 +107,7 @@
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-text-field v-model="lead.movil" label="Teléfono" :disabled="disabled" :rules="rules.telefono" @blur="buscarTelefono()"></v-text-field>
+                                        <v-text-field type="numeric" v-model="lead.movil" label="Teléfono" :disabled="disabled" :rules="rules.telefono" @blur="buscarTelefono()"></v-text-field>
                                     </v-col>
                                     <v-col cols="1" sm="2">
                                         <v-btn v-if="cambioMovil" @click="actualizarMovil" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
@@ -1030,8 +1030,10 @@
             rules(){
                 const _rules = {}
                 _rules.telefono= [
-                    v => !!v || 'El Teléfono es necesario'
+                    v => !!v || 'El Teléfono es necesario',
+                    v => !!v && /^[0-9]+$/.test(v) || 'El Teléfono debe ser solo números'
                 ];
+
                 _rules.firstname= [
                     v => !!v || 'El Nombre es necesario',
                     v => (v && v.length > 2) || 'El nombre debe ser mayor de 2 caracteres',
