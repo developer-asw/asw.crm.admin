@@ -52,17 +52,23 @@ const store = new Vuex.Store({
     },
     setError (state, responseApi) {
       if(responseApi.data){
-        let data = responseApi.data
-        if(data.error){
-          if(data.error.message){
-            if(data.error.name && data.error.name=='InvalidJwtToken'){
+        let data = responseApi.data;
+        let data_error = data && data.error && data.error.message ? data.error : data
+
+        if(data_error){
+          if(data_error.message){
+            if(data_error.name && data_error.name=='InvalidJwtToken'){
               state.error = 'Acceso no autorizado';
               this.dispatch('auth/logout')
               router.push('/login')
             }
-            state.error = data.error.message;
+            state.error = data_error.message;
           }else{
-            state.error = data.error;
+            if (data_error.error) {
+              state.error = data_error.error;
+            } else {
+              state.error = data_error;
+            }
             if(data.salir) {
               this.dispatch('auth/logout')
               router.push('/login')

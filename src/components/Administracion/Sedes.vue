@@ -161,8 +161,8 @@ export default {
         ...mapActions({
             fetchLista: 'sedes/fetch',
             get: 'sedes/get',
-            saveRecord: 'sedes/saveUser',
-            updateRecord: 'sedes/updateUser',
+            saveRecord: 'sedes/saveSede',
+            updateRecord: 'sedes/updateSede',
         }),
         ...mapMutations({
             setInfo: 'setInfo',
