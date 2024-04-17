@@ -986,28 +986,28 @@
                 return this.permiso('OP_LEAD_EDITAR_AGENTE')
             },
             cambioSede() {
-                return this.lead.sede_id != this.leadOriginal.sede_id;
+                return !this.lead.deleted_at && this.lead.sede_id != this.leadOriginal.sede_id;
             },
             cambioId() {
-                return this.lead.identificacion != this.leadOriginal.identificacion
+                return !this.lead.deleted_at && this.lead.identificacion != this.leadOriginal.identificacion
             },
             cambioPrimerNombre() {
-                return this.lead.primer_nombre != this.leadOriginal.primer_nombre
+                return !this.lead.deleted_at && this.lead.primer_nombre != this.leadOriginal.primer_nombre
             },
             cambioSegundoNombre() {
-                return this.lead.segundo_nombre != this.leadOriginal.segundo_nombre
+                return !this.lead.deleted_at && this.lead.segundo_nombre != this.leadOriginal.segundo_nombre
             },
             cambioPrimerApellido() {
-                return this.lead.primer_apellido != this.leadOriginal.primer_apellido
+                return !this.lead.deleted_at && this.lead.primer_apellido != this.leadOriginal.primer_apellido
             },
             cambioSegundoApellido() {
-                return this.lead.segundo_apellido != this.leadOriginal.segundo_apellido
+                return !this.lead.deleted_at && this.lead.segundo_apellido != this.leadOriginal.segundo_apellido
             },
             cambioMovil() {
-                return this.lead.movil != this.leadOriginal.movil
+                return !this.lead.deleted_at && this.lead.movil != this.leadOriginal.movil
             },
             cambioEmail() {
-                return this.lead.email != this.leadOriginal.email
+                return !this.lead.deleted_at && this.lead.email != this.leadOriginal.email
             },
             cambioRenovacion() {
                 return this.lead.renovacion != this.leadOriginal.renovacion
