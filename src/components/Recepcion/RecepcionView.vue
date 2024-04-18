@@ -52,6 +52,7 @@
                                         <p class="text-center text-warninig">Eliminado el dia {{this.$moment(deleted_at).format('DD/MM/YYYY h:mm a')}}</p>
                                     </v-col>
                                 </v-row>
+
                             </v-col>
                             <v-col cols="12">
                                 <EditLead :key="lead_id" :lead_id="lead_id" :setSedes="sedes" @actualizar="actualizarHistorial"></EditLead>
@@ -437,18 +438,18 @@ export default {
             return this.detalle(this.lead_id)
         },
         deshabilitado() {
-            if (this.lead) {
-                return this.lead._activo === 'NO'
-            } else if (this.lead_up) {
+            if (this.lead && this.lead._activo) {
+                return  this.lead._activo === 'NO'
+            } else if (this.lead_up && this.lead_up._activo) {
                 return this.lead_up._activo === 'NO'
             }
             return false;
         },
         eliminado() {
-            if (this.lead) {
-                return this.lead.deleted_at !== null;
-            } else if (this.lead_up) {
-                return this.lead_up.deleted_at !== null;
+            if (this.lead && this.lead.deleted_at) {
+                return true;
+            } else if (this.lead_up && this.lead_up.deleted_at) {
+                return  trur;
             }
             return false;
         },
