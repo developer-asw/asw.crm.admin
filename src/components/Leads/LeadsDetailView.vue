@@ -6,6 +6,12 @@
       </v-card-title>
       <v-card-text>
         <v-row>
+          
+          <v-col cols="12">
+              <span>Ultima actualización: {{formatDate(lead.updated_at)}}</span> <br>
+              <span v-if="lead.deleted_at">Eliminado en: {{formatDate(lead.deleted_at)}}</span>
+          </v-col>
+
           <v-col cols="12" sm="6" md="4" lg="3">
             <b>ID: </b> <br/> {{ lead.numero }}
           </v-col>
