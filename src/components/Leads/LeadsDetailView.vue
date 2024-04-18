@@ -402,8 +402,14 @@ export default {
     formatDate(value){
         if (value instanceof Date)
             return this.$moment(value).format('DD/MM/YYYY h:mm a')
-        else 
-            return value
+        else {
+          let result = this.$moment(value).format('DD/MM/YYYY h:mm a')
+          if (result === 'Invalid date') {
+            return value;
+          } else {
+            return result;
+          }
+        }
     }
     ////////////LLAMADAS
   },
