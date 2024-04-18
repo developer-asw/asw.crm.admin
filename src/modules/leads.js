@@ -35,7 +35,6 @@ const actions = {
         return new Promise((resolve, reject) => {
             Vue.http.post('lead/detalle',data).then(
                 response =>{
-                    // console.log(response.data.datos);
                     commit('setDetalle',response.data.datos);
                     resolve(response.data)
                 }
@@ -52,7 +51,6 @@ const actions = {
         return new Promise((resolve, reject) => {
             Vue.http.post('lead/detalle',data).then(
                 response =>{
-                    //  console.log(response.data);
                     commit('setDetalle',response.data.datos);
                     resolve(response.data)
                 }

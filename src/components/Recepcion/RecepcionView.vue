@@ -32,19 +32,24 @@
                             </v-col>
                             <v-col cols="12">
                                 <v-row justify="center">
-                                    <v-btn small v-if="setAsisteCita" class="ma-2" color="red darken-1" text @click="asiste" :disabled="activo === 'NO'" :loading="loading" title="Asiste a sede"><v-icon left small>event</v-icon>Asiste</v-btn>
+                                    <v-btn small v-if="setAsisteCita" class="ma-2" color="red darken-1" text @click="asiste" :disabled="deshabilitado || eliminado" :loading="loading" title="Asiste a sede"><v-icon left small>event</v-icon>Asiste</v-btn>
                                     
-                                    <v-btn small class="ma-2 p-0" v-if="puedeSolicitarCallcenter() && (permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="iniciarSolicitar()" :disabled="activo === 'NO'" :loading="loading" title="Callcenter"><v-icon left small>phone</v-icon>Llamar</v-btn>
-                                    <v-btn small class="ma-2 p-0" v-else-if="estaAsignadoCallcenter() && (permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="iniciarCerrarCallcenter()" :disabled="activo === 'NO'" :loading="loading" title="Callcenter"><v-icon left small>warning</v-icon>Llamar</v-btn>
-                                    <v-btn small class="ma-2 p-0" v-else-if="(permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="historyOnlyCallcenter()" :disabled="activo === 'NO'" :loading="loading" title="Callcenter"><v-icon left small>phone_locked</v-icon>Llamar</v-btn>
+                                    <v-btn small class="ma-2 p-0" v-if="puedeSolicitarCallcenter() && (permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="iniciarSolicitar()" :disabled="deshabilitado || eliminado" :loading="loading" title="Callcenter"><v-icon left small>phone</v-icon>Llamar</v-btn>
+                                    <v-btn small class="ma-2 p-0" v-else-if="estaAsignadoCallcenter() && (permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="iniciarCerrarCallcenter()" :disabled="deshabilitado || eliminado" :loading="loading" title="Callcenter"><v-icon left small>warning</v-icon>Llamar</v-btn>
+                                    <v-btn small class="ma-2 p-0" v-else-if="(permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="historyOnlyCallcenter()" :disabled="deshabilitado || eliminado" :loading="loading" title="Callcenter"><v-icon left small>phone_locked</v-icon>Llamar</v-btn>
         
-                                    <v-btn small class="ma-2" v-if="puedeSolicitarApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarSolicitarApoyoFinanciero()" :loading="loading" :disabled="activo === 'NO'" title="Apoyo Finaciero"><v-icon left small>phone</v-icon>Llamar A.</v-btn>
-                                    <v-btn small class="ma-2" v-else-if="estaAsignadoApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarCerrarApofoFinanciero()" :loading="loading" :disabled="activo === 'NO'" title="Apoyo Finaciero"><v-icon left small>warning</v-icon>Llamar A.</v-btn>
-                                    <v-btn small class="ma-2" v-else-if="permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="historyOnlyApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" :loading="loading" :disabled="activo === 'NO'" title="Apoyo Finaciero"><v-icon left small>phone_locked</v-icon>Llamar A.</v-btn>
+                                    <v-btn small class="ma-2" v-if="puedeSolicitarApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarSolicitarApoyoFinanciero()" :loading="loading" :disabled="deshabilitado || eliminado" title="Apoyo Finaciero"><v-icon left small>phone</v-icon>Llamar A.</v-btn>
+                                    <v-btn small class="ma-2" v-else-if="estaAsignadoApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarCerrarApofoFinanciero()" :loading="loading" :disabled="deshabilitado || eliminado" title="Apoyo Finaciero"><v-icon left small>warning</v-icon>Llamar A.</v-btn>
+                                    <v-btn small class="ma-2" v-else-if="permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="historyOnlyApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" :loading="loading" :disabled="deshabilitado || eliminado" title="Apoyo Finaciero"><v-icon left small>phone_locked</v-icon>Llamar A.</v-btn>
                                 </v-row>
-                                <v-row v-if="activo === 'NO'">
+                                <v-row v-if="deshabilitado">
                                     <v-col justify="center">
-                                        <p class="text-center secondary">Deshabilitado el dia {{this.$moment(lead.date_disabled).format('DD/MM/YYYY h:mm a')}}</p>
+                                        <p class="text-center text-warninig">Deshabilitado el dia {{this.$moment(date_disabled).format('DD/MM/YYYY h:mm a')}}</p>
+                                    </v-col>
+                                </v-row>
+                                <v-row v-if="eliminado">
+                                    <v-col justify="center">
+                                        <p class="text-center text-warninig">Eliminado el dia {{this.$moment(deleted_at).format('DD/MM/YYYY h:mm a')}}</p>
                                     </v-col>
                                 </v-row>
                             </v-col>
@@ -170,7 +175,6 @@ export default {
             { text: 'Llamar', value: 'accion' },
             { text: 'Observación', value: 'observacion' },
         ],
-        detalles:[],
         llamada: {
             show: false,
         },
@@ -189,7 +193,8 @@ export default {
         items: [
           { title: 'Home', icon: 'mdi-view-dashboard' },
           { title: 'About', icon: 'mdi-forum' },
-        ]
+        ],
+        lead_up: null
     }),
     mounted() {
         this.fechaMinima = this.$moment().format('YYYY-MM-DD');
@@ -239,6 +244,7 @@ export default {
         viewItem() {
             this.loading = true;
             this.fetchDetalle({id:this.lead_id}).then((result) => {
+                this.lead_up = result.datos;
                 if (result && result.datos) this.station = result.datos.station;
             })
             .finally(() => {
@@ -331,6 +337,7 @@ export default {
         viewItemCallcenter() {
             this.loading = true;
             this.fetchDetalle({ id: this.lead_id }).then((result) => {
+
                 if (result.datos && result.datos.uid) {
                     let phoneCopy = result.datos.uid;
                     if (phoneCopy) {
@@ -349,6 +356,7 @@ export default {
                         });
                     }
                 }
+                this.lead_up = result.datos;
                 this.llamada.show = true;
                 this.llamada.llamada = true;
             })
@@ -377,6 +385,7 @@ export default {
                         });
                     }
                 }
+                this.lead_up = result.datos;
                 this.llamadaApoyoFinanciero.show = true;
                 this.llamadaApoyoFinanciero.llamada = true;
             })
@@ -427,9 +436,37 @@ export default {
         lead() {
             return this.detalle(this.lead_id)
         },
-        activo() {
-            if (this.lead) return this.lead._activo;
-            return null;
+        deshabilitado() {
+            if (this.lead) {
+                return this.lead._activo === 'NO'
+            } else if (this.lead_up) {
+                return this.lead_up._activo === 'NO'
+            }
+            return false;
+        },
+        eliminado() {
+            if (this.lead) {
+                return this.lead.deleted_at !== null;
+            } else if (this.lead_up) {
+                return this.lead_up.deleted_at !== null;
+            }
+            return false;
+        },
+        date_disabled() {
+            if (this.lead) {
+                return this.lead.date_disabled
+            } else if (this.lead_up) {
+                return this.lead_up.date_disabled
+            }
+            return false;
+        },
+        deleted_at() {
+            if (this.lead) {
+                return this.lead.deleted_at;
+            } else if (this.lead_up) {
+                return this.lead_up.deleted_at;
+            }
+            return false;
         },
         ...mapGetters({
             detalle: 'leads/getDetalle',

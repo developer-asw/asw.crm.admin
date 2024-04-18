@@ -47,9 +47,9 @@
                         </v-select>
                     </td>
                     <td class="text-right">
-                        <v-icon v-if="!ver_sede" @click="actualizarSede()" small right>save</v-icon>
-                        <v-icon v-if="ver_sede" @click="editarSede()" small right>autorenew</v-icon>
-                        <v-icon v-else @click="editarSede()" small right>cancel</v-icon>
+                        <v-icon v-if="!lead.deleted_at && !ver_sede" @click="actualizarSede()" small right>save</v-icon>
+                        <v-icon v-if="!lead.deleted_at && ver_sede" @click="editarSede()" small right>autorenew</v-icon>
+                        <v-icon v-else-if="!lead.deleted_at" @click="editarSede()" small right>cancel</v-icon>
                     </td>
                 </tr>
                 <tr>

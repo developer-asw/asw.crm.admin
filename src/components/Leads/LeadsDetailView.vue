@@ -78,24 +78,24 @@
         <v-row>
           <!-- <v-card-actions> -->
           <v-spacer></v-spacer>
-          <v-btn class="ma-2" color="red darken-1" text :to="{ name: 'lead_edit', params: { id: leadId } }"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
-          <v-btn class="ma-2" v-if="puedeSolicitar() && (permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="iniciarSolicitar()" :loading="loading" title="Callcenter">
+          <v-btn class="ma-2" v-if="!lead.deleted_at" color="red darken-1" text :to="{ name: 'lead_edit', params: { id: leadId } }"><v-icon left small>edit</v-icon>&nbsp;Editar&nbsp;</v-btn>
+          <v-btn class="ma-2" v-if="!lead.deleted_at && puedeSolicitar() && (permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="iniciarSolicitar()" :loading="loading" title="Callcenter">
             <v-icon left small>phone</v-icon>&nbsp;Llamar &nbsp;
           </v-btn>
-          <v-btn class="ma-2" v-else-if="estaAsignado() && (permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="iniciarCerrar()" :loading="loading" title="Callcenter">
+          <v-btn class="ma-2" v-else-if="!lead.deleted_at && estaAsignado() && (permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="iniciarCerrar()" :loading="loading" title="Callcenter">
             <v-icon left small>warning</v-icon>&nbsp;Llamar &nbsp;
           </v-btn>
-          <v-btn class="ma-2" v-else-if="(permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="historyOnly()" :loading="loading" title="Callcenter">
+          <v-btn class="ma-2" v-else-if="!lead.deleted_at && (permiso('OP_REGISTRAR_LLAMADA') || permiso('OP_AGENTE'))" color="green darken-1" text @click="historyOnly()" :loading="loading" title="Callcenter">
             <v-icon left small>phone_locked</v-icon>&nbsp;Llamar &nbsp;
           </v-btn>
 
-          <v-btn class="ma-2" v-if="puedeSolicitarApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarSolicitarApoyoFinanciero()" :loading="loading" title="Apoyo Finaciero">
+          <v-btn class="ma-2" v-if="!lead.deleted_at && puedeSolicitarApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarSolicitarApoyoFinanciero()" :loading="loading" title="Apoyo Finaciero">
             <v-icon left small>phone</v-icon>&nbsp;Apoyo Financiero &nbsp;
           </v-btn>
-          <v-btn class="ma-2" v-else-if="estaAsignadoApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarCerrarApofoFinanciero()" :loading="loading" title="Apoyo Finaciero">
+          <v-btn class="ma-2" v-else-if="!lead.deleted_at && estaAsignadoApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="iniciarCerrarApofoFinanciero()" :loading="loading" title="Apoyo Finaciero">
             <v-icon left small>warning</v-icon>&nbsp;Apoyo Financiero &nbsp;
           </v-btn>
-          <v-btn class="ma-2" v-else-if="permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="historyOnlyApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" :loading="loading" title="Apoyo Finaciero">
+          <v-btn class="ma-2" v-else-if="!lead.deleted_at && permiso('OP_AF_REGISTRAR_LLAMADA')" color="green darken-1" text @click="historyOnlyApoyoFinanciero() && permiso('OP_AF_REGISTRAR_LLAMADA')" :loading="loading" title="Apoyo Finaciero">
             <v-icon left small>phone_locked</v-icon>&nbsp;Apoyo Financiero &nbsp;
           </v-btn>
 
@@ -233,6 +233,7 @@ export default {
     },
     puedeSolicitar() {
       if (
+        !this.lead.deleted_at &&
         this.lead.ultima_llamada &&
         this.lead.ultima_llamada.estado == "pendiente"
       ) {
@@ -241,7 +242,7 @@ export default {
       return false;
     },
     puedeSolicitarApoyoFinanciero(){
-        if((this.lead.af_ultima_llamada && ['pendiente','terminado'].includes(this.lead.af_ultima_llamada.estado)) || (!this.lead.af_ultima_llamada)){
+        if((!this.lead.deleted_at && this.lead.af_ultima_llamada && ['pendiente','terminado'].includes(this.lead.af_ultima_llamada.estado)) || (!this.lead.af_ultima_llamada)){
             return true
         }
         return false

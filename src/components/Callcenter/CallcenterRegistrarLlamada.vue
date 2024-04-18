@@ -227,7 +227,7 @@
                         </v-select>
                     </v-col>
                 </v-row>
-                <v-row v-if="['seguimiento_whatsapp','venta_telefonica','masterclass','estudiante','examen'].includes(estado)">
+                <v-row v-if="['seguimiento_whatsapp','venta_telefonica','masterclass','estudiante','examen', 'dato_eliminado'].includes(estado)">
                     <v-textarea label="Observaciones" v-model="resolucion.observacion"></v-textarea>
                 </v-row>
 
@@ -587,7 +587,7 @@
                             return true
                         }
                     }
-                } else if(['servicio_cliente','matricula_recaudo','matricula_nueva','convenio','estudiante', 'examen'].includes(this.estado)) {
+                } else if(['servicio_cliente','matricula_recaudo','matricula_nueva','convenio','estudiante', 'examen', 'dato_eliminado'].includes(this.estado)) {
                     return true;
                 } else if(this.estado=='matriculado'){
                     if(this.resolucion.tipo){

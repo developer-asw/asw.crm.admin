@@ -9,7 +9,8 @@
 
                         <v-row>
                             <v-col cols="12">
-                                <span>Ultima actualización: {{formatDate(lead.updated_at)}}</span>
+                                <span>Ultima actualización: {{formatDate(lead.updated_at)}}</span> <br>
+                                <span v-if="lead.deleted_at">Eliminado en: {{formatDate(lead.deleted_at)}}</span>
 
                             </v-col>
                             <v-col cols="12" sm="6" md="4" lg="3">
@@ -974,16 +975,16 @@
                 return 'Editar Leads'
             },
             userCanEdit() {
-                return this.permiso('OP_LEAD_EDITAR')
+                return !this.lead.deleted_at && this.permiso('OP_LEAD_EDITAR')
             },
             userAdmin() {
-                return this.permiso('OP_LEAD_EDITAR_AGENTE')
+                return !this.lead.deleted_at && this.permiso('OP_LEAD_EDITAR_AGENTE')
             },
             puedeActualizarSede() {
-                return this.permiso('OP_LEAD_EDITAR_SEDE')
+                return !this.lead.deleted_at && this.permiso('OP_LEAD_EDITAR_SEDE')
             },
             userChangeCall() {
-                return this.permiso('OP_LEAD_EDITAR_AGENTE')
+                return !this.lead.deleted_at && this.permiso('OP_LEAD_EDITAR_AGENTE')
             },
             cambioSede() {
                 return !this.lead.deleted_at && this.lead.sede_id != this.leadOriginal.sede_id;
@@ -1010,22 +1011,22 @@
                 return !this.lead.deleted_at && this.lead.email != this.leadOriginal.email
             },
             cambioRenovacion() {
-                return this.lead.renovacion != this.leadOriginal.renovacion
+                return !this.lead.deleted_at && this.lead.renovacion != this.leadOriginal.renovacion
             },
             cambioOrigen() {
-                return this.lead.origen != this.leadOriginal.origen
+                return !this.lead.deleted_at && this.lead.origen != this.leadOriginal.origen
             },
             cambioComoLlego() {
-                return this.lead.como_llego != this.leadOriginal.como_llego
+                return !this.lead.deleted_at && this.lead.como_llego != this.leadOriginal.como_llego
             },
             cambioComoSeEntero() {
-                return this.lead.como_se_entero != this.leadOriginal.como_se_entero
+                return !this.lead.deleted_at && this.lead.como_se_entero != this.leadOriginal.como_se_entero
             },
             cambioProgramaInteres() {
-                return this.lead.programa_interes != this.leadOriginal.programa_interes
+                return !this.lead.deleted_at && this.lead.programa_interes != this.leadOriginal.programa_interes
             },
             cambioAgente() {
-                return this.lead.agente != this.leadOriginal.agente
+                return !this.lead.deleted_at && this.lead.agente != this.leadOriginal.agente
             },
             rules(){
                 const _rules = {}
