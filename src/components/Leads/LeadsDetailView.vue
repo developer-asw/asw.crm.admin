@@ -398,6 +398,12 @@ export default {
             }).finally(() => {
 
             });
+    },
+    formatDate(value){
+        if (value instanceof Date)
+            return this.$moment(value).format('DD/MM/YYYY h:mm a')
+        else 
+            return value
     }
     ////////////LLAMADAS
   },
