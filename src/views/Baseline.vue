@@ -406,7 +406,7 @@
 
         <v-footer color="blue-grey" class="white--text text-center">
             <v-card-text>
-                American School Way &copy; 2024 - v.1.4.10
+                American School Way &copy; 2024 - v.1.4.11
             </v-card-text>
         </v-footer>
         
