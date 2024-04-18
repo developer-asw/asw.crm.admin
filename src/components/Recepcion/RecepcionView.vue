@@ -449,7 +449,7 @@ export default {
             if (this.lead && this.lead.deleted_at) {
                 return true;
             } else if (this.lead_up && this.lead_up.deleted_at) {
-                return  trur;
+                return  true;
             }
             return false;
         },
