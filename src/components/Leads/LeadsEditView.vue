@@ -93,7 +93,7 @@
                                     </v-col>
                                 </v-row>
                             </v-col>
-                            <v-col cols="12" sm="6" md="4" lg="3">
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="!lead.deleted_at">
                                 <v-row>
                                     <v-col cols="11" sm="10">
                                         <v-text-field v-model="lead.email" label="Email" :disabled="disabled" :rules="rules.email" @blur="buscarEmail()"></v-text-field>
@@ -105,7 +105,7 @@
                                     </v-col>
                                 </v-row>
                             </v-col>
-                            <v-col cols="12" sm="6" md="4" lg="3">
+                            <v-col cols="12" sm="6" md="4" lg="3" v-if="!lead.deleted_at">
                                 <v-row>
                                     <v-col cols="11" sm="10">
                                         <v-text-field type="numeric" v-model="lead.movil" label="Teléfono" :disabled="disabled" :rules="rules.telefono" @blur="buscarTelefono()"></v-text-field>
@@ -286,8 +286,8 @@
                     <br>
                     <div v-for="(item, index) in dialog.resultados" :key="index">
                         <p><b>Nombre:</b> {{item.full_name}}</p>
-                        <p><b>Email:</b> {{item.email}}</p>
-                        <p><b>Movíl:</b> {{item.movil}}</p>
+                        <p v-if="!item.deleted_at"><b>Email:</b> {{item.email}}</p>
+                        <p v-if="!item.deleted_at"><b>Movíl:</b> {{item.movil}}</p>
                         <p><b>Registrado:</b> {{item.fecha_ingreso | moment("DD/MM/YYYY")}}</p>
                         <!-- <p><b>Registrado:</b> {{item.fecha_ingreso | moment("dddd, MMMM Do YYYY")}}</p> -->
                     </div>
