@@ -587,8 +587,12 @@
                             return true
                         }
                     }
-                } else if(['servicio_cliente','matricula_recaudo','matricula_nueva','convenio','estudiante', 'examen', 'dato_eliminado'].includes(this.estado)) {
+                } else if(['servicio_cliente','matricula_recaudo','matricula_nueva','convenio','estudiante', 'examen'].includes(this.estado)) {
                     return true;
+                } else if(['dato_eliminado'].includes(this.estado)) {
+                    if (this.resolucion.observacion) {
+                        return true;
+                    }
                 } else if(this.estado=='matriculado'){
                     if(this.resolucion.tipo){
                         return true
