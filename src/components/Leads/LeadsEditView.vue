@@ -283,14 +283,28 @@
 
                 <v-card-text>
                     {{dialog.message}}
-                    <br>
-                    <div v-for="(item, index) in dialog.resultados" :key="index">
-                        <p><b>Nombre:</b> {{item.full_name}}</p>
-                        <p v-if="!item.deleted_at"><b>Email:</b> {{item.email}}</p>
-                        <p v-if="!item.deleted_at"><b>Movíl:</b> {{item.movil}}</p>
-                        <p><b>Registrado:</b> {{item.fecha_ingreso | moment("DD/MM/YYYY")}}</p>
-                        <!-- <p><b>Registrado:</b> {{item.fecha_ingreso | moment("dddd, MMMM Do YYYY")}}</p> -->
-                    </div>
+                    <v-item v-slot="{ isSelected, toggle }" v-for="(item, index) in dialog.resultados" :key="index">
+                        <v-card
+                        :color="isSelected || index == dialog.index ? 'primary' : ''"
+                        class="d-flex align-center"
+                        height="200"
+                        light
+                        @click="toggle,selectedItem(index)"
+                        >
+                        <v-scroll-y-transition>
+                            <div class="flex-grow-1 text-center">
+                                <p><b>Registrado:</b> {{item.fecha_ingreso | moment("DD/MM/YYYY")}}</p>
+                                <p><b>Nombre:</b> {{item.full_name}}</p>
+                                <p v-if="!item.deleted_at"><b>Email:</b> {{item.email}}</p>
+                                <p v-if="!item.deleted_at"><b>Movíl:</b> {{item.movil}}</p>
+                            </div>
+                            
+                            
+
+                        </v-scroll-y-transition>
+                        </v-card>
+                    </v-item>
+                    <hr>
                 </v-card-text>
 
                 <v-card-actions>
@@ -341,6 +355,7 @@
             dialog: {
                 show: false,
                 message: '',
+                index:null,
                 resultados: []
             },
             consultando: { buscando: false, objeto: ''},
@@ -496,7 +511,13 @@
                 this.consultando.buscando = true;
                  this.buscarEmailLead(this.lead.email)
                 .then(result => {
-                    this.dialog.resultados = result;
+                    this.dialog.resultados = result.datos;
+                    if (this.dialog.resultados && this.dialog.resultados.length) {
+                        this.dialog.index = 0;
+                    } else {
+                        this.dialog.index = null;
+                    }
+                    this.dialog.sedes = result.sedes;
                     this.existeRegistroMsg('Email');
                 })
                 .catch(error => {
@@ -520,7 +541,13 @@
                 this.consultando.buscando = true;
                  this.buscarTelefonoLead(this.lead.movil)
                 .then(result => {
-                    this.dialog.resultados = result;
+                    this.dialog.resultados = result.datos;
+                    if (this.dialog.resultados && this.dialog.resultados.length) {
+                        this.dialog.index = 0;
+                    } else {
+                        this.dialog.index = null;
+                    }
+                    this.dialog.sedes = result.sedes;
                     this.existeRegistroMsg('Teléfono');
                 })
                 .catch(error => {
@@ -552,9 +579,19 @@
             },
             continuar(){
                 this.dialog.show = false;
-                let id = this.dialog.resultados.length > 0 ? this.dialog.resultados[0]._id: null;
-                if(id) {
-                    this.$router.push(`/lead/${id}/detail`);
+                if (this.dialog.index >= 0 && this.dialog.resultados && this.dialog.resultados[this.dialog.index]) {
+                    if (this.dialog.resultados[this.dialog.index]._allow_data_to_user) {
+                        let id = this.dialog.resultados[this.dialog.index]._id;
+                        if(id) {
+                            this.$router.push(`/recepcion/${id}/view`);
+                        } else {
+                            this.setInfo("Selección no válida");
+                        }
+                    } else {
+                        this.setInfo("No pertence a su sede");
+                    }
+                } else {
+                    this.setInfo("Seleccione un dato");
                 }
             },
             separarNombre() {
@@ -635,7 +672,6 @@
                 const dato = { id: this.lead._id, sede:this.lead.sede_id };
                 this.sedeUpdate(dato)
                     .then(result => {
-                        console.log(result);
                         if (result && result.codigo == 1) {
                             this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                             this.lead.sede_full = result.dato.valor;
@@ -657,7 +693,6 @@
                 const dato = { id: this.lead._id, valor:this.lead.identificacion };
                 this.identificacionUpdate(dato)
                     .then(result => {
-                        console.log(result);
                         if (result && result.codigo == 1) {
                             this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                             this.lead.identificacion = result.dato.valor;
@@ -679,7 +714,6 @@
                 const dato = { id: this.lead._id, valor:this.lead.primer_nombre };
                 this.primerNombreUpdate(dato)
                     .then(result => {
-                        console.log(result);
                         if (result && result.codigo == 1) {
                             this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                             this.lead.primer_nombre = result.dato.valor;
@@ -701,7 +735,6 @@
                 const dato = { id: this.lead._id, valor:this.lead.segundo_nombre };
                 this.segundoNombreUpdate(dato)
                     .then(result => {
-                        console.log(result);
                         if (result && result.codigo == 1) {
                             this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                             this.lead.segundo_nombre = result.dato.valor;
@@ -723,7 +756,6 @@
                 const dato = { id: this.lead._id, valor:this.lead.primer_apellido };
                 this.primerApellidoUpdate(dato)
                     .then(result => {
-                        console.log(result);
                         if (result && result.codigo == 1) {
                             this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                             this.lead.primer_apellido = result.dato.valor;
@@ -745,7 +777,6 @@
                 const dato = { id: this.lead._id, valor:this.lead.segundo_apellido };
                 this.segundoApellidoUpdate(dato)
                     .then(result => {
-                        console.log(result);
                         if (result && result.codigo == 1) {
                             this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                             this.lead.segundo_apellido = result.dato.valor;
@@ -767,7 +798,6 @@
                 const dato = { id: this.lead._id, valor:this.lead.email };
                 this.emailUpdate(dato)
                     .then(result => {
-                        console.log(result);
                         if (result && result.codigo == 1) {
                             this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                             this.lead.email = result.dato.valor;
@@ -789,7 +819,6 @@
                 const dato = { id: this.lead._id, valor:this.lead.movil };
                 this.movilUpdate(dato)
                     .then(result => {
-                        console.log(result);
                         if (result && result.codigo == 1) {
                             this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                             this.lead.movil = result.dato.valor;
@@ -811,7 +840,6 @@
                 const dato = { id: this.lead._id, valor:this.lead.renovacion };
                 this.renovacionUpdate(dato)
                     .then(result => {
-                        console.log(result);
                         if (result && result.codigo == 1) {
                             this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                             this.lead.renovacion = result.dato.valor;
@@ -833,7 +861,6 @@
                 const dato = { id: this.lead._id, valor:this.lead.origen };
                 this.origenUpdate(dato)
                     .then(result => {
-                        console.log(result);
                         if (result && result.codigo == 1) {
                             this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                             this.lead.origen = result.dato.valor;
@@ -855,7 +882,6 @@
                 const dato = { id: this.lead._id, valor:this.lead.como_llego };
                 this.comoLlegoUpdate(dato)
                     .then(result => {
-                        console.log(result);
                         if (result && result.codigo == 1) {
                             this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                             this.lead.como_llego = result.dato.valor;
@@ -877,7 +903,6 @@
                 const dato = { id: this.lead._id, valor:this.lead.como_se_entero };
                 this.comoSeEnteroUpdate(dato)
                     .then(result => {
-                        console.log(result);
                         if (result && result.codigo == 1) {
                             this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                             this.lead.como_se_entero = result.dato.valor;
@@ -899,7 +924,6 @@
                 const dato = { id: this.lead._id, programa_interes:this.lead.programa_interes };
                 this.programaInteresUpdate(dato)
                     .then(result => {
-                        console.log(result)
                         if (result && result.codigo == 1) {
                             this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                             this.lead.programa_interes = result.dato.valor;
@@ -942,7 +966,6 @@
                 const dato = { id: this.lead._id, valor:{fecha_contacto:this.lead.fecha_contacto, hora_contacto:this.lead.hora_contacto} };
                 this.contactarUpdate(dato)
                     .then(result => {
-                        console.log(result)
                         if (result && result.codigo == 1) {
                             this.setInfo(result.mensaje ? result.mensaje : "Actualizado correctamente");
                             this.lead.fecha_contacto = result.dato.valor.fecha_contacto;
@@ -960,6 +983,9 @@
                     }).finally(() => {
                         this.procesando = false;
                     });
+            },
+            selectedItem(index) {
+                this.dialog.index = index;
             }
         },
         computed: {

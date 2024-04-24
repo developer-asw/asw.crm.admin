@@ -132,14 +132,29 @@
 
                 <v-card-text>
                     {{dialog.message}}
-                    <br>
-                    <div v-for="(item, index) in dialog.resultados" :key="index">
-                        <p><b>Nombre:</b> {{item.full_name}}</p>
-                        <p><b>Email:</b> {{item.email}}</p>
-                        <p><b>Movíl:</b> {{item.movil}}</p>
-                        <p><b>Registrado:</b> {{item.fecha_ingreso | moment("DD/MM/YYYY")}}</p>
-                        <!-- <p><b>Registrado:</b> {{item.fecha_ingreso | moment("dddd, MMMM Do YYYY")}}</p> -->
-                    </div>
+
+                        <v-item v-slot="{ isSelected, toggle }" v-for="(item, index) in dialog.resultados" :key="index">
+                            <v-card
+                            :color="isSelected || index == dialog.index ? 'primary' : ''"
+                            class="d-flex align-center"
+                            height="200"
+                            light
+                            @click="toggle,selectedItem(index)"
+                            >
+                            <v-scroll-y-transition>
+                                <div class="flex-grow-1 text-center">
+                                    <p><b>Registrado:</b> {{item.fecha_ingreso | moment("DD/MM/YYYY")}}</p>
+                                    <p><b>Nombre:</b> {{item.full_name}}</p>
+                                    <p v-if="!item.deleted_at"><b>Email:</b> {{item.email}}</p>
+                                    <p v-if="!item.deleted_at"><b>Movíl:</b> {{item.movil}}</p>
+                                </div>
+                                
+                                
+
+                            </v-scroll-y-transition>
+                            </v-card>
+                        </v-item>
+                    <hr>
                 </v-card-text>
 
                 <v-card-actions>
@@ -194,7 +209,8 @@
             dialog: {
                 show: false,
                 message: '',
-                resultados: []
+                resultados: [],
+                index: 0
             },
             consultando: { buscando: false, objeto: ''},
             disabled: false,
@@ -304,7 +320,13 @@
                 this.consultando.buscando = true;
                  this.buscarEmailLead(this.lead.email)
                 .then(result => {
-                    this.dialog.resultados = result;
+                    this.dialog.resultados = result.datos;
+                    if (this.dialog.resultados && this.dialog.resultados.length) {
+                        this.dialog.index = 0;
+                    } else {
+                        this.dialog.index = null;
+                    }
+                    this.dialog.sedes = result.sedes;
                     this.existeRegistroMsg('Email');
                 })
                 .catch(error => {
@@ -328,7 +350,13 @@
                 this.consultando.buscando = true;
                  this.buscarTelefonoLead(this.lead.movil)
                 .then(result => {
-                    this.dialog.resultados = result;
+                    this.dialog.resultados = result.datos;
+                    if (this.dialog.resultados && this.dialog.resultados.length) {
+                        this.dialog.index = 0;
+                    } else {
+                        this.dialog.index = null;
+                    }
+                    this.dialog.sedes = result.sedes;
                     this.existeRegistroMsg('Teléfono');
                 })
                 .catch(error => {
@@ -360,9 +388,19 @@
             },
             continuar(){
                 this.dialog.show = false;
-                let id = this.dialog.resultados.length > 0 ? this.dialog.resultados[0]._id: null;
-                if(id) {
-                    this.$router.push(`/lead/${id}/detail`);
+                if (this.dialog.index >= 0 && this.dialog.resultados && this.dialog.resultados[this.dialog.index]) {
+                    if (this.dialog.resultados[this.dialog.index]._allow_data_to_user) {
+                        let id = this.dialog.resultados[this.dialog.index]._id;
+                        if(id) {
+                            this.$router.push(`/recepcion/${id}/view`);
+                        } else {
+                            this.setInfo("Selección no válida");
+                        }
+                    } else {
+                        this.setInfo("No pertence a su sede");
+                    }
+                } else {
+                    this.setInfo("Seleccione un dato");
                 }
             },
             submitHandler(){
@@ -426,6 +464,9 @@
             },
             quitarEspacios(cadena) {
                 return cadena.replace(/ /g, '');
+            },
+            selectedItem(index) {
+                this.dialog.index = index;
             }
         },
         computed: {
