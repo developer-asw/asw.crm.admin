@@ -102,6 +102,16 @@
                             <td>{{ lead.como_se_entero }}</td>
                             <td></td>
                         </tr>
+                        <tr v-if="lead.primer_origen && lead.primer_origen.origen">
+                            <td><b>Primer Origen: </b></td>
+                            <td>{{ lead.primer_origen.origen == '/' ? lead.primer_origen.medio : lead.primer_origen.origen }}</td>
+                            <td></td>
+                        </tr>
+                        <tr v-if="lead.ultimo_origen && lead.ultimo_origen.origen">
+                            <td><b>Ultimo Origen: </b></td>
+                            <td>{{ lead.ultimo_origen.origen }}</td>
+                            <td></td>
+                        </tr>
                         <tr v-if="lead.comentarios">
                             <td><b>Comentarios Pagina Web: </b></td>
                             <td>{{ lead.comentarios }}</td>

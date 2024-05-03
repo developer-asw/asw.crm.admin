@@ -132,7 +132,7 @@
                             <v-col cols="12" sm="6" md="4" lg="3">
                                 <v-row>
                                     <v-col cols="11" sm="10">
-                                        <v-select v-model="lead.origen" :disabled="lead.origen != null || disabled" label="Campaña" :items="listado.origenes" item-text="title" item-value="value" :disabled="disabled"></v-select>
+                                        <v-select v-model="lead.origen" label="Campaña" :items="listado.origenes" item-text="title" item-value="value" :disabled="lead.origen != null || disabled"></v-select>
                                     </v-col>
                                     <v-col cols="1" sm="2">
                                         <v-btn v-if="cambioOrigen" @click="actualizarOrigen" x-small dark outlined color="success"><v-icon small>save</v-icon></v-btn>
