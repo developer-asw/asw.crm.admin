@@ -7,6 +7,11 @@
                 <template v-slot:default>
                     <tbody>
                         <tr>
+                            <td><b>Gestión: </b></td>
+                            <td>{{ lead.gestion }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
                             <td><b>Tipo: </b></td>
                             <td>{{ lead.categoria_lead }}</td>
                             <td></td>
